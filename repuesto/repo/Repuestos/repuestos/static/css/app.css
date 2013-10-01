@@ -1,0 +1,77 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	margin: 0;
+	background-color: #1D1D1D;
+}
+.nav-tabs {
+	width: 50%;
+	margin: auto;
+}
+.nav-tabs {	
+	width: 50%;
+	margin: auto;
+}
+.tab-content {
+	width: 50%;
+	margin: auto;
+}
+.campo-form {
+	width: 50%;
+	margin: auto;
+}
+.campo-error {
+	width: 50%;
+	margin: auto;
+}
+.label-form {
+	width: 50%;
+	height: 36px;
+	margin: auto;
+	float: left;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	vertical-align: middle;
+}
+.input-form {
+	width: 50%;
+	height: 36px;
+	margin: auto;
+	float: left;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	vertical-align: middle;
+}
+select#id_marca, select#id_year {
+	height:26px;
+}
+.seccion-anterior-siguiente {
+	width:100%;
+	text-align: center;
+	float: left;
+	margin-top: 35px;
+}
+.seccion-confirmar {
+	width:100%;
+	text-align: center;
+	float: left;
+	margin-top: 10px;
+}
+.header{
+	height:150px;
+	background-color: #FFF;
+}
+.cuerpo{
+	background-color: #FFF;
+	padding-bottom: 20px;
+	min-height: 400px;
+}
+.footer{
+	height: 150px;
+}
+.contenido-footer{
+	text-align: center;
+	color: #CCC;
+	margin:auto;
+	padding-top: 20px;
+}
