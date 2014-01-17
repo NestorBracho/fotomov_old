@@ -11,7 +11,18 @@ class MacroCliente(models.Model):
 
 class Direccion(models.Model):
     direccion = models.CharField(max_length=500)
-  #  lon = models.
+    lon = models.FloatField()
+    lat = models.FloatField()
+    descripcion = models.CharField(max_length=500)
+    macrocliente = models.ForeignKey(MacroCliente)
+
+class Encargado(models.Model):
+    nombre = models.CharField(max_length=100)
+    ceula = models.CharField(max_length=8)
+    telefono = models.CharField(max_length=11)
+    email = models.EmailField()
+    descripcion = models.CharField(max_length=500)
+    macrocliente = models.ForeignKey(MacroCliente)
 
 
 
