@@ -1,0 +1,17 @@
+{% if creado == '1' %}
+    Marca creada satisfactoriamente
+{% elif creado == '2' %}
+    La marca seleccionada no existe
+{% endif %}
+<table>
+    <thead>
+        <th>Marca</th>
+        <th>Acciones</th>
+    </thead>
+    {% for marca in marcas %}
+    <tr>
+        <td><a href="/ver_marca/{{ marca.id }}/0">{{ marca.nombre }}</a></td>
+        <td><a href="/editar_marca/{{ marca.id }}">Editar</a> <a href="/eliminar_marca/{{ marca.id }}">Eliminar</a> </td>
+    </tr>
+{% endfor %}
+</table>

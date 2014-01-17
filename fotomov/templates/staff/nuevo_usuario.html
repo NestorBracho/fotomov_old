@@ -1,0 +1,10 @@
+<html>
+<body>
+
+	<form id='form' method='POST' action=''>{% csrf_token %}
+	  <table><tr><td>{{formulario}}{{formulario_regis.nombre.label}}{{formulario_regis.nombre}}{{formulario_regis.apellido.label}}{{formulario_regis.apellido}}{{formulario_regis.cedula.label}}{{formulario_regis.cedula}}{{formulario_regis.privilegio.label}}{{formulario_regis.privilegio}}</td></tr></table>
+	  <hr />
+	  <p><input type='submit' value='Registrar' /></p>
+	</form>
+</body>
+</html>

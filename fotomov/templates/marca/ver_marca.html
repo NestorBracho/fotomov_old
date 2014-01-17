@@ -1,0 +1,27 @@
+{% if creado == '1' %}
+    Submarca creada satisfactoriamente!
+{% endif %}
+{{ marca.nombre }}
+
+<h4>submarcas</h4>
+<div>
+<table>
+    <thead>
+        <th>Submarca</th>
+        <th>Acciones</th>
+    </thead>
+{% for submarca in submarcas %}
+    <tr>
+        <td>{{ submarca.nombre }}</td>
+        <td><a href="/editar_submarca/{{ submarca.id }}">Editar</a> <a href="/eliminar_submarca/{{ submarca.id }}">Eliminar</a> </td>
+    </tr>
+
+
+    {% empty %}
+        No existen submarcas asociadas a {{ marca.nombre }}
+{% endfor %}
+</table>
+</div>
+<div><a href="/nueva_submarca/{{ marca.id }}">Crear Submarca</a></div>
+
+<div><a href="/editar_marca/{{ marca.id }}">Editar</a></div>

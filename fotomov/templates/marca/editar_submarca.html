@@ -1,0 +1,6 @@
+<h4>Editar {{ submarca.nombre }}</h4>
+<form method="post" enctype='multipart/form-data' action="">{% csrf_token %}
+    {{ formulario.nombre }}
+    {{ formulario.marca }}
+    <input type="submit" value="Ingresar">
+</form>
