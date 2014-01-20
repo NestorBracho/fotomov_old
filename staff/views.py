@@ -10,6 +10,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
+def escritorio(request):
+    return render_to_response('escritorio.html',{}, context_instance=RequestContext(request))
+
 def contacto(request):
     formulario = RegisUsuario()
     return render_to_response('staff/Regisform.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -52,7 +55,7 @@ def ingresar(request):
 	  if acceso is not None:
 	    if acceso.is_active:
 		login(request, acceso)
-		return HttpResponseRedirect('/privado')
+		return HttpResponseRedirect('/escritorio')
 	    else:
 		return render_to_response('noactivo.html', context_instance=RequestContext(request))
 	  else:
