@@ -20,6 +20,23 @@ def nuevo_macrocliente(request):
         formulario = MacroClienteForm()
     return render_to_response('clientes/nuevo_macrocliente.html', {'formulario': formulario}, context_instance = RequestContext(request))
 
-def listar_macrocliente(request, creado):
+def listar_macroclientes(request, creado):
     macroclientes = MacroCliente.objects.all()
-    return render_to_response('clientes/listar_macrocliente.html', {'macroclientes': macroclientes}, context_intance = RequestContext(request))
+    return render_to_response('clientes/listar_macroclientes.html', {'macroclientes': macroclientes, 'cread0': creado}, context_instance = RequestContext(request))
+
+def editar_macrocliente(request, id_macrocliente):
+    if request.method == 'POST':
+        formulario = MacroClienteForm(request.POST)
+        if formulario.is_valid():
+            editado = formulario.save(commit=False)
+            if MacroCliente.objects.filter(id = id_macrocliente):
+                macrocliente = MacroCliente.objects.get(id = id_macrocliente)
+                macrocliente.nombre = editado.nombre
+                macrocliente.descripcion = editado.descripcion
+                macrocliente.direccion_fiscal = editado.direccion_fiscal
+                macrocliente.rif = editado.rif
+                macrocliente.submarca = editado.submarca
+                macrocliente.telefono = editado.telefono
+                macrocliente.save()
+            else:
+                return HttpResponseRedirect('')
