@@ -8,7 +8,7 @@
     </thead>
     {% for macrocliente in macroclientes %}
     <tr>
-        <td><a href="/ver_macrocliente/{{ macrocliente.id }}/0">{{ macrocliente.nombre }}</a></td>
+        <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
         <td><a href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a> <a href="/eliminar_marcrocliente/{{ macrocliente.id }}">Eliminar</a> </td>
     </tr>
 {% endfor %}
