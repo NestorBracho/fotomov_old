@@ -26,4 +26,5 @@ urlpatterns = patterns('',
     url(r'^registro/$', 'staff.views.contacto'),
     url(r'^prueba/$', 'staff.views.notificacion'),
     url(r'^nuevo_usuario/$', 'staff.views.nuevo_usuario'),
+    url(r'^listar_usuario/$', 'staff.views.lista_usuario'),
 )
