@@ -51,3 +51,10 @@ def ver_macrocliente(request, id_macrocliente):
     else:
         return HttpResponseRedirect('/listar_macroclientes/0')
     return render_to_response('clientes/ver_macrocliente.html', {'macrocliente': macrocliente}, context_instance = RequestContext(request))
+
+def eliminar_macrocliente(request, id_macrocliente):
+    if MacroCliente.objects.filter(id=id_macrocliente):
+        MacroCliente.objects.get(id=id_macrocliente).delete()
+    else:
+        return HttpResponseRedirect('/listar_macroclientes/0')
+    return HttpResponseRedirect('/listar_macroclientes/3')

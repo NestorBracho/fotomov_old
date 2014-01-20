@@ -1,3 +1,20 @@
+<script type="text/javascript">
+        	function deleteAlert(id)
+        	{
+        		var r=confirm("¿Esta seguro que desea eliminar?");
+        		if (r==true)
+        	  {
+        			var string1 = "/eliminar_macrocliente/";
+        		  window.location.assign(string1 + id)
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
+    </script>
+
 {% if creado == '1' %}
     Macrocliente creado satisfactoriamente
 {% endif %}
@@ -9,7 +26,7 @@
     {% for macrocliente in macroclientes %}
     <tr>
         <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
-        <td><a href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a> <a href="/eliminar_marcrocliente/{{ macrocliente.id }}">Eliminar</a> </td>
+        <td><a href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> </td>
     </tr>
 {% endfor %}
 </table>

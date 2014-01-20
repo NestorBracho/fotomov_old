@@ -28,5 +28,6 @@ urlpatterns = patterns('',
     url(r'^nuevo_usuario/$', 'staff.views.nuevo_usuario'),
     url(r'^listar_usuario/$', 'staff.views.lista_usuario'),
     url(r'^editar_macrocliente/(?P<id_macrocliente>\d+)/$', 'clientes.views.editar_macrocliente'),
+    url(r'^eliminar_macrocliente/(?P<id_macrocliente>\d+)/$', 'clientes.views.eliminar_macrocliente'),
     url(r'^ver_macrocliente/(?P<id_macrocliente>\d+)/$', 'clientes.views.ver_macrocliente'),
 )
