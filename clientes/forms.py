@@ -6,4 +6,3 @@ from django import forms
 class MacroClienteForm(forms.ModelForm):
     class Meta:
         model = MacroCliente
-        
