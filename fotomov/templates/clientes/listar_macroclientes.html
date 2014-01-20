@@ -1,0 +1,15 @@
+{% if creado == '1' %}
+    Macrocliente creado satisfactoriamente
+{% endif %}
+<table>
+    <thead>
+        <th>Macrocliente</th>
+        <th>Acciones</th>
+    </thead>
+    {% for marca in marcas %}
+    <tr>
+        <td><a href="/ver_marca/{{ marca.id }}/0">{{ marca.nombre }}</a></td>
+        <td><a href="/editar_marca/{{ marca.id }}">Editar</a> <a href="/eliminar_marca/{{ marca.id }}">Eliminar</a> </td>
+    </tr>
+{% endfor %}
+</table>
