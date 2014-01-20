@@ -20,7 +20,7 @@ def notificacion(request):
 
 def lista_usuario(request):
     usuario = Usuario.objects.all()
-    return render_to_response('staff/lista_usuario.html',{'lista':usuario})
+    return render_to_response('staff/lista_usuario.html',{'lista':usuario}, context_instance=RequestContext(request))
 
 def nuevo_usuario(request):
     if request.method=='POST':
@@ -33,7 +33,7 @@ def nuevo_usuario(request):
 	  ced = formulario2.cleaned_data['cedula']
   	  pri = formulario2.cleaned_data['privilegio']
 
-	  perfil = Usuario.objects.create(usuario = usu, nombre = nom, apellido=ape, cedula = ced, privilegio = pri)
+	  perfil = Usuario.objects.create(usuario = usu, nombre = nom, apellido = ape, cedula = ced, privilegio = pri)
 
 	  perfil.save()
 	  return HttpResponseRedirect('/')
@@ -60,6 +60,5 @@ def ingresar(request):
     else:
 	formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
-
 
 

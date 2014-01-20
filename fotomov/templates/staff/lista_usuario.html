@@ -1,0 +1,14 @@
+<html>
+<body>
+
+<table>
+<tr><td>Nombre</td><td>Apellido</td><td>Cedula</td><td>Privilegio</td></tr>
+{% for elemento in lista %}
+
+<tr><td>hola</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio}}</td></tr>
+
+{% endfor %}
+{% comment %}<tr><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio}}</td></tr>{% endcomment %}
+</table>
+</body>
+</html>
