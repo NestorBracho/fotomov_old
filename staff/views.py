@@ -18,9 +18,9 @@ def notificacion(request):
     notificacion = RegisNotificacion()
     return render_to_response('staff/prueba.html',{'prueba':notificacion}, context_instance=RequestContext(request))
 
-def lista_usuario(request):
+def lista_usuario(request, creado):
     usuario = Usuario.objects.all()
-    return render_to_response('staff/lista_usuario.html',{'lista':usuario}, context_instance=RequestContext(request))
+    return render_to_response('staff/lista_usuario.html',{'lista':usuario, 'creado':creado}, context_instance=RequestContext(request))
 
 def nuevo_usuario(request):
     if request.method=='POST':
@@ -36,7 +36,7 @@ def nuevo_usuario(request):
 	  perfil = Usuario.objects.create(usuario = usu, nombre = nom, apellido = ape, cedula = ced, privilegio = pri)
 
 	  perfil.save()
-	  return HttpResponseRedirect('/')
+	  return HttpResponseRedirect('/listar_usuario/1')
     else:
 	formulario = UserCreationForm()
 	formulario2 = RegisUsuarioForm()
@@ -64,7 +64,7 @@ def ingresar(request):
 def eliminar_usuario(request, id_usuario):
     if Usuario.objects.get(id=id_usuario)!=None:
         usuario = Usuario.objects.get(id=id_usuario).delete()
-    return render_to_response('staff/eliminar_usuario.html',{}, context_instance=RequestContext(request))
+    return HttpResponseRedirect('/listar_usuario/3')
 
 def modificar_usuario(request, id_usuario):
     if request.method=='POST':
@@ -80,7 +80,7 @@ def modificar_usuario(request, id_usuario):
             perfil.cedula = ced
             perfil.privilegio = pri
             perfil.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/listar_usuario/2')
     else:
         if Usuario.objects.get(id=id_usuario)!=None:
             varUsu = Usuario.objects.get(id=id_usuario)
