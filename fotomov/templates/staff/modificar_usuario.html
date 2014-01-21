@@ -1,23 +1,8 @@
+{% extends "admin.html" %}
 {% load bootstrap %}
-<html>
-<head>
-    <script type="text/javascript">
-
-        function ini()
-        {
-            document.getElementById("id_nombre").value="{{usuario.nombre}}";
-            document.getElementById("id_apellido").value="{{usuario.apellido}}";
-            document.getElementById("id_cedula").value="{{usuario.cedula}}";
-            document.getElementById("id_privilegio").options["{{usuario.privilegio}}"].selected = true;
-        }
-
-    </script>
-</head>
-<body onload="ini()">
 
 	<form id='form' method='POST' action=''>{% csrf_token %}
 	  <table><tr><td>{{formulario_regis.nombre|bootstrap}}{{formulario_regis.apellido|bootstrap}}{{formulario_regis.cedula|bootstrap}}{{formulario_regis.privilegio|bootstrap}}<hr /></td></tr></table>
 	  <p><input type='submit' value='Registrar' /></p>
 	</form>
-</body>
-</html>
+

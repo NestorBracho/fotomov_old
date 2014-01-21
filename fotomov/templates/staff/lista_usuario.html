@@ -23,7 +23,7 @@
 <tr><td>Username</td><td>Nombre</td><td>Apellido</td><td>Cedula</td><td>Privilegio</td><td colspan="2"></td></tr>
 {% for elemento in lista %}
 
-<tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td><button type="button" onclick="eliminar({{elemento.id}})">Eliminar</button></td><td><button type="button" onclick="modificar({{elemento.id}})">Modificar</button></td></tr>
+<tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td><button type="button" onclick="modificar({{elemento.id}})">Modificar</button></td><td><button type="button" onclick="eliminar({{elemento.id}})">Eliminar</button></td></tr>
 
 {% endfor %}
 </table>

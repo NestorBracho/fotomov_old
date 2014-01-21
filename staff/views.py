@@ -34,7 +34,7 @@ def nuevo_usuario(request):
             pri = formulario2.cleaned_data['privilegio']
             perfil = Usuario.objects.create(usuario = usu, nombre = nom, apellido = ape, cedula = ced, privilegio = pri)
             perfil.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/listar_usuario/')
     else:
         formulario = UserCreationForm()
         formulario2 = RegisUsuarioForm()
@@ -59,7 +59,7 @@ def modificar_usuario(request, id_usuario):
             perfil.cedula = ced
             perfil.privilegio = pri
             perfil.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/listar_usuario/')
     else:
         if Usuario.objects.get(id=id_usuario)!=None:
             varUsu = Usuario.objects.get(id=id_usuario)
