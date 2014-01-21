@@ -1,4 +1,7 @@
+{% extends 'admin.html' %}
+{% block seccion-contenido %}
 <form method="POST">{% csrf_token %}
     {{ formulario.nombre }}
     <input type='submit' value='Ingresar'/>
 </form>
+{% endblock %}

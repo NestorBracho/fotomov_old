@@ -32,5 +32,6 @@ urlpatterns = patterns('',
     url(r'^eliminar_macrocliente/(?P<id_macrocliente>\d+)/$', 'clientes.views.eliminar_macrocliente'),
     url(r'^ver_macrocliente/(?P<id_macrocliente>\d+)/$', 'clientes.views.ver_macrocliente'),
     url(r'^eliminar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.eliminar_usuario'),
+    url(r'^eliminar_marca/(?P<id_marca>\d+)/$', 'marca.views.eliminar_marca'),
     url(r'^modificar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.modificar_usuario'),
 )

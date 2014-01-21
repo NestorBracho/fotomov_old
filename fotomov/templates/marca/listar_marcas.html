@@ -1,7 +1,29 @@
+{% extends 'admin.html' %}
+{% block js %}
+<script type="text/javascript">
+        	function deleteAlert(id)
+        	{
+        		var r=confirm("¿Esta seguro que desea eliminar?");
+        		if (r==true)
+        	  {
+        			var string1 = "/eliminar_marca/";
+        		  window.location.assign(string1 + id)
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
+    </script>
+{% endblock %}
+{% block seccion-contenido %}
 {% if creado == '1' %}
-    Marca creada satisfactoriamente
+    Marca creada exitosamente
 {% elif creado == '2' %}
-    La marca seleccionada no existe
+    Marca editada exitosamente
+{% elif creado == '3' %}
+    Marca eliminada exitosamente
 {% endif %}
 <table>
     <thead>
@@ -11,7 +33,8 @@
     {% for marca in marcas %}
     <tr>
         <td><a href="/ver_marca/{{ marca.id }}/0">{{ marca.nombre }}</a></td>
-        <td><a href="/editar_marca/{{ marca.id }}">Editar</a> <a href="/eliminar_marca/{{ marca.id }}">Eliminar</a> </td>
+        <td><a href="/editar_marca/{{ marca.id }}">Editar</a> <button type="button" onclick="deleteAlert({{marca.id}})">Eliminar</button> </td>
     </tr>
 {% endfor %}
 </table>
+{% endblock %}
