@@ -14,7 +14,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'staff.views.ingresar'),
+    url(r'^$', 'staff.views.contacto'),
     url(r'^nueva_marca/$', 'marca.views.nueva_marca'),
     url(r'^nuevo_macrocliente/$', 'clientes.views.nuevo_macrocliente'),
     url(r'^listar_macroclientes/(?P<creado>\d+)/$', 'clientes.views.listar_macroclientes'),
@@ -27,4 +27,5 @@ urlpatterns = patterns('',
     url(r'^prueba/$', 'staff.views.notificacion'),
     url(r'^nuevo_usuario/$', 'staff.views.nuevo_usuario'),
     url(r'^listar_usuario/$', 'staff.views.lista_usuario'),
+    url(r'^eliminar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.eliminar_usuario'),
 )

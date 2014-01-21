@@ -1,14 +1,25 @@
 <html>
 <body>
 
+<script type="text/javascript">
+
+    function eliminar(id)
+    {
+
+        if(confirm('Seguro que desea eliminar este usuario?'))
+            window.location.assign("/eliminar_usuario/"+id);
+
+    }
+
+</script>
+
 <table>
-<tr><td>Nombre</td><td>Apellido</td><td>Cedula</td><td>Privilegio</td></tr>
+<tr><td>Username</td><td>Nombre</td><td>Apellido</td><td>Cedula</td><td>Privilegio</td><td></td></tr>
 {% for elemento in lista %}
 
-<tr><td>hola</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio}}</td></tr>
+<tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td><button type="button" onclick="eliminar({{elemento.id}})">Eliminar</button></td></tr>
 
 {% endfor %}
-{% comment %}<tr><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio}}</td></tr>{% endcomment %}
 </table>
 </body>
 </html>
