@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'staff.views.ingresar'),
+    url(r'^escritorio/$', 'staff.views.escritorio'),
     url(r'^nueva_marca/$', 'marca.views.nueva_marca'),
     url(r'^nuevo_macrocliente/$', 'clientes.views.nuevo_macrocliente'),
     url(r'^listar_macroclientes/(?P<creado>\d+)/$', 'clientes.views.listar_macroclientes'),
