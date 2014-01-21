@@ -84,6 +84,6 @@ def modificar_usuario(request, id_usuario):
     else:
         if Usuario.objects.get(id=id_usuario)!=None:
             varUsu = Usuario.objects.get(id=id_usuario)
-            formulario2Modi = RegisUsuarioForm()
-
+            print varUsu
+            formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'privilegio': varUsu.privilegio.valor})
     return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
