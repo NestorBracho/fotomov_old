@@ -28,4 +28,5 @@ urlpatterns = patterns('',
     url(r'^nuevo_usuario/$', 'staff.views.nuevo_usuario'),
     url(r'^listar_usuario/$', 'staff.views.lista_usuario'),
     url(r'^eliminar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.eliminar_usuario'),
+    url(r'^modificar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.modificar_usuario'),
 )
