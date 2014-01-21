@@ -1,4 +1,7 @@
+{% extends 'admin.html' %}
+{% block seccion-contenido %}
 <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
     {{ formulario }}
     <input type="submit" value="guardar">
 </form>
+{% endblock %}
