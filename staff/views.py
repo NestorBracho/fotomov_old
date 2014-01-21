@@ -1,4 +1,4 @@
-from staff.models import Usuario, Notificacion
+from staff.models import *
 from staff.forms import RegisUsuarioForm, RegisNotificacion
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
@@ -61,4 +61,29 @@ def ingresar(request):
 	formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
+def eliminar_usuario(request, id_usuario):
+    if Usuario.objects.get(id=id_usuario)!=None:
+        usuario = Usuario.objects.get(id=id_usuario).delete()
+    return render_to_response('staff/eliminar_usuario.html',{}, context_instance=RequestContext(request))
 
+def modificar_usuario(request, id_usuario):
+    if request.method=='POST':
+        formulario2Modi = RegisUsuarioForm(request.POST)
+        if formulario2Modi.is_valid():
+            nom = formulario2Modi.cleaned_data['nombre']
+            ape = formulario2Modi.cleaned_data['apellido']
+            ced = formulario2Modi.cleaned_data['cedula']
+            pri = formulario2Modi.cleaned_data['privilegio']
+            perfil = Usuario.objects.get(id=id_usuario)
+            perfil.nombre = nom
+            perfil.apellido = ape
+            perfil.cedula = ced
+            perfil.privilegio = pri
+            perfil.save()
+            return HttpResponseRedirect('/')
+    else:
+        if Usuario.objects.get(id=id_usuario)!=None:
+            varUsu = Usuario.objects.get(id=id_usuario)
+            formulario2Modi = RegisUsuarioForm()
+
+    return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
