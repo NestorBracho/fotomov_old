@@ -75,6 +75,8 @@ def modificar_usuario(request, id_usuario):
         if formulario2Modi.is_valid() and formularioModi.is_valid():
             usu = formularioModi.save(commit=False)
             varUser.username = usu.username
+            varUser.password = usu.password
+            varUser.save()
             nom = formulario2Modi.cleaned_data['nombre']
             ape = formulario2Modi.cleaned_data['apellido']
             ced = formulario2Modi.cleaned_data['cedula']
