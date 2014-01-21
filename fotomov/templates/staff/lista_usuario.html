@@ -27,6 +27,7 @@
 {% elif creado == '3' %}
     Usuario eliminado exitosamente
 {% endif %}
+<div>
 <table class="table">
 <tr><th>Username</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th colspan="2"></th></tr>
 {% for elemento in lista %}
@@ -35,4 +36,5 @@
 
 {% endfor %}
 </table>
+</div>
 {% endblock %}
