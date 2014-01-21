@@ -1,5 +1,5 @@
 from staff.models import *
-from staff.forms import RegisUsuarioForm, RegisNotificacion
+from staff.forms import *
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -67,9 +67,14 @@ def eliminar_usuario(request, id_usuario):
     return HttpResponseRedirect('/listar_usuario/3')
 
 def modificar_usuario(request, id_usuario):
+    varUsu = Usuario.objects.get(id=id_usuario)
+    varUser = User.objects.get(username=varUsu.usuario.username)
     if request.method=='POST':
+        formularioModi = UserCreationForm(request.POST)
         formulario2Modi = RegisUsuarioForm(request.POST)
-        if formulario2Modi.is_valid():
+        if formulario2Modi.is_valid() and formularioModi.is_valid():
+            usu = formularioModi.save(commit=False)
+            varUser.username = usu.username
             nom = formulario2Modi.cleaned_data['nombre']
             ape = formulario2Modi.cleaned_data['apellido']
             ced = formulario2Modi.cleaned_data['cedula']
@@ -83,10 +88,9 @@ def modificar_usuario(request, id_usuario):
             return HttpResponseRedirect('/listar_usuario/2')
     else:
         if Usuario.objects.get(id=id_usuario)!=None:
-            varUsu = Usuario.objects.get(id=id_usuario)
-            print varUsu
+            formularioModi =  UserCreationForm(initial={'username':varUser.username})
             formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'privilegio': varUsu.privilegio.valor})
-    return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
+    return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formularioUser':formularioModi, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
 
 def escritorio(request):
     return render_to_response('escritorio.html', {}, context_instance=RequestContext(request))
