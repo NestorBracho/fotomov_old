@@ -1,6 +1,6 @@
 {% extends "admin.html" %}
 {% load bootstrap %}
-{% block seccion-contenido%}
+{% block js %}
 <script type="text/javascript">
 
     function eliminar(id)
@@ -18,9 +18,17 @@
     }
 
 </script>
-
-<table>
-<tr><td>Username</td><td>Nombre</td><td>Apellido</td><td>Cedula</td><td>Privilegio</td><td colspan="2"></td></tr>
+{% endblock %}
+{% block seccion-contenido%}
+{% if creado == '1' %}
+    Usuario creado exitosamente
+{% elif creado == '2' %}
+    Usuario modificado exitosamente
+{% elif creado == '3' %}
+    Usuario eliminado exitosamente
+{% endif %}
+<table class="table">
+<tr><th>Username</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th colspan="2"></th></tr>
 {% for elemento in lista %}
 
 <tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td><button type="button" onclick="modificar({{elemento.id}})">Modificar</button></td><td><button type="button" onclick="eliminar({{elemento.id}})">Eliminar</button></td></tr>
