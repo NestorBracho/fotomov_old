@@ -44,3 +44,12 @@ def eliminar_usuario(request, id_usuario):
     if Usuario.objects.get(id=id_usuario)!=None:
         usuario = Usuario.objects.get(id=id_usuario).delete()
     return render_to_response('staff/eliminar_usuario.html',{}, context_instance=RequestContext(request))
+
+def modificar_usuario(request, id_usuario):
+    if request.method=='POST':
+    else:
+        if Usuario.objects.get(id=id_usuario)!=None:
+            varUsu = Usuario.objects.get(id=id_usuario)
+            formularioModi = UserCreationForm()
+            formulario2Modi = RegisUsuarioForm()
+            return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario':formularioModi, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
