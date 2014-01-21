@@ -1,8 +1,8 @@
 {% extends "admin.html" %}
 {% load bootstrap %}
-
+{% block seccion-contenido%}
 	<form id='form' method='POST' action=''>{% csrf_token %}
 	  <table><tr><td>{{formulario_regis.nombre|bootstrap}}{{formulario_regis.apellido|bootstrap}}{{formulario_regis.cedula|bootstrap}}{{formulario_regis.privilegio|bootstrap}}<hr /></td></tr></table>
 	  <p><input type='submit' value='Registrar' /></p>
 	</form>
-
+{% endblock %}
