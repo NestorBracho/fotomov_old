@@ -1,3 +1,5 @@
+{% extends "admin.html" %}
+{% block js %}
 <script type="text/javascript">
         	function deleteAlert(id)
         	{
@@ -14,9 +16,11 @@
         		document.getElementById("demo").innerHTML=x;
         }
     </script>
-
+{% endblock %}
+{%  %}
 {% if creado == '1' %}
     Macrocliente creado satisfactoriamente
+
 {% endif %}
 <table>
     <thead>

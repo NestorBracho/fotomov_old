@@ -191,7 +191,7 @@
                         <!-- /input-group -->
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Escritorio</a>
+                        <a href="/escritorio"><i class="fa fa-dashboard fa-fw"></i> Escritorio</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Órdenes<span class="fa arrow"></span></a>
@@ -230,7 +230,7 @@
                         <a href="#"><i class="fa fa-users fa-fw"></i> Macroclientes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#">Lista de Macroclientes</a>
+                                <a href="/listar_macroclientes/0">Lista de Macroclientes</a>
                             </li>
                             <li>
                                 <a href="#">Registrar conversaci&oacute;n</a>
@@ -239,7 +239,7 @@
                                 <a href="#">Historial de conversaci&oacute;n</a>
                             </li>
                             <li>
-                                <a href="#">Nuevo macrocliente</a>
+                                <a href="/nuevo_macrocliente">Nuevo macrocliente</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -340,7 +340,8 @@
 
     <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
     <script src="js/demo/dashboard-demo.js"></script>
-
+{% block js %}
+{% endblock %}
 </body>
 
 </html>

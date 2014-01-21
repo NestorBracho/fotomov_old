@@ -52,7 +52,7 @@ def ingresar(request):
 	  if acceso is not None:
 	    if acceso.is_active:
 		login(request, acceso)
-		return HttpResponseRedirect('/privado')
+		return HttpResponseRedirect('/escritorio')
 	    else:
 		return render_to_response('noactivo.html', context_instance=RequestContext(request))
 	  else:
@@ -87,3 +87,6 @@ def modificar_usuario(request, id_usuario):
             print varUsu
             formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'privilegio': varUsu.privilegio.valor})
     return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
+
+def escritorio(request):
+    return render_to_response('escritorio.html', {}, context_instance=RequestContext(request))

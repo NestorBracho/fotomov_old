@@ -1,5 +1,8 @@
+{% extends 'admin.html' %}
+{% block seccion-contenido %}
 <h4>Nueva submarca para {{ marca.nombre }}</h4>
 <form method="POST" action="">{% csrf_token %}
     {{ formulario.nombre }}
     <input type="submit" value="Ingresar">
 </form>
+{% endblock %}

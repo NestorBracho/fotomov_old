@@ -22,7 +22,7 @@ def nuevo_macrocliente(request):
 
 def listar_macroclientes(request, creado):
     macroclientes = MacroCliente.objects.all()
-    return render_to_response('clientes/listar_macroclientes.html', {'macroclientes': macroclientes, 'cread0': creado}, context_instance = RequestContext(request))
+    return render_to_response('clientes/listar_macroclientes.html', {'macroclientes': macroclientes, 'creado': creado}, context_instance = RequestContext(request))
 
 def editar_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id = id_macrocliente):
@@ -54,7 +54,8 @@ def ver_macrocliente(request, id_macrocliente):
 
 def eliminar_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id=id_macrocliente):
-        MacroCliente.objects.get(id=id_macrocliente).delete()
+        #MacroCliente.objects.get(id=id_macrocliente).delete()
+        pass
     else:
         return HttpResponseRedirect('/listar_macroclientes/0')
     return HttpResponseRedirect('/listar_macroclientes/3')

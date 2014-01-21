@@ -31,7 +31,7 @@ def editar_marca(request, id_marca):
             nombre = formulario.cleaned_data['nombre']
             marca.nombre = nombre
             marca.save()
-            return HttpResponseRedirect('/listar_marcas/1')
+            return HttpResponseRedirect('/listar_marcas/2')
     else:
         formulario = MarcaForm(initial={'nombre': marca.nombre})
     return render_to_response('marca/nueva_marca.html', {'formulario': formulario}, context_instance=RequestContext(request))
@@ -82,3 +82,8 @@ def editar_submarca(request, id_submarca):
     else:
         formulario = EditarSubMarcaForm(initial = {'nombre': submarca.nombre, 'marca': submarca.marca})
     return render_to_response('marca/editar_submarca.html', {'formulario': formulario, 'submarca': submarca}, context_instance=RequestContext(request))
+
+def eliminar_marca(request,id_marca):
+    if Marca.objects.filter(id=id_marca):
+        Marca.objects.get(id=id_marca).delete()
+        return HttpResponseRedirect('/listar_marcas/3')
