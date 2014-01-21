@@ -1,3 +1,5 @@
+{% extends 'admin.html' %}
+{% block seccion-contenido %}
 <h2>{{ macrocliente.nombre }}</h2>
 
 {{ macrocliente.submarca }}
@@ -5,3 +7,4 @@
 {{ macrocliente.telefono }}
 {{ macrocliente.descripcion }}
 {{ macrocliente.direccion_fiscal }}
+{% endblock %}

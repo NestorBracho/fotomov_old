@@ -17,10 +17,13 @@
         }
     </script>
 {% endblock %}
-{%  %}
+{% block seccion-contenido %}
 {% if creado == '1' %}
     Macrocliente creado satisfactoriamente
-
+{% elif creado == '2' %}
+    Macrocliente editado satifactoriamente
+{% elif creado == '3' %}
+    Macrocliente eliminado satisfactoriamente
 {% endif %}
 <table>
     <thead>
@@ -34,3 +37,4 @@
     </tr>
 {% endfor %}
 </table>
+{% endblock %}

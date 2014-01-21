@@ -85,5 +85,6 @@ def editar_submarca(request, id_submarca):
 
 def eliminar_marca(request,id_marca):
     if Marca.objects.filter(id=id_marca):
-        Marca.objects.get(id=id_marca).delete()
-        return HttpResponseRedirect('/listar_marcas/3')
+        #Marca.objects.get(id=id_marca).delete()
+        pass
+    return HttpResponseRedirect('/listar_marcas/3')
