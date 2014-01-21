@@ -1,6 +1,6 @@
-<html>
-<body>
-
+{% extends "admin.html" %}
+{% load bootstrap %}
+{% block seccion-contenido%}
 <script type="text/javascript">
 
     function eliminar(id)
@@ -27,5 +27,4 @@
 
 {% endfor %}
 </table>
-</body>
-</html>
+{% endblock %}
