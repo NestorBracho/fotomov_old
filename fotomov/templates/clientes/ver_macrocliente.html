@@ -77,58 +77,91 @@
     </script>
 {% endblock %}
 {% block seccion-contenido %}
-    <a href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>
-<h2>{{ macrocliente.nombre }}</h2>
+    <a href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a> <a href="/listar_macroclientes/0">Atras</a>
+<h2></h2>
 
-{{ macrocliente.submarca }}
-{{ macrocliente.rif }}
-{{ macrocliente.telefono }}
-{{ macrocliente.descripcion }}
-{{ macrocliente.direccion_fiscal }}
 
-        <div class="col-sm-4">
-	                   {% if direcciones %}
-                <h3>Direcciones</h3>
-            {% endif %}
-            <div style="overflow: auto;">
-                <ul>
-                    {% for item in direcciones %}
-                        <li style="cursor: pointer;" onclick="showMap({{item.lat|stringformat:"f"}},{{item.lon|stringformat:"f"}})">
-                            {{item.direccion}}
-                        </li>
-                    {% endfor %}
-                    <input type="hidden" id="tiene_dir" value="{{tienedir}}" />
-                    {% if tienedir %}
-                        <input type="hidden" id="x_dir" value="{{primeraDir.lat}}" />
-                        <input type="hidden" id="y_dir" value="{{primeraDir.lon}}" />
-                    {% endif %}
-                </ul>
-            </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>{{ macrocliente.nombre }}</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
 
-            <div id="map">
-                <div id="map_canvas" style="width:90%; height:320px"></div>
-                <div id="crosshair"></div>
-            </div>
-            <div id="datosMapa">
-                <br>
-                <div class="row form-group">
-                    <div class="col-sm-2">
-                        Lat/Lng
+                            <div class="col-sm-4">
+                                <label>Sub Marca:</label>
+                                {{ macrocliente.submarca }}
+                            </div>
+                             <div class="col-sm-4">
+                                <label>Rif:</label>
+                                {{ macrocliente.rif }}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Telefono:</label>
+                                {{ macrocliente.telefono }}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <label>Descripcion:</label>
+                                    {{ macrocliente.descripcion }}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <label>Direccion Fiscal:</label>
+                                {{ macrocliente.direccion_fiscal }} Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
                     </div>
-                    <div class="col-sm-10" id="ll">
-                    </div>
+
+	    {% if direcciones %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Direcciones</h4>
                 </div>
-                <div class="row form-group">
-                    <div class="col-sm-2">
-                        Direccion
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div style="overflow: auto;">
+                            <ul>
+                                {% for item in direcciones %}
+                                    <li style="cursor: pointer;" onclick="showMap({{item.lat|stringformat:"f"}},{{item.lon|stringformat:"f"}})">
+                                        {{item.direccion}}
+                                    </li>
+                                {% endfor %}
+                                <input type="hidden" id="tiene_dir" value="{{tienedir}}" />
+                                {% if tienedir %}
+                                    <input type="hidden" id="x_dir" value="{{primeraDir.lat}}" />
+                                    <input type="hidden" id="y_dir" value="{{primeraDir.lon}}" />
+                                {% endif %}
+                            </ul>
                     </div>
-                    <div class="col-sm-10" id="fa">
-                    </div>
-                </div>
-                <input type="hidden" id="latlng">
-                <input type="hidden" id="formatedAddress">
-            </div>
-        </div>
 
-    </div>
+                    <div id="map">
+                        <div id="map_canvas" style="width:90%; height:320px"></div>
+                        <div id="crosshair"></div>
+                    </div>
+                    <div id="datosMapa">
+                        <br>
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                Lat/Lng
+                            </div>
+                            <div class="col-sm-10" id="ll">
+                            </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-2">
+                            Direccion
+                        </div>
+                        <div class="col-sm-10" id="fa">
+                        </div>
+                    </div>
+                    <input type="hidden" id="latlng">
+                    <input type="hidden" id="formatedAddress">
+                </div>
+            </div>
+        {% endif %}
 {% endblock %}
