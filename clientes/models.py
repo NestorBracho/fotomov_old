@@ -6,8 +6,8 @@ class MacroCliente(models.Model):
     nombre = models.CharField(max_length=100)
     telefono = models.CharField(max_length=11)
     rif = models.CharField(max_length=10)
-    direccion_fiscal = models.CharField(max_length=500)
-    descripcion = models.CharField(max_length=400)
+    direccion_fiscal = models.TextField(max_length=500)
+    descripcion = models.TextField(max_length=1000)
 
 class Direccion(models.Model):
     direccion = models.CharField(max_length=500)
