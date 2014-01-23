@@ -36,6 +36,7 @@ def editar_macrocliente(request, id_macrocliente):
         macrocliente = MacroCliente.objects.get(id = id_macrocliente)
     else:
         return HttpResponseRedirect('/listar_macroclientes/0')
+    dirs = Direccion.objects.filter(macrocliente=macrocliente)
     if request.method == 'POST':
         formulario = MacroClienteForm(request.POST)
         if formulario.is_valid():
@@ -47,10 +48,18 @@ def editar_macrocliente(request, id_macrocliente):
             macrocliente.submarca = editado.submarca
             macrocliente.telefono = editado.telefono
             macrocliente.save()
+            for dir in dirs:
+                dir.delete()
+            direcciones = request.POST.getlist('dir')
+            i = 0
+            while i < len(direcciones):
+                direccion = Direccion.objects.create(macrocliente=macrocliente, direccion=direcciones[i], lat=direcciones[i+2], lon=direcciones[i+3], descripcion=direcciones[i+1])
+                direccion.save()
+                i += 4
             return HttpResponseRedirect('/listar_macroclientes/2')
     else:
         formulario = MacroClienteForm(initial={'submarca': macrocliente.submarca, 'nombre': macrocliente.nombre, 'telefono': macrocliente.telefono, 'rif': macrocliente.rif, 'direccion_fiscal': macrocliente.direccion_fiscal, 'descripcion': macrocliente.descripcion})
-    return render_to_response('clientes/editar_macrocliente.html', {'formulario': formulario}, context_instance = RequestContext(request))
+    return render_to_response('clientes/editar_macrocliente.html', {'formulario': formulario, 'direcciones': dirs}, context_instance = RequestContext(request))
 
 def ver_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id = id_macrocliente):
