@@ -1,12 +1,38 @@
 {% extends 'admin.html' %}
+{% load bootstrap %}
 {% block seccion-contenido %}
 <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
-    {{ formulario }}
-    <input type="submit" value="guardar">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Nuevo Macrocliente</h4>
+        </div>
+        <div class="panel-heading">
+            <div class="col-sm-6">
+                 {{ formulario.submarca|bootstrap}}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.nombre | bootstrap}}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.telefono | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.rif | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.direccion_fiscal | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.descripcion | bootstrap }}
+            </div>
 
+            <div class="col-sm-12">
+                <p id="showAdresses"><button data-toggle="modal" href="#addressModal" type='button' class="btn btn-block btn-default"><span class="glyphicon glyphicon-map-marker"></span> Agregar Direcciones </button></p><!-- OJO no cambiar este id, lo usa una funcion -->
+            </div>
+            <input type="submit" class="btn btn-primary" value="guardar">
+        </div>
+    </div>
 
-
-<p id="showAdresses"><button data-toggle="modal" href="#addressModal" type='button' class="btn btn-block btn-default"><span class="glyphicon glyphicon-map-marker"></span> Agregar Direcciones </button></p><!-- OJO no cambiar este id, lo usa una funcion -->
 
 
 <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true"> <!-- Revisar usabilidady ARIA -->
@@ -33,7 +59,7 @@
 					                Buscar
 					            </label>
 
-					             <div class="col-sm-9">
+					             <div class="col-sm-12">
 				            	    <div class="input-group">
 								      <input type="text" class="form-control" id="address" size="29"/>
 								      <span class="input-group-btn">
@@ -41,29 +67,26 @@
 								      </span>
 								    </div><!-- /input-group -->
 					            </div>
-
-				        </div>
-
-
-					     <div class="form-group">
-						    <label  class="-3 control-label">Direccion</label>
-						    <div class="col-md-9" >
+						    <label  class=" control-label col-sm-3">Direccion</label>
+						    <div class="col-md-12" >
 		      			        <input type="text" id="formatedAddress" class="form-control">
 						    </div>
-						  </div>
-
-					     <div class="form-group">
-						    <label  class="-3 control-label">Descripcion</label>
-						    <div class="col-md-9" >
+                           <label  class="control-label col-sm-3">Descripcion</label>
+						    <div class="col-md-12" >
 		      			        <input type="text" id="descripcion" class="form-control">
 						    </div>
+                            <div class="col-sm-12 col-sm-offset-4">
+                                <br>
+						        <p><button type='button' class="btn btn-default" onclick="addInput()"><span class="glyphicon glyphicon-plus"></span> Agregar Direccion</button></p>
+				            </div>
 						  </div>
 
-				        <div class=" form-group form-section">
-				            <div class="col-sm-9 col-sm-offset-3">
-						        <button type='button' class="btn btn-info btn-block" onclick="addInput()"><span class="glyphicon glyphicon-plus"></span> Agregar Direccion</button>
-				            </div>
-				        </div>
+
+
+
+
+
+
 
 
 						</div> {# /.row #}
@@ -121,10 +144,10 @@
             var yx = coord.split(",");
             document.getElementById('direccion').innerHTML +=
               "<div class='row form-group'><div class='col-xs-8'><input type='text' class='form-control' size =60 name='dir' value='"+addr+"' readonly/></div>" +
-              "<input type='text' name='dir' value='"+desc+"'/>" +
+              "<div class='col-xs-8'><input type='text' name='dir'  class='form-control' value='"+desc+"'/readonly></div>" +
               "<input type='hidden' name='dir' value='"+yx[0]+"'/>" +
               "<input type='hidden' name='dir' value='"+yx[1]+"'/>" +
-              "<a class='btn btn-danger delete btn-delete'onclick='removeInput(this.parentNode)' />remove</a></div>";
+              "<a class='btn btn-danger delete btn-delete'onclick='removeInput(this.parentNode)' />Eliminar</a></div>";
             fields += 1;
           } else {
             document.getElementById('warning').innerHTML =
