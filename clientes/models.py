@@ -18,10 +18,10 @@ class Direccion(models.Model):
 
 class Encargado(models.Model):
     nombre = models.CharField(max_length=100)
-    ceula = models.CharField(max_length=8)
+    cedula = models.CharField(max_length=8)
     telefono = models.CharField(max_length=11)
     email = models.EmailField()
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.TextField(max_length=500)
     macrocliente = models.ForeignKey(MacroCliente)
 
 

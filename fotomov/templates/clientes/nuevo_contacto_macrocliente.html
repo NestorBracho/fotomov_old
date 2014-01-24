@@ -1,0 +1,28 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+<form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Nuevo Macrocliente</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-6">
+                 {{ formulario.nombre|bootstrap}}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.cedula | bootstrap}}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.telefono | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.email | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.descripcion | bootstrap }}
+            </div>
+            <input type="submit" class="btn btn-primary" value="guardar">
+        </div>
+    </div>
+{% endblock %}

@@ -6,7 +6,7 @@
         <div class="panel-heading">
             <h4>Nuevo Macrocliente</h4>
         </div>
-        <div class="panel-heading">
+        <div class="panel-body">
             <div class="col-sm-6">
                  {{ formulario.submarca|bootstrap}}
             </div>
@@ -29,6 +29,7 @@
             <div class="col-sm-12">
                 <p id="showAdresses"><button data-toggle="modal" href="#addressModal" type='button' class="btn btn-block btn-default"><span class="glyphicon glyphicon-map-marker"></span> Agregar Direcciones </button></p><!-- OJO no cambiar este id, lo usa una funcion -->
             </div>
+
             <input type="submit" class="btn btn-primary" value="guardar">
         </div>
     </div>
@@ -97,6 +98,7 @@
         </div>
         <div class="modal-footer">
           <p id="hideAddresses"><input type='button'  class="btn btn-lg btn-primary" value='Guardar' data-dismiss="modal"/></p><!-- OJO no cambiar este id, lo usa una funcion -->
+
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

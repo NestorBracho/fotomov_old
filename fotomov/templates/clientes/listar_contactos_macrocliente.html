@@ -47,21 +47,30 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Macrocliente</th>
+                                            <th>Nombre</th>
+                                            <th>Cedula</th>
+                                            <th>Telefono</th>
+                                            <th>Email</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {% for macrocliente in macroclientes %}
+                                    {% for contacto in contactos %}
                                         {% if forloop.counter|divisibleby:2 %}
                                             <tr class="gradeC">
-                                                <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
-                                                <td><a class="btn btn-default" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> <a class="btn btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}">Contactos</a> </td>
+                                                <td><a href="/ver_contacto/{{ contacto.id }}">{{ contacto.nombre }}</a></td>
+                                                <td>{{ contacto.cedula }}</td>
+                                                <td>{{ contacto.telefono }}</td>
+                                                <td>{{ contacto.email }}</td>
+                                                <td><a class="btn btn-default" href="/editar_contacto/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
                                             </tr>
                                         {% else %}
                                             <tr class="gradeU">
-                                                <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
-                                                <td><a class="btn btn-default" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> <a class="btn btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}">Contactos</a></td>
+                                                <td><a href="/ver_contacto/{{ contacto.id }}">{{ contacto.nombre }}</a></td>
+                                                <td>{{ contacto.cedula }}</td>
+                                                <td>{{ contacto.telefono }}</td>
+                                                <td>{{ contacto.email }}</td>
+                                                <td><a class="btn btn-default" href="/editar_contacto/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -77,6 +86,11 @@
 
 
                         </div>
+                        <div class="panel-body">
+                            <a href="/nuevo_contacto_macrocliente/{{ macrocliente.id }}" class="btn btn-default col-sm-12">Nuevo Macrocliente</a>
+                        </div>
+
+
                         <!-- /.panel-body -->
                     </div>
 

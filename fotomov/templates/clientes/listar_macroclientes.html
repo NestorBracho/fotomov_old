@@ -56,12 +56,12 @@
                                         {% if forloop.counter|divisibleby:2 %}
                                             <tr class="gradeC">
                                                 <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
-                                                <td><a class="btn btn-default" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button></td>
+                                                <td><a class="btn btn-default" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> <a class="btn btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}">Contactos</a> </td>
                                             </tr>
                                         {% else %}
                                             <tr class="gradeU">
                                                 <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
-                                                <td><a class="btn btn-default" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> </td>
+                                                <td><a class="btn btn-default" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> <a class="btn btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}">Contactos</a> </td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
