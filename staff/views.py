@@ -5,8 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.mail import EmailMessage
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import *
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
@@ -66,17 +65,16 @@ def eliminar_usuario(request, id_usuario):
         usuario = Usuario.objects.get(id=id_usuario).delete()
     return HttpResponseRedirect('/listar_usuario/3')
 
+@login_required(login_url='/')
 def modificar_usuario(request, id_usuario):
     varUsu = Usuario.objects.get(id=id_usuario)
-    varUser = User.objects.get(username=varUsu.usuario.username)
+    varUser = User.objects.get(username__exact=varUsu.usuario.username)
     if request.method=='POST':
-        formularioModi = UserCreationForm(request.POST)
+        formularioModi = PasswordChangeForm(user=varUser, data=request.POST)
         formulario2Modi = RegisUsuarioForm(request.POST)
-        if formulario2Modi.is_valid() and formularioModi.is_valid():
-            usu = formularioModi.save(commit=False)
-            varUser.username = usu.username
-            varUser.password = usu.password
-            varUser.save()
+        if formulario2Modi.is_valid():
+            #usu = formularioModi.save(commit=False)
+            print request.user
             nom = formulario2Modi.cleaned_data['nombre']
             ape = formulario2Modi.cleaned_data['apellido']
             ced = formulario2Modi.cleaned_data['cedula']
@@ -90,9 +88,9 @@ def modificar_usuario(request, id_usuario):
             return HttpResponseRedirect('/listar_usuario/2')
     else:
         if Usuario.objects.get(id=id_usuario)!=None:
-            formularioModi =  UserCreationForm(initial={'username':varUser.username})
+            #formularioModi =  PasswordChangeForm(SetPasswordForm(User.objects.get(username=Usuario.objects.get(id=id_usuario).usuario.username)))
             formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'privilegio': varUsu.privilegio.valor})
-    return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formularioUser':formularioModi, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
+    return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
 
 def escritorio(request):
     return render_to_response('escritorio.html', {}, context_instance=RequestContext(request))
