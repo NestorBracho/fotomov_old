@@ -1,0 +1,26 @@
+{% extends 'admin.html' %}
+{% block seccion-contenido %}
+
+        <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>{{ usuario.nombre }}</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <div class="col-sm-4">
+                                <label>Apellido:</label>
+                                {{ usuario.apellido }}
+                            </div>
+                             <div class="col-sm-4">
+                                <label>Cedula:</label>
+                                {{ usuario.cedula }}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Telefono:</label>
+                                {{ usuario.privilegio.nombre }}
+                            </div>
+                        </div>
+        </div>
+
+{% endblock %}

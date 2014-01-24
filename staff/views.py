@@ -30,9 +30,10 @@ def nuevo_usuario(request):
 	  nom = formulario2.cleaned_data['nombre']
 	  ape = formulario2.cleaned_data['apellido']
 	  ced = formulario2.cleaned_data['cedula']
+	  ema = formulario2.cleaned_data['email']
   	  pri = formulario2.cleaned_data['privilegio']
 
-	  perfil = Usuario.objects.create(usuario = usu, nombre = nom, apellido = ape, cedula = ced, privilegio = pri)
+	  perfil = Usuario.objects.create(usuario = usu,email = ema, nombre = nom, apellido = ape, cedula = ced, privilegio = pri)
 
 	  perfil.save()
 	  return HttpResponseRedirect('/listar_usuario/1')
@@ -91,6 +92,9 @@ def modificar_usuario(request, id_usuario):
             #formularioModi =  PasswordChangeForm(SetPasswordForm(User.objects.get(username=Usuario.objects.get(id=id_usuario).usuario.username)))
             formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'privilegio': varUsu.privilegio.valor})
     return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
+
+def ver_usuario(request, id_usuario):
+    return render_to_response('staff/ver_usuario.html', {'usuario':Usuario.objects.get(id=id_usuario)}, context_instance=RequestContext(request))
 
 def escritorio(request):
     return render_to_response('escritorio.html', {}, context_instance=RequestContext(request))
