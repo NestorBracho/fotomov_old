@@ -19,22 +19,45 @@
 {% endblock %}
 {% block seccion-contenido %}
 {% if creado == '1' %}
-    Marca creada exitosamente
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+        ¡Marca creada satisfactoriamente!
+    </div>
+
 {% elif creado == '2' %}
-    Marca editada exitosamente
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+        ¡Marca editada satifactoriamente!
+    </div>
+
 {% elif creado == '3' %}
-    Marca eliminada exitosamente
+   <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+         ¡Marca eliminada satifactoriamente!
+    </div>
 {% endif %}
-<table>
-    <thead>
-        <th>Marca</th>
-        <th>Acciones</th>
-    </thead>
-    {% for marca in marcas %}
-    <tr>
-        <td><a href="/ver_marca/{{ marca.id }}/0">{{ marca.nombre }}</a></td>
-        <td><a href="/editar_marca/{{ marca.id }}">Editar</a> <button type="button" onclick="deleteAlert({{marca.id}})">Eliminar</button> </td>
-    </tr>
-{% endfor %}
-</table>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Lista de marcas</h4>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="search" class="form-control" id="search-content"></input>
+        </div>
+        <table class="table table-striped table-bordered table-hover" id="content">
+            <thead>
+                <th>Marca</th>
+                <th>Acciones</th>
+            </thead>
+        {% for marca in marcas %}
+            <tr>
+                <td><a href="/ver_marca/{{ marca.id }}/0">{{ marca.nombre }}</a></td>
+                <td><a href="/editar_marca/{{ marca.id }}" class="btn btn-default">Editar</a> <button type="button" onclick="deleteAlert({{marca.id}})" class="btn btn-default">Eliminar</button> </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</div>
 {% endblock %}

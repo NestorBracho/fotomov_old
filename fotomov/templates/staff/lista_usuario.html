@@ -50,20 +50,19 @@
         <h4>Lista de usuarios</h4>
     </div>
     <div class="panel-body">
-            <div class="table-responsive">
-                <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                <input type="search" class="form-control" id="search-content"></input>
-            </div>
-            <table class="table table-striped table-bordered table-hover" id="content">
-                <tr><th>Username</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th>Email</th></th><th colspan="2">Acciones</th></tr>
-                {% for elemento in lista %}
-
-                <tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td>{{elemento.email}}</td><td><button type="button" onclick="modificar({{elemento.id}})" class="btn btn-default">Modificar</button> <button type="button" onclick="eliminar({{elemento.id}})" class="btn btn-default">Eliminar</button></td></tr>
-
-                {% endfor %}
-            </table>
+        <div class="table-responsive">
+            <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="search" class="form-control" id="search-content"></input>
         </div>
+        <table class="table table-striped table-bordered table-hover" id="content">
+            <tr><th>Username</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th>Email</th></th><th colspan="2">Acciones</th></tr>
+            {% for elemento in lista %}
+
+            <tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td>{{elemento.email}}</td><td><button type="button" onclick="modificar({{elemento.id}})" class="btn btn-default">Modificar</button> <button type="button" onclick="eliminar({{elemento.id}})" class="btn btn-default">Eliminar</button></td></tr>
+
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}
