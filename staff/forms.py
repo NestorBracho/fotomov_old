@@ -8,6 +8,7 @@ class RegisUsuarioForm(forms.Form):
     nombre = forms.CharField()
     apellido = forms.CharField()
     cedula = forms.CharField()
+    email = forms.EmailField()
     privilegio = forms.ModelChoiceField(queryset=Privilegios.objects.all())
 
 class RegisNotificacion(forms.Form):

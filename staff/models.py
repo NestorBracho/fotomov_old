@@ -12,6 +12,7 @@ class Usuario(models.Model):
   nombre = models.CharField(max_length=60)
   apellido = models.CharField(max_length=60)
   cedula = models.CharField(max_length=60,unique=True)
+  email = models.EmailField(max_length=100)
   privilegio = models.ForeignKey(Privilegios)
 
 class Notificacion(models.Model):
