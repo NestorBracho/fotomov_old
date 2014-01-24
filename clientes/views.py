@@ -80,5 +80,13 @@ def eliminar_macrocliente(request, id_macrocliente):
         MacroCliente.objects.get(id=id_macrocliente).delete()
         pass
     else:
-        return HttpResponseRedirect('/listar_macroclientes/0')
+        return HttpResponseRedirect('/listar_macroclientes/4')
     return HttpResponseRedirect('/listar_macroclientes/3')
+
+def listar_contactos_macrocliente(request, id_macrocliente):
+    if MacroCliente.objects.filter(id=id_macrocliente):
+        macrocliente = MacroCliente.objects.get(id=id_macrocliente).delete()
+        contactos = Encargado.objects.filter(macrocliente=macrocliente)
+    else:
+        return HttpResponseRedirect('/listar_macroclientes/4')
+    return render_to_response('clientes/listar_contactos_macrocliente.html', {'contactos': contactos, 'macrocliente': macrocliente}, context_instance = RequestContext(request))

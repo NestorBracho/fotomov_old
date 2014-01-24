@@ -21,25 +21,25 @@
 {% if creado == '1' %}
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
-        ¡Macrocliente creado satisfactoriamente!
+        ¡Contacto creado satisfactoriamente!
     </div>
 
 {% elif creado == '2' %}
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
-        ¡Macrocliente editado satifactoriamente!
+        ¡Contacto editado satifactoriamente!
     </div>
 
 {% elif creado == '3' %}
    <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
-         ¡Macrocliente eliminado satifactoriamente!
+         ¡Contacto eliminado satifactoriamente!
     </div>
 {% endif %}
 
     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4>Lista de macroclientes</h4>
+                            <h4>Personas contacto de {{ macrocliente.nombre }}</h4>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
