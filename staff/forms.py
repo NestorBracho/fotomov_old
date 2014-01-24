@@ -1,7 +1,8 @@
 #encoding:utf-8
-from django.forms import ModelForm
+from django.forms import ModelForm, PasswordInput
 from django import forms
 from staff.models import *
+from django.contrib.auth.models import User
 
 class RegisUsuarioForm(forms.Form):
     nombre = forms.CharField()
@@ -16,5 +17,3 @@ class RegisNotificacion(forms.Form):
     hora = forms.DateTimeField()
     realizado = forms.BooleanField(widget=forms.CheckboxInput)
     fecha_asignacion = forms.DateField()
-
-
