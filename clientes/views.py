@@ -83,13 +83,13 @@ def eliminar_macrocliente(request, id_macrocliente):
         return HttpResponseRedirect('/listar_macroclientes/4')
     return HttpResponseRedirect('/listar_macroclientes/3')
 
-def listar_contactos_macrocliente(request, id_macrocliente):
+def listar_contactos_macrocliente(request, id_macrocliente, creado):
     if MacroCliente.objects.filter(id=id_macrocliente):
         macrocliente = MacroCliente.objects.get(id=id_macrocliente)
         contactos = Encargado.objects.filter(macrocliente=macrocliente)
     else:
         return HttpResponseRedirect('/listar_macroclientes/4')
-    return render_to_response('clientes/listar_contactos_macrocliente.html', {'contactos': contactos, 'macrocliente': macrocliente}, context_instance = RequestContext(request))
+    return render_to_response('clientes/listar_contactos_macrocliente.html', {'contactos': contactos, 'macrocliente': macrocliente, 'creado': creado}, context_instance = RequestContext(request))
 
 def nuevo_contacto_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id=id_macrocliente):
@@ -102,24 +102,34 @@ def nuevo_contacto_macrocliente(request, id_macrocliente):
             form = formulario.save(commit=False)
             form.macrocliente = macrocliente
             form.save()
-            return HttpResponseRedirect('/listar_contactos_macrocliente/1')
+            return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/1')
     else:
         formulario = MacroClienteContactoForm()
-    return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario}, context_instance = RequestContext(request))
+    return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario, 'nuevo': True}, context_instance = RequestContext(request))
 
 def editar_contacto_macrocliente(request, id_contacto):
     if Encargado.objects.filter(id=id_contacto):
         contacto = Encargado.objects.get(id=id_contacto)
         macrocliente = MacroCliente.objects.get(id=contacto.macrocliente.id)
     else:
-        return HttpResponseRedirect('/listar_macroclientes/4')
+        return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/4')
     if request.method == 'POST':
         formulario = MacroClienteContactoForm(request.POST)
         if formulario.is_valid():
             form = formulario.save(commit=False)
             form.macrocliente = macrocliente
             form.save()
-            return('/listar_contactos_macrocliente/2')
+            print macrocliente.id
+            return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/2')
     else:
         formulario = MacroClienteContactoForm(initial={'nombre': contacto.nombre, 'cedula': contacto.cedula, 'telefono': contacto.telefono, 'email': contacto.email, 'descripcion': contacto.descripcion})
-    return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario}, context_instance = RequestContext(request))
+    return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario, 'nuevo': False}, context_instance = RequestContext(request))
+
+def eliminar_contacto_macrocliente(request, id_contacto):
+    if Encargado.objects.filter(id=id_contacto):
+        encargado = Encargado.objects.get(id=id_contacto)
+        macrocliente = encargado.macrocliente
+        encargado.delete()
+    else:
+        return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/4')
+    return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/3')

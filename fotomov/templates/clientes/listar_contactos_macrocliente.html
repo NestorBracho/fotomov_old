@@ -6,7 +6,7 @@
         		var r=confirm("¿Esta seguro que desea eliminar?");
         		if (r==true)
         	  {
-        			var string1 = "/eliminar_macrocliente/";
+        			var string1 = "/eliminar_contacto_macrocliente/";
         		  window.location.assign(string1 + id)
           	}
         		else
@@ -62,7 +62,7 @@
                                                 <td>{{ contacto.cedula }}</td>
                                                 <td>{{ contacto.telefono }}</td>
                                                 <td>{{ contacto.email }}</td>
-                                                <td><a class="btn btn-default" href="/editar_contacto/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
+                                                <td><a class="btn btn-default" href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
                                             </tr>
                                         {% else %}
                                             <tr class="gradeU">
@@ -70,7 +70,7 @@
                                                 <td>{{ contacto.cedula }}</td>
                                                 <td>{{ contacto.telefono }}</td>
                                                 <td>{{ contacto.email }}</td>
-                                                <td><a class="btn btn-default" href="/editar_contacto/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
+                                                <td><a class="btn btn-default" href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
