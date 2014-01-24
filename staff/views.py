@@ -22,24 +22,28 @@ def lista_usuario(request, creado):
     return render_to_response('staff/lista_usuario.html',{'lista':usuario, 'creado':creado}, context_instance=RequestContext(request))
 
 def nuevo_usuario(request):
-    if request.method=='POST':
-	formulario = UserCreationForm(request.POST)
-	formulario2 = RegisUsuarioForm(request.POST)
-	if formulario.is_valid() and formulario2.is_valid():
-	  usu = formulario.save()
-	  nom = formulario2.cleaned_data['nombre']
-	  ape = formulario2.cleaned_data['apellido']
-	  ced = formulario2.cleaned_data['cedula']
-	  ema = formulario2.cleaned_data['email']
-  	  pri = formulario2.cleaned_data['privilegio']
-
-	  perfil = Usuario.objects.create(usuario = usu,email = ema, nombre = nom, apellido = ape, cedula = ced, privilegio = pri)
-
-	  perfil.save()
-	  return HttpResponseRedirect('/listar_usuario/1')
+    if request.method == 'POST':
+        formulario = UserCreationForm(request.POST)
+        formulario2 = RegisUsuarioForm(request.POST)
+        if formulario.is_valid() and formulario2.is_valid():
+            usu = formulario.save()
+            nom = formulario2.cleaned_data['nombre']
+            ape = formulario2.cleaned_data['apellido']
+            ced = formulario2.cleaned_data['cedula']
+            ema = formulario2.cleaned_data['email']
+            pri = formulario2.cleaned_data['privilegio']
+            try:
+                perfil = Usuario.objects.create(usuario = usu, email=ema, nombre=nom, apellido=ape, cedula=ced, privilegio=pri)
+                perfil.save()
+                return HttpResponseRedirect('/listar_usuario/1')
+            except:
+                usu.delete()
+                #poner aqui error de cedula repetida
+                #formulario2.errors['cedula'] = form.error_class(["error"])
+                pass
     else:
-	formulario = UserCreationForm()
-	formulario2 = RegisUsuarioForm()
+        formulario = UserCreationForm()
+        formulario2 = RegisUsuarioForm()
     return render_to_response('staff/nuevo_usuario.html',{'formulario':formulario, 'formulario_regis':formulario2}, context_instance=RequestContext(request))
 
 def ingresar(request):
