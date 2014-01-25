@@ -4,3 +4,7 @@
     overflow-y: auto;
 
 }
+
+.modal-dialog{
+	width: 90%;
+}
