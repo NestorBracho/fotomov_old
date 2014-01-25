@@ -1,5 +1,6 @@
 {% extends 'admin.html' %}
 {% block js %}
+
 <script type="text/javascript">
         	function deleteAlert(id)
         	{
@@ -15,8 +16,15 @@
           	}
         		document.getElementById("demo").innerHTML=x;
         }
+        
     </script>
+    <script type="text/javascript" src="{{STATIC_URL}}/js/contentFilter.js"></script>
 {% endblock %}
+
+{% block titulo%}
+	Lista de Marcas
+{% endblock %}
+
 {% block seccion-contenido %}
 {% if creado == '1' %}
     <div class="alert alert-success">
@@ -36,16 +44,11 @@
          ¡Marca eliminada satifactoriamente!
     </div>
 {% endif %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Lista de marcas</h4>
-    </div>
-    <div class="panel-body">
-        <div class="table-responsive">
             <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
             <input type="search" class="form-control" id="search-content"></input>
-        </div>
+            </div>
+            
         <table class="table table-striped table-bordered table-hover" id="content">
             <thead>
                 <th>Marca</th>
@@ -58,6 +61,5 @@
             </tr>
         {% endfor %}
         </table>
-    </div>
-</div>
+
 {% endblock %}
