@@ -84,17 +84,19 @@ def modificar_usuario(request, id_usuario):
             ape = formulario2Modi.cleaned_data['apellido']
             ced = formulario2Modi.cleaned_data['cedula']
             pri = formulario2Modi.cleaned_data['privilegio']
+            ema = formulario2Modi.cleaned_data['email']
             perfil = Usuario.objects.get(id=id_usuario)
             perfil.nombre = nom
             perfil.apellido = ape
             perfil.cedula = ced
             perfil.privilegio = pri
+            perfil.email = ema
             perfil.save()
             return HttpResponseRedirect('/listar_usuario/2')
     else:
         if Usuario.objects.get(id=id_usuario)!=None:
             #formularioModi =  PasswordChangeForm(SetPasswordForm(User.objects.get(username=Usuario.objects.get(id=id_usuario).usuario.username)))
-            formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'privilegio': varUsu.privilegio.valor})
+            formulario2Modi = RegisUsuarioForm(initial={'nombre': varUsu.nombre, 'apellido': varUsu.apellido, 'cedula': varUsu.cedula, 'email': varUsu.email, 'privilegio': varUsu.privilegio.valor})
     return render_to_response('staff/modificar_usuario.html',{'usuario':varUsu, 'formulario_regis':formulario2Modi}, context_instance=RequestContext(request))
 
 def ver_usuario(request, id_usuario):
