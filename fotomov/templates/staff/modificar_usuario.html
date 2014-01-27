@@ -1,8 +1,24 @@
 {% extends "admin.html" %}
 {% load bootstrap %}
+{% block js %}
+<script type="text/javascript">
+
+    function cancel()
+    {
+        window.location.assign("/listar_usuario/0/");
+    }
+
+    $(window).keypress(function(e) {
+        if(e.keyCode == 13) {
+            document.forms["form"].submit();
+        }
+    });
+
+</script>
+{% endblock %}
 {% block seccion-contenido%}
 	<form id='form' method='POST' action=''>{% csrf_token %}
 	  <table><tr><td>{{formulario_regis.nombre|bootstrap}}{{formulario_regis.apellido|bootstrap}}{{formulario_regis.cedula|bootstrap}}{{formulario_regis.email|bootstrap}}{{formulario_regis.privilegio|bootstrap}}<hr /></td></tr></table>
-	  <p><input type='submit' value='Actualizar' class="btn btn-default"/></p>
+	  <p><button type="button" class="btn btn-default" onclick="cancel()">Cancelar</button></button> <input type='submit' value='Actualizar' id="enviar" class="btn btn-default"/></p>
 	</form>
 {% endblock %}
