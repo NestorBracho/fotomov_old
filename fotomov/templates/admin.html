@@ -32,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Intranet Fotomov</a>
+                <a class="navbar-brand logo" href="/escritorio/"><img src="{{STATIC_URL}}//img/fotomov-logo.png" alt="Intranet Fotomov"></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -80,7 +80,7 @@
                         <li class="divider"></li>
                         <li>
                             <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
+                                <strong>Todos los mensajes</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
@@ -195,30 +195,6 @@
                         <a href="/escritorio"><i class="fa fa-dashboard fa-fw"></i> Escritorio</a>
                     </li>
                     <li>
-                        <a href="#">Usuarios<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_usuario/0">Listar Usuarios</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_usuario">Nuevo Usuario</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#">Marcas<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_marcas/0">Listar Marcas</a>
-                            </li>
-                            <li>
-                                <a href="/nueva_marca">Nueva Marca</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
                         <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Órdenes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -240,13 +216,13 @@
                                 <a href="#">Lista de eventos</a>
                             </li>
                             <li>
-                                <a href="#">Nuevo evento</a>
-                            </li>
-                            <li>
                                 <a href="#">Calendario de eventos</a>
                             </li>
                             <li>
                                 <a href="#">Configuración predeterminada</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-plus"></i> Nuevo evento</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -264,7 +240,7 @@
                                 <a href="#">Historial de conversaci&oacute;n</a>
                             </li>
                             <li>
-                                <a href="/nuevo_macrocliente">Nuevo macrocliente</a>
+                                <a href="/nuevo_macrocliente"><i class="fa fa-plus"></i> Nuevo macrocliente</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -273,7 +249,15 @@
                         <a href="forms.html"><i class="fa fa-user fa-fw"></i> Clientes</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Staff</a>
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Staff / usuarios<span class="fa arrow"></span></a>
+                          <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_usuario/0">Listar Usuarios</a>
+                            </li>
+                            <li>
+                                <a href="/nuevo_usuario"><i class="fa fa-plus"></i> Nuevo Usuario</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-tasks fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
@@ -283,6 +267,18 @@
                             </li>
                             <li>
                                 <a href="#">Supervisar tareas</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-tags"></i> Marcas<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_marcas/0">Listar Marcas</a>
+                            </li>
+                            <li>
+                                <a href="/nueva_marca"><i class="fa fa-plus"></i> Nueva Marca</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -344,9 +340,11 @@
         </div>
         <!-- /#page-wrapper -->
 		<footer>
+			Los elementos de la pagina que no se están presentando para revisión se muestran con fines ilustrativos y no necesariamente representan la funcionalidad final<br>
+			<br>
+			Sitio bajo desarollo<br>
+			por Turpial<br>
 			Fotomov C.A.
-			Sitio bajo desarollo
-			por Turpial
 		</footer>
     </div>
     <!-- /#wrapper -->
