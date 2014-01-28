@@ -1,14 +1,14 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
+{% block titulo %}
+Crear nueva marca
+{% endblock %}
 {% block seccion-contenido %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Crear nueva marca</h4>
-    </div>
-    <div class="panel-body">
+<div>
+    <div>
         <form method="POST">{% csrf_token %}
             <div class="col-sm-6">{{ formulario.nombre|bootstrap }}</div>
-            <div class="col-sm-12"><input type='submit' class="btn btn-default" value='Ingresar'/></div>
+            <div class="col-sm-12"><input type='submit' class="btn btn-default btn-primary" value='Ingresar'/></div>
         </form>
     </div>
 </div>

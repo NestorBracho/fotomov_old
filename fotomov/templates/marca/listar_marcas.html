@@ -57,7 +57,7 @@
         {% for marca in marcas %}
             <tr>
                 <td><a href="/ver_marca/{{ marca.id }}/0">{{ marca.nombre }}</a></td>
-                <td><a href="/editar_marca/{{ marca.id }}" class="btn btn-default">Editar</a> <button type="button" onclick="deleteAlert({{marca.id}})" class="btn btn-default">Eliminar</button> </td>
+                <td><a href="/editar_marca/{{ marca.id }}" class="btn-xs btn-default">Editar</a> <button type="button" onclick="deleteAlert({{marca.id}})" class="btn-xs btn-default btn-danger">Eliminar</button> </td>
             </tr>
         {% endfor %}
         </table>
