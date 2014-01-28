@@ -1,9 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'admin.html' %}
+{#	asi es un comentario de una linea en templates de Django #}
 
-</body>
-</html>
+{% block seccion-contenido%}
+	{% block tabla %}
+		{% comment %}
+			Utiliza este bloque "tabla" para colocar en ellas las tablas directamente aquí			
+
+			Este es un comentario de multiples lineas, que es muy util para esconder código que no quieres que se vea ni funcione (no aparecerá ni comocomentario de html)			
+		{% endcomment %}
+	{% endblock %}
+	
+{% endblock %}
+
+{% block js-nivel-1%}
+	{#	poner aquí el codigo JS compartido de todas las tablas, se puede tener un blaoque "JS" único en cada plantilla final #}
+    <script src="{{STATIC_URL}}/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="{{STATIC_URL}}/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+	{#	Esta es la clave para que funcione la tabla #}
+    <script>
+    $(document).ready(function() {
+        $('#content').dataTable();
+    });
+    </script>
+
+
+    
+{% endblock %}
+
+{% block css %}
+	{# solo para casos *MUY* particulares #}
+	    <link href="{{STATIC_URL}}/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+{% endblock %}

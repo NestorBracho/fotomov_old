@@ -17,6 +17,10 @@
     <!-- SB Admin CSS - Include with every page -->
     <link href="{{ STATIC_URL }}/css/sb-admin.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}/css/main.css" rel="stylesheet">
+    
+    {% block css %}
+    	{# solo para casos muy particulares #}
+    {% endblock %}
 
 </head>
 
@@ -328,6 +332,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">{% block titulo%}{% endblock %}</h1>
+                    <p class="heading">{% block subtitulo%}{% endblock %}</p>
                 </div>
                 {% block breadcrumbs %}
                 {% endblock %}
@@ -366,8 +371,17 @@
 
     <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
     <script src="js/demo/dashboard-demo.js"></script>
-{% block js %}
-{% endblock %}
+
+	{% block js-nivel-1 %}
+	{% endblock %}
+	{% block js-nivel-2 %}
+	{% endblock %}
+	{% block js-nivel-3 %}
+	{% endblock %}
+	
+	{% block js %}
+	{% endblock %}
+
 </body>
 
 </html>
