@@ -66,8 +66,10 @@ def ingresar(request):
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 def eliminar_usuario(request, id_usuario):
-    if Usuario.objects.get(id=id_usuario)!=None:
-        usuario = Usuario.objects.get(id=id_usuario).delete()
+    #if Usuario.objects.get(id=id_usuario)!=None:
+    u = User.objects.get(username__exact=Usuario.objects.get(id=id_usuario).usuario.username)
+    Usuario.objects.get(id=id_usuario).delete()
+    u.delete()
     return HttpResponseRedirect('/listar_usuario/3')
 
 @login_required(login_url='/')
