@@ -1,7 +1,8 @@
-{% extends "admin.html" %}
+{% extends 'tabla.html' %}
 {% load bootstrap %}
 {% block js %}
 <script type="text/javascript" src="{{STATIC_URL}}js/contentFilter.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}/js/contentFilter.js"></script>
 <script type="text/javascript">
 
     function eliminar(id)
@@ -26,40 +27,35 @@
 
 </script>
 {% endblock %}
+{% block titulo %}
+        Lista de usuarios
+{% endblock %}
 {% block seccion-contenido%}
 {% if creado == '1' %}
     <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
         ¡Usuario creado satisfactoriamente!
     </div>
 
 {% elif creado == '2' %}
     <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
         ¡Usuario editado satifactoriamente!
     </div>
 
 {% elif creado == '3' %}
    <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
          ¡Usuario eliminado satifactoriamente!
     </div>
 {% endif %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Lista de usuarios</h4>
-    </div>
-    <div class="panel-body">
-        <div class="table-responsive">
-            <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-            <input type="search" class="form-control" id="search-content"></input>
-        </div>
+<div>
+    <div>
         <table class="table table-striped table-bordered table-hover" id="content">
-            <tr><th>Username</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th>Email</th></th><th colspan="2">Acciones</th></tr>
+            <thead><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th>Email</th></th><th>Acciones</th></thead>
             {% for elemento in lista %}
 
-            <tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td>{{elemento.email}}</td><td><button type="button" onclick="modificar({{elemento.id}})" class="btn btn-default">Modificar</button> <button type="button" onclick="eliminar({{elemento.id}})" class="btn btn-default">Eliminar</button></td></tr>
+            <tr><td>{{elemento.usuario.username}}</td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td>{{elemento.email}}</td><td><button type="button" onclick="modificar({{elemento.id}})" class="btn btn-xs">Modificar</button> <button type="button" onclick="eliminar({{elemento.id}})" class="btn btn-xs btn-danger">Eliminar</button></td></tr>
 
             {% endfor %}
         </table>

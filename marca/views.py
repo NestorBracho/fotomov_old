@@ -81,7 +81,7 @@ def editar_submarca(request, id_submarca):
             return HttpResponseRedirect('/ver_marca/' + str(old) + '/1')
     else:
         formulario = EditarSubMarcaForm(initial = {'nombre': submarca.nombre, 'marca': submarca.marca})
-    return render_to_response('marca/editar_submarca.html', {'formulario': formulario, 'submarca': submarca}, context_instance=RequestContext(request))
+    return render_to_response('marca/editar_submarca.html', {'formulario': formulario, 'submarca': submarca, 'marca': str(old)}, context_instance=RequestContext(request))
 
 def eliminar_marca(request,id_marca):
     if Marca.objects.filter(id=id_marca):

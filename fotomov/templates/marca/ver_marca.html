@@ -1,26 +1,22 @@
-{% extends 'admin.html' %}
+{% extends 'tabla.html' %}
+{% block titulo %}
+{{ marca.nombre }}
+{% endblock %}
+{% block subtitulo %}
+Submarcas
+{% endblock %}
 {% block seccion-contenido %}
 {% if creado == '1' %}
     <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">x</button>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
         ¡Marca creada satisfactoriamente!
     </div>
 
 {% endif %}
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>{{ marca.nombre }}</h3>
-    </div>
-    <div class="panel-heading">
-        <h4>Submarcas</h4>
-    </div>
-    <div class="panel-body">
+<div>
+    <div>
         <div class="table-responsive">
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                <input type="search" class="form-control" id="search-content"></input>
-            </div>
             <table class="table table-striped table-bordered table-hover" id="content">
                 <thead>
                     <th>Submarca</th>
@@ -29,7 +25,7 @@
             {% for submarca in submarcas %}
                 <tr>
                     <td>{{ submarca.nombre }}</td>
-                    <td><a href="/editar_submarca/{{ submarca.id }}" class="btn btn-default">Editar</a> <a href="/eliminar_submarca/{{ submarca.id }}" class="btn btn-default">Eliminar</a> </td>
+                    <td><a href="/editar_submarca/{{ submarca.id }}" class="btn-xs btn-default">Editar</a> <a href="/eliminar_submarca/{{ submarca.id }}" class="btn-xs btn-default btn-danger">Eliminar</a> </td>
                 </tr>
 
 
