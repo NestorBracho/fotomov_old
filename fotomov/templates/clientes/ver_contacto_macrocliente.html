@@ -1,0 +1,36 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+    <a href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>
+
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>{{ contacto.nombre }}</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <div class="col-sm-4">
+                                <label>Cedula:</label>
+                                {{ contacto.cedula }}
+                            </div>
+                             <div class="col-sm-4">
+                                <label>Telefono</label>
+                                {{ contacto.telefono }}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Email:</label>
+                                {{ contacto.email }}
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <label>Descripcion:</label>
+                                    {{ contacto.descripcion }}
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+{% endblock %}

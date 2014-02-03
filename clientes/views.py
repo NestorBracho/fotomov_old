@@ -117,8 +117,13 @@ def editar_contacto_macrocliente(request, id_contacto):
         formulario = MacroClienteContactoForm(request.POST)
         if formulario.is_valid():
             form = formulario.save(commit=False)
-            form.macrocliente = macrocliente
-            form.save()
+            contacto.macrocliente = macrocliente
+            contacto.cedula = form.cedula
+            contacto.descripcion = form.descripcion
+            contacto.email = form.email
+            contacto.nombre = form.nombre
+            contacto.telefono = form.telefono
+            contacto.save()
             print macrocliente.id
             return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/2')
     else:
@@ -133,3 +138,7 @@ def eliminar_contacto_macrocliente(request, id_contacto):
     else:
         return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/4')
     return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/3')
+
+def ver_contacto_macrocliente(request, id_contacto):
+    contacto = Encargado.objects.get(id=id_contacto)
+    return render_to_response('clientes/ver_contacto_macrocliente.html', {'contacto': contacto}, context_instance = RequestContext(request))
