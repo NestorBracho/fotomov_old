@@ -1,5 +1,16 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
+{% block js %}
+<script type="text/javascript">
+
+    function cancelMarca(){
+
+        window.location.assign("/listar_marcas/0/");
+
+    }
+
+</script>
+{% endblock %}
 {% block titulo %}
 Crear nueva marca
 {% endblock %}
@@ -8,7 +19,8 @@ Crear nueva marca
     <div>
         <form method="POST">{% csrf_token %}
             <div class="col-sm-6">{{ formulario.nombre|bootstrap }}</div>
-            <div class="col-sm-12"><input type='submit' class="btn btn-default btn-primary" value='Ingresar'/></div>
+            <div class="col-sm-12">
+            <button type="button" class="btn btn-default" onclick="cancelMarca()">Cancelar</button>  <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/></div>
         </form>
     </div>
 </div>

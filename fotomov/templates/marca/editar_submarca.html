@@ -1,15 +1,26 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
+{% block js %}
+<script type="text/javascript">
+
+    function cancelSubmarca(){
+
+        window.location.assign("/ver_marca/{{marca}}/0/");
+
+    }
+
+</script>
+{% endblock %}
+{% block titulo %}
+Editar {{ submarca.nombre }}
+{% endblock %}
 {% block seccion-contenido %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Editar {{ submarca.nombre }}</h4>
-    </div>
-    <div class="panel-body">
+<div>
+    <div>
         <form method="post" enctype='multipart/form-data' action="">{% csrf_token %}
             <div class="col-sm-6">{{ formulario.nombre|bootstrap }}</div>
             <div class="col-sm-6">{{ formulario.marca|bootstrap }}</div>
-            <input type="submit" class="btn btn-default" value="Ingresar">
+            <button type="button" class="btn btn-default" onclick="cancelSubmarca()">Cancelar</button>  <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
         </form>
     </div>
 </div>
