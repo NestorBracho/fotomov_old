@@ -7,13 +7,13 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from clientes.forms import *
 from clientes.models import *
+from marca.forms import *
+from marca.models import *
 
 def nuevo_macrocliente(request):
     if request.method == 'POST':
         formulario = MacroClienteForm(request.POST)
         if formulario.is_valid():
-
-            print "valido"
             macrocliente = formulario.save()
             direcciones = request.POST.getlist('dir')
             i = 0
