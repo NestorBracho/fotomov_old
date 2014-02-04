@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from clientes.forms import *
 from clientes.models import *
 from marca.forms import *
@@ -142,3 +143,10 @@ def eliminar_contacto_macrocliente(request, id_contacto):
 def ver_contacto_macrocliente(request, id_contacto):
     contacto = Encargado.objects.get(id=id_contacto)
     return render_to_response('clientes/ver_contacto_macrocliente.html', {'contacto': contacto}, context_instance = RequestContext(request))
+
+def nuevo_macrocliente_ajax(request):
+    marca = Marca.objects.get(id = request.GET['id'])
+    submarcas = SubMarca.objects.filter(marca = marca)
+    data = serializers.serialize('json', submarcas, fields =('nombre','id'))
+    print data
+    return HttpResponse(data, mimetype='application/json')

@@ -112,7 +112,41 @@
 {% block js %}
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
-    <script>
+    <script type="text/javascript">
+
+
+        window.onload = function(){
+            document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+            document.getElementById("id_submarca").disabled = true;
+        }
+
+        $('#id_marca').on('change',ajax_submar);
+
+
+        function ajax_submar(){
+
+            var select_marca = $('#id_marca').val();
+            $.ajax({
+
+                beforeSend: function(){
+
+                    document.getElementById("id_submarca").innerHTML = "<option>Cargando...</option>";
+
+                },
+                data:{'id': select_marca},
+                url:'/macrocliente_ajax/',
+                type: 'get'
+
+            }).done(function(data){
+
+                document.getElementById("id_submarca").disabled = false;
+                document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+                for(var i=0; i<data.length; i++){
+                    document.getElementById("id_submarca").innerHTML = document.getElementById("id_submarca").innerHTML+"<option value='"+data[i].fields.id+"'>"+data[i].fields.nombre+"</option>";
+                }
+            });
+        }
+
         $(document).ready(function(){
             $("#showAdresses").click(function(){
                 setTimeout(function() {
@@ -160,11 +194,5 @@
           }
         }
 
-        window.onload = function(){
-
-            document.getElementById("id_submarca").disabled = true;
-            document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
-
-        }
     </script>
 {% endblock %}
