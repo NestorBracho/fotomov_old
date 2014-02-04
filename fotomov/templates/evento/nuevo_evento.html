@@ -1,0 +1,120 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+<form method="POST" action="r" enctype="multipart/form-data">{% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Datos del evento</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-4">
+                {{ formulario.nombre | bootstrap }}
+            </div>
+            <div class="col-sm-4">
+                {{ formulario.macrocliente | bootstrap }}
+            </div>
+            <div class="col-sm-4">
+                {{ formulario.encargado | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.descripcion | bootstrap }}
+            </div>
+
+        </div>
+    </div>
+   <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Funciones</h4>
+        </div>
+        <div class="panel-body">
+
+            <div class="table-responsive col-sm-12">
+                <table class="table table-striped table-bordered table-hover" id="Table-Funcion">
+                    <thead>
+                        <tr>
+                            <th>Sede</th>
+                            <th>Fecha</th>
+                            <th>Inicio</th>
+                            <th>Fin</th>
+                            <th>Horas</th>
+                        </tr>
+                    </thead>
+                </table>
+                <button type="button" class="btn btn-default" onclick="insRowFuncion()">Agregar Funcion</button>
+        </div>
+    </div>
+   </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Casilla de administración</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-6">
+                {{ formulario.porcentaje_institucion | bootstrap}}
+            </div>
+            <div class="table-responsive col-sm-12">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Gasto</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                {% for gasto in gastos %}
+                    {% if forloop.counter|divisibleby:2 %}
+                        <tr class="gradeC">
+                            <td>{{ gasto.nombre }}</td>
+                            <td><input class="form-control" name="{{ gasto.nombre }}" type="text"> </td>
+                        </tr>
+                    {% else %}
+                        <tr class="gradeU">
+                            <td>{{ gasto.nombre }}</td>
+                            <td><input class="form-control" name="{{ gasto.nombre }}" type="text"> </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+                <button type="button" class="btn btn-default" onclick="insRowGasto()">Agregar Gasto</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+// From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
+var hola = "hola"
+function insRowGasto() {
+  var rows = document.getElementById('dataTables-example').rows.length;
+  var x=document.getElementById('dataTables-example').insertRow(rows);
+  var y=x.insertCell(0);
+  var z=x.insertCell(1);
+  y.innerHTML="<input type=\"text\" class=\"form-control\" name=\"gasto\">";
+  z.innerHTML="<input type=\"text\" class=\"form-control\" name=\"gasto\">";
+}
+function delRow() {
+  document.getElementById('dataTables-example').deleteRow(0)
+}
+
+function insRowFuncion() {
+  var rows = document.getElementById('Table-Funcion').rows.length;
+  var x=document.getElementById('Table-Funcion').insertRow(rows);
+  var y=x.insertCell(0);
+  var z=x.insertCell(1);
+  var ini= x.insertCell(2);
+  var fin= x.insertCell(3);
+  var hora= x.insertCell(4);
+  y.innerHTML="<select class=\"form-control\"></select>";
+  z.innerHTML="<input type=\"text\" class=\"form-control\" name=\"gasto\">";
+  ini.innerHTML="<input type=\"text\" class=\"form-control\" name=\"gasto\">";
+  fin.innerHTML="<input type=\"text\" class=\"form-control\" name=\"gasto\">";
+  hora.innerHTML="<input type=\"select\" class=\"form-control\" name=\"gasto\">";
+
+}
+
+
+// function addRow() {} // append row to end of table
+// function delAllRows() {} // delete all rows to end of table
+
+</script>
+{% endblock %}

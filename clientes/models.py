@@ -8,6 +8,8 @@ class MacroCliente(models.Model):
     rif = models.CharField(max_length=10, unique=True)
     direccion_fiscal = models.TextField(max_length=500)
     descripcion = models.TextField(max_length=1000)
+    def __unicode__(self):
+        return self.nombre
 
 class Direccion(models.Model):
     direccion = models.CharField(max_length=500)
