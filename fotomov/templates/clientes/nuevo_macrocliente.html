@@ -8,29 +8,50 @@
         </div>
         <div class="panel-body">
             <div class="col-sm-6">
-                 {{ formulario.marca|bootstrap }}
+                 {{ formularioM.marca|bootstrap }}
             </div>
             <div class="col-sm-6">
-                 {{ formulario.submarca|bootstrap}}
+                 {{ formularioM.submarca|bootstrap}}
             </div>
             <div class="col-sm-6">
-                {{ formulario.nombre | bootstrap}}
+                {{ formularioM.nombre | bootstrap}}
             </div>
             <div class="col-sm-6">
-                {{ formulario.telefono | bootstrap }}
+                {{ formularioM.telefono | bootstrap }}
             </div>
             <div class="col-sm-6">
-                {{ formulario.rif | bootstrap }}
+                {{ formularioM.rif | bootstrap }}
             </div>
             <div class="col-sm-12">
-                {{ formulario.direccion_fiscal | bootstrap }}
+                {{ formularioM.direccion_fiscal | bootstrap }}
             </div>
             <div class="col-sm-12">
-                {{ formulario.descripcion | bootstrap }}
+                {{ formularioM.descripcion | bootstrap }}
             </div>
-
             <div class="col-sm-12">
                 <p id="showAdresses"><button data-toggle="modal" href="#addressModal" type='button' class="btn btn-block btn-default"><span class="glyphicon glyphicon-map-marker"></span> Agregar Direcciones </button></p><!-- OJO no cambiar este id, lo usa una funcion -->
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Encargado</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-6">
+                {{ formularioR.nombre | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formularioR.cedula | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formularioR.telefono | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formularioR.email | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formularioR.descripcion | bootstrap }}
             </div>
 
             <input type="submit" class="btn btn-primary" value="guardar">

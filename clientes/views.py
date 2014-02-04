@@ -13,9 +13,16 @@ from marca.models import *
 
 def nuevo_macrocliente(request):
     if request.method == 'POST':
-        formulario = MacroClienteForm(request.POST)
-        if formulario.is_valid():
-            macrocliente = formulario.save()
+        formularioM = MacroClienteForm(request.POST)
+        formularioR = MacroClienteContactoForm(request.POST)
+        if formularioM.is_valid() and formularioR.is_valid():
+            macrocliente = formularioM.save()
+            contacNombre = formularioR.cleaned_data['nombre']
+            contacCedula = formularioR.cleaned_data['cedula']
+            contacTelefono = formularioR.cleaned_data['telefono']
+            contacDescripcion = formularioR.cleaned_data['descripcion']
+            encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion)
+            encargado.save()
             direcciones = request.POST.getlist('dir')
             i = 0
             while i < len(direcciones):
@@ -25,8 +32,9 @@ def nuevo_macrocliente(request):
             print macrocliente.nombre
             return HttpResponseRedirect('/listar_macroclientes/1')
     else:
-        formulario = MacroClienteForm()
-    return render_to_response('clientes/nuevo_macrocliente.html', {'formulario': formulario}, context_instance = RequestContext(request))
+        formularioM = MacroClienteForm()
+        formularioR = MacroClienteContactoForm()
+    return render_to_response('clientes/nuevo_macrocliente.html', {'formularioM': formularioM, 'formularioR': formularioR}, context_instance = RequestContext(request))
 
 def listar_macroclientes(request, creado):
     macroclientes = MacroCliente.objects.all()
@@ -148,5 +156,4 @@ def nuevo_macrocliente_ajax(request):
     marca = Marca.objects.get(id = request.GET['id'])
     submarcas = SubMarca.objects.filter(marca = marca)
     data = serializers.serialize('json', submarcas, fields =('nombre','id'))
-    print data
     return HttpResponse(data, mimetype='application/json')
