@@ -1,5 +1,5 @@
 from django.db import models
-from clientes.models import Encargado
+from clientes.models import Encargado, Direccion
 #encoding:utf-8
 
 class Evento(models.Model):
@@ -7,12 +7,6 @@ class Evento(models.Model):
     descripcion = models.CharField(max_length=1000)
     porcentaje_institucion = models.FloatField()
     encargado = models.ForeignKey(Encargado)
-
-class Direccion(models.Model):
-    direccion = models.CharField(max_length=1000)
-    lon = models.CharField(max_length=30)
-    lat = models.CharField(max_length=30)
-    descripcion = models.CharField(max_length=1000)
 
 class Sede(models.Model):
     fecha = models.DateField()

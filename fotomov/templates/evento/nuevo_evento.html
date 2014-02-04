@@ -1,0 +1,80 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+<form method="POST" action="r" enctype="multipart/form-data">{% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Datos del evento</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-6">
+                {{ formulario.nombre | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.macrocliente | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.descripcion | bootstrap }}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Casilla de administración</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-6">
+                {{ formulario.porcentaje_institucion | bootstrap}}
+            </div>
+            <div class="table-responsive col-sm-12">
+                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>Gasto</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                {% for gasto in gastos %}
+                    {% if forloop.counter|divisibleby:2 %}
+                        <tr class="gradeC">
+                            <td>{{ gasto.nombre }}</td>
+                            <td><input class="form-control" name="{{ gasto.nombre }}" type="text"> </td>
+                        </tr>
+                    {% else %}
+                        <tr class="gradeU">
+                            <td>{{ gasto.nombre }}</td>
+                            <td><input class="form-control" name="{{ gasto.nombre }}" type="text"> </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+                <button type="button" class="btn btn-default" onclick="insRow()">Agregar Gasto</button>
+            </div>
+        </div>
+    </div>
+    <h2></h2>
+</form>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+// From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
+
+function insRow() {
+  var rows = document.getElementById('dataTables-example').rows.length;
+  var x=document.getElementById('dataTables-example').insertRow(rows);
+  var y=x.insertCell(0);
+  var z=x.insertCell(1);
+  y.innerHTML="<input type=\"text\" class=\"form\" name=\"gasto" + rows + " \">";
+  z.innerHTML="NEW CELL2";
+}
+function delRow() {
+  document.getElementById('dataTables-example').deleteRow(0)
+}
+
+// function addRow() {} // append row to end of table
+// function delAllRows() {} // delete all rows to end of table
+
+</script>
+{% endblock %}
