@@ -147,25 +147,32 @@
         function ajax_submar(){
 
             var select_marca = $('#id_marca').val();
-            $.ajax({
+            if(select_marca>0){
+                $.ajax({
 
-                beforeSend: function(){
+                    beforeSend: function(){
 
-                    document.getElementById("id_submarca").innerHTML = "<option>Cargando...</option>";
+                        document.getElementById("id_submarca").innerHTML = "<option>Cargando...</option>";
 
-                },
-                data:{'id': select_marca},
-                url:'/macrocliente_ajax/',
-                type: 'get'
+                    },
+                    data:{'id': select_marca},
+                    url:'/macrocliente_ajax/',
+                    type: 'get'
 
-            }).done(function(data){
+                }).done(function(data){
 
-                document.getElementById("id_submarca").disabled = false;
+                    document.getElementById("id_submarca").disabled = false;
+                    document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+                    for(var i=0; i<data.length; i++){
+                        document.getElementById("id_submarca").innerHTML = document.getElementById("id_submarca").innerHTML+"<option value='"+data[i].fields.id+"'>"+data[i].fields.nombre+"</option>";
+                    }
+                });
+            }else{
+
                 document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
-                for(var i=0; i<data.length; i++){
-                    document.getElementById("id_submarca").innerHTML = document.getElementById("id_submarca").innerHTML+"<option value='"+data[i].fields.id+"'>"+data[i].fields.nombre+"</option>";
-                }
-            });
+                document.getElementById("id_submarca").disabled = true;
+
+            }
         }
 
         $(document).ready(function(){
