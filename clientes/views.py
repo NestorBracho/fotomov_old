@@ -29,9 +29,10 @@ def nuevo_macrocliente(request):
             contacTelefono = formularioR.cleaned_data['telefono']
             contacDescripcion = formularioR.cleaned_data['descripcion']
             contactoEmail = formularioR.cleaned_data['email']
+            contactoCargo = formularioR.cleaned_data['cargo']
             macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
             macrocliente.save()
-            encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)
+            encargado = Encargado.objects.create(macrocliente=macrocliente, cargo=contactoCargo, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)
             encargado.save()
             direcciones = request.POST.getlist('dir')
             i = 0

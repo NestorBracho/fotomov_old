@@ -104,13 +104,17 @@
                         <div class="panel-body">
                             <div class="col-sm-12">
                                 <label>Descripcion:</label>
-                                    {{ macrocliente.descripcion }}
+                                    {% if macrocliente.descripcion == '' %}
+                                        No existe descripción para este macrocliente
+                                    {% else %}
+                                        {{ macrocliente.descripcion }}
+                                    {% endif %}
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="col-sm-12">
                                 <label>Direccion Fiscal:</label>
-                                {{ macrocliente.direccion_fiscal }} Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor
+                                {{ macrocliente.direccion_fiscal }}
                             </div>
                         </div>
                         <!-- /.panel-body -->
