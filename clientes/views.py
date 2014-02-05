@@ -15,8 +15,10 @@ def nuevo_macrocliente(request):
     if request.method == 'POST':
         formularioM = MacroClienteForm(request.POST)
         formularioR = MacroClienteContactoForm(request.POST)
+        print "antes del valid"
         if formularioM.is_valid() and formularioR.is_valid():
-            subMacrocliente = SubMarca.objects.get(id=formularioM.cleaned_data['submarca'])
+            print "entro"
+            subMacrocliente = formularioM.cleaned_data['submarca']
             nomMacrocliente = formularioM.cleaned_data['nombre']
             telMacrocliente = formularioM.cleaned_data['telefono']
             rifMacrocliente = formularioM.cleaned_data['rif']
@@ -26,9 +28,10 @@ def nuevo_macrocliente(request):
             contacCedula = formularioR.cleaned_data['cedula']
             contacTelefono = formularioR.cleaned_data['telefono']
             contacDescripcion = formularioR.cleaned_data['descripcion']
+            contactoEmail = formularioR.cleaned_data['email']
             macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
             macrocliente.save()
-            encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion)
+            encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)
             encargado.save()
             direcciones = request.POST.getlist('dir')
             i = 0

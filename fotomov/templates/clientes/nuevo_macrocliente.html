@@ -27,10 +27,6 @@
             <div class="col-sm-6">
                 {{ formularioM.rif | bootstrap }}
             </div>
-            <div class="alert alert-danger col-sm-6">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
-                 ¡Este formulario NO guarda! ¡REVISAR!
-            </div>
             <div class="col-sm-12">
                 {{ formularioM.direccion_fiscal | bootstrap }}
             </div>
@@ -62,9 +58,9 @@
             <div class="col-sm-12">
                 {{ formularioR.descripcion | bootstrap }}
             </div>
-
-            <input type="submit" class="btn btn-primary" value="guardar">
+            <div class="col-sm-3"><input type="submit" class="btn btn-primary" value="guardar"></div>
         </div>
+
     </div>
 
 

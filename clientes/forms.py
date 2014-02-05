@@ -12,3 +12,4 @@ class MacroClienteForm(forms.ModelForm):
 class MacroClienteContactoForm(forms.ModelForm):
     class Meta:
         model = Encargado
+        exclude = ['macrocliente']
