@@ -45,9 +45,7 @@
       });
   }
 
-  window.onload = function(){
-    document.getElementById("id_email").onkeyup = aucomemail;
-  }
+   $("#id_email").on('keyup',aucomemail);
 </script>
 
 {% endblock %}

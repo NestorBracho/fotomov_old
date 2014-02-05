@@ -16,11 +16,18 @@ def nuevo_macrocliente(request):
         formularioM = MacroClienteForm(request.POST)
         formularioR = MacroClienteContactoForm(request.POST)
         if formularioM.is_valid() and formularioR.is_valid():
-            macrocliente = formularioM.save()
+            subMacrocliente = SubMarca.objects.get(id=formularioM.cleaned_data['submarca'])
+            nomMacrocliente = formularioM.cleaned_data['nombre']
+            telMacrocliente = formularioM.cleaned_data['telefono']
+            rifMacrocliente = formularioM.cleaned_data['rif']
+            dfMacrocliente = formularioM.cleaned_data['direccion_fiscal']
+            descMacrocliente = formularioM.cleaned_data['descripcion']
             contacNombre = formularioR.cleaned_data['nombre']
             contacCedula = formularioR.cleaned_data['cedula']
             contacTelefono = formularioR.cleaned_data['telefono']
             contacDescripcion = formularioR.cleaned_data['descripcion']
+            macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
+            macrocliente.save()
             encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion)
             encargado.save()
             direcciones = request.POST.getlist('dir')
@@ -155,5 +162,5 @@ def ver_contacto_macrocliente(request, id_contacto):
 def nuevo_macrocliente_ajax(request):
     marca = Marca.objects.get(id = request.GET['id'])
     submarcas = SubMarca.objects.filter(marca = marca)
-    data = serializers.serialize('json', submarcas, fields =('nombre','id'))
+    data = serializers.serialize('json', submarcas, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')

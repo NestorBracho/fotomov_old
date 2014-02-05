@@ -1,4 +1,4 @@
-{% extends 'admin.html' %}
+{% extends 'tabla.html' %}
 {% load bootstrap %}
 {% block css %}
 <style type="text/css">
@@ -26,6 +26,10 @@
             </div>
             <div class="col-sm-6">
                 {{ formularioM.rif | bootstrap }}
+            </div>
+            <div class="alert alert-danger col-sm-6">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
+                 ¡Este formulario NO guarda! ¡REVISAR!
             </div>
             <div class="col-sm-12">
                 {{ formularioM.direccion_fiscal | bootstrap }}
@@ -142,12 +146,14 @@
 
 
         window.onload = function(){
-            document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
-            document.getElementById("id_submarca").disabled = true;
-            document.getElementById("id_email").onkeyup = aucomemail;
+            if(document.getElementById("id_submarca").value<1){
+                document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+                document.getElementById("id_submarca").disabled = true;
+            }
         }
 
         $('#id_marca').on('change',ajax_submar);
+        $("#id_email").on('keyup',aucomemail);
 
 
         function ajax_submar(){
@@ -171,7 +177,7 @@
                     document.getElementById("id_submarca").disabled = false;
                     document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
                     for(var i=0; i<data.length; i++){
-                        document.getElementById("id_submarca").innerHTML = document.getElementById("id_submarca").innerHTML+"<option value='"+data[i].fields.id+"'>"+data[i].fields.nombre+"</option>";
+                        document.getElementById("id_submarca").innerHTML = document.getElementById("id_submarca").innerHTML+"<option value="+data[i].pk+">"+data[i].fields.nombre+"</option>";
                     }
                 });
             }else{
