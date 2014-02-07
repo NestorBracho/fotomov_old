@@ -9,7 +9,10 @@ class MacroClienteForm(forms.ModelForm):
     class Meta:
         model = MacroCliente
 
-class MacroClienteContactoForm(forms.ModelForm):
-    class Meta:
-        model = Encargado
-        exclude = ['macrocliente']
+class MacroClienteContactoForm(forms.Form):
+    nombre = forms.CharField(max_length=100)
+    cedula = forms.CharField(max_length=8)
+    cargo = forms.CharField(max_length=30)
+    telefono = forms.CharField(max_length=11)
+    email = forms.EmailField()
+    descripcion = forms.CharField(widget=forms.Textarea,max_length=500)
