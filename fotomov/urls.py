@@ -42,4 +42,5 @@ urlpatterns = patterns('',
     url(r'^modificar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.modificar_usuario'),
     url(r'^ver_usuario/(?P<id_usuario>\d+)/$', 'staff.views.ver_usuario'),
     url(r'^macrocliente_ajax/$', 'clientes.views.nuevo_macrocliente_ajax'),
+    url(r'^encargado_ajax/$', 'evento.views.encargado_ajax'),
 )

@@ -5,8 +5,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from evento.forms import *
 from evento.models import *
+from clientes.models import *
 
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
@@ -16,3 +18,9 @@ def nuevo_evento(request):
         formulario = EventoForm()
 
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))
+
+def encargado_ajax(request):
+    macroC = MacroCliente.objects.get(id=request.GET['id'])
+    contacto = Encargado.objects.filter(macrocliente=macroC)
+    data = serializers.serialize('json', contacto, fields =('nombre'))
+    return HttpResponse(data, mimetype='application/json')
