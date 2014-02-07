@@ -19,7 +19,7 @@ class Direccion(models.Model):
     macrocliente = models.ForeignKey(MacroCliente)
 
 class Encargado(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=200)
     cedula = models.CharField(max_length=8, unique=True, blank=True, null=True)
     cargo = models.CharField(max_length=30, blank=True, null=True)
     telefono = models.CharField(max_length=11)

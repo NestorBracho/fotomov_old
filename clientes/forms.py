@@ -10,9 +10,9 @@ class MacroClienteForm(forms.ModelForm):
         model = MacroCliente
 
 class MacroClienteContactoForm(forms.Form):
-    nombre = forms.CharField(max_length=100)
+    nombreContacto = forms.CharField(max_length=200, label='Nombre completo')
     cedula = forms.CharField(max_length=8)
     cargo = forms.CharField(max_length=30)
     telefono = forms.CharField(max_length=11)
     email = forms.EmailField()
-    descripcion = forms.CharField(widget=forms.Textarea,max_length=500)
+    descripcion = forms.CharField(widget=forms.Textarea,max_length=500, required=False)
