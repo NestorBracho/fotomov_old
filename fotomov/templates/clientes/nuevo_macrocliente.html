@@ -16,7 +16,7 @@
                  {{ formularioM.marca|bootstrap }}
             </div>
             <div class="col-sm-6">
-                 {{ formularioM.submarca|bootstrap}}
+                {{ formularioM.submarca|bootstrap }}
             </div>
             <div class="col-sm-6">
                 {{ formularioM.nombre | bootstrap}}
@@ -145,9 +145,11 @@
 
 
         window.onload = function(){
-            if(document.getElementById("id_submarca").value<1){
+            if(document.getElementById("id_marca").value<1){
                 document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
                 document.getElementById("id_submarca").disabled = true;
+            }else{
+                ajax_submar();
             }
         }
 
