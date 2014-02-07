@@ -10,6 +10,14 @@ class RegisUsuarioForm(forms.Form):
     cedula = forms.CharField()
     email = forms.EmailField()
     privilegio = forms.ModelChoiceField(queryset=Privilegios.objects.all())
+    equipos = forms.CharField(widget=forms.Textarea)
+
+class RegisStaffForm(forms.Form):
+    nombre = forms.CharField()
+    apellido = forms.CharField()
+    cedula = forms.CharField()
+    email = forms.EmailField()
+    equipos = forms.CharField(widget=forms.Textarea)
 
 class RegisNotificacion(forms.Form):
     categoria = forms.CharField(widget=forms.Textarea)

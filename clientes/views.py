@@ -24,12 +24,14 @@ def nuevo_macrocliente(request):
             rifMacrocliente = formularioM.cleaned_data['rif']
             dfMacrocliente = formularioM.cleaned_data['direccion_fiscal']
             descMacrocliente = formularioM.cleaned_data['descripcion']
-            contacNombre = formularioR.cleaned_data['nombre']
+            contacNombre = formularioR.cleaned_data['nombreContacto']
             contacCedula = formularioR.cleaned_data['cedula']
             contacTelefono = formularioR.cleaned_data['telefono']
             contacDescripcion = formularioR.cleaned_data['descripcion']
             contactoEmail = formularioR.cleaned_data['email']
             contactoCargo = formularioR.cleaned_data['cargo']
+            print "aqui viene el nombre"
+            print nomMacrocliente
             macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
             macrocliente.save()
             encargado = Encargado.objects.create(macrocliente=macrocliente, cargo=contactoCargo, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)

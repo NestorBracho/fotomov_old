@@ -14,6 +14,15 @@ class Usuario(models.Model):
   cedula = models.CharField(max_length=60,unique=True)
   email = models.EmailField(max_length=100)
   privilegio = models.ForeignKey(Privilegios)
+  equipos = models.CharField(max_length=1000, null=True, blank=True)
+
+class TipoStaff(models.Model):
+  nombre = models.CharField(max_length=100)
+  descripcion = models.CharField(max_length=1000)
+  def __unicode__(self):
+      return self.nombre
+
+
 
 class Notificacion(models.Model):
   categoria = models.TextField()

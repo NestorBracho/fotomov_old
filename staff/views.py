@@ -106,3 +106,29 @@ def ver_usuario(request, id_usuario):
 
 def escritorio(request):
     return render_to_response('escritorio.html', {}, context_instance=RequestContext(request))
+
+def nuevo_staff(request):
+    if request.method == 'POST':
+        formulario = UserCreationForm(request.POST)
+        formulario2 = RegisStaffForm(request.POST)
+        if formulario.is_valid() and formulario2.is_valid():
+            usu = formulario.save()
+            nom = formulario2.cleaned_data['nombre']
+            ape = formulario2.cleaned_data['apellido']
+            ced = formulario2.cleaned_data['cedula']
+            ema = formulario2.cleaned_data['email']
+            pri = Privilegios.objects.get(valor=6)
+            equ = formulario2.cleaned_data['equipos']
+            try:
+                perfil = Usuario.objects.create(usuario = usu, email=ema, nombre=nom, apellido=ape, cedula=ced, privilegio=pri, equipos=equ)
+                perfil.save()
+                return HttpResponseRedirect('/listar_usuario/1')
+            except:
+                usu.delete()
+                #poner aqui error de cedula repetida
+                #formulario2.errors['cedula'] = form.error_class(["error"])
+                pass
+    else:
+        formulario = UserCreationForm()
+        formulario2 = RegisStaffForm()
+    return render_to_response('staff/nuevo_staff.html', {'formulario': formulario, 'formulario_regis': formulario2}, context_instance=RequestContext(request))
