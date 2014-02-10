@@ -1,5 +1,6 @@
 from django.db import models
-from clientes.models import Encargado, Direccion
+from clientes.models import Encargado
+from direcciones.models import Direccion
 #encoding:utf-8
 
 class Evento(models.Model):

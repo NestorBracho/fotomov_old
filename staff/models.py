@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Privilegios(models.Model):
-  valor = models.IntegerField(unique=True)
+  valor = models.IntegerField()
   nombre = models.TextField(max_length=60,unique=True)
   def __unicode__(self):
       return self.nombre

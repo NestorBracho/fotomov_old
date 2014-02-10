@@ -11,12 +11,6 @@ class MacroCliente(models.Model):
     def __unicode__(self):
         return self.nombre
 
-class Direccion(models.Model):
-    direccion = models.CharField(max_length=500)
-    lon = models.FloatField()
-    lat = models.FloatField()
-    descripcion = models.CharField(max_length=500)
-    macrocliente = models.ForeignKey(MacroCliente)
 
 class Encargado(models.Model):
     nombre = models.CharField(max_length=200)

@@ -26,3 +26,6 @@ class RegisNotificacion(forms.Form):
     hora = forms.DateTimeField()
     realizado = forms.BooleanField(widget=forms.CheckboxInput)
     fecha_asignacion = forms.DateField()
+
+class PrivilegioFrom(forms.Form):
+    nombre = forms.CharField(max_length=60)
