@@ -78,7 +78,7 @@
                                     {% for privilegio in privilegios %}
                                         <tr class="gradeU">
                                             <td>{{ privilegio.nombre }}</td>
-                                            <td><a class="btn btn-default" href="/editar_contacto_macrocliente/{{ privilegio.id }}">Editar</a>  <button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{privilegio.id}})">Eliminar</button></td>
+                                            <td><a class="btn btn-default" href="/modificar_staff/{{ privilegio.id }}">Editar</a>  <button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{privilegio.id}})">Eliminar</button></td>
                                         </tr>
                                     {% endfor %}
 

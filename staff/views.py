@@ -125,3 +125,18 @@ def eliminar_staff(request,id_borrar):
     if(eliminar.valor==6):
         eliminar.delete()
     return HttpResponseRedirect('/configurar_staff/0')
+
+def modificar_staff(request,id_modificar):
+    if(request.method=='POST'):
+        modiStaff = PrivilegioFrom(request.POST)
+        if(modiStaff.is_valid()):
+            nomb = modiStaff.cleaned_data['nombre']
+            staffViejo = Privilegios.objects.get(id=id_modificar)
+            staffViejo.nombre=nomb
+            staffViejo.save()
+            return HttpResponseRedirect('/configurar_staff/0')
+    else:
+        if(Privilegios.objects.get(id=id_modificar)!=None):
+            staff = Privilegios.objects.get(id=id_modificar)
+            modiStaff = PrivilegioFrom(initial={'nombre':staff.nombre})
+    return render_to_response('staff/modificar_staff.html',{'staff':modiStaff},context_instance=RequestContext(request))
