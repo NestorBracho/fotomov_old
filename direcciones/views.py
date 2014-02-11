@@ -13,4 +13,4 @@ def nueva_direccion(request):
         pass
     else:
         pass
-    return render_to_response('nueva_direccion.html')
+    return render_to_response('staff/nueva_direccion.html', {}, context_instance= RequestContext(request))
