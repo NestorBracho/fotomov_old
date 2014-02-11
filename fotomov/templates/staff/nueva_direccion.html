@@ -13,10 +13,10 @@
 
 			    <div class="addresses col-sm-6">
 			            <div id="direccion">
-                            <div class='row form-group'></div>
+                            <div class='row form-group'>hola</div>
 			            </div><!-- OJO no cambiar este id, lo usa una funcion -->
 			            <div id="warning"></div><!-- OJO no cambiar este id, lo usa una funcion -->
-			        </div>
+			    </div>
 
 			    <div class="addresses col-sm-6">
 					<div class="row">
@@ -35,15 +35,15 @@
 					            </div>
                                 <label  class=" control-label col-sm-3">Nombre</label>
 						        <div class="col-md-12" >
-		      			            <input type="text" id="nombre" class="form-control">
+		      			            <input type="text" id="nombre" name="nombre" class="form-control">
 						        </div>
 						        <label  class=" control-label col-sm-3">Direccion</label>
 						        <div class="col-md-12" >
-		      			            <input type="text" id="formatedAddress" class="form-control">
+		      			            <input type="text" id="formatedAddress" name="direccion" class="form-control">
 						        </div>
                                 <label  class="control-label col-sm-3">Descripcion</label>
 						        <div class="col-md-12" >
-		      			            <input type="text" id="descripcion" class="form-control">
+		      			            <input type="text" id="descripcion" name="descripcion" class="form-control">
 						        </div>
                                 <div class="col-sm-12 col-sm-offset-4">
                                    <br>
@@ -62,12 +62,12 @@
 
 							    </div>
 						  </div>
-			        <input type="hidden" id="latlng">
+			        <input type="hidden" id="latlng" name="latlng">
+                    <button type='submit' class="btn btn-default btn-block">Agregar Direccion <i class="fa fa-plus"></i></button>
 			    </div>
+
         </div>
         <div class="modal-footer">
-          <p id="hideAddresses"><button type='button' class="btn btn-default" onclick="addInput()"><span class="glyphicon glyphicon-plus"></span> Agregar Direccion</button></p><!-- OJO no cambiar este id, lo usa una funcion -->
-
         </div>
 
 
