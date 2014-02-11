@@ -112,6 +112,49 @@ function insRowFuncion() {
 
 }
 
+window.onload = function(){
+    if(document.getElementById("id_macrocliente").value<1){
+        document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+        document.getElementById("id_encargado").disabled = true;
+    }else{
+        ajax_encargado();
+    }
+}
+
+$('#id_macrocliente').on('change',ajax_encargado);
+
+function ajax_encargado(){
+
+    var select_macro = $('#id_macrocliente').val();
+
+    if(select_macro>0){
+        $.ajax({
+
+            beforeSend:function(){
+                document.getElementById('id_encargado').innerHTML = '<option>Cargando...</option>';
+            },
+            data:{'id':select_macro},
+            url:'/encargado_ajax/',
+            type:'get'
+
+        }).done(function(data){
+
+            document.getElementById("id_encargado").disabled = false;
+            document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+            for(var i=0;i<data.length;i++){
+                document.getElementById('id_encargado').innerHTML = document.getElementById('id_encargado').innerHTML+'<option value='+data[i].pk+'>'+data[i].fields.nombre+'</option>';
+            }
+
+        });
+    }else{
+
+        document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+        document.getElementById("id_encargado").disabled = true;
+
+    }
+
+}
+
 
 // function addRow() {} // append row to end of table
 // function delAllRows() {} // delete all rows to end of table

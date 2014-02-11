@@ -1,0 +1,20 @@
+{% extends "tabla.html" %}
+{% load bootstrap %}
+{% block titulo %}
+        Modificar Staff
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+    function cancelModificarStaff(){
+        window.location.assign("/configurar_staff/0/");
+    }
+
+</script>
+{% endblock %}
+{% block seccion-contenido%}
+        <form id='form' method='POST' action=''>{% csrf_token %}
+            <table><tr><td>{{staff.nombre|bootstrap}}<hr /></td></tr></table>
+            <button type="button" class="btn btn-default" onclick="cancelModificarStaff()">Cancelar</button> <input type="submit" value="modificar" id="enviar" class="btn btn-default btn-primary"/>
+        </form>
+{% endblock %}
