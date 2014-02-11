@@ -115,7 +115,13 @@ def configurar_staff(request, creado):
             nombre = formulario.cleaned_data['nombre']
             privilegio = Privilegios.objects.create(nombre=nombre, valor=6)
             privilegio.save()
-            return HttpResponseRedirect('/configurar_staff/1')
+            return render_to_response('staff/configurar_staff.html',{'privilegios':staff,'formulario': formulario, 'creado': creado, 'staffs': staff}, context_instance=RequestContext(request))
     else:
         formulario = PrivilegioFrom()
-    return render_to_response('staff/configurar_staff.html', {'formulario': formulario, 'creado': creado, 'staffs': staff}, context_instance=RequestContext(request))
+    return render_to_response('staff/configurar_staff.html', {'privilegios':staff,'formulario': formulario, 'creado': creado, 'staffs': staff}, context_instance=RequestContext(request))
+
+def eliminar_staff(request,id_borrar):
+    eliminar = Privilegios.objects.get(id=id_borrar)
+    if(eliminar.valor==6):
+        eliminar.delete()
+    return HttpResponseRedirect('/configurar_staff/0')

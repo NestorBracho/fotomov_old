@@ -42,5 +42,6 @@ urlpatterns = patterns('',
     url(r'^modificar_usuario/(?P<id_usuario>\d+)/$', 'staff.views.modificar_usuario'),
     url(r'^ver_usuario/(?P<id_usuario>\d+)/$', 'staff.views.ver_usuario'),
     url(r'^macrocliente_ajax/$', 'clientes.views.nuevo_macrocliente_ajax'),
-    url(r'^nuevo_staff/$', 'staff.views.nuevo_staff')
+    url(r'^configurar_staff/(?P<creado>\d+)/$', 'staff.views.configurar_staff'),
+    url(r'^eliminar_privilegio/(?P<id_borrar>\d+)/$', 'staff.views.eliminar_staff')
 )
