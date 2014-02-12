@@ -10,10 +10,27 @@
 
         <div class="modal-body">  <!-- !!! falta arregar apariencia en el modal window -->
 
-
+                <h2>Libreta de direcciones</h2>
 			    <div class="addresses col-sm-6">
 			            <div id="direccion">
-                            <div class='row form-group'>hola</div>
+                            <div class='row form-group'>
+                            <table>
+                                <thead>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Direccion
+                                    </th>
+                                </thead>
+                            </table>
+                                {% for direccion in direcciones %}
+                                    <ul>
+                                    <li>{{ direccion.nombre }}</li>
+                                    </ul>
+
+                                {% endfor %}
+                            </div>
 			            </div><!-- OJO no cambiar este id, lo usa una funcion -->
 			            <div id="warning"></div><!-- OJO no cambiar este id, lo usa una funcion -->
 			    </div>
