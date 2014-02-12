@@ -9,6 +9,7 @@ from django.core import serializers
 from evento.forms import *
 from evento.models import *
 from clientes.models import *
+from direcciones.models import *
 
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
@@ -16,11 +17,23 @@ def nuevo_evento(request):
         pass
     else:
         formulario = EventoForm()
-
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))
 
 def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
     contacto = Encargado.objects.filter(macrocliente=macroC)
     data = serializers.serialize('json', contacto, fields =('nombre'))
+    return HttpResponse(data, mimetype='application/json')
+
+def locacion_ajax(request):
+    locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion'])
+    if len(locaciones)>0:
+        i=0
+        locs=[]
+        while i < 5 and i<len(locaciones):
+            locs.append(locaciones[i])
+            i = i+1
+    else:
+        locs = None
+    data = serializers.serialize('json', locs, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
