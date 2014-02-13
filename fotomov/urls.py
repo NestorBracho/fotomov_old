@@ -48,5 +48,6 @@ urlpatterns = patterns('',
     url(r'^libreta_direcciones/$', 'direcciones.views.nueva_direccion'),
     url(r'^guardar_direccion_ajax/$', 'direcciones.views.guardar_direccion_ajax'),
     url(r'^locacion_ajax/$', 'evento.views.locacion_ajax'),
-    url(r'^nuevo_cliente/$', 'clientes.views.nuevo_cliente')
+    url(r'^nuevo_cliente/$', 'clientes.views.nuevo_cliente'),
+    url(r'^listar_cliente/$', 'clientes.views.listar_cliente'),
 )

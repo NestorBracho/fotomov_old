@@ -180,3 +180,8 @@ def nuevo_cliente(request):
     else:
         formulario = ClienteForm()
     return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_cliente(request):
+    clientes = Cliente.objects.filter()
+    return render_to_response('clientes/listar_cliente.html', {'clientes': clientes}, context_instance=RequestContext(request))
+
