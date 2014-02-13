@@ -26,3 +26,18 @@ def nueva_direccion(request):
     else:
         pass
     return render_to_response('staff/nueva_direccion.html', {'direcciones': direcciones}, context_instance= RequestContext(request))
+
+def guardar_direccion_ajax(request):
+    print "entre en la funcion"
+    nombre = request.GET.get('nombre')
+    direccion = request.GET.get('direccion')
+    latlng = request.GET.get('latlng').split(',')
+    descripcion = request.GET.get('descripcion')
+    lat = float(latlng[0])
+    lng = float(latlng[1])
+    dir = Direccion.objects.create(nombre=nombre, direccion=direccion, descripcion=descripcion, lat=lat, lon=lng)
+    dir.save()
+    lista = Direccion.objects.filter(id=dir.id)
+    data= serializers.serialize('json',lista, fields = ('nombre', 'direccion'))
+    print data
+    return HttpResponse(data,mimetype='aplication/json')

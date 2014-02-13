@@ -1,0 +1,38 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block css %}
+
+{% endblock %}
+{% block titulo %}
+        Registrar Cliente
+{% endblock %}
+{% block seccion-contenido %}
+<form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+    <div class="col-sm-6">
+        {{ formulario.nombres | bootstrap }}
+    </div>
+    <div class="col-sm-6">
+        {{ formulario.apellidos | bootstrap }}
+    </div>
+    <div class="col-sm-6">
+        {{ formulario.telefono | bootstrap }}
+    </div>
+    <div class="col-sm-6">
+        {{ formulario.email | bootstrap }}
+    </div>
+    <div class="col-sm-6">
+        {{ formulario.direccion_envio | bootstrap }}
+    </div>
+    <div class="col-sm-6">
+        {{ formulario.direccion_fiscal | bootstrap }}
+    </div>
+    <div class="col-sm-6">
+        {{ formulario.rif | bootstrap }}
+    </div>
+    <div class="col-sm-12">
+        <p><input type='submit' value='Registrar' class="btn btn-default btn-primary" /></p>
+    </div>
+
+</form>
+
+{% endblock %}

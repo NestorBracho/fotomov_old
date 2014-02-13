@@ -46,5 +46,7 @@ urlpatterns = patterns('',
     url(r'^eliminar_privilegio/(?P<id_borrar>\d+)/$', 'staff.views.eliminar_staff'),
     url(r'^modificar_staff/(?P<id_modificar>\d+)/$', 'staff.views.modificar_staff'),
     url(r'^libreta_direcciones/$', 'direcciones.views.nueva_direccion'),
+    url(r'^guardar_direccion_ajax/$', 'direcciones.views.guardar_direccion_ajax'),
     url(r'^locacion_ajax/$', 'evento.views.locacion_ajax'),
+    url(r'^nuevo_cliente/$', 'clientes.views.nuevo_cliente')
 )

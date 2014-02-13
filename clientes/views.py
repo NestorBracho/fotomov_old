@@ -170,3 +170,13 @@ def nuevo_macrocliente_ajax(request):
     submarcas = SubMarca.objects.filter(marca = marca)
     data = serializers.serialize('json', submarcas, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
+
+def nuevo_cliente(request):
+    if request.method == 'POST':
+        formulario = ClienteForm(request.POST)
+        if formulario.is_valid():
+            cliente = formulario.save()
+            return HttpResponseRedirect('/listar_clientes')
+    else:
+        formulario = ClienteForm()
+    return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
