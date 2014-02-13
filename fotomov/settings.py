@@ -145,7 +145,8 @@ INSTALLED_APPS = (
     'marca',
     'bootstrapform',
     'staff',
-    'direcciones'
+    'direcciones',
+    'productos',
 )
 
 # A sample logging configuration. The only tangible logging
