@@ -1,5 +1,8 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
+{% block css %}
+    <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
 {% block seccion-contenido %}
 <form method="POST" action="r" enctype="multipart/form-data">{% csrf_token %}
     <div class="panel panel-default">
@@ -88,12 +91,14 @@
     </div>
 </form>
 
-<div id='dialog'>holahola</div>
+<div id='dialog'></div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
 
-$("#dialog").dialog();
+ var dias = "0.0.0";
+
+$("#dialog").dialog("option", "hide");
 
 // From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
 
@@ -164,7 +169,46 @@ function ajax_encargado(){
 
 function AgregarDia(){
 
-    document.getElementById('id_dias').innerHTML += "<p><label>"+document.getElementById('id_input_fecha').value+"</label></br><div class='table-responsive col-sm-12'><table class='table table-striped table-bordered table-hover'><thead><tr><th>Locacion (hacer el nombre de la locacion unique)</th></tr></thead><tr><td><input type='text' placeholder='Nombre de la locacion....' > <input type='button' value='Agregar Locacion'> </td></tr></table></div></p>";
+    var temp= dias.split(".");
+    temp[0]=parseInt(temp[0]);
+    temp[0] += 1;
+    dias = temp[0]+"."+temp[1]+"."+temp[2];
+    document.getElementById('id_dias').innerHTML += "<div class='table-responsive col-sm-12'><table class='table table-striped table-bordered table-hover'><thead><tr><th><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label></th></tr></thead><tr><td><div id=tabla"+dias+"></div></td></tr><tr><td><input type='text' id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></td></tr></table></div>";
+
+}
+
+function AgregarLocacion(tablaid,inputid,main){
+
+    var temp= main.split(".");
+    var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
+    tempNombre += 1;
+    document.getElementById(main).setAttribute('name',tempNombre);
+    temp[1]=parseInt(temp[1]);
+    temp[1] += 1;
+    main = temp[0]+"."+tempNombre+"."+temp[2];
+
+    document.getElementById(tablaid).innerHTML += "</br><div class='table-responsive col-sm-12'><table class='table table-striped table-bordered table-hover'><thead><tr><th><label id="+main+" name=0>"+document.getElementById(inputid).value+"</label></th></tr></thead><tr><td><div id=tabla"+main+"></div></td></tr><tr><td><input type='button' value='Agregar funcion' onclick=AgregarFuncion('tabla"+main+"','"+main+"')> </td></tr></table></div>";
+
+}
+
+function AgregarFuncion(tablaid,main){
+
+    var nombre = document.getElementById(main).innerHTML;
+    document.getElementById('dialog').innerHTML = "<div><label>Into el nombre de la funcion</label><input type='text' id= input"+main+" /><hr/><input type='button' value='Agregar' onclick=AgregarRegistroFuncion('"+tablaid+"','input"+main+"','"+main+"') /></div>";
+    $("#dialog").dialog({title:nombre, hide:false});
+
+
+}
+
+function AgregarRegistroFuncion(tablaid,inputid,main){
+
+    var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
+    var temp = main.split('.');
+    tempNombre += 1;
+    document.getElementById(main).setAttribute('name',tempNombre);
+    main = temp[0]+"."+temp[1]+"."+tempNombre;
+    document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label>";
+    $("#dialog").dialog("close");
 }
 </script>
 {% endblock %}
