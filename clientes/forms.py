@@ -16,3 +16,7 @@ class MacroClienteContactoForm(forms.Form):
     telefono = forms.CharField(max_length=11)
     email = forms.EmailField()
     descripcion = forms.CharField(widget=forms.Textarea,max_length=500, required=False)
+
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente

@@ -170,3 +170,41 @@ def nuevo_macrocliente_ajax(request):
     submarcas = SubMarca.objects.filter(marca = marca)
     data = serializers.serialize('json', submarcas, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
+
+def nuevo_cliente(request):
+    if request.method == 'POST':
+        formulario = ClienteForm(request.POST)
+        if formulario.is_valid():
+            cliente = formulario.save()
+            return HttpResponseRedirect('/listar_clientes')
+    else:
+        formulario = ClienteForm()
+    return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_cliente(request):
+    clientes = Cliente.objects.filter()
+    return render_to_response('clientes/listar_cliente.html', {'clientes': clientes}, context_instance=RequestContext(request))
+
+def editar_cliente(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente)
+    if request.method == 'POST':
+        formulario = ClienteForm(request.POST)
+        if formulario.is_valid():
+            newcliente = formulario.save(commit=False)
+            cliente.nombres = newcliente.nombres
+            cliente.apellidos = newcliente.apellidos
+            cliente.telefono = newcliente.telefono
+            cliente.email = newcliente.email
+            cliente.direccion_fiscal = newcliente.direccion_fiscal
+            cliente.rif = newcliente.rif
+            cliente.cedula = newcliente.cedula
+            cliente.save()
+            return HttpResponseRedirect('/listar_cliente')
+    else:
+        formulario = ClienteForm(initial={'nombres': cliente.nombres, 'apellidos': cliente.apellidos, 'telefono': cliente.telefono, 'email': cliente.email,
+                                 'direccion_fiscal': cliente.direccion_fiscal, 'rif': cliente.rif, 'cedula': cliente.cedula})
+    return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def eliminar_cliente(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente).delete()
+    return HttpResponseRedirect('listar_cliente')
