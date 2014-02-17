@@ -15,6 +15,9 @@
             <th>
                 Telefono
             </th>
+            <th>
+                Acciones
+            </th>
         </thead>
         <tbody>
             {% for cliente in clientes %}
@@ -31,9 +34,30 @@
                     <td>
                         {{ cliente.telefono }}
                     </td>
+                    <td>
+                        <a class="btn btn-default" href="/editar_cliente/{{ cliente.id }}">Editar</a> <button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{cliente.id}})">Eliminar</button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+        	function deleteAlert(id)
+        	{
+        		var r=confirm("¿Esta seguro que desea eliminar?");
+        		if (r==true)
+        	  {
+        			var string1 = "/eliminar_macrocliente/";
+        		  window.location.assign(string1 + id)
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
+    </script>
 {% endblock %}

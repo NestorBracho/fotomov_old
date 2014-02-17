@@ -23,10 +23,10 @@
     <div class="col-sm-6">
         {{ formulario.direccion_fiscal | bootstrap }}
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 ">
         {{ formulario.rif | bootstrap }}
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 ">
         {{ formulario.cedula | bootstrap }}
     </div>
     <div class="col-sm-12">
@@ -34,5 +34,18 @@
     </div>
 
 </form>
+
+{% endblock %}
+{% block js %}
+    <script language="JavaScript">
+  /*  $(document).ready(function(){
+        $('.juridico').hide();
+        $("#hide").click(function(){
+            $(".natural").toggle();
+            $(".juridico").toggle();
+        });
+    });
+    */
+    </script>
 
 {% endblock %}

@@ -27,7 +27,7 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=11)
     email = models.EmailField(verbose_name='correo electronico')
     direccion_fiscal = models.TextField(verbose_name='direccion fiscal', max_length=400)
-    rif = models.CharField(max_length=10)
-    cedula = models.CharField(max_length=8)
+    rif = models.CharField(max_length=10, null=True, blank=True)
+    cedula = models.CharField(max_length=8, null=True, blank=True)
 
 

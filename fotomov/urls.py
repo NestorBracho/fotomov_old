@@ -50,4 +50,6 @@ urlpatterns = patterns('',
     url(r'^locacion_ajax/$', 'evento.views.locacion_ajax'),
     url(r'^nuevo_cliente/$', 'clientes.views.nuevo_cliente'),
     url(r'^listar_cliente/$', 'clientes.views.listar_cliente'),
+    url(r'^editar_cliente/(?P<id_cliente>\d+)/$', 'clientes.views.editar_cliente'),
+    url(r'^eliminar_cliente/(?P<id_cliente>\d+)/$', 'clientes.views.eliminar_cliente'),
 )
