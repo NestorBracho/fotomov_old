@@ -25,11 +25,9 @@
 
         </div>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Días</h4>
-        </div>
-        <div class="panel-body">
+    <div>
+        <h4>Días</h4>
+        <div>
             <div id="id_dias"></div>
             <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
         </div>
@@ -92,19 +90,36 @@
 </form>
 
 <div id='dialog'></div>
+<div id='inphid'></div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
 
  var dias = "0.0.0";
 
-$("#dialog").dialog("option", "hide");
-
 // From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
 
-function aucomloc(){
+window.onload = function(){
 
-    var ajax_loc = document.getElementById("text_loc").value;
+    $('#id_input_fecha').datepicker({ dateFormat: "dd/mm/yy" });
+    document.getElementById("text_loc").onkeyup = aucomloc;
+    if(document.getElementById("id_macrocliente").value<1){
+        document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+        document.getElementById("id_encargado").disabled = true;
+    }else{
+        ajax_encargado();
+    }
+
+}
+
+$("#dialog").dialog("option", "hide");
+
+$('#id_macrocliente').on('change',ajax_encargado);
+
+function aucomloc(id_input){
+
+    var ajax_loc = document.getElementById(id_input).value;
+    var a=id_input;
 
     $.ajax({
         data:{'locacion':ajax_loc},
@@ -113,27 +128,20 @@ function aucomloc(){
     }).done(function(dominio){
 
         var locaciones_finales=[];
+
         for(var i=0; i<dominio.length; i++){
             locaciones_finales.push([dominio[i].fields.nombre].toString());
         }
 
-        $("#text_loc").autocomplete({
+         a = id_input.split('.');
+         a = a[0]+"\\."+a[1]+"\\."+a[2];
+
+        $('#'+a).autocomplete({
             source: locaciones_finales
         });
+
     });
 }
-
-window.onload = function(){
-    document.getElementById("text_loc").onkeyup = aucomloc;
-    if(document.getElementById("id_macrocliente").value<1){
-        document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
-        document.getElementById("id_encargado").disabled = true;
-    }else{
-        ajax_encargado();
-    }
-}
-
-$('#id_macrocliente').on('change',ajax_encargado);
 
 function ajax_encargado(){
 
@@ -170,14 +178,20 @@ function ajax_encargado(){
 function AgregarDia(){
 
     var temp= dias.split(".");
-    temp[0]=parseInt(temp[0]);
-    temp[0] += 1;
-    dias = temp[0]+"."+temp[1]+"."+temp[2];
-    document.getElementById('id_dias').innerHTML += "<div class='table-responsive col-sm-12'><table class='table table-striped table-bordered table-hover'><thead><tr><th><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label></th></tr></thead><tr><td><div id=tabla"+dias+"></div></td></tr><tr><td><input type='text' id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></td></tr></table></div>";
+
+    if(document.getElementById('id_input_fecha').value!=''){
+        temp[0]=parseInt(temp[0]);
+        temp[0] += 1;
+        dias = temp[0]+"."+temp[1]+"."+temp[2];
+        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
+        document.getElementById('id_input_fecha').value = '';
+    }else{
+        alert('vacio');
+    }
 
 }
 
-function AgregarLocacion(tablaid,inputid,main){
+function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validacion de nombre de locacion
 
     var temp= main.split(".");
     var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
@@ -187,7 +201,7 @@ function AgregarLocacion(tablaid,inputid,main){
     temp[1] += 1;
     main = temp[0]+"."+tempNombre+"."+temp[2];
 
-    document.getElementById(tablaid).innerHTML += "</br><div class='table-responsive col-sm-12'><table class='table table-striped table-bordered table-hover'><thead><tr><th><label id="+main+" name=0>"+document.getElementById(inputid).value+"</label></th></tr></thead><tr><td><div id=tabla"+main+"></div></td></tr><tr><td><input type='button' value='Agregar funcion' onclick=AgregarFuncion('tabla"+main+"','"+main+"')> </td></tr></table></div>";
+    document.getElementById(tablaid).innerHTML += "</br><div><div class='col-sm-6'><label id="+main+" name=0>"+document.getElementById(inputid).value+"</label><a>->Detalles</a></div><div style='border-left: 1px solid black;' class='col-sm-6' id=tabla"+main+"></div><div class='col-sm-12'  style='border-bottom: 1px solid black;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('tabla"+main+"','"+main+"')> </div></div>";
 
 }
 
@@ -207,7 +221,7 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
     tempNombre += 1;
     document.getElementById(main).setAttribute('name',tempNombre);
     main = temp[0]+"."+temp[1]+"."+tempNombre;
-    document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label>";
+    document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label></br>";
     $("#dialog").dialog("close");
 }
 </script>
