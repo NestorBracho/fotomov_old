@@ -148,7 +148,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
         type:'GET',
         error:function(){
             if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
-                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_direcciones/' seamless width='900' higth='900'></iframe>";
+                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/"+inputid+"' seamless width='100%' height='100%'></iframe>";
                 $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});
             }
         }
@@ -168,7 +168,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
         }else{
 
             if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
-                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_direcciones/' seamless width='100%' higth='100%'></iframe>";
+                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/"+inputid+"' seamless width='100%' height='100%'></iframe>";
                 $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});
             }
 
@@ -197,6 +197,7 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
     document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label></br>";
     $("#dialog").dialog("close");
 }
+
 
 </script>
 {% endblock %}
