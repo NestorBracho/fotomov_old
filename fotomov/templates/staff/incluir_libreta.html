@@ -24,7 +24,7 @@
                                     </th>
                                 </thead>
                                 {% for direccion in direcciones %}
-                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion({{ direccion.nombre }})">
+                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion({{ direccion.nombre }},{{ id_input }})">
                                     <td>{{ direccion.nombre }}</td>
                                     <td>{{ direccion.direccion }}</td>
                                 </tr>

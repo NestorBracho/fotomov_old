@@ -59,4 +59,4 @@ def libreta_incluida(request, id_input):
 
     else:
         pass
-    return render_to_response('staff/incluir_libreta.html', {'direcciones': direcciones}, context_instance= RequestContext(request))
+    return render_to_response('staff/incluir_libreta.html', {'direcciones': direcciones, 'id_input': id_input}, context_instance= RequestContext(request))
