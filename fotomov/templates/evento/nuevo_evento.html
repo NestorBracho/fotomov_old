@@ -149,7 +149,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
         error:function(){
             if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
                 document.getElementById("dialog").innerHTML = "<iframe src='/libreta_direcciones/' seamless width='900' higth='900'></iframe>";
-                $("#dialog").dialog({title:'Agregar direccion', hide:false});
+                $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});
             }
         }
     }).done(function(dominio){
@@ -169,7 +169,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
 
             if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
                 document.getElementById("dialog").innerHTML = "<iframe src='/libreta_direcciones/' seamless width='100%' higth='100%'></iframe>";
-                $("#dialog").dialog({title:'Agregar direccion', hide:false, minHeight: 600, minWidth: 900});
+                $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});
             }
 
         }
@@ -182,7 +182,7 @@ function AgregarFuncion(tablaid,main){
 
     var nombre = document.getElementById(main).innerHTML;
     document.getElementById('dialog').innerHTML = "<div><label>Into el nombre de la funcion</label><input type='text' id= input"+main+" /><hr/><input type='button' value='Agregar' onclick=AgregarRegistroFuncion('"+tablaid+"','input"+main+"','"+main+"') /></div>";
-    $("#dialog").dialog({title:nombre, hide:false, minHeight: 600, minWidth: 900});
+    $("#dialog").dialog({title:nombre, hide:false, height:200 , width:300 });
 
 
 }
