@@ -7,13 +7,17 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from productos.models import *
+from productos.forms import *
 
 def nuevo_producto(request):
     if request.method == 'POST':
-        pass
+        formulario = ProductoForm(request.POST)
+        if formulario.is_valid():
+            producto = formulario.save()
+
     else:
-        pass
-    return render_to_response('productos/nuevo_producto.html', {}, context_instance=RequestContext(request))
+        formulario = ProductoForm()
+    return render_to_response('productos/nuevo_producto.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def editar_producto(request):
     if request.method == 'POST':

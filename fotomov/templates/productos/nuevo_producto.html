@@ -1,7 +1,13 @@
 {% extends "admin.html" %}
 {% load bootstrap %}
+{% block titulo %}
 
+    Nuevo Producto
+{% endblock %}
 {% block seccion-contenido %}
-
-
+    <form method="POST" action="" enctype="multipart/form-data">{% csrf_token %}
+        {{ formulario.nombre | bootstrap }}
+        {{ formulario.descripcion | bootstrap }}
+        <input type="submit" class="btn btn-primary" value="guardar">
+    </form>
 {% endblock %}

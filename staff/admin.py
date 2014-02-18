@@ -3,6 +3,7 @@ from django.contrib import admin
 from staff.models import *
 from clientes.models import *
 from evento.models import *
+from productos.models import *
 
 admin.site.register(Usuario)
 admin.site.register(Privilegios)
@@ -13,3 +14,4 @@ admin.site.register(Gasto)
 admin.site.register(Encargado)
 admin.site.register(Sede)
 admin.site.register(Cliente)
+admin.site.register(Producto)
