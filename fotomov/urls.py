@@ -52,5 +52,5 @@ urlpatterns = patterns('',
     url(r'^listar_cliente/$', 'clientes.views.listar_cliente'),
     url(r'^editar_cliente/(?P<id_cliente>\d+)/$', 'clientes.views.editar_cliente'),
     url(r'^eliminar_cliente/(?P<id_cliente>\d+)/$', 'clientes.views.eliminar_cliente'),
-    url(r'^libreta_incluida/(?P<id_input>\w+)$', 'direcciones.views.libreta_incluida'),
+    url(r'^libreta_incluida/(?P<id_input>\D*)$', 'direcciones.views.libreta_incluida'),
 )
