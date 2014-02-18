@@ -32,61 +32,6 @@
             <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
         </div>
     </div>
-   <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Funciones</h4>
-        </div>
-        <div class="panel-body">
-
-            <div class="table-responsive col-sm-12">
-                <table class="table table-striped table-bordered table-hover" id="Table-Funcion">
-                    <thead>
-                        <tr>
-                            <th>Locacion (hacer el nombre de la locacion unique)</th>
-                        </tr>
-                    </thead>
-                    <tr>
-                        <td><input type="text" placeholder="Nombre de la locacion...." id="text_loc"> <input type="button" value="Agregar Locacion"> </td>
-                    </tr>
-                </table>
-                <button type="button" class="btn btn-default" onclick="insRowFuncion()">Agregar nueva...</button>
-            </div>
-        </div>
-   </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Casilla de administración</h4>
-        </div>
-        <div class="panel-body">
-            <div class="col-sm-6">
-                {{ formulario.porcentaje_institucion | bootstrap}}
-            </div>
-            <div class="table-responsive col-sm-12">
-                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                        <tr>
-                            <th>Gasto</th>
-                            <th>Monto</th>
-                        </tr>
-                    </thead>
-                {% for gasto in gastos %}
-                    {% if forloop.counter|divisibleby:2 %}
-                        <tr class="gradeC">
-                            <td>{{ gasto.nombre }}</td>
-                            <td><input class="form-control" name="{{ gasto.nombre }}" type="text"> </td>
-                        </tr>
-                    {% else %}
-                        <tr class="gradeU">
-                            <td>{{ gasto.nombre }}</td>
-                            <td><input class="form-control" name="{{ gasto.nombre }}" type="text"> </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </table>
-                <button type="button" class="btn btn-default" onclick="insRowGasto()">Agregar Gasto</button>
-            </div>
-        </div>
-    </div>
 </form>
 
 <div id='dialog'></div>
@@ -102,7 +47,6 @@
 window.onload = function(){
 
     $('#id_input_fecha').datepicker({ dateFormat: "dd/mm/yy" });
-    document.getElementById("text_loc").onkeyup = aucomloc;
     if(document.getElementById("id_macrocliente").value<1){
         document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
         document.getElementById("id_encargado").disabled = true;
@@ -194,22 +138,51 @@ function AgregarDia(){
 function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validacion de nombre de locacion
 
     var temp= main.split(".");
+    var aux;
     var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
-    tempNombre += 1;
-    document.getElementById(main).setAttribute('name',tempNombre);
-    temp[1]=parseInt(temp[1]);
-    temp[1] += 1;
-    main = temp[0]+"."+tempNombre+"."+temp[2];
+    var ajax_loc = document.getElementById(inputid).value;
 
-    document.getElementById(tablaid).innerHTML += "</br><div><div class='col-sm-6'><label id="+main+" name=0>"+document.getElementById(inputid).value+"</label><a>->Detalles</a></div><div style='border-left: 1px solid black;' class='col-sm-6' id=tabla"+main+"></div><div class='col-sm-12'  style='border-bottom: 1px solid black;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('tabla"+main+"','"+main+"')> </div></div>";
+    $.ajax({
+        data:{'locacion':ajax_loc},
+        url:'/locacion_ajax/',
+        type:'GET',
+        error:function(){
+            if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
+                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_direcciones/' seamless width='900' higth='900'></iframe>";
+                $("#dialog").dialog({title:'Agregar direccion', hide:false});
+            }
+        }
+    }).done(function(dominio){
+        aux = dominio[0].fields.nombre.toString();
 
+        if(aux==ajax_loc){
+
+            tempNombre += 1;
+            document.getElementById(main).setAttribute('name',tempNombre);
+            temp[1]=parseInt(temp[1]);
+            temp[1] += 1;
+            main = temp[0]+"."+tempNombre+"."+temp[2];
+
+            document.getElementById(tablaid).innerHTML += "</br><div><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id=tabla"+main+"></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('tabla"+main+"','"+main+"')> </div></div>";
+
+        }else{
+
+            if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
+                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_direcciones/' seamless width='100%' higth='100%'></iframe>";
+                $("#dialog").dialog({title:'Agregar direccion', hide:false, minHeight: 600, minWidth: 900});
+            }
+
+        }
+    });
+
+    document.getElementById(inputid).value='';
 }
 
 function AgregarFuncion(tablaid,main){
 
     var nombre = document.getElementById(main).innerHTML;
     document.getElementById('dialog').innerHTML = "<div><label>Into el nombre de la funcion</label><input type='text' id= input"+main+" /><hr/><input type='button' value='Agregar' onclick=AgregarRegistroFuncion('"+tablaid+"','input"+main+"','"+main+"') /></div>";
-    $("#dialog").dialog({title:nombre, hide:false});
+    $("#dialog").dialog({title:nombre, hide:false, minHeight: 600, minWidth: 900});
 
 
 }
@@ -224,5 +197,6 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
     document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label></br>";
     $("#dialog").dialog("close");
 }
+
 </script>
 {% endblock %}
