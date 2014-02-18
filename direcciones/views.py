@@ -41,3 +41,22 @@ def guardar_direccion_ajax(request):
     data= serializers.serialize('json',lista, fields = ('nombre', 'direccion'))
     print data
     return HttpResponse(data,mimetype='aplication/json')
+
+def libreta_incluida(request):
+    direcciones = Direccion.objects.all()
+    if request.method == 'POST':
+        latlng = request.POST.get('latlng').split(',')
+        descripcion = request.POST.get('descripcion')
+        nombre = request.POST.get('nombre')
+        print nombre
+        direccion = request.POST.get('direccion')
+        lat=float(latlng[0])
+        print latlng[0]
+        lng =float(latlng[1])
+        print lng
+        dir = Direccion.objects.create(nombre=nombre, direccion=direccion, lat=float(lat), lon=float(lng),descripcion=descripcion)
+        dir.save()
+
+    else:
+        pass
+    return render_to_response('staff/incluir_libreta.html', {'direcciones': direcciones}, context_instance= RequestContext(request))
