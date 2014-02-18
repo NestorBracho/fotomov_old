@@ -24,7 +24,7 @@
                                     </th>
                                 </thead>
                                 {% for direccion in direcciones %}
-                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion({{ direccion.nombre }},{{ id_input }})">
+                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion('{{ direccion.nombre }}','{{ id_input }}')">
                                     <td>{{ direccion.nombre }}</td>
                                     <td>{{ direccion.direccion }}</td>
                                 </tr>
@@ -94,9 +94,7 @@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
     <script type="text/javascript">
-    function obtenerDireccion(direccion,inputid){
-        alert('hola');
-    }
+    
     function ajax_guardar(){
             var nombre = $('#nombre').val();
             var direccion = $('#formatedAddress').val();
@@ -118,7 +116,7 @@
     $(document).ready(function(){
 
                 setTimeout(function() {
-                    var latlng = new google.maps.LatLng(34.0883632, -118.3788381);
+                    var latlng = new google.maps.LatLng(34.0883632,18.3788381);
                     var myOptions = {
                         zoom: 10,
                         center: latlng,
