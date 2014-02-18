@@ -42,7 +42,7 @@ def guardar_direccion_ajax(request):
     print data
     return HttpResponse(data,mimetype='aplication/json')
 
-def libreta_incluida(request):
+def libreta_incluida(request, id_input):
     direcciones = Direccion.objects.all()
     if request.method == 'POST':
         latlng = request.POST.get('latlng').split(',')
