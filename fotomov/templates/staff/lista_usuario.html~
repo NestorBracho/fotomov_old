@@ -1,0 +1,13 @@
+<html>
+<body>
+
+<table>
+<tr><td>Nombre</td><td>Apellido</td><td>Cedula</td><td>Privilegio</td></tr>
+{% for elemento in lista %}
+
+<tr><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio}}</td></tr> 
+
+{% endfor %}
+</table>
+</body>
+</html>

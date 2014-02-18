@@ -1,0 +1,11 @@
+{% load bootstrap %}
+<html>
+<body>
+
+	<form id='form' method='POST' action=''>{% csrf_token %}
+	  <table><tr><td>{{formulario|bootstrap}}<hr /></td></tr><tr><td>{{formulario_regis.nombre|bootstrap}}{{formulario_regis.apellido|bootstrap}}{{formulario_regis.cedula|bootstrap}}{{formulario_regis.privilegio|bootstrap}}</td></tr></table>
+	  <hr />
+	  <p><input type='submit' value='Registrar' /></p>
+	</form>
+</body>
+</html>
