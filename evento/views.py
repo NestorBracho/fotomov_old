@@ -25,6 +25,10 @@ def encargado_ajax(request):
     data = serializers.serialize('json', contacto, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 
+def listar_evento(request):
+    eventos = Evento.objects.all()
+    return render_to_response('evento/listar_evento.html', {'eventos':eventos}, context_instance = RequestContext(request))
+
 def locacion_ajax(request):
     locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion'])
     if len(locaciones)>0:

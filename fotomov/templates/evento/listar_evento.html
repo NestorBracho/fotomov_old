@@ -1,0 +1,19 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Lista de eventos
+{% endblock %}
+{% block tabla %}
+<table class="table table-striped table-bordered table-hover" id="content">
+    <thead>
+        <th>Eventos</th>
+        <th>Acciones</th>
+    </thead>
+    {% for evento in eventos %}
+        <tr>
+            <td>{{ evento.nombre }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

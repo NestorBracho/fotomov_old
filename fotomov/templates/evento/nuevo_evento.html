@@ -56,9 +56,9 @@ window.onload = function(){
 
 }
 
-$("#dialog").dialog("option", "hide");
-
 $('#id_macrocliente').on('change',ajax_encargado);
+
+$("#dialog").dialog("option", "hide");
 
 function aucomloc(id_input){
 
@@ -99,7 +99,10 @@ function ajax_encargado(){
             },
             data:{'id':select_macro},
             url:'/encargado_ajax/',
-            type:'get'
+            type:'get',
+            error:function(a,error,otro){
+                document.getElementById("id_encargado").innerHTML = "<option>"+otro+"</option>";
+            }
 
         }).done(function(data){
 
@@ -191,10 +194,12 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
 
     var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
     var temp = main.split('.');
-    tempNombre += 1;
-    document.getElementById(main).setAttribute('name',tempNombre);
-    main = temp[0]+"."+temp[1]+"."+tempNombre;
-    document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label></br>";
+    if(document.getElementById(inputid).value!=''){
+        tempNombre += 1;
+        document.getElementById(main).setAttribute('name',tempNombre);
+        main = temp[0]+"."+temp[1]+"."+tempNombre;
+        document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label></br>";
+    }
     $("#dialog").dialog("close");
 }
 
