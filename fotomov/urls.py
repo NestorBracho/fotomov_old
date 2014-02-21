@@ -58,4 +58,5 @@ urlpatterns = patterns('',
     url(r'^listar_producto/$', 'productos.views.listar_producto'),
     url(r'^editar_producto/(?P<id_producto>\d+)/$', 'productos.views.editar_producto'),
     url(r'^eliminar_producto/(?P<id_producto>\d+)/$', 'productos.views.eliminar_producto'),
+    url(r'^listar_pedidos_sede/(?P<id_producto>\d+)/$', 'productos.views.listar_pedidos_sede'),
 )

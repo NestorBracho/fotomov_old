@@ -41,3 +41,6 @@ def locacion_ajax(request):
         locs = None
     data = serializers.serialize('json', locs, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
+
+def listar_pedidos_sede(request, id_sede):
+    return True
