@@ -54,4 +54,8 @@ urlpatterns = patterns('',
     url(r'^eliminar_cliente/(?P<id_cliente>\d+)/$', 'clientes.views.eliminar_cliente'),
     url(r'^libreta_incluida/(?P<id_input>.*)$', 'direcciones.views.libreta_incluida'),
     url(r'^listar_evento/$', 'evento.views.listar_evento'),
+    url(r'^nuevo_producto/$', 'productos.views.nuevo_producto'),
+    url(r'^listar_producto/$', 'productos.views.listar_producto'),
+    url(r'^editar_producto/(?P<id_producto>\d+)/$', 'productos.views.editar_producto'),
+    url(r'^eliminar_producto/(?P<id_producto>\d+)/$', 'productos.views.eliminar_producto'),
 )
