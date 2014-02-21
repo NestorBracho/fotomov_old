@@ -130,10 +130,41 @@ function AgregarDia(){
         temp[0]=parseInt(temp[0]);
         temp[0] += 1;
         dias = temp[0]+"."+temp[1]+"."+temp[2];
-        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
+        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='"+dias+"conten'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-danger' onclick=EliminarDia('"+dias+"conten') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
         document.getElementById('id_input_fecha').value = '';
     }else{
         alert('vacio');
+    }
+
+}
+
+function EliminarDia(div){
+
+    var temp;
+
+    document.getElementById(div).innerHTML='';
+
+    temp = dias.split(".");
+    temp[0]=parseInt(temp[0]);
+
+    for(var i=1;i<temp[0];i++){
+
+        if(document.getElementById(i+".0.0conten").innerHTML==''){
+
+            console.log(i+".0.0conten");
+
+            for(var j=i;j<temp[0];j++){
+
+                var k = j+1;
+
+                console.log(j+".0.0conten");
+
+                document.getElementById(j+".0.0conten").innerHTML = document.getElementById(k+".0.0conten").innerHTML;
+
+            }
+
+        }
+
     }
 
 }
@@ -202,7 +233,6 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
     }
     $("#dialog").dialog("close");
 }
-
 
 </script>
 {% endblock %}
