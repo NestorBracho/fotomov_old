@@ -3,15 +3,17 @@ from clientes.models import Encargado
 from direcciones.models import Direccion
 #encoding:utf-8
 
+
+class Sede(models.Model):
+    fecha = models.DateField()
+    direccion = models.ForeignKey(Direccion)
+
 class Evento(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=1000)
     porcentaje_institucion = models.FloatField()
     encargado = models.ForeignKey(Encargado)
-
-class Sede(models.Model):
-    fecha = models.DateField()
-    direccion = models.ForeignKey(Direccion)
+    locacion = models.ManyToManyField(Sede)
 
 class Funcion(models.Model):
     horas = models.IntegerField(max_length=2)
