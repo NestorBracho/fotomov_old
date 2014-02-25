@@ -147,6 +147,7 @@ INSTALLED_APPS = (
     'staff',
     'direcciones',
     'productos',
+    'modulo_movil',
 )
 
 # A sample logging configuration. The only tangible logging

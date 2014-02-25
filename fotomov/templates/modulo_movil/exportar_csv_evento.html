@@ -1,0 +1,26 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+    <table id="content" class="table table-striped table-bordered table-hover">
+        <thead>
+            <th>
+                Exportar
+            </th>
+            <th>
+                Evento
+            </th>
+        </thead>
+        <tbody>
+            {% for evento in eventos %}
+                <tr>
+                    <td>
+                        <input type="checkbox" value="{{ evento.id }}">
+                    </td>
+                    <td>
+                        {{ evento.nombre }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
