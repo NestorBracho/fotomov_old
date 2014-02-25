@@ -4,35 +4,33 @@
     <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block seccion-contenido %}
-<form method="POST" action="r" enctype="multipart/form-data">{% csrf_token %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Datos del evento</h4>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Datos del evento</h4>
+    </div>
+    <div class="panel-body">
+        <div class="col-sm-4">
+            {{ formulario.nombre | bootstrap }}
         </div>
-        <div class="panel-body">
-            <div class="col-sm-4">
-                {{ formulario.nombre | bootstrap }}
-            </div>
-            <div class="col-sm-4">
-                {{ formulario.macrocliente | bootstrap }}
-            </div>
-            <div class="col-sm-4">
-                {{ formulario.encargado | bootstrap }}
-            </div>
-            <div class="col-sm-12">
-                {{ formulario.descripcion | bootstrap }}
-            </div>
+        <div class="col-sm-4">
+            {{ formulario.macrocliente | bootstrap }}
+        </div>
+        <div class="col-sm-4">
+            {{ formulario.encargado | bootstrap }}
+        </div>
+        <div class="col-sm-12">
+            {{ formulario.descripcion | bootstrap }}
+        </div>
 
-        </div>
     </div>
+</div>
+<div>
+    <h4>Días</h4>
     <div>
-        <h4>Días</h4>
-        <div>
-            <div id="id_dias"></div>
-            <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
-        </div>
+        <div id="id_dias"></div>
+        <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
     </div>
-</form>
+</div>
 
 <div id='dialog'></div>
 <div id='inphid'></div>
@@ -130,41 +128,10 @@ function AgregarDia(){
         temp[0]=parseInt(temp[0]);
         temp[0] += 1;
         dias = temp[0]+"."+temp[1]+"."+temp[2];
-        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='"+dias+"conten'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-danger' onclick=EliminarDia('"+dias+"conten') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
+        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='"+dias+"conten'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-danger' onclick=EliminarEvent('"+dias+"conten') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
         document.getElementById('id_input_fecha').value = '';
     }else{
         alert('vacio');
-    }
-
-}
-
-function EliminarDia(div){
-
-    var temp;
-
-    document.getElementById(div).innerHTML='';
-
-    temp = dias.split(".");
-    temp[0]=parseInt(temp[0]);
-
-    for(var i=1;i<temp[0];i++){
-
-        if(document.getElementById(i+".0.0conten").innerHTML==''){
-
-            console.log(i+".0.0conten");
-
-            for(var j=i;j<temp[0];j++){
-
-                var k = j+1;
-
-                console.log(j+".0.0conten");
-
-                document.getElementById(j+".0.0conten").innerHTML = document.getElementById(k+".0.0conten").innerHTML;
-
-            }
-
-        }
-
     }
 
 }
@@ -197,7 +164,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
             temp[1] += 1;
             main = temp[0]+"."+tempNombre+"."+temp[2];
 
-            document.getElementById(tablaid).innerHTML += "</br><div><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id=tabla"+main+"></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('tabla"+main+"','"+main+"')> </div></div>";
+            document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><p><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label><input type='button' class='btn btn-xs' onclick=EliminarEvent('b"+main+"') value='Eliminar'/></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id="+main+"tabla ></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('"+main+"tabla','"+main+"')> </div></div>";
 
         }else{
 
@@ -229,10 +196,23 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
         tempNombre += 1;
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;
-        document.getElementById(tablaid).innerHTML += "<label id="+main+">"+document.getElementById(inputid).value+"</label></br>";
+        document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+">"+document.getElementById(inputid).value+"</label><input type='button' class='btn btn-xs' onclick=EliminarEvent('b"+main+"') value='Eliminar'/></br></div>";
     }
     $("#dialog").dialog("close");
 }
 
+function EliminarEvent(div){
+
+    document.getElementById(div).parentNode.removeChild(document.getElementById(div));
+
+}
+
+function submit(){
+
+    document.getElementById('inphid').innerHTML = "<form method='POST' action='r' enctype='multipart/form-data'>{% csrf_token %}";
+
+    document.getElementById('inphid').innerHTML += "</form>";
+
+}
 </script>
 {% endblock %}
