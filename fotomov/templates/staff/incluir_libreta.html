@@ -22,11 +22,15 @@
                                     <th>
                                         Direccion
                                     </th>
+                                    <th>
+                                        Acciones
+                                    </th>
                                 </thead>
                                 {% for direccion in direcciones %}
                                 <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion('{{ direccion.nombre }}','{{ id_input }}')">
                                     <td>{{ direccion.nombre }}</td>
                                     <td>{{ direccion.direccion }}</td>
+                                    <td><button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{direccion.id}})">Eliminar</button></td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -108,7 +112,7 @@
 
                 }).done(function(data){
                     for(var i=0; i<data.length; i++){
-                        $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td></tr>");
+                        $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminar</button></td></tr>");
                 }
                         });
                 }
@@ -128,5 +132,21 @@
                 }, 500);
 
         });
+ </script>
+ <script type="text/javascript">
+      	function deleteAlert(id)
+        	{
+        		var r=confirm("¿Esta seguro que desea eliminar?");
+        		if (r==true)
+        	  {
+        			var string1 = "/eliminar_direccion/";
+        		  window.location.assign(string1 + id)
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
  </script>
 {% endblock %}

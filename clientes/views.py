@@ -10,6 +10,7 @@ from clientes.forms import *
 from clientes.models import *
 from marca.forms import *
 from marca.models import *
+from direcciones.models import *
 
 def nuevo_macrocliente(request):
     if request.method == 'POST':
@@ -30,8 +31,6 @@ def nuevo_macrocliente(request):
             contacDescripcion = formularioR.cleaned_data['descripcion']
             contactoEmail = formularioR.cleaned_data['email']
             contactoCargo = formularioR.cleaned_data['cargo']
-            print "aqui viene el nombre"
-            print nomMacrocliente
             macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
             macrocliente.save()
             encargado = Encargado.objects.create(macrocliente=macrocliente, cargo=contactoCargo, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)

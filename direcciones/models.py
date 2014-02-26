@@ -5,5 +5,4 @@ class Direccion(models.Model):
     direccion = models.CharField(max_length=500)
     lon = models.FloatField()
     lat = models.FloatField()
-    es_sede = models.BooleanField(default=False)
     descripcion = models.CharField(max_length=500)

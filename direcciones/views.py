@@ -38,25 +38,28 @@ def guardar_direccion_ajax(request):
     dir = Direccion.objects.create(nombre=nombre, direccion=direccion, descripcion=descripcion, lat=lat, lon=lng)
     dir.save()
     lista = Direccion.objects.filter(id=dir.id)
-    data= serializers.serialize('json',lista, fields = ('nombre', 'direccion'))
+    data= serializers.serialize('json', lista, fields=('nombre', 'direccion'))
     print data
     return HttpResponse(data,mimetype='aplication/json')
 
 def libreta_incluida(request, id_input):
-    direcciones = Direccion.objects.filter(es_sede=False)
+    direcciones = Direccion.objects.all()
     if request.method == 'POST':
+        nombre = request.POST.get('nombre')
         latlng = request.POST.get('latlng').split(',')
         descripcion = request.POST.get('descripcion')
-        nombre = request.POST.get('nombre')
         print nombre
         direccion = request.POST.get('direccion')
         lat=float(latlng[0])
         print latlng[0]
         lng =float(latlng[1])
         print lng
-        dir = Direccion.objects.create(nombre=nombre, direccion=direccion, lat=float(lat), lon=float(lng),descripcion=descripcion, es_sede=False)
+        dir = Direccion.objects.create(nombre=nombre, direccion=direccion, lat=float(lat), lon=float(lng),descripcion=descripcion)
         dir.save()
-
     else:
         pass
     return render_to_response('staff/incluir_libreta.html', {'direcciones': direcciones, 'id_input': id_input}, context_instance= RequestContext(request))
+
+def eliminar_direccion(request, id_direccion):
+    direccion = Direccion.objects.get(id=id_direccion).delete()
+    return HttpResponseRedirect('/libreta_incluida')
