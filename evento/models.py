@@ -1,12 +1,8 @@
 from django.db import models
 from clientes.models import Encargado
 from direcciones.models import Direccion
+from clientes.models import Sede
 #encoding:utf-8
-
-
-class Sede(models.Model):
-    fecha = models.DateField()
-    direccion = models.ForeignKey(Direccion)
 
 class Evento(models.Model):
     nombre = models.CharField(max_length=200)

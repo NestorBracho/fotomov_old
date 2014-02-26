@@ -1,5 +1,6 @@
 from django.db import models
 from marca.models import SubMarca
+from direcciones.models import *
 
 class MacroCliente(models.Model):
     submarca = models.ForeignKey(SubMarca)
@@ -30,4 +31,7 @@ class Cliente(models.Model):
     rif = models.CharField(max_length=10, null=True, blank=True)
     cedula = models.CharField(max_length=8, null=True, blank=True)
 
-
+class Sede(models.Model):
+    nombre = models.CharField(max_length=100)
+    direccion = models.ForeignKey(Direccion)
+    macrocliente = models.ForeignKey(MacroCliente)

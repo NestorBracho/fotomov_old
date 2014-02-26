@@ -120,10 +120,16 @@ def nuevo_contacto_macrocliente(request, id_macrocliente):
     if request.method == 'POST':
         formulario = MacroClienteContactoForm(request.POST)
         if formulario.is_valid():
-            form = formulario.save(commit=False)
-            form.macrocliente = macrocliente
-            form.save()
+            nombreContacto = formulario.cleaned_data['nombreContacto']
+            cedula = formulario.cleaned_data['cedula']
+            cargo = formulario.cleaned_data['cargo']
+            telefono = formulario.cleaned_data['telefono']
+            email = formulario.cleaned_data['email']
+            descripcion = formulario.cleaned_data['descripcion']
+            encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=nombreContacto, cedula=cedula, cargo=cargo, telefono=telefono, email=email, descripcion=descripcion)
             return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/1')
+        else:
+            print "no entro"
     else:
         formulario = MacroClienteContactoForm()
     return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario, 'nuevo': True}, context_instance = RequestContext(request))
