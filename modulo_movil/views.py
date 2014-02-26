@@ -8,11 +8,17 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
 from evento.models import *
+import csv
+import time
+import os
 
 def exportar_csv_evento(request):
     eventos = Evento.objects.all().order_by('-id')
     if request.method == 'POST':
-        pass
+       # exportar = request.POST.getlist('eventos')
+       # nombre = "BDD-" + time.strftime("%d/%m/%Y") + ".csv"
+       # archivo = open(nombre,"w+")
+       # print nombre
     else:
         pass
     return render_to_response('modulo_movil/exportar_csv_evento.html', {'eventos': eventos},

@@ -1,7 +1,7 @@
 from django.db import models
 
 class Direccion(models.Model):
-    nombre = models.CharField(max_length=200, unique=True, min_length=1, blank=False)
+    nombre = models.CharField(max_length=200, unique=True, blank=False)
     direccion = models.CharField(max_length=500)
     lon = models.FloatField()
     lat = models.FloatField()
