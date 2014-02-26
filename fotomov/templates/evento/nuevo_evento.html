@@ -233,9 +233,8 @@ function EliminarLocacion(main){
 function EliminarFuncion(main){
 
     var nam,aux;
-    alert(main);
     aux = main.split('.');
-    aux = aux[0]+aux[1]+'.0';
+    aux = aux[0]+'.'+aux[1]+'.0';
     nam = document.getElementById(aux).getAttribute("name");
     nam=parseInt(nam);
     nam--;
