@@ -15,6 +15,7 @@ import os
 def exportar_csv_evento(request):
     eventos = Evento.objects.all().order_by('-id')
     if request.method == 'POST':
+        pass
        # exportar = request.POST.getlist('eventos')
        # nombre = "BDD-" + time.strftime("%d/%m/%Y") + ".csv"
        # archivo = open(nombre,"w+")

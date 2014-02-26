@@ -176,7 +176,7 @@ def nuevo_cliente(request):
         formulario = ClienteForm(request.POST)
         if formulario.is_valid():
             cliente = formulario.save()
-            return HttpResponseRedirect('/listar_clientes')
+            return HttpResponseRedirect('/listar_cliente')
     else:
         formulario = ClienteForm()
     return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
@@ -207,4 +207,4 @@ def editar_cliente(request, id_cliente):
 
 def eliminar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente).delete()
-    return HttpResponseRedirect('listar_cliente')
+    return HttpResponseRedirect('/listar_cliente')

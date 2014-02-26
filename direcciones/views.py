@@ -43,7 +43,7 @@ def guardar_direccion_ajax(request):
     return HttpResponse(data,mimetype='aplication/json')
 
 def libreta_incluida(request, id_input):
-    direcciones = Direccion.objects.all()
+    direcciones = Direccion.objects.filter(es_sede=False)
     if request.method == 'POST':
         latlng = request.POST.get('latlng').split(',')
         descripcion = request.POST.get('descripcion')
@@ -54,7 +54,7 @@ def libreta_incluida(request, id_input):
         print latlng[0]
         lng =float(latlng[1])
         print lng
-        dir = Direccion.objects.create(nombre=nombre, direccion=direccion, lat=float(lat), lon=float(lng),descripcion=descripcion)
+        dir = Direccion.objects.create(nombre=nombre, direccion=direccion, lat=float(lat), lon=float(lng),descripcion=descripcion, es_sede=False)
         dir.save()
 
     else:
