@@ -27,7 +27,7 @@
 <div>
     <h4>Días</h4>
     <div>
-        <div id="id_dias"></div>
+        <div id="id_dias" name=0></div>
         <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
     </div>
 </div>
@@ -123,12 +123,17 @@ function ajax_encargado(){
 function AgregarDia(){
 
     var temp= dias.split(".");
+    var aux;
 
     if(document.getElementById('id_input_fecha').value!=''){
         temp[0]=parseInt(temp[0]);
         temp[0] += 1;
         dias = temp[0]+"."+temp[1]+"."+temp[2];
-        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='"+dias+"conten'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-danger' onclick=EliminarEvent('"+dias+"conten') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
+        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='b"+dias+"'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-danger' onclick=EliminarDia('"+dias+"') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
+        aux = document.getElementById('id_dias').getAttribute('name');
+        aux = parseInt(aux);
+        aux++;
+        document.getElementById('id_dias').setAttribute('name',aux);
         document.getElementById('id_input_fecha').value = '';
     }else{
         alert('vacio');
@@ -164,7 +169,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
             temp[1] += 1;
             main = temp[0]+"."+tempNombre+"."+temp[2];
 
-            document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><p><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label><input type='button' class='btn btn-xs' onclick=EliminarEvent('b"+main+"') value='Eliminar'/></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id="+main+"tabla ></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('"+main+"tabla','"+main+"')> </div></div>";
+            document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><p><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label><input type='button' class='btn btn-xs' onclick=EliminarLocacion('"+main+"') value='Eliminar'/></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id="+main+"tabla ></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('"+main+"tabla','"+main+"')> </div></div>";
 
         }else{
 
@@ -196,14 +201,46 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
         tempNombre += 1;
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;
-        document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+">"+document.getElementById(inputid).value+"</label><input type='button' class='btn btn-xs' onclick=EliminarEvent('b"+main+"') value='Eliminar'/></br></div>";
+        document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+" name=0 >"+document.getElementById(inputid).value+"</label><input type='button' class='btn btn-xs' onclick=EliminarFuncion('"+main+"') value='Eliminar'/></br></div>";
     }
     $("#dialog").dialog("close");
 }
 
-function EliminarEvent(div){
+function EliminarDia(main){
 
-    document.getElementById(div).parentNode.removeChild(document.getElementById(div));
+    var aux;
+    aux = document.getElementById('id_dias').getAttribute('name');
+    aux = parseInt(aux);
+    aux--;
+    document.getElementById('id_dias').setAttribute('name',aux);
+    document.getElementById("b"+main).parentNode.removeChild(document.getElementById("b"+main));
+
+}
+
+function EliminarLocacion(main){
+
+    var nam,aux;
+    aux = main.split('.');
+    aux = aux[0]+'.0'+'.0';
+    nam = document.getElementById(aux).getAttribute("name");
+    nam=parseInt(nam);
+    nam--;
+    document.getElementById(main).setAttribute("name",nam);
+    document.getElementById("b"+main).parentNode.removeChild(document.getElementById("b"+main));
+
+}
+
+function EliminarFuncion(main){
+
+    var nam,aux;
+    alert(main);
+    aux = main.split('.');
+    aux = aux[0]+aux[1]+'.0';
+    nam = document.getElementById(aux).getAttribute("name");
+    nam=parseInt(nam);
+    nam--;
+    document.getElementById(main).setAttribute("name",nam);
+    document.getElementById("b"+main).parentNode.removeChild(document.getElementById("b"+main));
 
 }
 
