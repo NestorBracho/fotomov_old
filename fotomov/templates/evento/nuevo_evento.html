@@ -4,26 +4,28 @@
     <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block seccion-contenido %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Datos del evento</h4>
-    </div>
-    <div class="panel-body">
-        <div class="col-sm-4">
-            {{ formulario.nombre | bootstrap }}
+<form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Datos del evento</h4>
         </div>
-        <div class="col-sm-4">
-            {{ formulario.macrocliente | bootstrap }}
-        </div>
-        <div class="col-sm-4">
-            {{ formulario.encargado | bootstrap }}
-        </div>
-        <div class="col-sm-12">
-            {{ formulario.descripcion | bootstrap }}
-        </div>
+        <div class="panel-body">
+            <div class="col-sm-4">
+                {{ formulario.nombre | bootstrap }}
+            </div>
+            <div class="col-sm-4">
+                {{ formulario.macrocliente | bootstrap }}
+            </div>
+            <div class="col-sm-4">
+                {{ formulario.encargado | bootstrap }}
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.descripcion | bootstrap }}
+            </div>
 
+        </div>
     </div>
-</div>
+</form>
 <div>
     <h4>Días</h4>
     <div>
@@ -31,6 +33,8 @@
         <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
     </div>
 </div>
+
+        <input type="button" value="SUBMIT" class="btn btn-xl btn-primary" onclick="submit()">
 
 <div id='dialog'></div>
 <div id='inphid'></div>
@@ -129,7 +133,7 @@ function AgregarDia(){
         temp[0]=parseInt(temp[0]);
         temp[0] += 1;
         dias = temp[0]+"."+temp[1]+"."+temp[2];
-        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='b"+dias+"'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-danger' onclick=EliminarDia('"+dias+"') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
+        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='b"+dias+"'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-xs btn-danger' onclick=EliminarDia('"+dias+"') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
         aux = document.getElementById('id_dias').getAttribute('name');
         aux = parseInt(aux);
         aux++;
@@ -225,7 +229,7 @@ function EliminarLocacion(main){
     nam = document.getElementById(aux).getAttribute("name");
     nam=parseInt(nam);
     nam--;
-    document.getElementById(main).setAttribute("name",nam);
+    document.getElementById(aux).setAttribute("name",nam);
     document.getElementById("b"+main).parentNode.removeChild(document.getElementById("b"+main));
 
 }
@@ -238,17 +242,73 @@ function EliminarFuncion(main){
     nam = document.getElementById(aux).getAttribute("name");
     nam=parseInt(nam);
     nam--;
-    document.getElementById(main).setAttribute("name",nam);
+    document.getElementById(aux).setAttribute("name",nam);
     document.getElementById("b"+main).parentNode.removeChild(document.getElementById("b"+main));
 
 }
 
 function submit(){
 
-    document.getElementById('inphid').innerHTML = "<form method='POST' action='r' enctype='multipart/form-data'>{% csrf_token %}";
+    var dCant = document.getElementById('id_dias').getAttribute('name');
+    var lCant, fCant;
+    var d = 0, dAux = 1, l = 1, lAux = 1, f = 1, fAux = 1;
+    dCant = parseInt(dCant);
 
-    document.getElementById('inphid').innerHTML += "</form>";
+    while(d < dCant){
 
+        while(document.getElementById(dAux+'.0.0') == null){
+
+            dAux++;
+
+        }
+
+        document.getElementById('nuevoEvento').innerHTML += "<input type='text' name='dias' value='"+dAux+".0.0-"+document.getElementById(dAux+'.0.0').innerHTML+"'>";
+
+        lCant = document.getElementById(dAux+'.0.0').getAttribute('name');
+        lCant = parseInt(lCant);
+        lAux = 1;
+        l = 0;
+
+        while(l < lCant){
+
+            while(document.getElementById(dAux+'.'+lAux+'.0') == null){
+
+                lAux++;
+
+            }
+
+            document.getElementById('nuevoEvento').innerHTML += "<input type='text' name='locacion-"+dAux+".0.0' value='"+dAux+"."+lAux+".0-"+document.getElementById(dAux+'.'+lAux+'.0').innerHTML+"'>";
+
+            fCant = document.getElementById(dAux+'.'+lAux+'.0').getAttribute('name');
+            fCant = parseInt(fCant);
+            fAux = 1;
+            f = 0;
+
+            while(f < fCant){
+
+                while(document.getElementById(dAux+'.'+lAux+'.'+fAux) == null){
+
+                    fAux++;
+
+                }
+
+                document.getElementById('nuevoEvento').innerHTML += "<input type='text' name='funcion-"+dAux+"."+lAux+".0' value='"+dAux+"."+lAux+"."+fAux+"-"+document.getElementById(dAux+'.'+lAux+'.'+fAux).innerHTML+"'>";
+
+                fAux++;
+                f++;
+            }
+
+            lAux++;
+            l++;
+
+        }
+
+        dAux++;
+        d++;
+
+    }
+
+    document.forms['nuevoEvento'].submit();
 }
 </script>
 {% endblock %}

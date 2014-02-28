@@ -105,17 +105,23 @@
             var descripcion = $('#descripcion').val();
             var latlng = $('#latlng').val();
 
-                $.ajax({
-                    data:{'nombre': nombre, 'direccion': direccion, 'descripcion': descripcion, 'latlng': latlng},
-                    url:'/guardar_direccion_ajax/',
-                    type: 'get'
+        var nombre = $('#nombre').val();
+        var direccion = $('#formatedAddress').val();
+        var descripcion = $('#descripcion').val();
+        var latlng = $('#latlng').val();
 
                 }).done(function(data){
                     for(var i=0; i<data.length; i++){
-                        $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminar</button></td></tr>");
+                        $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td></tr>");
                 }
-                        });
-                }
+            });
+
+        }else{
+
+            alert('El nombre de la locación no puede estar en blanco.');
+
+        }
+    }
 
     $(document).ready(function(){
 
@@ -132,21 +138,5 @@
                 }, 500);
 
         });
- </script>
- <script type="text/javascript">
-      	function deleteAlert(id)
-        	{
-        		var r=confirm("¿Esta seguro que desea eliminar?");
-        		if (r==true)
-        	  {
-        			var string1 = "/eliminar_direccion/";
-        		  window.location.assign(string1 + id)
-          	}
-        		else
-          	{
-
-          	}
-        		document.getElementById("demo").innerHTML=x;
-        }
  </script>
 {% endblock %}
