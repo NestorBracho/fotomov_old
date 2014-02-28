@@ -16,7 +16,21 @@ def nuevo_evento(request):
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-            print "funcion"
+            dias = request.POST.getlist('dias')
+            for dia in dias:
+                dia_split = dia.split('-')
+                dia_id = dia_split[0]
+                dia_valor = dia_split[1]
+                locaciones = request.POST.getlist("locacion" + "-" + dia_id)
+                for locacion in locaciones:
+                    locacion_split = locacion.split('-')
+                    locacion_id = locacion_split[0]
+                    locacion_valor = locacion_split[1]
+                    funciones = request.POST.getlist("funcion" + "-" + locacion_id)
+                    for funcion in funciones:
+                        funcion_split = funcion.split('-')
+                        funcion_id = funcion_split[0]
+                        funcion_valor = funcion_split[1]
     else:
         formulario = EventoForm()
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))

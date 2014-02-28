@@ -17,7 +17,10 @@
                 {{ formulario.macrocliente | bootstrap }}
             </div>
             <div class="col-sm-3">
-                {{ formulario.encargado | bootstrap }}
+                <label>Encargado</label>
+                <select id="id_encargado" class="form-control" name="encargado">
+                    <option>---------</option>
+                </select>
             </div>
             <div class="col-sm-3">
                 {{ formulario.porcentaje_institucion | bootstrap }}
