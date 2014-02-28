@@ -30,7 +30,7 @@
                                 <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion('{{ direccion.nombre }}','{{ id_input }}')">
                                     <td>{{ direccion.nombre }}</td>
                                     <td>{{ direccion.direccion }}</td>
-                                    <td><button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{direccion.id}})">Eliminar</button></td>
+                                    <td><button type="button" class="btn btn-default btn-danger btn-xs" onclick="deleteAlert({{direccion.id}})">Eliminar</button></td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -139,4 +139,20 @@
 
         });
  </script>
+ <script type="text/javascript">
+        	function deleteAlert(id)
+        	{
+        		var r=confirm("¿Esta seguro que desea eliminar?");
+        		if (r==true)
+        	  {
+        			var string1 = "/eliminar_direccion/";
+        		  window.location.assign(string1 + id)
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
+    </script>
 {% endblock %}
