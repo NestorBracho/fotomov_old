@@ -6,6 +6,6 @@ from django import forms
 
 class EventoForm(forms.ModelForm):
     macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all())
-    encargado = forms.ChoiceField()
     class Meta:
         model = Evento
+        exclude = ['locacion',]
