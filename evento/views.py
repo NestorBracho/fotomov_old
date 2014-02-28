@@ -14,7 +14,9 @@ from direcciones.models import *
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
     if request.method == 'POST':
-        pass
+        formulario = EventoForm(request.POST)
+        if formulario.is_valid():
+            print "funcion"
     else:
         formulario = EventoForm()
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))

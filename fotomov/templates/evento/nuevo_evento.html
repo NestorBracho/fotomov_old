@@ -10,14 +10,17 @@
             <h4>Datos del evento</h4>
         </div>
         <div class="panel-body">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {{ formulario.nombre | bootstrap }}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {{ formulario.macrocliente | bootstrap }}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {{ formulario.encargado | bootstrap }}
+            </div>
+            <div class="col-sm-3">
+                {{ formulario.porcentaje_institucion | bootstrap }}
             </div>
             <div class="col-sm-12">
                 {{ formulario.descripcion | bootstrap }}
