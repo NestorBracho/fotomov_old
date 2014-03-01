@@ -13,8 +13,8 @@ class Evento(models.Model):
 class Funcion(models.Model):
     evento = models.ForeignKey(Evento)
     dia = models.CharField(max_length=20)
-    horas = models.IntegerField(max_length=2)
-    entrega_fotos = models.DateField()
+    horas = models.IntegerField(max_length=2, null=True, blank=True)
+    entrega_fotos = models.DateField(null=True, blank=True)
     direccion = models.ForeignKey(Direccion)
     sede = models.ForeignKey(Sede)
 

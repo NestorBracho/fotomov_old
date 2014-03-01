@@ -17,6 +17,9 @@ def nuevo_evento(request):
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
             dias = request.POST.getlist('dias')
+            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+            evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                           porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado)
             for dia in dias:
                 dia_split = dia.split('-')
                 dia_id = dia_split[0]
@@ -31,6 +34,7 @@ def nuevo_evento(request):
                         funcion_split = funcion.split('-')
                         funcion_id = funcion_split[0]
                         funcion_valor = funcion_split[1]
+                        #funcion_save = Funcion.objects.create(evento=evento, dia=dia_valor, horas=0, entrega_fotos='12/12/2012', )
     else:
         formulario = EventoForm()
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))
