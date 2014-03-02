@@ -16,7 +16,7 @@ class Funcion(models.Model):
     horas = models.IntegerField(max_length=2, null=True, blank=True)
     entrega_fotos = models.DateField(null=True, blank=True)
     direccion = models.ForeignKey(Direccion)
-    sede = models.ForeignKey(Sede)
+    sede = models.ForeignKey(Sede, null=True)
 
 class Gasto(models.Model):
     nombre = models.CharField(max_length=100)
