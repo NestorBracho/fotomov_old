@@ -1,0 +1,11 @@
+{% extends 'admin.html' %}
+{% block seccion-contenido %}
+    {% for funcion in funciones %}
+    {{ funcion.dia }}
+        {% for staff in tipos_staff %}
+            {{ staff.nombre }}
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+{% block js %}
+{% endblock %}

@@ -62,4 +62,5 @@ urlpatterns = patterns('',
    # url(r'^listar_pedidos_sede/(?P<id_producto>\d+)/$', 'productos.views.listar_pedidos_sede'),
     url(r'^exportar_csv_evento/$', 'modulo_movil.views.exportar_csv_evento'),
     url(r'^eliminar_direccion/(?P<id_direccion>\d+)/$', 'direcciones.views.eliminar_direccion'),
+    url(r'^agregar_staff/(?P<id_evento>\d+)/$', 'evento.views.agregar_staff'),
 )
