@@ -38,7 +38,7 @@ def nuevo_evento(request):
                         funcion_id = funcion_split[0]
                         funcion_valor = funcion_split[1]
                         print "antes de crear"
-                        funcion_save = Funcion.objects.create(evento=evento, dia=dia_valor, horas=0, entrega_fotos='12/12/2012', direccion=locacion_valor)
+                        funcion_save = Funcion.objects.create(evento=evento, dia=dia_valor, horas=0, entrega_fotos='2012-12-12', direccion=locacion_save)
                         funcion_save.save()
     else:
         formulario = EventoForm()
