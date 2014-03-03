@@ -17,7 +17,10 @@
                 {{ formulario.macrocliente | bootstrap }}
             </div>
             <div class="col-sm-3">
-                {{ formulario.encargado | bootstrap }}
+                <label>Encargado</label>
+                <select id="id_encargado" class="form-control" name="encargado">
+                    <option>---------</option>
+                </select>
             </div>
             <div class="col-sm-3">
                 {{ formulario.porcentaje_institucion | bootstrap }}
@@ -27,6 +30,7 @@
             </div>
 
         </div>
+        <div id="campos"></div>
     </div>
 </form>
 <div>
@@ -265,7 +269,7 @@ function submit(){
 
         }
 
-        document.getElementById('nuevoEvento').innerHTML += "<input type='text' name='dias' value='"+dAux+".0.0-"+document.getElementById(dAux+'.0.0').innerHTML+"'>";
+        document.getElementById('campos').innerHTML += "<input type='text' name='dias' value='"+dAux+".0.0-"+document.getElementById(dAux+'.0.0').innerHTML+"'>";
 
         lCant = document.getElementById(dAux+'.0.0').getAttribute('name');
         lCant = parseInt(lCant);
@@ -280,7 +284,7 @@ function submit(){
 
             }
 
-            document.getElementById('nuevoEvento').innerHTML += "<input type='text' name='locacion-"+dAux+".0.0' value='"+dAux+"."+lAux+".0-"+document.getElementById(dAux+'.'+lAux+'.0').innerHTML+"'>";
+            document.getElementById('campos').innerHTML += "<input type='text' name='locacion-"+dAux+".0.0' value='"+dAux+"."+lAux+".0-"+document.getElementById(dAux+'.'+lAux+'.0').innerHTML+"'>";
 
             fCant = document.getElementById(dAux+'.'+lAux+'.0').getAttribute('name');
             fCant = parseInt(fCant);
@@ -295,7 +299,7 @@ function submit(){
 
                 }
 
-                document.getElementById('nuevoEvento').innerHTML += "<input type='text' name='funcion-"+dAux+"."+lAux+".0' value='"+dAux+"."+lAux+"."+fAux+"-"+document.getElementById(dAux+'.'+lAux+'.'+fAux).innerHTML+"'>";
+                document.getElementById('campos').innerHTML += "<input type='text' name='funcion-"+dAux+"."+lAux+".0' value='"+dAux+"."+lAux+"."+fAux+"-"+document.getElementById(dAux+'.'+lAux+'.'+fAux).innerHTML+"'>";
 
                 fAux++;
                 f++;

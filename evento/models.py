@@ -9,12 +9,15 @@ class Evento(models.Model):
     descripcion = models.CharField(max_length=1000)
     porcentaje_institucion = models.FloatField()
     encargado = models.ForeignKey(Encargado)
-    locacion = models.ManyToManyField(Sede)
 
 class Funcion(models.Model):
-    horas = models.IntegerField(max_length=2)
-    entrega_fotos = models.DateField()
-    sede = models.ForeignKey(Sede)
+    nombre = models.CharField(max_length=200)
+    evento = models.ForeignKey(Evento)
+    dia = models.CharField(max_length=20)
+    horas = models.IntegerField(max_length=2, null=True, blank=True)
+    entrega_fotos = models.DateField(null=True, blank=True)
+    direccion = models.ForeignKey(Direccion)
+    sede = models.ForeignKey(Sede, null=True)
 
 class Gasto(models.Model):
     nombre = models.CharField(max_length=100)

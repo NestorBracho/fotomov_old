@@ -7,6 +7,7 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
+from staff.models import Privilegios
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
@@ -16,10 +17,43 @@ def nuevo_evento(request):
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-            print "funcion"
+            print "es valido"
+            dias = request.POST.getlist('dias')
+            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+            evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                           porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado)
+            print dias
+            for dia in dias:
+                dia_split = dia.split('-')
+                dia_id = dia_split[0]
+                dia_valor = dia_split[1]
+                locaciones = request.POST.getlist("locacion" + "-" + dia_id)
+                for locacion in locaciones:
+                    locacion_split = locacion.split('-')
+                    locacion_id = locacion_split[0]
+                    locacion_valor = locacion_split[1]
+                    locacion_save = Direccion.objects.get(nombre=locacion_valor)
+                    funciones = request.POST.getlist("funcion" + "-" + locacion_id)
+                    for funcion in funciones:
+                        funcion_split = funcion.split('-')
+                        funcion_id = funcion_split[0]
+                        funcion_valor = funcion_split[1]
+                        print "antes de crear"
+                        funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_valor, horas=0, entrega_fotos='2012-12-12', direccion=locacion_save)
+                        funcion_save.save()
+            return HttpResponseRedirect("/agregar_staff/" + str(evento.id))
     else:
         formulario = EventoForm()
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))
+
+def agregar_staff(request, id_evento):
+    evento = Evento.objects.get(id=id_evento)
+    funciones = Funcion.objects.filter(evento=evento)
+    tipos_staf = Privilegios.objects.filter(valor=6)
+    if request.method == 'POST':
+        pass
+    return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staf}, context_instance= RequestContext(request))
+
 
 def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
