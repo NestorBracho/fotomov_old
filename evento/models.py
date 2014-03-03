@@ -11,6 +11,7 @@ class Evento(models.Model):
     encargado = models.ForeignKey(Encargado)
 
 class Funcion(models.Model):
+    nombre = models.CharField(max_length=200)
     evento = models.ForeignKey(Evento)
     dia = models.CharField(max_length=20)
     horas = models.IntegerField(max_length=2, null=True, blank=True)

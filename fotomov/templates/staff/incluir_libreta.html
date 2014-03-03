@@ -105,23 +105,17 @@
             var descripcion = $('#descripcion').val();
             var latlng = $('#latlng').val();
 
-        var nombre = $('#nombre').val();
-        var direccion = $('#formatedAddress').val();
-        var descripcion = $('#descripcion').val();
-        var latlng = $('#latlng').val();
+                $.ajax({
+                    data:{'nombre': nombre, 'direccion': direccion, 'descripcion': descripcion, 'latlng': latlng},
+                    url:'/guardar_direccion_ajax/',
+                    type: 'get'
 
                 }).done(function(data){
                     for(var i=0; i<data.length; i++){
-                        $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td></tr>");
+                        $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminar</button></td></tr>");
                 }
-            });
-
-        }else{
-
-            alert('El nombre de la locación no puede estar en blanco.');
-
-        }
-    }
+                        });
+                }
 
     $(document).ready(function(){
 

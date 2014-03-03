@@ -7,7 +7,7 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
-from staff.models import TipoStaff
+from staff.models import Privilegios
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
@@ -39,7 +39,7 @@ def nuevo_evento(request):
                         funcion_id = funcion_split[0]
                         funcion_valor = funcion_split[1]
                         print "antes de crear"
-                        funcion_save = Funcion.objects.create(evento=evento, dia=dia_valor, horas=0, entrega_fotos='2012-12-12', direccion=locacion_save)
+                        funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_valor, horas=0, entrega_fotos='2012-12-12', direccion=locacion_save)
                         funcion_save.save()
             return HttpResponseRedirect("/agregar_staff/" + str(evento.id))
     else:
@@ -49,7 +49,7 @@ def nuevo_evento(request):
 def agregar_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
-    tipos_staf = TipoStaff.objects.all()
+    tipos_staf = Privilegios.objects.filter(valor=6)
     if request.method == 'POST':
         pass
     return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staf}, context_instance= RequestContext(request))

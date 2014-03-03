@@ -1,10 +1,18 @@
 {% extends 'admin.html' %}
 {% block seccion-contenido %}
     {% for funcion in funciones %}
-    {{ funcion.dia }}
+            <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>{{ funcion.dia }} {{ funcion.nombre }}</h4>
+        </div>
+        <div class="panel-body">
         {% for staff in tipos_staff %}
-            {{ staff.nombre }}
+            {{ staff.nombre }} <input type="text" name="{{ funcion.id }}-{{ staff.id }}">
         {% endfor %}
+        </div>
+    </div>
+
+
     {% endfor %}
 {% endblock %}
 {% block js %}
