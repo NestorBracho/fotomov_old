@@ -1,19 +1,41 @@
 {% extends 'admin.html' %}
+{% block titulo %}
+Agregar Staff
+{% endblock %}
 {% block seccion-contenido %}
     {% for funcion in funciones %}
             <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>{{ funcion.dia }} {{ funcion.nombre }}</h4>
-        </div>
-        <div class="panel-body">
-        {% for staff in tipos_staff %}
-            {{ staff.nombre }} <input type="text" name="{{ funcion.id }}-{{ staff.id }}">
-        {% endfor %}
-        </div>
-    </div>
+                <div class="panel-heading">
+                    <h4>{{ funcion.dia }} {{ funcion.nombre }}</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-sm-12">
+                        {% for staff in tipos_staff %}
+                            <div class="col-sm-2">
+                                {{ staff.nombre }} <input type="number" class="form-control" name="{{ funcion.id }}-{{ staff.id }}" onkeypress="return numero(event)">
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                                <div class="col-sm-3">
+                    <button class="btn btn-default">Listo</button>
+                </div>
+                </div>
+
+            </div>
 
 
     {% endfor %}
 {% endblock %}
 {% block js %}
+    <script>
+          function numero(e) {
+          var codigo;
+          codigo = (document.all) ? e.keyCode : e.which;
+          if (codigo > 31 && (codigo < 48 || codigo > 57) /*&& codigo != 46 */) {
+          return false;
+          }
+          return true;
+        }
+    </script>
 {% endblock %}
