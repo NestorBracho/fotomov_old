@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -213,3 +214,12 @@ def editar_cliente(request, id_cliente):
 def eliminar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente).delete()
     return HttpResponseRedirect('/listar_cliente')
+
+def agregar_sede_macrocliente_ajax(request):
+    if Direccion.objects.filter(direccion = request.GET['direc']).count() == 0:
+        dirc = 0
+        data = json.dumps({'status': dirc})
+    else:
+        dirc = 1
+        data = json.dumps({'status': dirc})
+    return HttpResponse(data, mimetype='application/json')
