@@ -120,19 +120,19 @@
                         <!-- /.panel-body -->
                     </div>
 
-	    {% if direcciones %}
+	    {% if sedes %}
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Direcciones</h4>
+                    <h4>Sedes</h4>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="col-sm-12">
                         <div style="overflow: auto;">
                             <ul>
-                                {% for item in direcciones %}
-                                    <li style="cursor: pointer;" onclick="showMap({{item.lat|stringformat:"f"}},{{item.lon|stringformat:"f"}})">
-                                        {{item.direccion}}
+                                {% for item in sedes %}
+                                    <li style="cursor: pointer;" onclick="showMap({{item.direccion.lat|stringformat:"f"}},{{item.direccion.lon|stringformat:"f"}})">
+                                        {{item.direccion.direccion}}
                                     </li>
                                 {% endfor %}
                                 <input type="hidden" id="tiene_dir" value="{{tienedir}}" />

@@ -23,10 +23,19 @@
                 </select>
             </div>
             <div class="col-sm-3">
-                {{ formulario.porcentaje_institucion | bootstrap }}
+                <label>Sede</label>
+                <select id="id_sede" class="form-control" name="sede">
+                    <option>---------</option>
+                </select>
             </div>
             <div class="col-sm-12">
                 {{ formulario.descripcion | bootstrap }}
+            </div>
+            <div class="col-sm-2">
+                {{ formulario.porcentaje_institucion | bootstrap }}
+            </div>
+            <div class="col-sm-2">
+                {{ formulario.es_stand | bootstrap }}
             </div>
 
         </div>
@@ -55,10 +64,12 @@
 
 window.onload = function(){
 
-    $('#id_input_fecha').datepicker({ dateFormat: "dd/mm/yy" });
+    $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy" });
     if(document.getElementById("id_macrocliente").value<1){
         document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
         document.getElementById("id_encargado").disabled = true;
+        document.getElementById("id_sede").innerHTML = "<option>---------</option>";
+        document.getElementById("id_sede").disabled = true;
     }else{
         ajax_encargado();
     }
@@ -66,6 +77,7 @@ window.onload = function(){
 }
 
 $('#id_macrocliente').on('change',ajax_encargado);
+ $('#id_macrocliente').on('change',ajax_sede);
 
 $("#dialog").dialog("option", "hide");
 
@@ -126,6 +138,41 @@ function ajax_encargado(){
 
         document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
         document.getElementById("id_encargado").disabled = true;
+
+    }
+
+}
+
+function ajax_sede(){
+
+    var select_macro = $('#id_macrocliente').val();
+
+    if(select_macro>0){
+        $.ajax({
+
+            beforeSend:function(){
+                document.getElementById('id_sede').innerHTML = '<option>Cargando...</option>';
+            },
+            data:{'id':select_macro},
+            url:'/sede_ajax/',
+            type:'get',
+            error:function(a,error,otro){
+                document.getElementById("id_sede").innerHTML = "<option>"+otro+"</option>";
+            }
+
+        }).done(function(data){
+
+            document.getElementById("id_sede").disabled = false;
+            document.getElementById("id_sede").innerHTML = "<option>---------</option>";
+            for(var i=0;i<data.length;i++){
+                document.getElementById('id_sede').innerHTML = document.getElementById('id_sede').innerHTML+'<option value='+data[i].pk+'>'+data[i].fields.nombre+'</option>';
+            }
+
+        });
+    }else{
+
+        document.getElementById("id_sede").innerHTML = "<option>---------</option>";
+        document.getElementById("id_sede").disabled = true;
 
     }
 

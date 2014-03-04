@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from evento.models import Funcion
 
+
 class Privilegios(models.Model):
   valor = models.IntegerField()
   nombre = models.TextField(max_length=60,unique=True)
@@ -32,7 +33,7 @@ class Notificacion(models.Model):
   fecha_asignacion = models.DateField()
 
 class StaffPorFuncion(models.Model):
-    tipo = models.ForeignKey(TipoStaff)
+    tipo = models.ForeignKey(Privilegios)
     funcion = models.ForeignKey(Funcion)
     cantidad = models.IntegerField()
 

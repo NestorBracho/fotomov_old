@@ -8,4 +8,4 @@ class EventoForm(forms.ModelForm):
     macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all())
     class Meta:
         model = Evento
-        exclude = ['locacion', 'encargado']
+        exclude = ['locacion', 'encargado', 'sede']

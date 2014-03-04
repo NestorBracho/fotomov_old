@@ -7,10 +7,11 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
-from staff.models import Privilegios
+from staff.models import Privilegios, StaffPorFuncion
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
+import datetime
 
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
@@ -20,13 +21,14 @@ def nuevo_evento(request):
             print "es valido"
             dias = request.POST.getlist('dias')
             encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+            sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
-                                           porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado)
+                                           porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
+                                           sede=sede, es_stand=formulario.cleaned_data['es_stand'])
             print dias
             for dia in dias:
                 dia_split = dia.split('-')
                 dia_id = dia_split[0]
-                dia_valor = dia_split[1]
                 locaciones = request.POST.getlist("locacion" + "-" + dia_id)
                 for locacion in locaciones:
                     locacion_split = locacion.split('-')
@@ -38,8 +40,11 @@ def nuevo_evento(request):
                         funcion_split = funcion.split('-')
                         funcion_id = funcion_split[0]
                         funcion_valor = funcion_split[1]
-                        print "antes de crear"
-                        funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_valor, horas=0, entrega_fotos='2012-12-12', direccion=locacion_save)
+                        dia_final = dia_split[1] + "-" + dia_split[2] + "-" + dia_split[3]
+                        calcular_entrega = datetime.datetime(int(dia_split[3]), int(dia_split[2]), int(dia_split[1])) + datetime.timedelta(days=15)
+                        entrega_split = str(calcular_entrega.date()).split('-')
+                        entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
+                        funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
                         funcion_save.save()
             return HttpResponseRedirect("/agregar_staff/" + str(evento.id))
     else:
@@ -51,13 +56,24 @@ def agregar_staff(request, id_evento):
     funciones = Funcion.objects.filter(evento=evento)
     tipos_staf = Privilegios.objects.filter(valor=6)
     if request.method == 'POST':
-        pass
+        for funcion in funciones:
+            for staf in tipos_staf:
+                cantidad = request.POST.get(str(funcion.id) + "-" + str(staf.id))
+                agregar = StaffPorFuncion.objects.create(tipo=staf, funcion=funcion, cantidad=cantidad)
+                agregar.save()
+
     return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staf}, context_instance= RequestContext(request))
 
 
 def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
     contacto = Encargado.objects.filter(macrocliente=macroC)
+    data = serializers.serialize('json', contacto, fields =('nombre'))
+    return HttpResponse(data, mimetype='application/json')
+
+def sede_ajax(request):
+    macroC = MacroCliente.objects.get(id=request.GET['id'])
+    contacto = Sede.objects.filter(macrocliente=macroC)
     data = serializers.serialize('json', contacto, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 

@@ -3,6 +3,7 @@
 Agregar Staff
 {% endblock %}
 {% block seccion-contenido %}
+    <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
     {% for funcion in funciones %}
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -26,6 +27,8 @@ Agregar Staff
 
 
     {% endfor %}
+    <div class="col-sm-3"><input type="submit" class="btn btn-primary" value="guardar"></div>
+    </form>
 {% endblock %}
 {% block js %}
     <script>

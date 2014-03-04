@@ -85,16 +85,16 @@ def editar_macrocliente(request, id_macrocliente):
 def ver_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id = id_macrocliente):
         macrocliente = MacroCliente.objects.get(id = id_macrocliente)
-        direcciones = Direccion.objects.filter(macrocliente=macrocliente)
-        if len(direcciones) > 0:
+        sedes = Sede.objects.filter(id=id_macrocliente)
+        if len(sedes) > 0:
             tienedir = True
-            primeraDir = direcciones[0]
+            primeraDir = sedes[0]
         else:
             tienedir = False
             primeraDir = None
     else:
         return HttpResponseRedirect('/listar_macroclientes/0')
-    return render_to_response('clientes/ver_macrocliente.html', {'macrocliente': macrocliente, 'tienedir': tienedir, 'primeraDir': primeraDir, 'direcciones': direcciones}, context_instance = RequestContext(request))
+    return render_to_response('clientes/ver_macrocliente.html', {'macrocliente': macrocliente, 'tienedir': tienedir, 'primeraDir': primeraDir, 'sedes': sedes}, context_instance = RequestContext(request))
 
 def eliminar_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id=id_macrocliente):

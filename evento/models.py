@@ -6,18 +6,20 @@ from clientes.models import Sede
 
 class Evento(models.Model):
     nombre = models.CharField(max_length=200)
-    descripcion = models.CharField(max_length=1000)
+    descripcion = models.TextField(max_length=1000)
     porcentaje_institucion = models.FloatField()
     encargado = models.ForeignKey(Encargado)
+    sede = models.ForeignKey(Sede, null=True)
+    es_stand = models.BooleanField(default=True)
 
 class Funcion(models.Model):
     nombre = models.CharField(max_length=200)
     evento = models.ForeignKey(Evento)
     dia = models.CharField(max_length=20)
     horas = models.IntegerField(max_length=2, null=True, blank=True)
-    entrega_fotos = models.DateField(null=True, blank=True)
+    entrega_fotos = models.CharField(max_length=20)
     direccion = models.ForeignKey(Direccion)
-    sede = models.ForeignKey(Sede, null=True)
+
 
 class Gasto(models.Model):
     nombre = models.CharField(max_length=100)
