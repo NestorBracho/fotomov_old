@@ -54,7 +54,32 @@
 {% endblock %}
 {% block seccion-contenido%}
 	<form id='form' method='POST' action=''>{% csrf_token %}
-	  <table><tr><td>{{formulario|bootstrap}}<hr /></td></tr><tr><td>{{formulario_regis.nombre|bootstrap}}{{formulario_regis.apellido|bootstrap}}{{formulario_regis.cedula|bootstrap}}{{formulario_regis.email|bootstrap}}{{formulario_regis.privilegio|bootstrap}}<hr /></td></tr></table>
-	  <p><input type='submit' value='Registrar' class="btn btn-default btn-primary" /></p>
+		<div class="row">
+			<div class="col-xs-12 col-md-6">{{formulario.username|bootstrap}}</div>
+			<div class="col-xs-12 col-md-6">{{formulario.password1|bootstrap}}</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 hidden-xs hidden-sm"></div>
+			<div class="col-xs-12 col-md-6">{{formulario.password2|bootstrap}}</div>
+		</div>
+		<div class="row">
+			<hr>
+		<div class="row">
+			<div class="col-xs-12 col-md-6">{{formulario_regis.nombre|bootstrap}}</div>
+			<div class="col-xs-12 col-md-6">{{formulario_regis.apellido|bootstrap}}</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-6">{{formulario_regis.cedula|bootstrap}}</div>
+			<div class="col-xs-12 col-md-6">{{formulario_regis.email|bootstrap}}</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 hidden-xs hidden-sm"></div>
+			<div class="col-xs-12 col-md-6">{{formulario_regis.privilegio|bootstrap}}</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 text-right">
+				<input type='submit' value='Registrar' class="btn btn-default btn-primary" />
+            </div>
+		</div>
 	</form>
 {% endblock %}
