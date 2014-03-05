@@ -82,7 +82,7 @@ def listar_evento(request):
     return render_to_response('evento/listar_evento.html', {'eventos':eventos}, context_instance = RequestContext(request))
 
 def locacion_ajax(request):
-    locaciones = Direccion.objects.filter(direccion__contains=request.GET['locacion'])
+    locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion'])
     if len(locaciones)>0:
         i=0
         locs=[]
@@ -91,8 +91,9 @@ def locacion_ajax(request):
             i = i+1
     else:
         locs = None
-    data = serializers.serialize('json', locs, fields =('direccion'))
-    return HttpResponse(data, mimetype='application/json')
+    print "estoy saliendo"
+    dominio = serializers.serialize('json', locs, fields =('nombre'))
+    return HttpResponse(dominio, mimetype='application/json')
 
 def listar_pedidos_sede(request, id_sede):
     return True
