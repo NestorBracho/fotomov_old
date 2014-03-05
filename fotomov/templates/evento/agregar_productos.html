@@ -1,0 +1,29 @@
+{% extends 'tabla.html' %}
+{% block tabla %}
+<table class="table table-striped table-bordered table-hover" id="content">
+    <thead>
+        <th>Seleccionar</th>
+        <th>Producto</th>
+        <th>Precio</th>
+    </thead>
+    {% for producto in productos %}
+        <tr>
+            <td><input type="checkbox" value="{{ producto.id }}" name="seleccionados"> </td>
+            <td>{{ producto.nombre }}</td>
+            <td><input type="number" onkeypress="return numero(event)" name="{{ producto.id }}"></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+{% block js %}
+        <script>
+          function numero(e) {
+          var codigo;
+          codigo = (document.all) ? e.keyCode : e.which;
+          if (codigo > 31 && (codigo < 48 || codigo > 57) && codigo != 46 ) {
+          return false;
+          }
+          return true;
+        }
+    </script>
+{% endblock %}

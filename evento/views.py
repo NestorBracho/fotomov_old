@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
 from staff.models import Privilegios, StaffPorFuncion
+from productos.models import *
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
@@ -61,7 +62,7 @@ def agregar_staff(request, id_evento):
                 cantidad = request.POST.get(str(funcion.id) + "-" + str(staf.id))
                 agregar = StaffPorFuncion.objects.create(tipo=staf, funcion=funcion, cantidad=cantidad)
                 agregar.save()
-
+        return HttpResponseRedirect("/agregar_productos/" + id_evento)
     return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staf}, context_instance= RequestContext(request))
 
 
@@ -97,3 +98,12 @@ def locacion_ajax(request):
 
 def listar_pedidos_sede(request, id_sede):
     return True
+
+def agregar_productos(request,id_evento):
+    productos = Producto.objects.all()
+    if request.method == 'POST':
+        seleccionados = request.POST.getlist('seleccionados')
+        for seleccionado in seleccionados:
+            precio = request.POST.get(seleccionado)
+
+    return render_to_response('evento/agregar_productos.html', {'productos': productos}, context_instance=RequestContext(request))
