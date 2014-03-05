@@ -216,7 +216,7 @@ def eliminar_cliente(request, id_cliente):
     return HttpResponseRedirect('/listar_cliente')
 
 def agregar_sede_macrocliente_ajax(request):
-    if Direccion.objects.filter(direccion = request.GET['direc']).count() == 0:
+    if Direccion.objects.filter(nombre = request.GET['direc']).count() == 0:
         dirc = 0
         data = json.dumps({'status': dirc})
     else:
