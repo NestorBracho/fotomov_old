@@ -283,7 +283,7 @@ function aucomloc(id_input){
         var locaciones_finales=[];
 
         for(var i=0; i<dominio.length; i++){
-            locaciones_finales.push([dominio[i].fields.direccion].toString());
+            locaciones_finales.push([dominio[i].fields.nombre].toString());
         }
 
         $('#'+a).autocomplete({
