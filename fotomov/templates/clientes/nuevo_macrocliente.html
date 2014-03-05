@@ -344,7 +344,7 @@ function agregarSede(){
             if(info.status==1){
 
                 i = parseInt(i);
-                document.getElementById('tablaSede').innerHTML += "<div id=b-"+i+"><div id=sedeNom-"+i+" class='col-sm-4'>"+document.getElementById('inputNombreSede').value+"</div><div class='col-sm-4'>"+document.getElementById('inputSede').value+"</div><div class='col-sm-4'><input type='button' value='Eliminar' onclick=eliminarSede('b-"+i+"') class='btn btn-xs btn-danger'><input type='hidden' id=sedeId-"+i+" value='hola'></div><br><hr/></div>";
+                document.getElementById('tablaSede').innerHTML += "<div id=b-"+i+"><div id=sedeNom-"+i+" class='col-sm-4'>"+document.getElementById('inputNombreSede').value+"<input type=\"hidden\" name=\""+ document.getElementById('inputSede').value +"\" value=\""+ document.getElementById('inputNombreSede').value +"\"></div><div class='col-sm-4'>"+document.getElementById('inputSede').value+"<input type=\"hidden\" name=\"sedes\" value=\""+ document.getElementById('inputSede').value +"\"></div><div class='col-sm-4'><input type='button' value='Eliminar' onclick=eliminarSede('b-"+i+"') class='btn btn-xs btn-danger'><input type='hidden' id=sedeId-"+i+" value='hola'></div><br><hr/></div>";
                 i++;
                 document.getElementById('tablaSede').setAttribute('name',i);
                 document.getElementById('inputNombreSede').value = '';

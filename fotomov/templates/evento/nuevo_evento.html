@@ -1,7 +1,7 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
 {% block css %}
-    <link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block seccion-contenido %}
 <form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}
@@ -44,25 +44,13 @@
 </form>
 <div>
     <h4>Días</h4>
-    <div class="row">
-        <div class="col-xs-12 col-lg-6 form-group">
-            <div id="id_dias" name=0></div>
-            <div class="row">
-                <div class="col-xs-9 col-md-10">
-                    <input type="text" id="id_input_fecha" class="form-control" placeholder="Fecha..."/>
-                </div>
-                <div class="col-xs-3 col-md-2">
-                    <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
-                </div>
-            </div>
-        </div>
+    <div>
+        <div id="id_dias" name=0></div>
+        <input type="text" id="id_input_fecha" placeholder="Fecha..."/> <button type="button" class="btn btn-default" onclick="AgregarDia()">Agregar día</button>
     </div>
 </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <input type="button" value="Guardar" class="btn btn-xl btn-primary" onclick="submit()">
-        </div>
-    </div>
+
+        <input type="button" value="SUBMIT" class="btn btn-xl btn-primary" onclick="submit()">
 
 <div id='dialog'></div>
 <div id='inphid'></div>
@@ -199,7 +187,7 @@ function AgregarDia(){
         temp[0]=parseInt(temp[0]);
         temp[0] += 1;
         dias = temp[0]+"."+temp[1]+"."+temp[2];
-        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='b"+dias+"'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-xs btn-danger' onclick=EliminarDia('"+dias+"') value='Eliminar'/></div><div class='panel-body form-group><div id=tabla"+dias+"></div></hr><div class='row'><div class='col-xs-8 col-lg-10'><input type='text' class='form-control' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' ></div><div class='col-xs-4 col-lg-2'><input type='button' class='btn btn-default' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div></div></div>";
+        document.getElementById('id_dias').innerHTML += "<div class='panel panel-default table-responsive' id='b"+dias+"'><div class='panel-heading'><label id="+dias+" name=0>"+document.getElementById('id_input_fecha').value+"</label> <input type='button' class='btn btn-xs btn-danger' onclick=EliminarDia('"+dias+"') value='Eliminar'/></div><div class='panel-body'><div id=tabla"+dias+"></div></hr><input type='text' onkeyup=aucomloc('input"+dias+"') id=input"+dias+" placeholder='Nombre de la locacion....' > <input type='button' onclick=AgregarLocacion('tabla"+dias+"','input"+dias+"','"+dias+"') value='Agregar Locacion'></div></div>";
         aux = document.getElementById('id_dias').getAttribute('name');
         aux = parseInt(aux);
         aux++;

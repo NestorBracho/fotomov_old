@@ -132,7 +132,7 @@
                             <ul>
                                 {% for item in sedes %}
                                     <li style="cursor: pointer;" onclick="showMap({{item.direccion.lat|stringformat:"f"}},{{item.direccion.lon|stringformat:"f"}})">
-                                        {{item.direccion.direccion}}
+                                        {{ item.nombre }} - {{item.direccion.direccion}}
                                     </li>
                                 {% endfor %}
                                 <input type="hidden" id="tiene_dir" value="{{tienedir}}" />

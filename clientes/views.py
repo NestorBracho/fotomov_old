@@ -36,12 +36,12 @@ def nuevo_macrocliente(request):
             macrocliente.save()
             encargado = Encargado.objects.create(macrocliente=macrocliente, cargo=contactoCargo, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)
             encargado.save()
-            direcciones = request.POST.getlist('dir')
-            i = 0
-            while i < len(direcciones):
-                direccion = Direccion.objects.create(macrocliente=macrocliente, direccion=direcciones[i], lat=direcciones[i+2], lon=direcciones[i+3], descripcion=direcciones[i+1])
-                direccion.save()
-                i += 4
+            direcciones = request.POST.getlist('sedes')
+            for direccion in direcciones:
+                dir = Direccion.objects.get(nombre=direccion)
+                nombre = request.POST.get(direccion)
+                sede = Sede.objects.create(macrocliente=macrocliente, direccion=dir, nombre=nombre)
+                sede.save()
             print macrocliente.nombre
             return HttpResponseRedirect('/listar_macroclientes/1')
     else:
@@ -86,7 +86,8 @@ def editar_macrocliente(request, id_macrocliente):
 def ver_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id = id_macrocliente):
         macrocliente = MacroCliente.objects.get(id = id_macrocliente)
-        sedes = Sede.objects.filter(id=id_macrocliente)
+        sedes = Sede.objects.filter(macrocliente=macrocliente)
+        print sedes
         if len(sedes) > 0:
             tienedir = True
             primeraDir = sedes[0]
