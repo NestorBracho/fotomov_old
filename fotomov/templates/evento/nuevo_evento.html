@@ -54,7 +54,7 @@
 
 <div id='dialog'></div>
 <div id='inphid'></div>
-    <button data-toggle="modal" href="#addressModal" type='button' class="btn btn-block btn-default"><span class="glyphicon glyphicon-map-marker"></span> Select Address</button>
+    <div style="display: none"><button data-toggle="modal" href="#addressModal" type='' class="btn btn-block btn-default" id='addresstoto'><span class="glyphicon glyphicon-map-marker"></span> Select Address</button></div>
 
     <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true"> <!-- Revisar usabilidady ARIA -->
     <div class="modal-dialog">
@@ -227,8 +227,9 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
         type:'GET',
         error:function(){
             if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
-                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/"+inputid+"' seamless width='100%' height='100%'></iframe>";
-                $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});
+                document.getElementById('addresstoto').click();
+                /*document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/"+inputid+"' seamless width='100%' height='100%'></iframe>";
+                $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});*/
             }
         }
     }).done(function(dominio){
@@ -247,8 +248,9 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
         }else{
 
             if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
-                document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/"+inputid+"' seamless width='100%' height='100%'></iframe>";
-                $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});
+                document.getElementById('addresstoto').click();
+                /*document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/"+inputid+"' seamless width='100%' height='100%'></iframe>";
+                $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});*/
             }
 
         }
@@ -331,7 +333,7 @@ function submit(){
 
         }
 
-        document.getElementById('campos').innerHTML += "<input type='text' name='dias' value='"+dAux+".0.0-"+document.getElementById(dAux+'.0.0').innerHTML+"'>";
+        document.getElementById('campos').innerHTML += "<input type='hidden' name='dias' value='"+dAux+".0.0-"+document.getElementById(dAux+'.0.0').innerHTML+"'>";
 
         lCant = document.getElementById(dAux+'.0.0').getAttribute('name');
         lCant = parseInt(lCant);
@@ -346,7 +348,7 @@ function submit(){
 
             }
 
-            document.getElementById('campos').innerHTML += "<input type='text' name='locacion-"+dAux+".0.0' value='"+dAux+"."+lAux+".0-"+document.getElementById(dAux+'.'+lAux+'.0').innerHTML+"'>";
+            document.getElementById('campos').innerHTML += "<input type='hidden' name='locacion-"+dAux+".0.0' value='"+dAux+"."+lAux+".0-"+document.getElementById(dAux+'.'+lAux+'.0').innerHTML+"'>";
 
             fCant = document.getElementById(dAux+'.'+lAux+'.0').getAttribute('name');
             fCant = parseInt(fCant);
@@ -361,7 +363,7 @@ function submit(){
 
                 }
 
-                document.getElementById('campos').innerHTML += "<input type='text' name='funcion-"+dAux+"."+lAux+".0' value='"+dAux+"."+lAux+"."+fAux+"-"+document.getElementById(dAux+'.'+lAux+'.'+fAux).innerHTML+"'>";
+                document.getElementById('campos').innerHTML += "<input type='hidden' name='funcion-"+dAux+"."+lAux+".0' value='"+dAux+"."+lAux+"."+fAux+"-"+document.getElementById(dAux+'.'+lAux+'.'+fAux).innerHTML+"'>";
 
                 fAux++;
                 f++;
