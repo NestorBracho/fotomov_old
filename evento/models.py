@@ -10,7 +10,7 @@ class Evento(models.Model):
     porcentaje_institucion = models.FloatField()
     encargado = models.ForeignKey(Encargado)
     sede = models.ForeignKey(Sede, null=True)
-    es_stand = models.BooleanField(default=True)
+    es_stand = models.BooleanField(default=True, verbose_name="Con stand")
 
 class Funcion(models.Model):
     nombre = models.CharField(max_length=200)
