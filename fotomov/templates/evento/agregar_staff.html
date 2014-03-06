@@ -2,6 +2,9 @@
 {% block titulo %}
 Agregar Staff
 {% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
 {% block seccion-contenido %}
     <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
     {% for funcion in funciones %}
@@ -13,13 +16,13 @@ Agregar Staff
                     <div class="form-group col-sm-12">
                         {% for staff in tipos_staff %}
                             <div class="col-sm-2">
-                                {{ staff.nombre }} <input type="number" class="form-control" name="{{ funcion.id }}-{{ staff.id }}" onkeypress="return numero(event)">
+                                {{ staff.nombre }} <input type="text" class="form-control spinner {{ funcion.id }}" name="{{ funcion.id }}-{{ staff.id }}" onkeypress="return numero(event)">
                             </div>
 
                         {% endfor %}
                     </div>
                                 <div class="col-sm-3">
-                    <button class="btn btn-default">Listo</button>
+                    <input type="button" id = '{{ funcion.id }}' value="Listo" onclick='tog(this.value, this.id)' class="btn btn-default">
                 </div>
                 </div>
 
@@ -27,18 +30,66 @@ Agregar Staff
 
 
     {% endfor %}
-    <div class="col-sm-3"><input type="submit" class="btn btn-primary" value="guardar"></div>
+    <div class="col-sm-3"><input type="button" class="btn btn-primary" value="guardar" disabled="true"></div>
     </form>
 {% endblock %}
 {% block js %}
-    <script>
-          function numero(e) {
-          var codigo;
-          codigo = (document.all) ? e.keyCode : e.which;
-          if (codigo > 31 && (codigo < 48 || codigo > 57) /*&& codigo != 46 */) {
-          return false;
-          }
-          return true;
+<script>
+
+    $( ".spinner" ).spinner({ min: 0 });
+
+    function numero(e) {
+
+        var codigo;
+        codigo = (document.all) ? e.keyCode : e.which;
+        if (codigo > 31 && (codigo < 48 || codigo > 57) /*&& codigo != 46 */) {
+            return false;
         }
-    </script>
+        return true;
+
+    }
+
+    function tog(val,iden){
+
+        var i,flag;
+
+        if(val == 'Listo'){
+
+            i = 3;
+            flag = true;
+            $( "."+iden ).spinner( "disable" );
+            document.getElementById(iden).setAttribute('value','Editar');
+
+            while(document.getElementById(i.toString()).innerHTML != null){
+
+                if(document.getElementById(i.toString()).getAttribute('value') == 'Listo'){
+
+                    flag = false;
+
+                }
+
+                i++;
+
+            }
+            alert('hola');
+            alert(flag);
+
+            if(flag == true){alert('hola');}
+
+        }else{
+
+            $( "."+iden ).spinner( "enable" );
+            document.getElementById(iden).setAttribute('value','Listo');
+
+        }
+
+    }
+
+    function submit(){
+
+
+
+    }
+
+</script>
 {% endblock %}
