@@ -58,7 +58,7 @@ def editar_macrocliente(request, id_macrocliente):
         macrocliente = MacroCliente.objects.get(id = id_macrocliente)
     else:
         return HttpResponseRedirect('/listar_macroclientes/0')
-    dirs = Direccion.objects.filter(macrocliente=macrocliente)
+    dirs = Sede.objects.filter(macrocliente=macrocliente)
     if request.method == 'POST':
         formulario = MacroClienteForm(request.POST)
         if formulario.is_valid():
