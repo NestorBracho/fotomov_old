@@ -15,7 +15,7 @@ class MacroCliente(models.Model):
 
 class Encargado(models.Model):
     nombre = models.CharField(max_length=200)
-    cedula = models.CharField(max_length=8, unique=True, blank=True, null=True)
+    cedula = models.CharField(max_length=8, blank=True, null=True)
     cargo = models.CharField(max_length=30, blank=True, null=True)
     telefono = models.CharField(max_length=11)
     email = models.EmailField()

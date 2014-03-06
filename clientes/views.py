@@ -29,7 +29,7 @@ def nuevo_macrocliente(request):
             contacNombre = formularioR.cleaned_data['nombreContacto']
             contacCedula = formularioR.cleaned_data['cedula']
             contacTelefono = formularioR.cleaned_data['telefono']
-            contacDescripcion = formularioR.cleaned_data['descripcion']
+            contacDescripcion = formularioR.cleaned_data['descripcion_contacto']
             contactoEmail = formularioR.cleaned_data['email']
             contactoCargo = formularioR.cleaned_data['cargo']
             macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
@@ -127,7 +127,7 @@ def nuevo_contacto_macrocliente(request, id_macrocliente):
             cargo = formulario.cleaned_data['cargo']
             telefono = formulario.cleaned_data['telefono']
             email = formulario.cleaned_data['email']
-            descripcion = formulario.cleaned_data['descripcion']
+            descripcion = formulario.cleaned_data['descripcion_contacto']
             encargado = Encargado.objects.create(macrocliente=macrocliente, nombre=nombreContacto, cedula=cedula, cargo=cargo, telefono=telefono, email=email, descripcion=descripcion)
             return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/1')
         else:
@@ -156,7 +156,7 @@ def editar_contacto_macrocliente(request, id_contacto):
             print macrocliente.id
             return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/2')
     else:
-        formulario = MacroClienteContactoForm(initial={'nombre': contacto.nombre, 'cedula': contacto.cedula, 'telefono': contacto.telefono, 'email': contacto.email, 'descripcion': contacto.descripcion})
+        formulario = MacroClienteContactoForm(initial={'nombreContacto': contacto.nombre, 'cedula': contacto.cedula, 'telefono': contacto.telefono, 'email': contacto.email, 'descripcion_contacto': contacto.descripcion})
     return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario, 'nuevo': False}, context_instance = RequestContext(request))
 
 def eliminar_contacto_macrocliente(request, id_contacto):
