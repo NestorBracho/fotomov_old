@@ -54,6 +54,21 @@
 
 <div id='dialog'></div>
 <div id='inphid'></div>
+    <button data-toggle="modal" href="#addressModal" type='button' class="btn btn-block btn-default"><span class="glyphicon glyphicon-map-marker"></span> Select Address</button>
+
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true"> <!-- Revisar usabilidady ARIA -->
+    <div class="modal-dialog">
+      <div class="modal-content modal-address">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h2 class="modal-title">Seleccionar Direcciones</h2>
+        </div>
+        <div class="modal-body">  <!-- !!! falta arregar apariencia en el modal window -->
+            {% include "staff/incluir_libreta.html" %}
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 {% endblock %}
 {% block js %}
 <script type="text/javascript">

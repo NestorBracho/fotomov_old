@@ -12,10 +12,12 @@ from productos.models import *
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
+from direcciones.views import obtener_direcciones
 import datetime
 
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
+    direcciones = obtener_direcciones()
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
@@ -50,7 +52,7 @@ def nuevo_evento(request):
             return HttpResponseRedirect("/agregar_staff/" + str(evento.id))
     else:
         formulario = EventoForm()
-    return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados}, context_instance = RequestContext(request))
+    return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
 def agregar_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)

@@ -60,6 +60,10 @@ def libreta_incluida(request, id_input):
         pass
     return render_to_response('staff/incluir_libreta.html', {'direcciones': direcciones, 'id_input': id_input}, context_instance= RequestContext(request))
 
+def obtener_direcciones():
+    direcciones = Direccion.objects.all()
+    return direcciones
+
 def eliminar_direccion(request, id_direccion):
     direccion = Direccion.objects.get(id=id_direccion).delete()
     return HttpResponseRedirect('/libreta_incluida')
