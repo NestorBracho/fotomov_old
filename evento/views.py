@@ -101,9 +101,15 @@ def listar_pedidos_sede(request, id_sede):
 
 def agregar_productos(request,id_evento):
     productos = Producto.objects.all()
+    evento = Evento.objects.get(id=id_evento)
     if request.method == 'POST':
         seleccionados = request.POST.getlist('seleccionados')
         for seleccionado in seleccionados:
             precio = request.POST.get(seleccionado)
-
+            producto = Producto.objects.get(id=seleccionado)
+            producto_evento = ProductoEvento.objects.create(evento=evento,producto=producto,precio=float(precio))
+        return HttpResponseRedirect('/casilla_administrativa/' + id_evento)
     return render_to_response('evento/agregar_productos.html', {'productos': productos}, context_instance=RequestContext(request))
+
+def casilla_administrativa(request, id_evento):
+    return render_to_response('evento/casilla_administrativa.html', {}, context_instance=RequestContext(request))
