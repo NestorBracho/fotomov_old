@@ -94,7 +94,6 @@ def locacion_ajax(request):
             i = i+1
     else:
         locs = None
-    print "estoy saliendo"
     dominio = serializers.serialize('json', locs, fields =('nombre'))
     return HttpResponse(dominio, mimetype='application/json')
 

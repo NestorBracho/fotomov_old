@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -64,6 +65,7 @@ def obtener_direcciones():
     direcciones = Direccion.objects.all()
     return direcciones
 
-def eliminar_direccion(request, id_direccion):
-    direccion = Direccion.objects.get(id=id_direccion).delete()
-    return HttpResponseRedirect('/libreta_incluida')
+def eliminar_direccion(request):
+    direccion = Direccion.objects.get(id=request.GET.get('id')).delete()
+    data = json.dumps({'status': 1})
+    return HttpResponse(data,mimetype='aplication/json')
