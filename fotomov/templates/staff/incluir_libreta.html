@@ -27,7 +27,7 @@
                                     </th>
                                 </thead>
                                 {% for direccion in direcciones %}
-                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion('{{ direccion.nombre }}','{{ id_input }}')">
+                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion('{{ direccion.nombre }}')">
                                     <td>{{ direccion.nombre }}</td>
                                     <td>{{ direccion.direccion }}</td>
                                     <td><button type="button" class="btn btn-default btn-danger btn-xs" onclick="deleteAlert('{{direccion.id}}','{{ direccion.nombre }}')">Eliminar</button></td>
@@ -99,6 +99,22 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
 <script type="text/javascript">
 
+$(document).ready(function(){
+
+        setTimeout(function() {
+            var latlng = new google.maps.LatLng(34.0883632,18.3788381);
+            var myOptions = {
+                zoom: 10,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+            createMarker(latlng);
+        }, 500);
+
+});
+
 function ajax_guardar(){
     var nombre = $('#nombre').val();
     var direccion = $('#formatedAddress').val();
@@ -122,21 +138,16 @@ function ajax_guardar(){
     });
 }
 
-$(document).ready(function(){
 
-        setTimeout(function() {
-            var latlng = new google.maps.LatLng(34.0883632,18.3788381);
-            var myOptions = {
-                zoom: 10,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-            createMarker(latlng);
-        }, 500);
+function obtenerDireccion(nom){
 
-});
+    if(document.getElementById("toto") != null){
+        document.getElementById(document.getElementById("toto").value).value = nom;
+        document.getElementById("close").click();
+    }
+
+}
 
 function deleteAlert(id, row){
 
