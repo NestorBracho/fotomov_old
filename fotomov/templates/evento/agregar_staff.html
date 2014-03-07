@@ -6,7 +6,7 @@ Agregar Staff
 <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block seccion-contenido %}
-    <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+    <form method="POST" action="" id="formStaff" enctype="multipart/form-data" >{% csrf_token %}
     {% for funcion in funciones %}
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -30,7 +30,7 @@ Agregar Staff
 
 
     {% endfor %}
-    <div class="col-sm-3"><input type="button" class="btn btn-primary" value="guardar" disabled="true"></div>
+    <div class="col-sm-3"><input type="button" id="submitform" class="btn btn-primary" value="guardar" onclick="enviar()" disabled="true"></div>
     </form>
 {% endblock %}
 {% block js %}
@@ -55,12 +55,12 @@ Agregar Staff
 
         if(val == 'Listo'){
 
-            i = 3;
+            i = "{{ funciones.0.id }}";
             flag = true;
             $( "."+iden ).spinner( "disable" );
             document.getElementById(iden).setAttribute('value','Editar');
 
-            while(document.getElementById(i.toString()).innerHTML != null){
+            while(document.getElementById(i.toString()) != null){
 
                 if(document.getElementById(i.toString()).getAttribute('value') == 'Listo'){
 
@@ -71,24 +71,53 @@ Agregar Staff
                 i++;
 
             }
-            alert('hola');
-            alert(flag);
 
-            if(flag == true){alert('hola');}
+            if(flag == true){
+
+                document.getElementById("submitform").disabled = false;
+
+            }
 
         }else{
 
             $( "."+iden ).spinner( "enable" );
             document.getElementById(iden).setAttribute('value','Listo');
+            document.getElementById("submitform").disabled = true;
 
         }
 
     }
 
-    function submit(){
+    function enviar(){
 
+        var i,flag;
+        i = "{{ funciones.0.id }}";
+        flag = true;
 
+        console.log(flag);
 
+        while(document.getElementById(i.toString()) != null){
+
+            if(document.getElementById(i.toString()).getAttribute('value') == 'Listo'){
+
+                flag = false;
+
+            }
+
+            i++;
+            console.log(i);
+
+        }
+
+        if(flag == true){
+
+            document.forms['formStaff'].submit();
+
+        }else{
+
+            alert("Todos los campos deben estar listos -.-\"");
+
+        }
     }
 
 </script>
