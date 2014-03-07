@@ -3,6 +3,10 @@
 {% block titulo %}
 Editar Macrocliente
 {% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+<style type="text/css" xmlns="http://www.w3.org/1999/html"></style>
+{% endblock %}
 {% block seccion-contenido %}
 <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
 
@@ -38,12 +42,49 @@ Editar Macrocliente
         </div>
 
             <div class="panel-body">
-                <ul>
-                    {% for direccion in direcciones %}
-                        <li>{{ direccion.nombre }} {{ direccion.direccion.nombre }}</li>
-                    {% endfor %}
-                </ul>
-           </div>
+                <div class="col-sm-4">
+                    <label class="control-label">
+                        Nombre
+                    </label>
+                </div>
+                <div class="col-sm-4">
+                    <label class="control-label">
+                        Locación
+                    </label>
+                </div>
+                {% for direccion in direcciones %}
+                    <div id='b-{{ direccion.id }}' class="col-sm-12">
+                        <div id='sedeNom-{{ direccion.id }}' class='col-sm-4'>
+                            {{ direccion.nombre }}
+                            <input type="hidden" name="{{ direccion.direccion.nombre }}" value="{{ direccion.nombre }}">
+                        </div>
+                        <div class='col-sm-4'>
+                            {{ direccion.direccion.nombre }}
+                            <input type="hidden" name="sedes" value="{{ direccion.direccion.nombre }}">
+                        </div>
+                        <div class='col-sm-4'>
+                            <input type='button' value='Eliminar' onclick="eliminarSede('b-{{ direccion.id }}')" class='btn btn-xs btn-danger'>
+                            <input type='hidden' id="sedeId-{{ direccion.id }}" value='hola'>
+                        </div>
+                        <br><hr/>
+                    </div>
+                {% endfor %}
+
+
+
+            <div id="tablaSede" name="0" class="col-sm-12"></div>
+            <div class="col-sm-4">
+
+                <input type="text" name="nombreSede" class="form-control" id="inputNombreSede">
+            </div>
+            <div class="col-sm-8">
+
+                <input type="text" name="locacionSede" class="form-control" id="inputSede" onkeyup="aucomloc(this.id)">
+            </div>
+            <div class="col-sm-6">
+                <input type="button" class="btn btn-xs btn-primary" onclick="agregarSede()" value="Agregar Sede">
+            </div>
+
         </div>
     </div>
                     <input type="submit" class="btn btn-primary" value="guardar">
@@ -53,8 +94,78 @@ Editar Macrocliente
 {% block js %}
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
-    <script>
+    <script type="text/javascript">
+    function eliminarSede(sede){
 
+    document.getElementById(sede).parentNode.removeChild(document.getElementById(sede));
+
+    }
+    function agregarSede(){
+
+    var i = document.getElementById('tablaSede').getAttribute('name');
+    var direccion = document.getElementById('inputSede').value;
+
+    $.ajax({
+
+        data:{'direc':direccion},
+        url:'/agregar_sede_macrocliente_ajax/',
+        type:'GET'
+
+    }).done(function(info){
+
+        if(document.getElementById('inputNombreSede').value != ''){
+
+            if(info.status==1){
+
+                i = parseInt(i);
+                document.getElementById('tablaSede').innerHTML += "<div id=b-"+i+"><div id=sedeNom-"+i+" class='col-sm-4'>"+document.getElementById('inputNombreSede').value+"<input type=\"hidden\" name=\""+ document.getElementById('inputSede').value +"\" value=\""+ document.getElementById('inputNombreSede').value +"\"></div><div class='col-sm-4'>"+document.getElementById('inputSede').value+"<input type=\"hidden\" name=\"sedes\" value=\""+ document.getElementById('inputSede').value +"\"></div><div class='col-sm-4'><input type='button' value='Eliminar' onclick=eliminarSede('b-"+i+"') class='btn btn-xs btn-danger'><input type='hidden' id=sedeId-"+i+" value='hola'></div><br><hr/></div>";
+                i++;
+                document.getElementById('tablaSede').setAttribute('name',i);
+                document.getElementById('inputNombreSede').value = '';
+                document.getElementById('inputSede').value ='';
+
+            }else{
+
+                if(confirm("La locacion no existe!\nDesea agregar a la libreta de direcciones?")){
+                    document.getElementById("dialog").innerHTML = "<iframe src='/libreta_incluida/' seamless width='100%' height='100%'></iframe>";
+                    $("#dialog").dialog({title:'Agregar direccion', hide:false, height: 600, width: 900});lert("q mas?");
+                }
+
+            }
+
+        }else{
+
+            alert("El nombre de la sede no puede estar vacío.");
+
+        }
+
+    });
+
+}
+
+    function aucomloc(id_input){
+
+    var ajax_loc = document.getElementById(id_input).value;
+    var a=id_input;
+
+    $.ajax({
+        data:{'locacion':ajax_loc},
+        url:'/locacion_ajax/',
+        type:'GET'
+        }).done(function(dominio){
+
+            var locaciones_finales=[];
+
+            for(var i=0; i<dominio.length; i++){
+                locaciones_finales.push([dominio[i].fields.nombre].toString());
+            }
+
+            $('#'+a).autocomplete({
+                source: locaciones_finales
+            });
+
+        });
+    }
         function initialize() {
             var latlng = new google.maps.LatLng(34.0883632, -118.3788381);
             var myOptions = {
