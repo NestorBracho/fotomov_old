@@ -27,9 +27,9 @@
                                     </th>
                                 </thead>
                                 {% for direccion in direcciones %}
-                                <tr id="{{ direccion.nombre }}" onclick="obtenerDireccion('{{ direccion.nombre }}')">
-                                    <td>{{ direccion.nombre }}</td>
-                                    <td>{{ direccion.direccion }}</td>
+                                <tr id="{{ direccion.nombre }}">
+                                    <td onclick="obtenerDireccion('{{ direccion.nombre }}')">{{ direccion.nombre }}</td>
+                                    <td onclick="obtenerDireccion('{{ direccion.nombre }}')">{{ direccion.direccion }}</td>
                                     <td><button type="button" class="btn btn-default btn-danger btn-xs" onclick="deleteAlert('{{direccion.id}}','{{ direccion.nombre }}')">Eliminar</button></td>
                                 </tr>
                                 {% endfor %}
