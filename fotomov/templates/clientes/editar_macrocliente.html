@@ -16,6 +16,9 @@ Editar Macrocliente
         </div>
         <div class="panel-body">
             <div class="col-sm-6">
+                {{ formulario.marca | bootstrap }}
+            </div>
+            <div class="col-sm-6">
                  {{ formulario.submarca|bootstrap}}
             </div>
             <div class="col-sm-6">
@@ -95,6 +98,57 @@ Editar Macrocliente
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
     <script type="text/javascript">
+     window.onload = function(){
+            if(document.getElementById("id_marca").value<1){
+                {#  //document.getElementById("id_marca").innerHTML = "<option></option>";#}
+                //document.getElementById("id_submarca").innerHTML = "<option></option>";
+
+            }else{
+                document.getElementById("id_submarca").innerHTML = "<option value=\"{{ macrocliente.submarca.id }}\">{{ macrocliente.submarca.nombre }}</option>";
+                {% for submarca in submarcas %}
+                    if ('{{ submarca }}'!='{{macrocliente.submarca}}'){
+                        document.getElementById("id_submarca").innerHTML += "<option value=\"{{ submarca.id }}\">{{ submarca.nombre }}</option>";
+                    }
+                {% endfor %}
+
+            }
+        }
+
+        $('#id_marca').on('change',ajax_submar);
+        $("#id_email").on('keyup',aucomemail);
+        $('dialog').dialog("option", "hide");
+
+
+        function ajax_submar(){
+            var select_marca = $('#id_marca').val();
+
+            if(select_marca>0){
+                $.ajax({
+
+                    beforeSend: function(){
+
+                        document.getElementById("id_submarca").innerHTML = "<option>Cargando...</option>";
+
+                    },
+                    data:{'id': select_marca},
+                    url:'/macrocliente_ajax/',
+                    type: 'get'
+
+                }).done(function(data){
+
+                    document.getElementById("id_submarca").disabled = false;
+                    document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+                    for(var i=0; i<data.length; i++){
+                        document.getElementById("id_submarca").innerHTML = document.getElementById("id_submarca").innerHTML+"<option value="+data[i].pk+">"+data[i].fields.nombre+"</option>";
+                    }
+                });
+            }else{
+
+                document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+                document.getElementById("id_submarca").disabled = true;
+
+            }
+        }
     function eliminarSede(sede){
 
     document.getElementById(sede).parentNode.removeChild(document.getElementById(sede));
