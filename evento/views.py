@@ -12,7 +12,7 @@ from productos.models import *
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
-from direcciones.views import obtener_direcciones
+from direcciones.views import *
 import datetime
 
 def nuevo_evento(request):
@@ -57,15 +57,17 @@ def nuevo_evento(request):
 def agregar_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
-    tipos_staf = Privilegios.objects.filter(valor=6)
+    tipos_staff = Privilegios.objects.filter(valor=6)
     if request.method == 'POST':
         for funcion in funciones:
-            for staf in tipos_staf:
-                cantidad = request.POST.get(str(funcion.id) + "-" + str(staf.id))
-                agregar = StaffPorFuncion.objects.create(tipo=staf, funcion=funcion, cantidad=cantidad)
+            for staff in tipos_staff:
+                print str(funcion.id) + "-" + str(staff.id)
+                print request.POST
+                cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
+                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad)
                 agregar.save()
         return HttpResponseRedirect("/agregar_productos/" + id_evento)
-    return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staf}, context_instance= RequestContext(request))
+    return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staff}, context_instance= RequestContext(request))
 
 
 def encargado_ajax(request):

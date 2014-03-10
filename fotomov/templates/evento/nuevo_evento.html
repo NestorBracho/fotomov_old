@@ -3,6 +3,9 @@
 {% block css %}
     <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
+{% block titulo %}
+Nuevo Evento
+{% endblock %}
 {% block seccion-contenido %}
 <input id='toto' type="hidden" value=''>
 <form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}

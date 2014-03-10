@@ -9,17 +9,19 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from clientes.forms import *
 from clientes.models import *
+from staff.models import Privilegios, StaffPorFuncion
 from marca.forms import *
 from marca.models import *
 from direcciones.models import *
+from direcciones.views import *
+import datetime
 
 def nuevo_macrocliente(request):
+    direcciones = obtener_direcciones()
     if request.method == 'POST':
         formularioM = MacroClienteForm(request.POST)
         formularioR = MacroClienteContactoForm(request.POST)
-        print "antes del valid"
         if formularioM.is_valid() and formularioR.is_valid():
-            print "entro"
             subMacrocliente = formularioM.cleaned_data['submarca']
             nomMacrocliente = formularioM.cleaned_data['nombre']
             telMacrocliente = formularioM.cleaned_data['telefono']
@@ -33,21 +35,21 @@ def nuevo_macrocliente(request):
             contactoEmail = formularioR.cleaned_data['email']
             contactoCargo = formularioR.cleaned_data['cargo']
             macrocliente = MacroCliente.objects.create(submarca=subMacrocliente, nombre=nomMacrocliente, telefono=telMacrocliente, rif=rifMacrocliente, direccion_fiscal=dfMacrocliente, descripcion=descMacrocliente)
-            macrocliente.save()
             encargado = Encargado.objects.create(macrocliente=macrocliente, cargo=contactoCargo, nombre=contacNombre, cedula=contacCedula, telefono=contacTelefono, descripcion=contacDescripcion, email=contactoEmail)
-            encargado.save()
             direcciones = request.POST.getlist('sedes')
             for direccion in direcciones:
                 dir = Direccion.objects.get(nombre=direccion)
                 nombre = request.POST.get(direccion)
                 sede = Sede.objects.create(macrocliente=macrocliente, direccion=dir, nombre=nombre)
                 sede.save()
+            macrocliente.save()
+            encargado.save()
             print macrocliente.nombre
             return HttpResponseRedirect('/listar_macroclientes/1')
     else:
         formularioM = MacroClienteForm()
         formularioR = MacroClienteContactoForm()
-    return render_to_response('clientes/nuevo_macrocliente.html', {'formularioM': formularioM, 'formularioR': formularioR}, context_instance = RequestContext(request))
+    return render_to_response('clientes/nuevo_macrocliente.html', {'formularioM': formularioM, 'formularioR': formularioR, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
 def listar_macroclientes(request, creado):
     macroclientes = MacroCliente.objects.all()
@@ -228,8 +230,7 @@ def eliminar_cliente(request, id_cliente):
 def agregar_sede_macrocliente_ajax(request):
     if Direccion.objects.filter(nombre = request.GET['direc']).count() == 0:
         dirc = 0
-        data = json.dumps({'status': dirc})
     else:
         dirc = 1
-        data = json.dumps({'status': dirc})
+    data = json.dumps({'status': dirc})
     return HttpResponse(data, mimetype='application/json')
