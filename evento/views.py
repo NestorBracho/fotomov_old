@@ -114,3 +114,8 @@ def agregar_productos(request,id_evento):
 
 def casilla_administrativa(request, id_evento):
     return render_to_response('evento/casilla_administrativa.html', {}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def calendario_de_eventos(request):
+
+    return render_to_response('evento/calendario_de_eventos.html', {}, context_instance=RequestContext(request))
