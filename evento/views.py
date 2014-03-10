@@ -43,7 +43,7 @@ def nuevo_evento(request):
                         funcion_split = funcion.split('-')
                         funcion_id = funcion_split[0]
                         funcion_valor = funcion_split[1]
-                        dia_final = dia_split[1] + "-" + dia_split[2] + "-" + dia_split[3]
+                        dia_final = dia_split[3] + "-" + dia_split[2] + "-" + dia_split[1]
                         calcular_entrega = datetime.datetime(int(dia_split[3]), int(dia_split[2]), int(dia_split[1])) + datetime.timedelta(days=15)
                         entrega_split = str(calcular_entrega.date()).split('-')
                         entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
@@ -62,7 +62,7 @@ def agregar_staff(request, id_evento):
         for funcion in funciones:
             for staff in tipos_staff:
                 print str(funcion.id) + "-" + str(staff.id)
-                print request.POST
+                print request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad)
                 agregar.save()
@@ -119,5 +119,7 @@ def casilla_administrativa(request, id_evento):
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):
-
+    user = request.user
+    usuario = Usuario.objects.get(usuario=user)
+    funciones = StaffPorFuncion
     return render_to_response('evento/calendario_de_eventos.html', {}, context_instance=RequestContext(request))
