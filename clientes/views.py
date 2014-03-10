@@ -56,6 +56,7 @@ def listar_macroclientes(request, creado):
     return render_to_response('clientes/listar_macroclientes.html', {'macroclientes': macroclientes, 'creado': creado}, context_instance = RequestContext(request))
 
 def editar_macrocliente(request, id_macrocliente):
+    direccionesL = obtener_direcciones()
     if MacroCliente.objects.filter(id = id_macrocliente):
         macrocliente = MacroCliente.objects.get(id = id_macrocliente)
 
@@ -92,7 +93,7 @@ def editar_macrocliente(request, id_macrocliente):
             return HttpResponseRedirect('/listar_macroclientes/2')
     else:
         formulario = MacroClienteForm(initial={'marca': macrocliente.submarca.marca, 'nombre': macrocliente.nombre, 'telefono': macrocliente.telefono, 'rif': macrocliente.rif, 'direccion_fiscal': macrocliente.direccion_fiscal, 'descripcion': macrocliente.descripcion})
-    return render_to_response('clientes/editar_macrocliente.html', {'submarcas': submarcas, 'formulario': formulario, 'direcciones': dirs, 'macrocliente': macrocliente}, context_instance = RequestContext(request))
+    return render_to_response('clientes/editar_macrocliente.html', {'submarcas': submarcas, 'formulario': formulario, 'dirs': dirs, 'macrocliente': macrocliente, 'direcciones': direccionesL}, context_instance = RequestContext(request))
 
 def ver_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id = id_macrocliente):
