@@ -234,41 +234,6 @@ Editar Macrocliente
 
         fields = {{direcciones.count}};
 
-        function addInput() {
-          if (fields < 5) {
-            var addr = document.getElementById('formatedAddress').value;
-            var coord = document.getElementById('latlng').value;
-            var desc = document.getElementById('descripcion').value;
-            var yx = coord.split(",");
-            document.getElementById('direccion').innerHTML +=
-              "<div class='row form-group'><input type='text' class='form-control' size =35 name='dir' value='"+addr+"' readonly/>" +
-              "<input type='text' class='form-control' name='dir' value='"+desc+"'readonly/>" +
-              "<input type='hidden' name='dir' value='"+yx[0]+"'/>" +
-              "<input type='hidden' name='dir' value='"+yx[1]+"'/>" +
-              " <a onclick='removeInput(this.parentNode)' />remove</div>";
-            fields += 1;
-          } else {
-            document.getElementById('warning').innerHTML =
-              "Only 5 upload addresses allowed.";
-            document.form.add.disabled = true;
-          }
-        }
-
-        function removeInput( el ) {
-          if (fields > 0) {
-            document.getElementById('warning').innerHTML = "";
-            var parent = document.getElementById('direccion');
-            parent.removeChild(el);
-            fields -= 1;
-          }
-        }
-
-        function addLike(id){
-          var x=document.getElementById("like").value;
-          var string1 = "/add_like_edit/";
-          window.location.assign(string1 + x + "-" + id)
-        }
-
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 {% endblock %}

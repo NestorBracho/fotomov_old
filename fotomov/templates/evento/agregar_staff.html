@@ -105,11 +105,19 @@ Agregar Staff
             }
 
             i++;
-            console.log(i);
 
         }
 
         if(flag == true){
+
+            i= "{{ funciones.0.id }}";
+
+            while(document.getElementById(i.toString()) != null){
+
+                $( "."+i ).spinner( "enable" );
+                i++;
+
+            }
 
             document.forms['formStaff'].submit();
 
