@@ -68,4 +68,6 @@ urlpatterns = patterns('',
     url(r'^casilla_administrativa/(?P<id_evento>\d+)/$', 'evento.views.casilla_administrativa'),
     url(r'^agregar_sede_macrocliente_ajax/$', 'clientes.views.agregar_sede_macrocliente_ajax'),
     url(r'^calendario_de_eventos/$', 'evento.views.calendario_de_eventos'),
+    url(r'^regis_asistencia/$', 'evento.views.marcar_asistencia'),
+    url(r'^usuario_por_evento/$', 'evento.views.usuario_por_evento'),
 )
