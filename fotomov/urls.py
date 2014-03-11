@@ -67,4 +67,5 @@ urlpatterns = patterns('',
     url(r'^agregar_productos/(?P<id_evento>\d+)/$', 'evento.views.agregar_productos'),
     url(r'^casilla_administrativa/(?P<id_evento>\d+)/$', 'evento.views.casilla_administrativa'),
     url(r'^agregar_sede_macrocliente_ajax/$', 'clientes.views.agregar_sede_macrocliente_ajax'),
+    url(r'^calendario_de_eventos/$', 'evento.views.calendario_de_eventos'),
 )

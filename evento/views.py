@@ -12,6 +12,7 @@ from productos.models import *
 from evento.models import *
 from clientes.models import *
 from direcciones.models import *
+from staff.models import Usuario
 from direcciones.views import *
 import datetime
 
@@ -119,7 +120,11 @@ def casilla_administrativa(request, id_evento):
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):
+    now = datetime.datetime.now()
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
-    funciones = StaffPorFuncion
-    return render_to_response('evento/calendario_de_eventos.html', {}, context_instance=RequestContext(request))
+    funciones = StaffPorFuncion.objects.filter(funcion__dia__gt=now.date(), tipo=usuario.privilegio).order_by('-funcion__dia').distinct()
+    for funcion in funciones:
+        print funcion.funcion.dia
+        print funcion.tipo.nombre
+    return render_to_response('evento/calendario_de_eventos.html', {'funciones': funciones}, context_instance=RequestContext(request))
