@@ -83,7 +83,8 @@ Nuevo Evento
 
 window.onload = function(){
 
-    $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy" });
+    $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
+    $('#id_porcentaje_institucion').spinner({ min: 0 });
     if(document.getElementById("id_macrocliente").value<1){
         document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
         document.getElementById("id_encargado").disabled = true;
