@@ -138,3 +138,6 @@ def marcar_asistencia(request):
         asistir_evento.delete()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+
+def usuario_por_evento(request):
+    return render_to_response('evento/usuario_por_evento.html', {}, context_instance=RequestContext(request))
