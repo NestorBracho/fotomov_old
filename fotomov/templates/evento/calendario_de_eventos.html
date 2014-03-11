@@ -12,8 +12,65 @@ Lista de funciones
     {% for funcion in funciones %}
         <tr>
             <td>{{ funcion.funcion.dia }}</td>
-            <td></td>
+            <td><a class='btn btn-warning' id='{{ funcion.funcion.id }}' name='0' onclick=asistir(this.id,this.name) ><span class="glyphicon glyphicon-unchecked"></span> Asistir</a></td>
         </tr>
     {% endfor %}
 </table>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+function asistir(iden, flag){
+
+    var User = "{{ user.id }}", funcion = iden, accion;
+
+    if(flag == '0'){
+
+        accion = "r";
+        $.ajax({
+
+            data:{userid: User, funcionid: funcion, accion: accion},
+            url:'/regis_asistencia/',
+            type:'get',
+            error:function(a,b,c){
+
+                alert(b+"\n"+c+"\n\nNo se pudo registrar su asistencia. Por favor, intente de nuevo en unos minutos.");
+
+            }
+
+        }).done(function(data){
+
+            document.getElementById(iden).setAttribute('class','btn btn-success');
+            document.getElementById(iden).setAttribute('name','1');
+            document.getElementById(iden).innerHTML = "<span class='glyphicon glyphicon-check'></span> Asistir";
+            alert(data.usuario.nombre);
+
+        });
+
+    }else{
+
+        accion = "d";
+        $.ajax({
+
+            data:{userid: User, funcionid: funcion, accion: accion},
+            url:'/regis_asistencia/',
+            type:'get',
+            error:function(a,b,c){
+
+                alert(b+"\n"+c+"\n\nNo se pudo eliminar su asistencia. Por favor, intente de nuevo en unos minutos.");
+
+            }
+
+        }).done(function(data){
+
+            document.getElementById(iden).setAttribute('class','btn btn-warning');
+            document.getElementById(iden).setAttribute('name','0');
+            document.getElementById(iden).innerHTML = "<span class='glyphicon glyphicon-unchecked'></span> Asistir";
+
+        });
+
+    }
+}
+
+</script>
 {% endblock %}

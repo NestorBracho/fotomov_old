@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -7,12 +8,11 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
-from staff.models import Privilegios, StaffPorFuncion
-from productos.models import *
 from evento.models import *
+from staff.models import *
+from productos.models import *
 from clientes.models import *
 from direcciones.models import *
-from staff.models import Usuario
 from direcciones.views import *
 import datetime
 
@@ -127,4 +127,14 @@ def calendario_de_eventos(request):
     for funcion in funciones:
         print funcion.funcion.dia
         print funcion.tipo.nombre
-    return render_to_response('evento/calendario_de_eventos.html', {'funciones': funciones}, context_instance=RequestContext(request))
+    print usuario.nombre
+    return render_to_response('evento/calendario_de_eventos.html', {'funciones': funciones,'user': usuario}, context_instance=RequestContext(request))
+
+def marcar_asistencia(request):
+    if(request.GET['accion'] == 'r'):
+        asistir_evento_c = AsistenciaStaffFuncion.objects.create(usuario = Usuario.objects.get(id = request.GET['userid']), funcion = Funcion.objects.get(id = request.GET['funcionid']))
+    else:
+        asistir_evento = AsistenciaStaffFuncion.objects.get(usuario = Usuario.objects.get(id = request.GET['userid']), funcion = Funcion.objects.get(id = request.GET['funcionid']))
+        asistir_evento.delete()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
