@@ -139,5 +139,6 @@ def marcar_asistencia(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
-def usuario_por_evento(request):
-    return render_to_response('evento/usuario_por_evento.html', {}, context_instance=RequestContext(request))
+def usuario_por_evento(request, id_evento):
+    funciones = Funcion.objects.filter( evento = Evento.objects.get(id = id_evento))
+    return render_to_response('evento/usuario_por_evento.html', {'id_event': funciones}, context_instance=RequestContext(request))

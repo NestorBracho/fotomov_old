@@ -4,12 +4,16 @@
 Usuarios por eventos
 {% endblock %}
 {% block seccion-contenido %}
-
+<input type="button" class="btn btn-success" value="click me!" onclick="hey()">
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
 
+function hey(){
 
+    alert("{{ id_event.0.nombre }}");
+
+}
 
 </script>
 {% endblock %}
