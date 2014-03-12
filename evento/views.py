@@ -59,16 +59,41 @@ def agregar_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     tipos_staff = Privilegios.objects.filter(valor=6)
+    lista = []
+    for funcion in funciones:
+        staff = StaffPorFuncion.objects.filter(funcion=funcion)
+        if staff:
+            tupla = (funcion,staff)
+            lista.append(tupla)
+        else:
+            for tipo in tipos_staff:
+                creado = StaffPorFuncion.objects.create(tipo=tipo, funcion=funcion, cantidad=0)
+            staff = StaffPorFuncion.objects.filter(funcion=funcion)
+            if staff:
+                tupla = (funcion,staff)
+                lista.append(tupla)
     if request.method == 'POST':
-        for funcion in funciones:
-            for staff in tipos_staff:
-                print str(funcion.id) + "-" + str(staff.id)
-                print request.POST.get(str(funcion.id) + "-" + str(staff.id))
-                cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
-                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad)
+        for funcion in lista:
+            for staff in funcion[1]:
+                print "antess del peo"
+                print staff.id
+                print str(funcion[0].id) + "-" + str(staff.tipo.id)
+                print request.POST.get(str(funcion[0].id) + "-" + str(staff.tipo.id))
+                print request.POST.get(str(funcion[0].id) + "-" + str(staff.tipo.id))
+                cantidad = request.POST.get(str(funcion[0].id) + "-" + str(staff.tipo.id))
+                print "antes cantidad"
+                print cantidad
+                print "despues cantidad"
+                if cantidad == "":
+                    cantidad=0
+                agregar = StaffPorFuncion.objects.get(tipo=staff.tipo, funcion=funcion[0])
+                agregar.cantidad = cantidad
+                print cantidad
+                print agregar.cantidad
                 agregar.save()
-        return HttpResponseRedirect("/agregar_productos/" + id_evento)
-    return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staff}, context_instance= RequestContext(request))
+        return HttpResponseRedirect("/listar_evento/2")
+    print lista
+    return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento}, context_instance= RequestContext(request))
 
 
 def encargado_ajax(request):
