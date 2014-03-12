@@ -59,14 +59,30 @@ def agregar_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     tipos_staff = Privilegios.objects.filter(valor=6)
+    lista = []
+    for funcion in funciones:
+        staff = StaffPorFuncion.objects.filter(funcion=funcion)
+        if staff:
+            tupla = (funcion,staff)
+            lista.append(tupla)
+        else:
+            for tipo in tipos_staff:
+                creado = StaffPorFuncion.objects.create(tipo=tipo, funcion=funcion, cantidad=0)
+            staff = StaffPorFuncion.objects.filter(funcion=funcion)
+            if staff:
+                tupla = (funcion,staff)
+                lista.append(tupla)
     if request.method == 'POST':
         for funcion in funciones:
             for staff in tipos_staff:
+                print str(funcion.id) + "-" + str(staff.id)
+                print request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad)
                 agregar.save()
-        return HttpResponseRedirect("/agregar_productos/" + id_evento)
-    return render_to_response('evento/agregar_staff.html', {'funciones': funciones, 'evento': evento, 'tipos_staff': tipos_staff}, context_instance= RequestContext(request))
+        return HttpResponseRedirect("/listar_evento/2")
+    print lista
+    return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento}, context_instance= RequestContext(request))
 
 
 def encargado_ajax(request):
@@ -104,14 +120,29 @@ def listar_pedidos_sede(request, id_sede):
 def agregar_productos(request,id_evento):
     productos = Producto.objects.all()
     evento = Evento.objects.get(id=id_evento)
+    lista = []
+    for producto in productos:
+        if ProductoEvento.objects.filter(evento=evento, producto=producto):
+            producto_existente = ProductoEvento.objects.get(evento=evento, producto=producto)
+            print producto_existente.precio
+            tupla=(producto,1, producto_existente.precio)
+            print tupla[2]
+        else:
+            tupla = (producto,0,0)
+        lista.append(tupla)
+
     if request.method == 'POST':
         seleccionados = request.POST.getlist('seleccionados')
+        existentes = ProductoEvento.objects.filter(evento=evento)
+        for existente in existentes:
+            existente.delete()
         for seleccionado in seleccionados:
             precio = request.POST.get(seleccionado)
             producto = Producto.objects.get(id=seleccionado)
-            producto_evento = ProductoEvento.objects.create(evento=evento,producto=producto,precio=float(precio))
-        return HttpResponseRedirect('/casilla_administrativa/' + id_evento)
-    return render_to_response('evento/agregar_productos.html', {'productos': productos}, context_instance=RequestContext(request))
+            producto_evento = ProductoEvento.objects.create(evento=evento,producto=producto,precio=float(precio.replace(',','.')))
+        return HttpResponseRedirect('/listar_evento/2')
+    print lista
+    return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
 
 def casilla_administrativa(request, id_evento):
     return render_to_response('evento/casilla_administrativa.html', {}, context_instance=RequestContext(request))

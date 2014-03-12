@@ -9,9 +9,9 @@
     </thead>
     {% for producto in productos %}
         <tr>
-            <td><input type="checkbox" value="{{ producto.id }}" name="seleccionados"> </td>
-            <td>{{ producto.nombre }}</td>
-            <td><input type="number" onkeypress="return numero(event)" name="{{ producto.id }}"></td>
+            <td><input type="checkbox" value="{{ producto.0.id }}" name="seleccionados" {% if producto.1 %} checked {% endif %}> </td>
+            <td>{{ producto.0.nombre }}</td>
+            <td><input type="text" onkeypress="return numero(event)" value="{{ producto.2 }}" name="{{ producto.0.id }}"></td>
         </tr>
     {% endfor %}
 </table>

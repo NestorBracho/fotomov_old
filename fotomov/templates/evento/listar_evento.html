@@ -30,7 +30,9 @@ Lista de eventos
     {% for evento in eventos %}
         <tr>
             <td>{{ evento.nombre }}</td>
-            <td><a href="/agregar_staff/{{ evento.id }}" class="btn btn-default" >Staff</a></td>
+            <td><a href="/agregar_staff/{{ evento.id }}" class="btn btn-default btn-xs" >Staff</a>
+            <a href="/agregar_productos/{{ evento.id }}" class="btn btn-default btn-xs" >Productos</a>
+            <a href="/casilla_administrativa/{{ evento.id }}" class="btn btn-default btn-xs" >Administracion</a></td>
         </tr>
     {% endfor %}
 </table>
