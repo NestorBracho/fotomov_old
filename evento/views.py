@@ -142,3 +142,13 @@ def marcar_asistencia(request):
 def usuario_por_evento(request, id_evento):
     funciones = Funcion.objects.filter( evento = Evento.objects.get(id = id_evento))
     return render_to_response('evento/usuario_por_evento.html', {'id_event': funciones}, context_instance=RequestContext(request))
+
+def marcar_asistencia(request):
+    print "hola"
+    if(request.GET['accion'] == 'r'):
+        asistir_evento_c = AsistenciaStaffFuncion.objects.create(usuario = Usuario.objects.get(id = request.GET['userid']), funcion = Funcion.objects.get(id = request.GET['funcionid']))
+    else:
+        asistir_evento = AsistenciaStaffFuncion.objects.get(usuario = Usuario.objects.get(id = request.GET['userid']), funcion = Funcion.objects.get(id = request.GET['funcionid']))
+        asistir_evento.delete()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
