@@ -70,4 +70,6 @@ urlpatterns = patterns('',
     url(r'^calendario_de_eventos/$', 'evento.views.calendario_de_eventos'),
     url(r'^regis_asistencia/$', 'evento.views.marcar_asistencia'),
     url(r'^usuario_por_evento/(?P<id_evento>\d+)/$', 'evento.views.usuario_por_evento'),
+    url(r'^get_staff_usuario_por_evento/$', 'evento.views.get_staff_usuario_por_evento'),
+    url(r'^get_staff_usuarios_usuario_por_evento/$', 'evento.views.get_staff_usuarios_usuario_por_evento'),
 )

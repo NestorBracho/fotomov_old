@@ -3,17 +3,173 @@
 {% block titulo %}
 Usuarios por eventos
 {% endblock %}
+{% block subtitulo %}
+{{ evento.nombre }}
+{% endblock %}
 {% block seccion-contenido %}
-<input type="button" class="btn btn-success" value="click me!" onclick="hey()">
+<form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+    <div class="col-sm-4">
+        <label>Funcion</label>
+        <select class=" form-control" id="select_funcion" onchange="getStaff(this.value)">
+            <option value="0">---------</option>
+            {% for funcion in funciones %}
+                <option value="{{ funcion.id }}">{{ funcion.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-sm-4">
+        <label>Staff</label>
+        <select class=" form-control" id="select_staff" onchange="setStaff(this.value)">
+            <option>---------</option>
+        </select>
+    </div>
+    <div class="col-sm-4">
+        <span id='cont'></span>
+    </div>
+    <div class="col-sm-12" id="tabla_personal">
+        <table id="content" class="table table-striped table-bordered table-hover" name='0'>
+        </table>
+    </div>
+</form>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
 
-function hey(){
+window.onload = function(){
 
-    alert("{{ id_event.0.nombre }}");
+    if(parseInt(document.getElementById("select_funcion").value)==0){
+        document.getElementById("select_staff").innerHTML = "<option>---------</option>";
+        document.getElementById("select_staff").disabled = true;
+    }else{
+        getStaff(document.getElementById('select_funcion').getAttribute('value'));
+    }
 
 }
 
+function getStaff(func){
+
+    if(func > 0){
+        $.ajax({
+
+            beforeSend:function(){
+
+                document.getElementById("content").innerHTML = "";
+                document.getElementById('cont').innerHTML = "";
+
+            },
+            data:{funcion:func},
+            url:'/get_staff_usuario_por_evento/',
+            type:'GET',
+            error:function(a,b,c){
+
+                alert(c);
+
+            }
+
+        }).done(function(data){
+
+            document.getElementById("select_staff").innerHTML = "<option value='0'>---------</option>";
+            for(var i = 0; i < data.length; i++){
+
+                {% for elstaff in staff %}
+
+                    if(data[i].fields.tipo == parseInt("{{elstaff.id}}")){
+
+                        document.getElementById('select_staff').innerHTML = document.getElementById('select_staff').innerHTML+"<option value='{{elstaff.id}}."+data[i].fields.cantidad+"'>{{elstaff.nombre}} ("+data[i].fields.cantidad+")</option>";
+
+                    }
+
+                {% endfor %}
+
+            }
+
+             document.getElementById("select_staff").disabled = false;
+        });
+
+    }else{
+
+        document.getElementById("select_staff").innerHTML = "<option>---------</option>";
+        document.getElementById("select_staff").disabled = true;
+        document.getElementById("content").innerHTML = "";
+        document.getElementById('cont').innerHTML = "";
+
+    }
+
+}
+
+function setStaff(val){
+
+    var aux, staff, cant;
+    aux = val.split('.');
+    staff = aux[0];
+    cant = aux[1];
+
+    if(val!=0){
+
+        $.ajax({
+
+            data:{staff: staff},
+            url:'/get_staff_usuarios_usuario_por_evento/',
+            type:'GET'
+
+        }).done(function(data){
+
+
+            document.getElementById('content').innerHTML = "<thead><th>Personal disponible</th><th>Acciones</th></thead>";
+            document.getElementById('content').setAttribute('name',cant);
+
+            for(var i = 0; i<data.length; i++){
+
+                document.getElementById('content').innerHTML += "<tr><td><a>"+data[i].fields.nombre+" "+data[i].fields.apellido+"</a>  "+data[i].fields.email+"</td><td><a class='btn btn-warning' id='"+data[i].pk+"' name='0' onclick=convocar(this.id,this.name) ><span class='glyphicon glyphicon-unchecked'></span> Convocar</a></td></tr>";
+
+            }
+
+            document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+"</h2>";
+
+        });
+
+    }else{
+
+        document.getElementById("content").innerHTML = "";
+        document.getElementById('cont').innerHTML = "";
+
+    }
+
+}
+
+function convocar(iden, flag){
+
+    var aux= parseInt(document.getElementById('content').getAttribute('name'));
+
+    if(flag == '0' && aux!=0){
+
+        document.getElementById(iden).setAttribute('class','btn btn-success');
+        document.getElementById(iden).setAttribute('name','1');
+        document.getElementById(iden).innerHTML = "<span class='glyphicon glyphicon-check'></span> Convocar";
+        aux--;
+        document.getElementById('content').setAttribute('name',aux);
+
+        if(aux == 0){
+
+            document.getElementById('cont').innerHTML = "<h2>Listo!</h2>";
+
+        }else{
+
+            document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+" mas</h2>";
+
+        }
+
+
+    }else if(flag == '1'){
+
+        document.getElementById(iden).setAttribute('class','btn btn-warning');
+        document.getElementById(iden).setAttribute('name','0');
+        document.getElementById(iden).innerHTML = "<span class='glyphicon glyphicon-unchecked'></span> Convocar";
+        aux++;
+        document.getElementById('content').setAttribute('name',aux);
+        document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+" mas</h2>";
+
+    }
+}
 </script>
 {% endblock %}
