@@ -73,23 +73,12 @@ def agregar_staff(request, id_evento):
                 tupla = (funcion,staff)
                 lista.append(tupla)
     if request.method == 'POST':
-        for funcion in lista:
-            for staff in funcion[1]:
-                print "antess del peo"
-                print staff.id
-                print str(funcion[0].id) + "-" + str(staff.tipo.id)
-                print request.POST.get(str(funcion[0].id) + "-" + str(staff.tipo.id))
-                print request.POST.get(str(funcion[0].id) + "-" + str(staff.tipo.id))
-                cantidad = request.POST.get(str(funcion[0].id) + "-" + str(staff.tipo.id))
-                print "antes cantidad"
-                print cantidad
-                print "despues cantidad"
-                if cantidad == "":
-                    cantidad=0
-                agregar = StaffPorFuncion.objects.get(tipo=staff.tipo, funcion=funcion[0])
-                agregar.cantidad = cantidad
-                print cantidad
-                print agregar.cantidad
+        for funcion in funciones:
+            for staff in tipos_staff:
+                print str(funcion.id) + "-" + str(staff.id)
+                print request.POST.get(str(funcion.id) + "-" + str(staff.id))
+                cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
+                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad)
                 agregar.save()
         return HttpResponseRedirect("/listar_evento/2")
     print lista
@@ -180,15 +169,17 @@ def marcar_asistencia(request):
     return HttpResponse(data, mimetype='application/json')
 
 def usuario_por_evento(request, id_evento):
-    funciones = Funcion.objects.filter( evento = Evento.objects.get(id = id_evento))
-    return render_to_response('evento/usuario_por_evento.html', {'id_event': funciones}, context_instance=RequestContext(request))
+    even = Evento.objects.get(id = id_evento)
+    funciones = Funcion.objects.filter( evento = even)
+    priv = Privilegios.objects.filter( valor = 6)
+    return render_to_response('evento/usuario_por_evento.html', {'funciones': funciones, 'staff':priv, 'evento': even}, context_instance=RequestContext(request))
 
-def marcar_asistencia(request):
-    print "hola"
-    if(request.GET['accion'] == 'r'):
-        asistir_evento_c = AsistenciaStaffFuncion.objects.create(usuario = Usuario.objects.get(id = request.GET['userid']), funcion = Funcion.objects.get(id = request.GET['funcionid']))
-    else:
-        asistir_evento = AsistenciaStaffFuncion.objects.get(usuario = Usuario.objects.get(id = request.GET['userid']), funcion = Funcion.objects.get(id = request.GET['funcionid']))
-        asistir_evento.delete()
-    data = json.dumps({'status': "hola"})
+def get_staff_usuario_por_evento(request):
+    elStaff = StaffPorFuncion.objects.filter(funcion = Funcion.objects.get( id = request.GET['funcion']))
+    data = serializers.serialize('json', elStaff, fields =('tipo','cantidad'))
+    return HttpResponse(data, mimetype='application/json')
+
+def get_staff_usuarios_usuario_por_evento(request):
+    gente = Usuario.objects.filter( privilegio = Privilegios.objects.get( id = request.GET['staff']) )
+    data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos'))
     return HttpResponse(data, mimetype='application/json')
