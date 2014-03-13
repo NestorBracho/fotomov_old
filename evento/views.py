@@ -152,7 +152,7 @@ def calendario_de_eventos(request):
     now = datetime.datetime.now()
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
-    funciones = StaffPorFuncion.objects.filter(funcion__dia__gt=now.date(), tipo=usuario.privilegio).order_by('-funcion__dia').distinct()
+    funciones = StaffPorFuncion.objects.filter(funcion__dia__gt=now.date(), tipo=usuario.privilegio, cantidad__gt = 0).order_by('-funcion__dia').distinct()
     for funcion in funciones:
         print funcion.funcion.dia
         print funcion.tipo.nombre
@@ -175,11 +175,14 @@ def usuario_por_evento(request, id_evento):
     return render_to_response('evento/usuario_por_evento.html', {'funciones': funciones, 'staff':priv, 'evento': even}, context_instance=RequestContext(request))
 
 def get_staff_usuario_por_evento(request):
-    elStaff = StaffPorFuncion.objects.filter(funcion = Funcion.objects.get( id = request.GET['funcion']))
+    elStaff = StaffPorFuncion.objects.filter(funcion = Funcion.objects.get( id = request.GET['funcion']), cantidad__gt = 0)
     data = serializers.serialize('json', elStaff, fields =('tipo','cantidad'))
     return HttpResponse(data, mimetype='application/json')
 
 def get_staff_usuarios_usuario_por_evento(request):
-    gente = Usuario.objects.filter( privilegio = Privilegios.objects.get( id = request.GET['staff']) )
+    asistencia = AsistenciaStaffFuncion.objects.filter(usuario__privilegio = Privilegios.objects.get( id = request.GET['staff']), funcion = Funcion.objects.get(id = request.GET['funcion']))
+    gente = []
+    for asistente in asistencia:
+        gente.append(asistente.usuario)
     data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos'))
     return HttpResponse(data, mimetype='application/json')

@@ -42,3 +42,4 @@ class AsistenciaStaffFuncion(models.Model):
     usuario = models.ForeignKey(Usuario)
     asistencia = models.BooleanField(default = False)
     fue_convocado = models.BooleanField(default = False)
+    email_enviado = models.BooleanField(default = False)

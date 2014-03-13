@@ -68,6 +68,8 @@ function getStaff(func){
 
         }).done(function(data){
 
+            document.getElementById('select_staff').setAttribute("onChange","setStaff(this.value,"+func+")");
+
             document.getElementById("select_staff").innerHTML = "<option value='0'>---------</option>";
             for(var i = 0; i < data.length; i++){
 
@@ -97,7 +99,7 @@ function getStaff(func){
 
 }
 
-function setStaff(val){
+function setStaff(val, func){
 
     var aux, staff, cant;
     aux = val.split('.');
@@ -108,7 +110,7 @@ function setStaff(val){
 
         $.ajax({
 
-            data:{staff: staff},
+            data:{staff: staff, funcion:func},
             url:'/get_staff_usuarios_usuario_por_evento/',
             type:'GET'
 
@@ -124,7 +126,15 @@ function setStaff(val){
 
             }
 
-            document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+"</h2>";
+            if(cant != 0){
+
+                document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+"</h2>";
+
+            }else{
+
+                document.getElementById('cont').innerHTML = "<h2>Listo!</h2>";
+
+            }
 
         });
 
