@@ -6,4 +6,8 @@ class Tarea(models.Model):
     asignado = models.ForeignKey(Privilegios)
     tarea = models.TextField(max_length=500)
     lista = models.BooleanField(default=False)
-    privada = models.ForeignKey(Tarea, null=True, blank=True)
+
+
+class Prela(models.Model):
+    es_prelada = models.ForeignKey(Tarea, related_name="es_prelada")
+    prela = models.ForeignKey(Tarea)
