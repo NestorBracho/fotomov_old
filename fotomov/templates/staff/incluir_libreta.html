@@ -126,7 +126,7 @@ function ajax_guardar(){
 
     }).done(function(data){
         for(var i=0; i<data.length; i++){
-            $('#content').append("<tr><td>"+ data[i].fields.nombre +"</td><td>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminar</button></td></tr>");
+            $('#content').append("<tr><td onclick=obtenerDireccion('"+ data[i].fields.nombre +"')>"+ data[i].fields.nombre +"</td><td onclick=obtenerDireccion('"+ data[i].fields.nombre +"')>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminar</button></td></tr>");
         }
 
         if(document.getElementById("toto") != null){
