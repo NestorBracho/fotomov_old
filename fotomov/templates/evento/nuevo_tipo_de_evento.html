@@ -1,18 +1,7 @@
-{% extends 'admin.html' %}
+{% extends 'tabla.html' %}
 {% load bootstrap %}
-{% block js %}
-<script type="text/javascript">
-
-    function cancelMarca(){
-
-        window.location.assign("/listar_marcas/0/");
-
-    }
-
-</script>
-{% endblock %}
 {% block titulo %}
-Crear nueva marca
+Agregar tipo de evento
 {% endblock %}
 {% block seccion-contenido %}
 <form method="POST">{% csrf_token %}
@@ -21,7 +10,6 @@ Crear nueva marca
         <div class="col-xs-12 text-right">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <button type="button" class="btn btn-default" onclick="cancelMarca()">Cancelar</button>
                     <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/>
                 </div>
                 <div class="col-md-6 hidden-xs hidden-sm"></div>

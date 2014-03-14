@@ -49,6 +49,7 @@ window.onload = function(){
 function getStaff(func){
 
     if(func > 0){
+
         $.ajax({
 
             beforeSend:function(){
@@ -117,12 +118,12 @@ function setStaff(val, func){
         }).done(function(data){
 
 
-            document.getElementById('content').innerHTML = "<thead><th>Personal disponible</th><th>Acciones</th></thead>";
+            document.getElementById('content').innerHTML = "<thead><th>Personal disponible</th><th>Email</th><th>Telefono</th><th>Acciones</th></thead>";
             document.getElementById('content').setAttribute('name',cant);
 
             for(var i = 0; i<data.length; i++){
 
-                document.getElementById('content').innerHTML += "<tr><td><a>"+data[i].fields.nombre+" "+data[i].fields.apellido+"</a>  "+data[i].fields.email+"</td><td><a class='btn btn-warning' id='"+data[i].pk+"' name='0' onclick=convocar(this.id,"+func+",this.name) ><span class='glyphicon glyphicon-unchecked'></span> Convocar</a></td></tr>";
+                document.getElementById('content').innerHTML += "<tr><td><a>"+data[i].fields.nombre+" "+data[i].fields.apellido+"</a></td><td> "+data[i].fields.email+"</td><td> "+data[i].fields.telefono_celular+"</td><td><a class='btn btn-warning' id='"+data[i].pk+"' name='0' onclick=convocar(this.id,"+func+",this.name) ><span class='glyphicon glyphicon-unchecked'></span> Convocar</a></td></tr>";
 
                 $.ajax({
 
@@ -135,13 +136,18 @@ function setStaff(val, func){
 
                 }).done(function(data1){
 
-                    console.log(data1[0].fields.fue_convocado);
+                    for(var t = 0; t<data.length; t++){
 
-                    if(data1[0].fields.fue_convocado == true){
+                        if(data1[t].fields.fue_convocado == true){
 
-                        document.getElementById(data[0].pk).setAttribute('class','btn btn-success');
-                        document.getElementById(data[0].pk).setAttribute('name','1');
-                        document.getElementById(data[0].pk).innerHTML = "<span class='glyphicon glyphicon-check'></span> Convocar";
+                            document.getElementById(data[t].pk).setAttribute('class','btn btn-success');
+                            document.getElementById(data[t].pk).setAttribute('name','1');
+                            document.getElementById(data[t].pk).innerHTML = "<span class='glyphicon glyphicon-check'></span> Convocar";
+
+                            document.getElementById('content').setAttribute('name',parseInt(document.getElementById('content').getAttribute('name'))-1);
+                            console.log(document.getElementById('content').getAttribute('name'));
+
+                        }
 
                     }
 
@@ -149,7 +155,9 @@ function setStaff(val, func){
 
             }
 
-            if(cant != 0){
+            console.log(document.getElementById('content').getAttribute('name'));
+
+            if(parseInt(document.getElementById('content').getAttribute('name')) != 0){
 
                 document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+"</h2>";
 

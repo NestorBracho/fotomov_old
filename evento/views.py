@@ -188,11 +188,11 @@ def get_staff_usuarios_usuario_por_evento(request):
             tupla = (asistente.usuario, asistente.fue_convocado)
             aux.append(asistente.fue_convocado)
             gente.append(asistente.usuario)
-        data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos','fue_convocado'))
+            print gente
+        data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos','telefono_celular'))
     else:
         tipo = AsistenciaStaffFuncion.objects.filter( usuario = Usuario.objects.get(id = request.GET['usuario']), funcion = Funcion.objects.get(id = request.GET['funcion']))
         data = serializers.serialize('json', tipo, fields =('fue_convocado'))
-        print data
     return HttpResponse(data, mimetype='application/json')
 
 def convocar_usuario_a_evento(request):
@@ -205,3 +205,14 @@ def convocar_usuario_a_evento(request):
         staff.save()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+
+def nuevo_tipo_de_evento(request, creado):
+    tipo_eventos = Tipos_Eventos.objects.all()
+    if(request.method == 'POST'):
+        formulario = TiposEventoForm(request.POST)
+        if(formulario.is_valid()):
+            tipoE = formulario.save()
+        return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'creado':creado}, context_instance=RequestContext(request))
+    else:
+        formulario = TiposEventoForm()
+    return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'creado':creado}, context_instance=RequestContext(request))

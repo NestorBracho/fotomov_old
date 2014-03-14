@@ -30,3 +30,6 @@ class Gastos_Funcion(models.Model):
     gasto = models.ForeignKey(Gasto)
     funcion = models.ForeignKey(Funcion)
 
+class Tipos_Eventos(models.Model):
+    nombre = models.CharField(max_length=200)
+
