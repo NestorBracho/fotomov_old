@@ -186,3 +186,14 @@ def get_staff_usuarios_usuario_por_evento(request):
         gente.append(asistente.usuario)
     data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos'))
     return HttpResponse(data, mimetype='application/json')
+
+def convocar_usuario_a_evento(request):
+    staff = AsistenciaStaffFuncion.objects.get(usuario = Usuario.objects.get(id = request.GET['usuario']), funcion = Funcion.objects.get(id = request.GET['funcion']))
+    if (staff.fue_convocado == False):
+        staff.fue_convocado = True
+        staff.save()
+    else:
+        staff.fue_convocado = False
+        staff.save()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
