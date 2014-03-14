@@ -74,4 +74,5 @@ urlpatterns = patterns('',
     url(r'^get_staff_usuarios_usuario_por_evento/$', 'evento.views.get_staff_usuarios_usuario_por_evento'),
     url(r'^convocar_usuario_a_evento/$', 'evento.views.convocar_usuario_a_evento'),
     url(r'^crear_tarea/$', 'tareas.views.crear_tarea'),
+    url(r'^editar_perfil/$', 'staff.views.editar_perfil')
 )

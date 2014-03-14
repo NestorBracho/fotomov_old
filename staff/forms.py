@@ -5,12 +5,17 @@ from staff.models import *
 from django.contrib.auth.models import User
 
 class RegisUsuarioForm(forms.Form):
-    nombre = forms.CharField()
-    apellido = forms.CharField()
-    cedula = forms.CharField()
-    email = forms.EmailField()
+    nombre = forms.CharField(required=False)
+    apellido = forms.CharField(required=False)
+    cedula = forms.CharField(required=False)
+    email = forms.EmailField(required=False)
     privilegio = forms.ModelChoiceField(queryset=Privilegios.objects.all())
-    equipos = forms.CharField(widget=forms.Textarea)
+
+class EditarUsuarioForm(forms.Form):
+    nombre = forms.CharField(required=False)
+    apellido = forms.CharField(required=False)
+    cedula = forms.CharField(required=False)
+    email = forms.EmailField(required=False)
 
 class RegisStaffForm(forms.Form):
     nombre = forms.CharField()

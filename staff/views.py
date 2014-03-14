@@ -22,10 +22,13 @@ def lista_usuario(request, creado):
     return render_to_response('staff/lista_usuario.html',{'lista':usuario, 'creado':creado}, context_instance=RequestContext(request))
 
 def nuevo_usuario(request):
+    print "estoy en la funcion"
     if request.method == 'POST':
         formulario = UserCreationForm(request.POST)
         formulario2 = RegisUsuarioForm(request.POST)
+        print "antes de validar"
         if formulario.is_valid() and formulario2.is_valid():
+            print "valido"
             usu = formulario.save()
             nom = formulario2.cleaned_data['nombre']
             ape = formulario2.cleaned_data['apellido']
@@ -33,6 +36,7 @@ def nuevo_usuario(request):
             ema = formulario2.cleaned_data['email']
             pri = formulario2.cleaned_data['privilegio']
             try:
+                print "entre"
                 perfil = Usuario.objects.create(usuario = usu, email=ema, nombre=nom, apellido=ape, cedula=ced, privilegio=pri)
                 perfil.save()
                 return HttpResponseRedirect('/listar_usuario/1')
@@ -140,3 +144,20 @@ def modificar_staff(request,id_modificar):
             staff = Privilegios.objects.get(id=id_modificar)
             modiStaff = PrivilegioFrom(initial={'nombre':staff.nombre})
     return render_to_response('staff/modificar_staff.html',{'staff':modiStaff},context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def editar_perfil(request):
+    usuario = request.user
+    print usuario
+    perfil = Usuario.objects.get(usuario=usuario)
+    if request.method == 'POST':
+        formulario = EditarUsuarioForm(request.POST)
+        if formulario.is_valid():
+            usuario.nombre = formulario.cleaned_data['nombre']
+            usuario.apellido = formulario.cleaned_data['apellido']
+            usuario.cedula = formulario.cleaned_data['cedula']
+            usuario.email = formulario.cleaned_data['email']
+            usuario.save()
+    else:
+        formulario = EditarUsuarioForm(initial={'nombre': usuario.nombre, 'apellido': usuario.apellido, 'cedula': usuario.cedula, 'email': usuario.email})
+    return render_to_response('staff/perfil.html', {'formulario': formulario}, context_instance=RequestContext(request))
