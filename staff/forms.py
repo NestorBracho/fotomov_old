@@ -16,6 +16,22 @@ class EditarUsuarioForm(forms.Form):
     apellido = forms.CharField(required=False)
     cedula = forms.CharField(required=False)
     email = forms.EmailField(required=False)
+    telefono_fijo = forms.CharField(required=False)
+    telefono_celular = forms.CharField(required=False)
+    telefono_otro = forms.CharField(required=False)
+    twitter = forms.CharField(required=False)
+
+class EquiposForm(forms.ModelForm):
+    class Meta:
+        model = Equipos
+
+class ExperienciaForm(forms.ModelForm):
+    class Meta:
+        model = Experiencia
+
+class DatoDePagoForm(forms.ModelForm):
+    class Meta:
+        model = DatoDePago
 
 class RegisStaffForm(forms.Form):
     nombre = forms.CharField()

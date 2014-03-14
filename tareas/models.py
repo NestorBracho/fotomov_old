@@ -4,6 +4,7 @@ from staff.models import Privilegios, Usuario
 
 class Tarea(models.Model):
     asignado = models.ForeignKey(Privilegios)
+    nombre = models.CharField(max_length=100)
     tarea = models.TextField(max_length=500)
     lista = models.BooleanField(default=False)
 

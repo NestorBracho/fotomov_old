@@ -1,0 +1,81 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block titulo %}
+    Perfil de {{ usuario.nombre }} {{ usuario.apellido }}
+{% endblock %}
+{% block seccion-contenido %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Datos Generales</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+			    <div class="col-xs-12 col-md-6">Nombre: {{usuario.nombre}}</div>
+			    <div class="col-xs-12 col-md-6">Apellido: {{usuario.apellido}}</div>
+		    </div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Cedula: {{usuario.cedula}}</div>
+			    <div class="col-xs-12 col-md-6">Email: {{usuario.email}}</div>
+    		</div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Telefono Fijo: {{usuario.telefono_fijo}}</div>
+			    <div class="col-xs-12 col-md-6">Telefono Celular: {{usuario.telefono_celular}}</div>
+    		</div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Otro Telefono: {{usuario.telefono_otro}}</div>
+			    <div class="col-xs-12 col-md-6">Twitter: {{usuario.twitter}}</div>
+		    </div>
+        </div>
+	</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Equipos</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+			    <div class="col-xs-12 col-md-6">Marca: {{usuario.equipos.marca}}</div>
+			    <div class="col-xs-12 col-md-6">Flash: {{usuario.equipos.flash}}</div>
+		    </div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Lente 1: {{usuario.equipos.lente_1}}</div>
+			    <div class="col-xs-12 col-md-6">Lente 2: {{usuario.equipos.lente_2}}</div>
+    		</div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Lente 3: {{usuario.equipos.lente_3}}</div>
+			    <div class="col-xs-12 col-md-6"># Tarjetas de memoria y capacidad: {{usuario.equipos.memorias}}</div>
+    		</div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Iluminacion Profesional: {{usuario.equipos.iluminacion}}</div>
+			    <div class="col-xs-12 col-md-6">Otros (tripoide, sinfin, portasinfin): {{usuario.equipos.otros}}</div>
+		    </div>
+        </div>
+	</div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Experiencia</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+			    <div class="col-xs-12 col-md-6">Manejo de Lightroom/Nivel (del 1 al 10): {{usuario.experiencia.lightroom}}</div>
+			    <div class="col-xs-12 col-md-6">Manejo de Photoshop/Nivel (del 1 al 10): {{usuario.experiencia.photoshop}}</div>
+		    </div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Tipo de eventos donde ha trabajo. Especialidad: {{usuario.experiencia.tipos}}</div>
+            </div>
+	    </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Datos de pago</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+			    <div class="col-xs-12 col-md-6">Banco: {{usuario.datos_pago.banco}}</div>
+			    <div class="col-xs-12 col-md-6">Tipo de cuenta: {{usuario.datos_pago.tipo_de_cuenta}}</div>
+		    </div>
+            <div class="row">
+		    	<div class="col-xs-12 col-md-6">Numero de cuenta: {{usuario.datos_pago.numero}}</div>
+            </div>
+	    </div>
+    </div>
+{% endblock %}
