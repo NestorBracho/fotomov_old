@@ -39,7 +39,7 @@ class Usuario(models.Model):
   telefono_fijo = models.CharField(max_length=11, null=True, blank=True)
   telefono_celular = models.CharField(max_length=11, null=True, blank=True)
   telefono_otro = models.CharField(max_length=11, null=True, blank=True)
-  equipos = models.ForeignKey(Equipos)
+  equipos = models.ForeignKey(Equipos, null=True, blank=True)
   twitter = models.CharField(max_length=50, null=True, blank=True)
 
 class TipoStaff(models.Model):

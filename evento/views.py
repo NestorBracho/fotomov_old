@@ -182,6 +182,7 @@ def get_staff_usuario_por_evento(request):
 def get_staff_usuarios_usuario_por_evento(request):
     asistencia = AsistenciaStaffFuncion.objects.filter(usuario__privilegio = Privilegios.objects.get( id = request.GET['staff']), funcion = Funcion.objects.get(id = request.GET['funcion']))
     gente = []
+    print "hola"
     for asistente in asistencia:
         gente.append(asistente.usuario)
     data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos'))
