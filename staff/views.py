@@ -146,18 +146,71 @@ def modificar_staff(request,id_modificar):
     return render_to_response('staff/modificar_staff.html',{'staff':modiStaff},context_instance=RequestContext(request))
 
 @login_required(login_url='/')
-def editar_perfil(request):
+def editar_perfil(request, creado):
     usuario = request.user
     print usuario
     perfil = Usuario.objects.get(usuario=usuario)
+    if perfil.equipos == None:
+        perfil.equipos = Equipos.objects.create()
+        perfil.save()
+    if perfil.experiencia == None:
+        perfil.experiencia = Experiencia.objects.create()
+        perfil.save()
+    if perfil.datos_pago == None:
+        perfil.datos_pago = DatoDePago.objects.create()
+        perfil.save()
     if request.method == 'POST':
         formulario = EditarUsuarioForm(request.POST)
-        if formulario.is_valid():
-            usuario.nombre = formulario.cleaned_data['nombre']
-            usuario.apellido = formulario.cleaned_data['apellido']
-            usuario.cedula = formulario.cleaned_data['cedula']
-            usuario.email = formulario.cleaned_data['email']
-            usuario.save()
+        formulario2 = EquiposForm(request.POST)
+        formulario3 = ExperienciaForm(request.POST)
+        formulario4 = DatoDePagoForm(request.POST)
+        if formulario.is_valid() and formulario2.is_valid() and formulario3.is_valid() and formulario4.is_valid():
+            print "is valid"
+            perfil.nombre = formulario.cleaned_data['nombre']
+            perfil.apellido = formulario.cleaned_data['apellido']
+            perfil.cedula = formulario.cleaned_data['cedula']
+            perfil.email = formulario.cleaned_data['email']
+            perfil.save()
+            perfil.telefono_fijo = formulario.cleaned_data['telefono_fijo']
+            perfil.telefono_celular = formulario.cleaned_data['telefono_celular']
+            perfil.telefono_otro = formulario.cleaned_data['telefono_otro']
+            perfil.twitter = formulario.cleaned_data['twitter']
+            form2 = formulario2.save(commit=False)
+            form3 = formulario3.save(commit=False)
+            form4 = formulario4.save(commit=False)
+            perfil.equipos.marca = form2.marca
+            perfil.equipos.flash = form2.flash
+            perfil.equipos.lente_1 = form2.lente_1
+            perfil.equipos.lente_2 = form2.lente_2
+            perfil.equipos.lente_3 = form2.lente_3
+            perfil.equipos.memorias = form2.memorias
+            perfil.equipos.iluminacion = form2.iluminacion
+            perfil.equipos.otros = form2.otros
+            perfil.equipos.save()
+            perfil.experiencia.lightroom = form3.lightroom
+            perfil.experiencia.photoshop = form3.photoshop
+            perfil.experiencia.tipos = form3.tipos
+            perfil.experiencia.save()
+            perfil.datos_pago.banco = form4.banco
+            perfil.datos_pago.tipo_de_cuenta = form4.tipo_de_cuenta
+            perfil.datos_pago.numero = form4.numero
+            perfil.datos_pago.save()
+            return HttpResponseRedirect('/editar_perfil/2')
     else:
-        formulario = EditarUsuarioForm(initial={'nombre': usuario.nombre, 'apellido': usuario.apellido, 'cedula': usuario.cedula, 'email': usuario.email})
-    return render_to_response('staff/perfil.html', {'formulario': formulario}, context_instance=RequestContext(request))
+        formulario = EditarUsuarioForm(initial={'nombre': perfil.nombre, 'apellido': perfil.apellido, 'cedula': perfil.cedula,
+                                                'email': perfil.email, 'telefono_fijo': perfil.telefono_fijo, 'telefono_celular': perfil.telefono_celular,
+                                                'telefono_otro': perfil.telefono_otro, 'twitter': perfil.twitter})
+        formulario2 = EquiposForm(initial={'marca': perfil.equipos.marca, 'flash': perfil.equipos.flash, 'lente_1': perfil.equipos.lente_1,
+                                           'lente_2': perfil.equipos.lente_2, 'lente_3': perfil.equipos.lente_3, 'memorias': perfil.equipos.memorias,
+                                           'iluminacion': perfil.equipos.iluminacion, 'otros': perfil.equipos.otros})
+        formulario3 = ExperienciaForm(initial={'lightroom': perfil.experiencia.lightroom, 'photoshop': perfil.experiencia.photoshop, 'tipos': perfil.experiencia.tipos})
+        formulario4 = DatoDePagoForm(initial={'banco': perfil.datos_pago.banco, 'tipo_de_cuenta': perfil.datos_pago.tipo_de_cuenta, 'numero': perfil.datos_pago.numero})
+    return render_to_response('staff/perfil.html', {'formulario': formulario, 'formulario2': formulario2, 'formulario3': formulario3, 'formulario4': formulario4, 'creado': creado}, context_instance=RequestContext(request))
+
+def ver_perfil(request, id_staff):
+    usuario = Usuario.objects.get(id=id_staff)
+    return render_to_response('staff/ver_perfil.html', {'usuario': usuario}, context_instance=RequestContext(request))
+
+def cerrar_sesion(request):
+    logout(request)
+    return HttpResponseRedirect('/')
