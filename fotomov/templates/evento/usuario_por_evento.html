@@ -7,10 +7,6 @@ Usuarios por eventos
 {{ evento.nombre }}
 {% endblock %}
 {% block seccion-contenido %}
-<div class="alert alert-success">
-<button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
-Setear el boton para q agarre valores desde la bd desde su construccion
-</div>
 <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
     <div class="col-sm-4">
         <label>Funcion</label>
@@ -114,7 +110,7 @@ function setStaff(val, func){
 
         $.ajax({
 
-            data:{staff: staff, funcion:func},
+            data:{staff: staff, funcion:func, marc:'0'},
             url:'/get_staff_usuarios_usuario_por_evento/',
             type:'GET'
 
@@ -127,6 +123,29 @@ function setStaff(val, func){
             for(var i = 0; i<data.length; i++){
 
                 document.getElementById('content').innerHTML += "<tr><td><a>"+data[i].fields.nombre+" "+data[i].fields.apellido+"</a>  "+data[i].fields.email+"</td><td><a class='btn btn-warning' id='"+data[i].pk+"' name='0' onclick=convocar(this.id,"+func+",this.name) ><span class='glyphicon glyphicon-unchecked'></span> Convocar</a></td></tr>";
+
+                $.ajax({
+
+                    data:{usuario:data[i].pk, funcion:func, marc:'1'},
+                    url:'/get_staff_usuarios_usuario_por_evento/',
+                    type:'GET',
+                    error:function(a,b,c){
+                        alert(a+b+c);
+                    }
+
+                }).done(function(data1){
+
+                    console.log(data1[0].fields.fue_convocado);
+
+                    if(data1[0].fields.fue_convocado == true){
+
+                        document.getElementById(data[0].pk).setAttribute('class','btn btn-success');
+                        document.getElementById(data[0].pk).setAttribute('name','1');
+                        document.getElementById(data[0].pk).innerHTML = "<span class='glyphicon glyphicon-check'></span> Convocar";
+
+                    }
+
+                });
 
             }
 
