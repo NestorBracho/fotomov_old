@@ -180,12 +180,19 @@ def get_staff_usuario_por_evento(request):
     return HttpResponse(data, mimetype='application/json')
 
 def get_staff_usuarios_usuario_por_evento(request):
-    asistencia = AsistenciaStaffFuncion.objects.filter(usuario__privilegio = Privilegios.objects.get( id = request.GET['staff']), funcion = Funcion.objects.get(id = request.GET['funcion']))
-    gente = []
-    print "hola"
-    for asistente in asistencia:
-        gente.append(asistente.usuario)
-    data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos'))
+    if(request.GET['marc']=='0'):
+        asistencia = AsistenciaStaffFuncion.objects.filter(usuario__privilegio = Privilegios.objects.get( id = request.GET['staff']), funcion = Funcion.objects.get(id = request.GET['funcion']))
+        aux = []
+        gente = []
+        for asistente in asistencia:
+            tupla = (asistente.usuario, asistente.fue_convocado)
+            aux.append(asistente.fue_convocado)
+            gente.append(asistente.usuario)
+        data = serializers.serialize('json', gente, fields =('nombre','apellido','email','equipos','fue_convocado'))
+    else:
+        tipo = AsistenciaStaffFuncion.objects.filter( usuario = Usuario.objects.get(id = request.GET['usuario']), funcion = Funcion.objects.get(id = request.GET['funcion']))
+        data = serializers.serialize('json', tipo, fields =('fue_convocado'))
+        print data
     return HttpResponse(data, mimetype='application/json')
 
 def convocar_usuario_a_evento(request):
