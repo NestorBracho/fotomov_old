@@ -14,7 +14,11 @@ import datetime
 
 def crear_tarea(request):
     if request.method == 'POST':
-        pass
+        formulario = TareaForm(request)
+        if formulario.is_valid():
+            tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'], lista=False)
+            tarea.save()
+
     else:
         formulario = TareaForm()
     return render_to_response('tareas/crear_tarea.html', {'formulario': formulario}, context_instance=RequestContext(request))
