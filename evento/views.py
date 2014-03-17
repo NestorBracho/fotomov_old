@@ -208,11 +208,12 @@ def convocar_usuario_a_evento(request):
 
 def nuevo_tipo_de_evento(request, creado):
     tipo_eventos = Tipos_Eventos.objects.all()
+    staff = Privilegios.objects.all()
     if(request.method == 'POST'):
         formulario = TiposEventoForm(request.POST)
         if(formulario.is_valid()):
             tipoE = formulario.save()
-        return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'creado':creado}, context_instance=RequestContext(request))
+        return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
     else:
         formulario = TiposEventoForm()
-    return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'creado':creado}, context_instance=RequestContext(request))
+    return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
