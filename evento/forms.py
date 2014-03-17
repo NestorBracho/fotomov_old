@@ -9,3 +9,7 @@ class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
         exclude = ['locacion', 'encargado', 'sede']
+
+class TiposEventoForm(forms.ModelForm):
+    class Meta:
+        model = Tipos_Eventos
