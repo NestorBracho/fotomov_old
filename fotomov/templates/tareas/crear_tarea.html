@@ -1,15 +1,66 @@
-{% extends 'admin.html' %}
+{% extends 'tabla.html' %}
+{% block css %}
+    <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
 {% load bootstrap %}
 {% block titulo %}
     Crear Tarea
 {% endblock %}
 {% block seccion-contenido %}
     <form method="POST">{% csrf_token %}
-    {{ formulario.asignado | bootstrap }}
-    {{ formulario.nombre | bootstrap }}
-    {{ formulario.tarea | bootstrap }}
+    <div class="row">
+        <div class="col-sm-4">
+            {{ formulario.asignado | bootstrap }}
+        </div>
+        <div class="col-sm-4">
+            {{ formulario.nombre | bootstrap }}
+        </div>
+        <div class="col-sm-4">
+            <label class="control-label">Fecha limite</label>
+            <input class="form-control" type="text" id="id_input_fecha" placeholder="Fecha..."/>
+        </div>
+        <div class="col-sm-12">
+            {{ formulario.tarea | bootstrap }}
+        </div>
+
+        </div>
+    <div class="row">
+    <table class="table table-striped table-bordered table-hover" id="content">
+    <thead>
+        <th>Seleccionar</th>
+        <th>Eventos</th>
+        <th>Macrocliente</th>
+        <th>Descripcion</th>
+    </thead>
+    {% for evento in eventos %}
+        <tr>
+            <td><input type="checkbox" class="radio" value="{{ evento.id }}" name="evento" id="{{ evento.id }}" /></td>
+            <td>{{ evento.nombre }}</td>
+            <td>{{ evento.sede.macrocliente }}</td>
+            <td>{{ evento.descripcion }}</td>
+    {% endfor %}
+    </table>
+    </div>
     <div class="col-xs-12 col-md-6">
         <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/>
     </div>
     </form>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+window.onload = function(){
+
+    $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
+}
+
+    $("input:checkbox").click(function() {
+    if ($(this).is(":checked")) {
+        var group = "input:checkbox[name='" + $(this).attr("name") + "']";
+        $(group).prop("checked", false);
+        $(this).prop("checked", true);
+    } else {
+        $(this).prop("checked", false);
+    }
+});
+</script>
 {% endblock %}
