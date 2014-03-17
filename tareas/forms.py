@@ -7,3 +7,4 @@ from django import forms
 class TareaForm(forms.Form):
     asignado = forms.ModelChoiceField(queryset=Privilegios.objects.filter(valor__lt=6))
     tarea = forms.CharField(widget=forms.Textarea)
+    nombre = forms.CharField()

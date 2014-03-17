@@ -4,6 +4,7 @@ from staff.models import *
 from clientes.models import *
 from evento.models import *
 from productos.models import *
+from tareas.models import *
 
 admin.site.register(Usuario)
 admin.site.register(Privilegios)
@@ -25,3 +26,4 @@ admin.site.register(AsistenciaStaffFuncion)
 admin.site.register(Equipos)
 admin.site.register(Experiencia)
 admin.site.register(DatoDePago)
+admin.site.register(Tarea)

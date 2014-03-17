@@ -4,5 +4,12 @@
     Crear Tarea
 {% endblock %}
 {% block seccion-contenido %}
-    {{ formulario | bootstrap }}
+    <form method="POST">{% csrf_token %}
+    {{ formulario.asignado | bootstrap }}
+    {{ formulario.nombre | bootstrap }}
+    {{ formulario.tarea | bootstrap }}
+    <div class="col-xs-12 col-md-6">
+        <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/>
+    </div>
+    </form>
 {% endblock %}
