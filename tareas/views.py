@@ -14,16 +14,24 @@ import datetime
 
 def crear_tarea(request):
     eventos = Evento.objects.all()
+    error_fecha = 0
     if request.method == 'POST':
         formulario = TareaForm(request.POST)
+        fecha = request.POST.get('fecha')
+        if fecha == "":
+            error_fecha = 1
+            return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
         if formulario.is_valid():
-            print formulario.cleaned_data['asignado']
-            print formulario.cleaned_data['nombre']
-            print request.POST.get('evento')
-            tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
-                                         lista=False)
-            #tarea.save()
+            fecha_split= fecha.split('-')
+            fecha_final= fecha_split[2] + "-" + fecha_split[1] + "-" + fecha_split[0]
+            evento = request.POST.get('evento')
+            if evento == None:
+                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
+                                             lista=False, fecha=fecha_final)
+            else:
+                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
+                                             lista=False, fecha=fecha_final, evento=Evento.objects.get(id=evento))
 
     else:
         formulario = TareaForm()
-    return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos}, context_instance=RequestContext(request))
+    return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
