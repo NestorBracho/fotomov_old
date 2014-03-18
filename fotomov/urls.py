@@ -77,5 +77,6 @@ urlpatterns = patterns('',
     url(r'^editar_perfil/(?P<creado>\d+)/$', 'staff.views.editar_perfil'),
     url(r'^ver_perfil/(?P<id_staff>\d+)/$$', 'staff.views.ver_perfil'),
     url(r'^logout/$', 'staff.views.cerrar_sesion'),
-    url(r'^nuevo_tipo_de_evento/(?P<creado>\d+)/$', 'evento.views.nuevo_tipo_de_evento')
+    url(r'^nuevo_tipo_de_evento/(?P<creado>\d+)/$', 'evento.views.nuevo_tipo_de_evento'),
+    url(r'^ver_tarea/(?P<id_tarea>\d+)/$', 'tareas.views.ver_tarea'),
 )

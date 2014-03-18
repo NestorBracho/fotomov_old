@@ -1,0 +1,39 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+<div class="row">
+    <div class="col-sm-3">
+        <strong>Nombre de la tarea:</strong>
+        <p>{{ tarea.nombre }}</p>
+    </div>
+
+    <div class="col-sm-3">
+        <strong>Asignada a: </strong>
+        <p>{{ tarea.asignado }}</p>
+    </div>
+    <div class="col-sm-3">
+        <strong>Fecha de vencimiento:</strong>
+        <p>{{ tarea.fecha }}</p>
+    </div>
+    <div class="col-sm-3">
+        <strong>Evento:</strong>
+        {% if tarea.evento == None %}
+            <p>N/A</p>
+        {% else %}
+            <p>{{ tarea.evento }}</p>
+        {% endif %}
+    </div>
+    <div class="col-sm-12">
+        <strong>Descripcion:</strong>
+        <p>{{ tarea.tarea }}</p>
+    </div>
+    <div class="col-sm-4">
+         <strong>
+             Estado:
+         </strong>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+{% endblock %}
