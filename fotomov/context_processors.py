@@ -2,6 +2,7 @@ from staff.models import *
 from tareas.models import *
 
 def obtener_tareas(request):
+    tareas = ""
     if request.user:
         if request.user.is_authenticated():
             us = request.user
