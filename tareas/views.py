@@ -54,3 +54,10 @@ def modificar_estado_tarea(request):
         tarea.listo = 'None'
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+    return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
+
+def ver_tarea(request, id_tarea):
+    tarea = Tarea.objects.get(id=id_tarea)
+    prela = Prela.objects.filter(prela=tarea)
+    es_prelada = Prela.objects.filter(es_prelada=tarea)
+    return render_to_response('tareas/ver_tarea.html', {'tarea':tarea, 'prela':prela, 'es_prelada': es_prelada}, context_instance=RequestContext(request))
