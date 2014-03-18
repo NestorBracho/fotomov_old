@@ -231,8 +231,8 @@ def nuevo_tipo_de_evento(request, creado):
                     prelaciones.append(aux)
             for prelacion in prelaciones:
                 aux = prelacion.split('-')
-                tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
-                tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
+                tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
+                tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
                 PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2)
             for tarea in range(1, tareas+1):
                 TareaAux = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = str(tarea))
