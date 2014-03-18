@@ -1,5 +1,8 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
+{% block titulo %}
+    Ver Tarea: {{ tarea.nombre }}
+{% endblock %}
 {% block seccion-contenido %}
 <div class="row">
     <div class="col-sm-3">
