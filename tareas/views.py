@@ -35,3 +35,22 @@ def crear_tarea(request):
     else:
         formulario = TareaForm()
     return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def listar_tareas(request):
+    tareas = Tarea.objects.filter(asignado = Usuario.objects.get(usuario = request.user).privilegio)
+    return render_to_response('tareas/listar_tareas.html', {'tareas':tareas}, context_instance=RequestContext(request))
+
+def modificar_estado_tarea(request):
+    #1 pendient
+    #2 listo
+    #0 NA
+    tarea = Tarea.objects.get(id = request.GET['tarea'])
+    if request.GET['estado'] == '2':
+        tarea.listo = 'True'
+    elif request.GET['estado'] == '1':
+        tarea.listo = 'False'
+    else:
+        tarea.listo = 'None'
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
