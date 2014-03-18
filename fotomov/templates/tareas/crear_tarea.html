@@ -16,8 +16,13 @@
             {{ formulario.nombre | bootstrap }}
         </div>
         <div class="col-sm-4">
-            <label class="control-label">Fecha limite</label>
-            <input class="form-control" type="text" id="id_input_fecha" placeholder="Fecha..."/>
+            <div class="form-group {% if error_fecha %} has-error {% endif %}">
+                <label class="control-label">Fecha limite</label>
+                <input class="form-control" name="fecha" type="text" id="id_input_fecha" placeholder="Fecha..."/>
+                {% if error_fecha %} <span class="help-block">Este campo es obligatorio</span> {% endif %}
+
+            </div>
+
         </div>
         <div class="col-sm-12">
             {{ formulario.tarea | bootstrap }}
