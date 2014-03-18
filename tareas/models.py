@@ -21,3 +21,8 @@ class TareaTipoEvento(models.Model):
     tarea = models.TextField(max_length=500)
     tipo_evento = models.ForeignKey(Tipos_Eventos)
     dias = models.IntegerField()
+    id_aux = models.TextField(max_length=5, null=True, blank=True)
+
+class PrelaTareaTipoEvento(models.Model):
+    es_prelada = models.ForeignKey(TareaTipoEvento, related_name="es_prelada_tipo_evento")
+    prela = models.ForeignKey(TareaTipoEvento)

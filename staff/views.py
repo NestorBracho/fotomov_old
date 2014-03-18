@@ -22,13 +22,10 @@ def lista_usuario(request, creado):
     return render_to_response('staff/lista_usuario.html',{'lista':usuario, 'creado':creado}, context_instance=RequestContext(request))
 
 def nuevo_usuario(request):
-    print "estoy en la funcion"
     if request.method == 'POST':
         formulario = UserCreationForm(request.POST)
         formulario2 = RegisUsuarioForm(request.POST)
-        print "antes de validar"
         if formulario.is_valid() and formulario2.is_valid():
-            print "valido"
             usu = formulario.save()
             nom = formulario2.cleaned_data['nombre']
             ape = formulario2.cleaned_data['apellido']
@@ -36,7 +33,6 @@ def nuevo_usuario(request):
             ema = formulario2.cleaned_data['email']
             pri = formulario2.cleaned_data['privilegio']
             try:
-                print "entre"
                 perfil = Usuario.objects.create(usuario = usu, email=ema, nombre=nom, apellido=ape, cedula=ced, privilegio=pri)
                 perfil.save()
                 return HttpResponseRedirect('/listar_usuario/1')

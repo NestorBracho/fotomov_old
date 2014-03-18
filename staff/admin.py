@@ -27,3 +27,7 @@ admin.site.register(Equipos)
 admin.site.register(Experiencia)
 admin.site.register(DatoDePago)
 admin.site.register(Tarea)
+admin.site.register(TareaTipoEvento)
+admin.site.register(Tipos_Eventos)
+admin.site.register(PrelaTareaTipoEvento)
+
