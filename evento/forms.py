@@ -13,3 +13,7 @@ class EventoForm(forms.ModelForm):
 class TiposEventoForm(forms.ModelForm):
     class Meta:
         model = Tipos_Eventos
+
+class PautaForm(forms.Form):
+    nombre = forms.CharField(max_length=300)
+    pauta = forms.CharField(max_length=2000)

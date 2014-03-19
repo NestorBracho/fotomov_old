@@ -82,5 +82,9 @@ urlpatterns = patterns('',
     url(r'^modificar_estado_tarea/$', 'tareas.views.modificar_estado_tarea'),
     url(r'^nuevo_tipo_de_evento/(?P<creado>\d+)/$', 'evento.views.nuevo_tipo_de_evento'),
     url(r'^ver_tarea/(?P<id_tarea>\d+)/$', 'tareas.views.ver_tarea'),
+    url(r'^nueva_pauta/(?P<id_evento>\d+)/$', 'evento.views.nueva_pauta'),
+    url(r'^editar_pauta/(?P<id_pauta>\d+)/$', 'evento.views.editar_pauta'),
+    url(r'^eliminar_pauta/(?P<id_pauta>\d+)/$', 'evento.views.eliminar_pauta'),
+    url(r'^listar_pautas/(?P<id_evento>\d+)/$', 'evento.views.listar_pautas')
     url(r'^crear_notificacion/$', 'tareas.views.crear_notificacion'),
 )
