@@ -117,6 +117,16 @@ function guardarTE(){
     var total = document.getElementById("toDoList").value;
     var flag = true, nom = [], desc= [], staff= [], aux;
 
+    for(var a=1; a<total+1;a++){
+
+        if(document.getElementById(a)){
+
+            document.getElementById(a).setAttribute('class','');
+
+        }
+
+    }
+
     for(var i=1; i<total+1;i++){
 
         if(document.getElementById("nom-"+i)){
