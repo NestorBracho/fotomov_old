@@ -10,6 +10,7 @@ from django.core import serializers
 from staff.models import *
 from tareas.models import *
 from tareas.forms import *
+from clientes.models import *
 import datetime
 
 def crear_tarea(request):
@@ -62,3 +63,12 @@ def ver_tarea(request, id_tarea):
     prela = Prela.objects.filter(prela=tarea)
     es_prelada = Prela.objects.filter(es_prelada=tarea)
     return render_to_response('tareas/ver_tarea.html', {'tarea':tarea, 'prela':prela, 'es_prelada': es_prelada}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def crear_notificacion(request):
+    user = Usuario.objects.get(usuario = request.user)
+    if request.method == 'POST':
+        formulario = CrearNotificacionFrom(request.POST)
+    else:
+        formulario = CrearNotificacionFrom()
+    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user}, context_instance=RequestContext(request))

@@ -82,4 +82,5 @@ urlpatterns = patterns('',
     url(r'^modificar_estado_tarea/$', 'tareas.views.modificar_estado_tarea'),
     url(r'^nuevo_tipo_de_evento/(?P<creado>\d+)/$', 'evento.views.nuevo_tipo_de_evento'),
     url(r'^ver_tarea/(?P<id_tarea>\d+)/$', 'tareas.views.ver_tarea'),
+    url(r'^crear_notificacion/$', 'tareas.views.crear_notificacion'),
 )
