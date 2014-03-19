@@ -47,8 +47,6 @@ def modificar_estado_tarea(request):
     #2 listo
     #0 NA
     tarea = Tarea.objects.get(id = request.GET['tarea'])
-    print tarea.nombre
-    print tarea.lista
     if request.GET['estado'] == '2':
         tarea.lista = 'True'
     elif request.GET['estado'] == '1':
@@ -56,9 +54,7 @@ def modificar_estado_tarea(request):
     else:
         tarea.lista = 'None'
     tarea.save()
-    print tarea.lista
     data = json.dumps({'status': "hola"})
-    print tarea.lista
     return HttpResponse(data, mimetype='application/json')
 
 def ver_tarea(request, id_tarea):
