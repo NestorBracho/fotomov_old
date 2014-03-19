@@ -33,3 +33,8 @@ class Gastos_Funcion(models.Model):
 class Tipos_Eventos(models.Model):
     nombre = models.CharField(max_length=200)
 
+class Pautas(models.Model):
+    evento = models.ForeignKey(Evento)
+    nombre = models.CharField(max_length=300)
+    pauta = models.TextField(max_length=2000)
+    fecha = models.DateField(auto_now=True)

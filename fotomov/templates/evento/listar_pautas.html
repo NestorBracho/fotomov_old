@@ -1,0 +1,32 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+<div class="table-responsive">
+    <table id="content">
+        <thead>
+            <th>
+                Pauta
+            </th>
+            <th>
+                Aciones
+            </th>
+        </thead>
+        <tbody>
+            {% for pauta in pautas %}
+                <tr>
+                    <td>
+                        <a href="/ver_pauta/{{ pauta.id }}">{{ pauta.nombre }}</a>
+                    </td>
+                    <td>
+                        <a href="/editar_pauta/{{ pauta.id }}" class="btn-xs btn-default btn">editar</a>
+                        <a href="/eliminar_pauta/{{ pauta.id }}" class="btn-xs btn-default btn btn-danger">eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div>
+    <a href="/nueva_pauta/{{ evento.id }}" class="btn btn-default col-sm-12">Crear Pauta</a>
+</div>
+{%  endblock %}

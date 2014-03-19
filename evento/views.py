@@ -242,3 +242,27 @@ def nuevo_tipo_de_evento(request, creado):
     else:
         formulario = TiposEventoForm()
     return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
+
+def nueva_pauta(request, id_evento):
+    evento = Evento.objects.get(id=id_evento)
+    if request.method == 'POST':
+        formulario = PautaForm(request.POST)
+        if formulario.is_valid():
+            pauta = formulario.cleaned_data['pauta']
+            nombre = formulario.cleaned_data['nombre']
+            nueva_pauta = Pautas.objects.create(nombre=nombre, pauta=pauta, evento=evento)
+            nueva_pauta.save()
+    else:
+        formulario = PautaForm()
+    return render_to_response('evento/nueva_pauta.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_pautas(request, id_evento):
+    evento = Evento.objects.get(id=id_evento)
+    pautas = Pautas.objects.filter(evento=evento)
+    return render_to_response('evento/listar_pautas.html', {'pautas': pautas, 'evento': evento}, context_instance=RequestContext(request))
+
+def editar_pauta(request, id_pauta):
+    return True
+
+def eliminar_pauta(request, id_pauta):
+    return True

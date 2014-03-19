@@ -1,0 +1,12 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+    <div clas="row">
+        <div class="col-sm-6">
+            {{ formulario.nombre | bootstrap }}
+        </div>
+        <div class="col-sm-12">
+            {{ formulario.pauta | bootstrap }}
+        </div>
+    </div>
+{% endblock %}
