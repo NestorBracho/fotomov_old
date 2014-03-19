@@ -99,19 +99,22 @@
                     <ul class="dropdown-menu dropdown-tasks">
                         {% for tarea in tareas %}
                         <li>
-
                             <a href="/ver_tarea/{{ tarea.id }}">
-
                                 <div>
                                         <h6>{{ tarea.nombre }}</h6>
-                                        <div class="checkmark"><button>Listo</button></div>
                                         <div class="datos">
                                             <span class="evento">{% if tarea.evento %}Evento: {{ tarea.evento.nombre }}{% endif %}</span><br>
                                             <span>{{ tarea.fecha }}</span>
                                         </div>
-
                                 </div>
                             </a>
+                            <div class="checkmark col-sm-6">
+                                <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
+                                    <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
+                                    <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
+                                    <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
+                                </select>
+                            </div>
                         </li>
                         <li class="divider"></li>
                         {% endfor %}
@@ -392,6 +395,26 @@
     <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
     <script src="js/demo/dashboard-demo.js"></script>
     <script src="{{ STATIC_URL }}/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript">
+
+    function listo(stado,tarea){
+
+        $.ajax({
+
+            data:{estado:stado, tarea:tarea},
+            url:'/modificar_estado_tarea/',
+            type:'GET',
+            error:function(a,b,c){
+
+
+
+            }
+
+        }).done();
+
+    }
+
+</script>
 
 	{% block js-nivel-1 %}
 	{% endblock %}

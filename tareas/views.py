@@ -32,6 +32,7 @@ def crear_tarea(request):
                 tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
                                              lista=False, fecha=fecha_final, evento=Evento.objects.get(id=evento))
 
+            return HttpResponseRedirect('/listar_tareas/')
     else:
         formulario = TareaForm()
     return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
