@@ -5,9 +5,14 @@ Lista de tareas
 {% endblock %}
 {% block seccion-contenido%}
 <table class="table table-striped table-bordered table-hover" id="content">
-    <thead><th>Tarea</th><th>Contenido</th><th>Asociado a...</th><th>Antes del...</th><th>Estado</th></thead>
+    <thead><th>Tarea</th><th>Asociado a...</th><th>Antes del...</th><th>Estado</th></thead>
     {% for tarea in tareas %}
-    <tr><td>{{tarea.nombre}}</td><td>{{tarea.tarea}}</td><td>{{tarea.evento}}</td><td>{{tarea.fecha}}</td><td><select id="select-{{tarea.id}}" onchange="listo(this.value,'{{tarea.id}}')"><option value="1">Pendiente</option><option value="2">Listo</option><option value="0">N/A</option></select> <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span></td></tr>
+    <tr>
+        <td>{{tarea.nombre}}</td>
+        <td>{{tarea.evento}}</td>
+        <td>{{tarea.fecha}}</td>
+        <td><select id="select-{{tarea.id}}" onchange="listo(this.value,'{{tarea.id}}')"><option value="1">Pendiente</option><option value="2">Listo</option><option value="0">N/A</option></select> <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span></td>
+    </tr>
     {% endfor %}
 </table>
 {% endblock %}
