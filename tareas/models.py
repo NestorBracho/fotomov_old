@@ -1,6 +1,7 @@
 from django.db import models
-from staff.models import Privilegios, Usuario
+from staff.models import *
 from evento.models import *
+from clientes.models import *
 # Create your models here.
 
 class Tarea(models.Model):
@@ -26,3 +27,11 @@ class TareaTipoEvento(models.Model):
 class PrelaTareaTipoEvento(models.Model):
     es_prelada = models.ForeignKey(TareaTipoEvento, related_name="es_prelada_tipo_evento")
     prela = models.ForeignKey(TareaTipoEvento)
+
+class Notificacion(models.Model):
+    macro_cliente = models.ForeignKey(MacroCliente, null=True, blank=True)
+    cliente = models.ForeignKey(Cliente, null=True, blank=True)
+    usuario_creador = models.ForeignKey(Usuario)
+    creado_fecha = models.DateTimeField(auto_now_add=True)
+    notificacion = models.TextField(max_length=500)
+    fue_revisado = models.BooleanField(default = False)

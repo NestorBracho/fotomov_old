@@ -8,3 +8,8 @@ class TareaForm(forms.Form):
     asignado = forms.ModelChoiceField(queryset=Privilegios.objects.filter(valor__lt=6))
     tarea = forms.CharField(widget=forms.Textarea)
     nombre = forms.CharField()
+
+class CrearNotificacionFrom(forms.Form):
+    class Meta:
+        model = Notificacion
+        exclude = ['creado_fecha','fue_revisado']

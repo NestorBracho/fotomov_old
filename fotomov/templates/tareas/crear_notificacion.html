@@ -1,0 +1,24 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block css %}
+{% endblock %}
+{% block titulo %}
+Crear notificación
+{% endblock %}
+{% block seccion-contenido %}
+<form method="POST" action="">{% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">{{ formulario.cliente | bootstrap }}</div>
+        <div class="col-xs-12 text-right">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
+                </div>
+                <div class="col-md-6 hidden-xs hidden-sm"></div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block js %}
+{% endblock %}
