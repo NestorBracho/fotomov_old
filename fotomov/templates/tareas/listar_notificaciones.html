@@ -1,0 +1,61 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Lista de notificaciones
+{% endblock %}
+{% block seccion-contenido%}
+<table class="table table-bordered table-hover" id="content">
+    <thead><th>Leido</th><th>Notificación</th><th>fecha</th><th></th></thead>
+    {% for notificacion in notificaciones %}
+    <tr {% if notificacion.fue_revisado == False %} class= "alert-info"{% endif %} id="{{notificacion.id}}">
+        <td onclick="verNoti({{notificacion.id}})" id="{{notificacion.id}}-leido">{% if notificacion.fue_revisado %}<span hidden="true">2</span>{% else %}<i class="fa fa-circle"></i></span><span hidden="true">1</span>{% endif %}</td>
+        <td onclick="verNoti({{notificacion.id}})">{% if notificacion.macro_cliente != None %}{{notificacion.macro_cliente}}{% elif notificacion.cliente != None%}{{notificacion.cliente}}{% else %}Sin cliente asociado{% endif %}</td>
+        <td onclick="verNoti({{notificacion.id}})">{{notificacion.creado_fecha}}</td>
+        <td id="{{notificacion.id}}-botones">{% if notificacion.fue_revisado %}<a onclick="eliminarNoti({{notificacion.id}})" class="btn btn-xs btn-danger">Eliminar</a>{% else %}<a onclick="marcarL({{notificacion.id}})" class="btn btn-xs btn-info">Marcar leido</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+function verNoti(iden){
+
+    window.location = "/ver_notificacion/"+iden;
+
+}
+
+function eliminarNoti(iden){
+
+    if(confirm("¿Esta seguro que desea eliminar esta notificacion?")){
+
+        window.location = "/eliminar_notificacion/"+iden;
+
+    }
+
+}
+
+function marcarL(iden){
+
+    $.ajax({
+
+        data:{id:iden},
+        url:'/notificacion_marcar_como_leida/',
+        type:"GET",
+        error:function(a,b,c){
+
+            alert(c);
+
+        }
+
+    }).done(function(data){
+
+        document.getElementById(iden).setAttribute('class','');
+        document.getElementById(iden+"-leido").innerHTML = "<span hidden='true'>2</span>";
+        document.getElementById(iden+"-botones").innerHTML = "<a onclick=eliminarNoti("+iden+") class='btn btn-xs btn-danger'>Eliminar</a>";
+
+    });
+
+}
+</script>
+{% endblock %}

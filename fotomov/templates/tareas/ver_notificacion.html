@@ -1,0 +1,44 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Notificación
+{% endblock %}
+{% block seccion-contenido %}
+<div class="row">
+    <div class="col-sm-3">
+        <strong>Autor:</strong>
+        <p>{{ notificacion.usuario_creador.nombre }} {{ notificacion.usuario_creador.apellido }}</p>
+    </div>
+    <div class="col-sm-3">
+        <strong>Asociado a:</strong>
+        <p>{% if notificacion.macro_cliente != None %}{{notificacion.macro_cliente}}{% elif notificacion.cliente != None%}{{notificacion.cliente}}{% else %}N/A{% endif %}</p>
+    </div>
+    <div class="col-sm-3">
+        <strong>Tipo: </strong>
+        <p>{% if notificacion.macro_cliente != None %}Macrocliente{% elif notificacion.cliente != None%}Cliente{% else %}N/A{% endif %}</p>
+    </div>
+    <div class="col-sm-3">
+        <strong>Creada el:</strong>
+        <p>{{ notificacion.creado_fecha }}</p>
+    </div>
+    <div class="col-sm-12">
+        <strong>Notificación:</strong>
+        <p>{{ notificacion.notificacion }}</p>
+    </div>
+    <div class="col-sm-12">
+        <a class="btn btn-primary" onclick="volverNot()"><span class="glyphicon glyphicon-chevron-left"></span> Volver</a>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+function volverNot(){
+
+    window.location = "/listar_notificaciones/";
+
+}
+
+</script>
+{% endblock %}

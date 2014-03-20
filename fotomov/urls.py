@@ -88,4 +88,8 @@ urlpatterns = patterns('',
     url(r'^crear_notificacion/$', 'tareas.views.crear_notificacion'),
     url(r'^listar_pautas/(?P<id_evento>\d+)/(?P<creado>\d+)/$', 'evento.views.listar_pautas'),
     url(r'^ver_pauta/(?P<id_pauta>\d+)/$', 'evento.views.ver_pauta'),
+    url(r'^listar_notificaciones/$', 'tareas.views.listar_notificaciones'),
+    url(r'^ver_notificacion/(?P<id_notificacion>\d+)/$', 'tareas.views.ver_notificacion'),
+    url(r'^eliminar_notificacion/(?P<id_notificacion>\d+)/$', 'tareas.views.eliminar_notificacion'),
+    url(r'^notificacion_marcar_como_leida/$', 'tareas.views.notificacion_marcar_como_leida'),
 )

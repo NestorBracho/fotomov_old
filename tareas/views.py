@@ -78,3 +78,26 @@ def crear_notificacion(request):
     else:
         formulario = CrearNotificacionFrom()
     return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'false'}, context_instance=RequestContext(request))
+
+def listar_notificaciones(request):
+    notificaciones = Notificacion.objects.all()
+    return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
+
+def ver_notificacion(request, id_notificacion):
+    noti = Notificacion.objects.get(id = id_notificacion)
+    noti.fue_revisado = True
+    noti.save()
+    return render_to_response('tareas/ver_notificacion.html', {'notificacion':noti}, context_instance=RequestContext(request))
+
+def eliminar_notificacion(request, id_notificacion):
+    notificaciones = Notificacion.objects.all()
+    noti = Notificacion.objects.get(id = id_notificacion)
+    noti.delete()
+    return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
+
+def notificacion_marcar_como_leida(request):
+    noti = Notificacion.objects.get(id = request.GET['id'])
+    noti.fue_revisado = True
+    noti.save()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
