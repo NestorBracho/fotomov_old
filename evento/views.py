@@ -29,7 +29,7 @@ def nuevo_evento(request):
             sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
                                            porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-                                           sede=sede, es_stand=formulario.cleaned_data['es_stand'])
+                                           sede=sede, tipo=formulario.cleaned_data['tipo'])
             print dias
             for dia in dias:
                 dia_split = dia.split('-')
@@ -51,6 +51,24 @@ def nuevo_evento(request):
                         entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
                         funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
                         funcion_save.save()
+            #Empieza a crear las tareas del evento
+            tareas = TareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
+            fechas = Funcion.objects.filter(evento=evento).order_by('dia')
+            for fecha in fechas:
+                print fecha.dia
+            print "las que saque"
+            fecha_ini = fechas[0].dia
+            fecha_fin = fechas[len(fechas) - 1].dia
+            prueba_antes = fecha_ini - datetime.timedelta(days=2)
+            print fecha_ini
+            print prueba_antes
+            for tarea in tareas:
+                if tarea.dias > 0:
+                    tarea_evento = Tarea.objects.create(asignado=tarea.asignado, nombre=tarea.nombre, tarea=tarea.tarea, lista="False", evento=evento,
+                                                    fecha_activacion= fecha_ini - datetime.timedelta(days=tarea.dias), fecha=fecha_ini)
+                else:
+                    tarea_evento = Tarea.objects.create(asignado=tarea.asignado, nombre=tarea.nombre, tarea=tarea.tarea, lista="False", evento=evento,
+                                                        fecha_activacion= fecha_fin + datetime.timedelta(days=(-tarea.dias)), fecha=fecha_ini)
             return HttpResponseRedirect("/listar_evento/1")
     else:
         formulario = EventoForm()

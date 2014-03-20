@@ -8,7 +8,7 @@ def obtener_tareas(request):
             us = request.user
             try:
                 usuario = Usuario.objects.get(usuario=us)
-                tareas = Tarea.objects.filter(asignado=usuario.privilegio)
+                tareas = Tarea.objects.filter(asignado=usuario.privilegio, activa=True)
             except:
                 pass
     return { 'tareas': tareas }

@@ -28,10 +28,10 @@ def crear_tarea(request):
             evento = request.POST.get('evento')
             if evento == None:
                 tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
-                                             lista=False, fecha=fecha_final)
+                                             lista=False, fecha=fecha_final, activa=True)
             else:
                 tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
-                                             lista=False, fecha=fecha_final, evento=Evento.objects.get(id=evento))
+                                             lista=False, fecha=fecha_final, evento=Evento.objects.get(id=evento), activa=True)
 
             return HttpResponseRedirect('/listar_tareas/')
     else:
@@ -40,7 +40,7 @@ def crear_tarea(request):
 
 @login_required(login_url='/')
 def listar_tareas(request):
-    tareas = Tarea.objects.filter(asignado = Usuario.objects.get(usuario = request.user).privilegio)
+    tareas = Tarea.objects.filter(asignado = Usuario.objects.get(usuario = request.user).privilegio, activa=True)
     return render_to_response('tareas/listar_tareas.html', {'tareas':tareas}, context_instance=RequestContext(request))
 
 def modificar_estado_tarea(request):
