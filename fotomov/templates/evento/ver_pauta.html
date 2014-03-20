@@ -1,0 +1,13 @@
+{% extends 'admin.html' %}
+{% block titulo %}
+    {{ pauta.nombre }}
+{% endblock %}
+{% block seccion-contenido %}
+    <a href="/listar_pautas/{{ pauta.evento.id }}/0">atras</a><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <strong>{{ pauta.evento.nombre }} {{ pauta.fecha }}</strong>
+            <p>{{ pauta.pauta }}</p>
+        </div>
+    </div>
+{% endblock %}

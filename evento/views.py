@@ -252,17 +252,35 @@ def nueva_pauta(request, id_evento):
             nombre = formulario.cleaned_data['nombre']
             nueva_pauta = Pautas.objects.create(nombre=nombre, pauta=pauta, evento=evento)
             nueva_pauta.save()
+            return HttpResponseRedirect('/listar_pautas/' + str(evento.id) + '/1')
     else:
         formulario = PautaForm()
-    return render_to_response('evento/nueva_pauta.html', {'formulario': formulario}, context_instance=RequestContext(request))
+    return render_to_response('evento/nueva_pauta.html', {'formulario': formulario, 'evento': evento}, context_instance=RequestContext(request))
 
-def listar_pautas(request, id_evento):
+def listar_pautas(request, id_evento, creado):
     evento = Evento.objects.get(id=id_evento)
     pautas = Pautas.objects.filter(evento=evento)
-    return render_to_response('evento/listar_pautas.html', {'pautas': pautas, 'evento': evento}, context_instance=RequestContext(request))
+    return render_to_response('evento/listar_pautas.html', {'pautas': pautas, 'evento': evento, 'creado': creado}, context_instance=RequestContext(request))
 
 def editar_pauta(request, id_pauta):
-    return True
+    pauta = Pautas.objects.get(id=id_pauta)
+    if request.method == 'POST':
+        formulario = PautaForm(request.POST)
+        if formulario.is_valid():
+            pauta.nombre = formulario.cleaned_data['nombre']
+            pauta.pauta = formulario.cleaned_data['pauta']
+            pauta.save()
+            return HttpResponseRedirect('/listar_pautas/' + str(pauta.evento.id) + '/2')
+    else:
+        formulario = PautaForm(initial={'nombre': pauta.nombre, 'pauta': pauta.pauta})
+    return render_to_response('evento/nueva_pauta.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def eliminar_pauta(request, id_pauta):
-    return True
+    pauta = Pautas.objects.get(id=id_pauta)
+    id_evento = pauta.evento.id
+    pauta.delete()
+    return HttpResponseRedirect("/listar_pautas/" + str(id_evento) + "/3")
+
+def ver_pauta(request, id_pauta):
+    pauta = Pautas.objects.get(id=id_pauta)
+    return render_to_response('evento/ver_pauta.html', {'pauta': pauta}, context_instance=RequestContext(request))

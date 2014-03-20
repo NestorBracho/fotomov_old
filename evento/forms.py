@@ -16,4 +16,4 @@ class TiposEventoForm(forms.ModelForm):
 
 class PautaForm(forms.Form):
     nombre = forms.CharField(max_length=300)
-    pauta = forms.CharField(max_length=2000)
+    pauta = forms.CharField(max_length=2000, widget=forms.Textarea)
