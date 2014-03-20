@@ -69,6 +69,12 @@ def crear_notificacion(request):
     user = Usuario.objects.get(usuario = request.user)
     if request.method == 'POST':
         formulario = CrearNotificacionFrom(request.POST)
+        if formulario.is_valid():
+            noti = formulario.cleaned_data['notificacion']
+            mCliente = formulario.cleaned_data['macro_cliente']
+            cliente = formulario.cleaned_data['cliente']
+            nNoti = Notificacion.objects.create(notificacion = noti, macro_cliente = mCliente, cliente = cliente, usuario_creador = user)
+            return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'true'}, context_instance=RequestContext(request))
     else:
         formulario = CrearNotificacionFrom()
-    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user}, context_instance=RequestContext(request))
+    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'false'}, context_instance=RequestContext(request))

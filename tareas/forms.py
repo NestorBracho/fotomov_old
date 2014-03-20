@@ -9,7 +9,7 @@ class TareaForm(forms.Form):
     tarea = forms.CharField(widget=forms.Textarea)
     nombre = forms.CharField()
 
-class CrearNotificacionFrom(forms.Form):
+class CrearNotificacionFrom(forms.ModelForm):
     class Meta:
         model = Notificacion
-        exclude = ['creado_fecha','fue_revisado']
+        exclude = ['creado_fecha','fue_revisado','usuario_creador']

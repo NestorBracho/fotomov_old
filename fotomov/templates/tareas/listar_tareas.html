@@ -37,6 +37,8 @@ function listo(stado,tarea){
         type:'GET',
         error:function(a,b,c){
 
+            console.log(b);
+            console.log(c);
             document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-remove");
 
         }

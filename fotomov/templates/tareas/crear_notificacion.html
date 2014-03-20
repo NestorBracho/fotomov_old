@@ -8,12 +8,29 @@ Crear notificación
 {% block seccion-contenido %}
 <form method="POST" action="">{% csrf_token %}
     <div class="row">
+        <div class="col-sm-4">
+            <input type="radio" name="direccion" checked="true" onclick="blockearCampos('1')">
+            <span>Sin asociado</span>
+        </div>
+        <div class="col-sm-4">
+            <input type="radio" name="direccion" onclick="blockearCampos('2')">
+            <span>Asociado a un macrocliente</span>
+        </div>
+        <div class="col-sm-4">
+            <input type="radio" name="direccion" onclick="blockearCampos('3')">
+            <span>Asociado a un cliente</span>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">{{ formulario.notificacion | bootstrap }}</div>
+        <div class="col-xs-12 col-sm-6">{{ formulario.macro_cliente | bootstrap }}</div>
         <div class="col-xs-12 col-sm-6">{{ formulario.cliente | bootstrap }}</div>
+        <div class="col-md-6">
+            <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
+        </div>
         <div class="col-xs-12 text-right">
             <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
-                </div>
                 <div class="col-md-6 hidden-xs hidden-sm"></div>
             </div>
         </div>
@@ -21,4 +38,43 @@ Crear notificación
 </form>
 {% endblock %}
 {% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+
+    {% if flag == "true" %}
+        window.history.go(-2);
+    {% endif %}
+
+    document.getElementById('id_cliente').setAttribute('disabled','true');
+    document.getElementById('id_macro_cliente').setAttribute('disabled','true');
+
+}
+
+function blockearCampos(a){
+
+    if(a == '1'){
+
+        $('#id_cliente').val("");
+        $('#id_macro_cliente').val("");
+        document.getElementById('id_cliente').disabled = true;
+        document.getElementById('id_macro_cliente').disabled = true;
+
+    }else if(a == '2'){
+
+        $('#id_cliente').val("");
+        document.getElementById('id_cliente').disabled = true;
+        document.getElementById('id_macro_cliente').disabled = false;
+
+    }else if(a == '3'){
+
+        $('#id_macro_cliente').val("");
+        document.getElementById('id_cliente').disabled = false;
+        document.getElementById('id_macro_cliente').disabled = true;
+
+    }
+
+}
+
+</script>
 {% endblock %}

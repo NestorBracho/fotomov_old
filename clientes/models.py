@@ -30,6 +30,8 @@ class Cliente(models.Model):
     direccion_fiscal = models.TextField(verbose_name='direccion fiscal', max_length=400)
     rif = models.CharField(max_length=10, null=True, blank=True)
     cedula = models.CharField(max_length=8, null=True, blank=True)
+    def __unicode__(self):
+        return self.nombres+" "+self.apellidos
 
 class Sede(models.Model):
     nombre = models.CharField(max_length=100)
