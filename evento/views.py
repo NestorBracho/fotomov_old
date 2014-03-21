@@ -65,10 +65,16 @@ def nuevo_evento(request):
             for tarea in tareas:
                 if tarea.dias > 0:
                     tarea_evento = Tarea.objects.create(asignado=tarea.asignado, nombre=tarea.nombre, tarea=tarea.tarea, lista="False", evento=evento,
-                                                    fecha_activacion= fecha_ini - datetime.timedelta(days=tarea.dias), fecha=fecha_ini)
+                                                    fecha_activacion= fecha_ini - datetime.timedelta(days=tarea.dias), fecha=fecha_ini, original=tarea.id)
                 else:
                     tarea_evento = Tarea.objects.create(asignado=tarea.asignado, nombre=tarea.nombre, tarea=tarea.tarea, lista="False", evento=evento,
-                                                        fecha_activacion= fecha_fin + datetime.timedelta(days=(-tarea.dias)), fecha=fecha_ini)
+                                                        fecha_activacion= fecha_fin + datetime.timedelta(days=(-tarea.dias)), fecha=fecha_ini, original=tarea.id)
+            prelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
+            for prelacion in prelaciones:
+                es_prelada = Tarea.objects.get(evento=evento, original=prelacion.es_prelada.id)
+                prela = Tarea.objects.get(evento=evento, original=prelacion.prela.id)
+                prelacion_evento = Prela.objects.create(es_prelada=es_prelada, prela=prela)
+                prelacion_evento.save()
             return HttpResponseRedirect("/listar_evento/1")
     else:
         formulario = EventoForm()
@@ -243,7 +249,8 @@ def nuevo_tipo_de_evento(request, creado):
                 prel = request.POST['prel-'+str(tarea)]
                 if aod == 'False':
                     dias = int(dias)*(-1)
-                TTE = TareaTipoEvento.objects.create(asignado = Privilegios.objects.get(valor = staffneed), nombre = nom, tarea = desc, tipo_evento = tipoE, dias = dias, id_aux = str(tarea))
+                print staffneed
+                TTE = TareaTipoEvento.objects.create(asignado = Privilegios.objects.get(id = staffneed), nombre = nom, tarea = desc, tipo_evento = tipoE, dias = dias, id_aux = str(tarea))
                 if prel != '0':
                     aux = str(tarea)+"-"+request.POST['prel-'+str(tarea)]
                     prelaciones.append(aux)
@@ -251,7 +258,7 @@ def nuevo_tipo_de_evento(request, creado):
                 aux = prelacion.split('-')
                 tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
                 tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
-                PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2)
+                PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tipoE)
             for tarea in range(1, tareas+1):
                 TareaAux = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = str(tarea))
                 TareaAux.id_aux = None

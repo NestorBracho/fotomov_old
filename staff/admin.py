@@ -31,4 +31,5 @@ admin.site.register(TareaTipoEvento)
 admin.site.register(Tipos_Eventos)
 admin.site.register(PrelaTareaTipoEvento)
 admin.site.register(Notificacion)
+admin.site.register(Prela)
 
