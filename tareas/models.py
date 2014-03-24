@@ -6,6 +6,7 @@ from clientes.models import *
 
 class Tarea(models.Model):
     asignado = models.ForeignKey(Privilegios)
+    original = models.IntegerField(null=True, blank=True)
     nombre = models.CharField(max_length=100)
     tarea = models.TextField(max_length=500)
     lista = models.CharField(max_length=100)
@@ -29,6 +30,7 @@ class TareaTipoEvento(models.Model):
 class PrelaTareaTipoEvento(models.Model):
     es_prelada = models.ForeignKey(TareaTipoEvento, related_name="es_prelada_tipo_evento")
     prela = models.ForeignKey(TareaTipoEvento)
+    tipo_evento = models.ForeignKey(Tipos_Eventos)
 
 class Notificacion(models.Model):
     macro_cliente = models.ForeignKey(MacroCliente, null=True, blank=True)
