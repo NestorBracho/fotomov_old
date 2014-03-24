@@ -20,7 +20,7 @@ def nueva_forma_de_pago(request):
     if request.method == 'POST':
         formulario = FormaDePagoForm(request.POST)
         if formulario.is_valid():
-            forma_pago = TipoDeGasto.objects.create(nombre = formulario.cleaned_data['nombre'])
+            forma_pago = FormaDePago.objects.create(nombre = formulario.cleaned_data['nombre'])
             forma_pago.save()
     else:
         formulario = FormaDePagoForm()

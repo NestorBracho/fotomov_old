@@ -24,7 +24,8 @@ class Pago(models.Model):
     gasto = models.ForeignKey(GastoAdministracion)
     forma_de_pago = models.ForeignKey(FormaDePago)
     monto = models.FloatField()
-    fehca_de_pago = models.DateField()
+    frecuencia_de_pago = models.IntegerField()
+    fehca_de_pago = models.IntegerField()
     banco = models.CharField(max_length=100)
     nro_de_comprobante = models.IntegerField()
 
