@@ -1,0 +1,45 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block titulo %}
+Nuevo gasto
+{% endblock %}
+{% block seccion-contenido %}
+<form method="POST" action="">{% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">{{ formulario.nombre | bootstrap }}</div>
+        <div class="col-xs-12 col-sm-6">{{ formulario.tipo | bootstrap }}</div>
+        <div class="col-xs-12 col-sm-6">{{ formulario.forma_de_pago | bootstrap }}</div>
+        <div class="col-xs-12 col-sm-6">{{ formulario.monto | bootstrap }}</div>
+        <div class="col-xs-12 col-sm-6">{{ formulario.fecha_de_pago | bootstrap }}</div>
+        <div class="col-xs-12 text-right">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
+                </div>
+                <div class="col-md-6 hidden-xs hidden-sm"></div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+    $(function() {
+
+        $( "#id_monto").val(1000);
+
+        $( "#id_monto" ).spinner({
+            min: 0,
+            step: 50,
+            numberFormat: "C",
+            culture: "en-US"
+        });
+
+    });
+
+</script>
+{% endblock %}
