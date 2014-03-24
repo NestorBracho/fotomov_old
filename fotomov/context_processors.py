@@ -1,7 +1,9 @@
 from staff.models import *
 from tareas.models import *
+from django.conf import settings
 
 def obtener_tareas(request):
+    print settings.MEDIA_ROOT
     tareas = ""
     if request.user:
         if request.user.is_authenticated():

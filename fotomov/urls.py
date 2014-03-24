@@ -93,4 +93,5 @@ urlpatterns = patterns('',
     url(r'^eliminar_notificacion/(?P<id_notificacion>\d+)/$', 'tareas.views.eliminar_notificacion'),
     url(r'^notificacion_marcar_como_leida/$', 'tareas.views.notificacion_marcar_como_leida'),
     url(r'^notificacion_marcar_como_no_leida/(?P<id_notificacion>\d+)/$', 'tareas.views.notificacion_marcar_como_no_leida'),
+    url(r'^seleccionar_direccion/$', 'modulo_movil.views.selecccionar_direccion'),
 )
