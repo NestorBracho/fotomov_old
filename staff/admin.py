@@ -5,6 +5,7 @@ from clientes.models import *
 from evento.models import *
 from productos.models import *
 from tareas.models import *
+from administracion.models import *
 
 admin.site.register(Usuario)
 admin.site.register(Privilegios)
@@ -32,4 +33,9 @@ admin.site.register(Tipos_Eventos)
 admin.site.register(PrelaTareaTipoEvento)
 admin.site.register(Notificacion)
 admin.site.register(Prela)
+admin.site.register(FormaDePago)
+admin.site.register(TipoDeGasto)
+admin.site.register(Gasto_Administracion)
+admin.site.register(Pago)
+admin.site.register(RecordatorioPago)
 

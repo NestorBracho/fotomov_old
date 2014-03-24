@@ -150,6 +150,7 @@ INSTALLED_APPS = (
     'modulo_movil',
     'south',
     'tareas',
+    'administracion',
 )
 
 # A sample logging configuration. The only tangible logging
