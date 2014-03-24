@@ -35,7 +35,7 @@ admin.site.register(Notificacion)
 admin.site.register(Prela)
 admin.site.register(FormaDePago)
 admin.site.register(TipoDeGasto)
-admin.site.register(Gasto_Administracion)
+admin.site.register(GastoAdministracion)
 admin.site.register(Pago)
 admin.site.register(RecordatorioPago)
 

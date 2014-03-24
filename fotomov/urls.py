@@ -93,4 +93,7 @@ urlpatterns = patterns('',
     url(r'^eliminar_notificacion/(?P<id_notificacion>\d+)/$', 'tareas.views.eliminar_notificacion'),
     url(r'^notificacion_marcar_como_leida/$', 'tareas.views.notificacion_marcar_como_leida'),
     url(r'^notificacion_marcar_como_no_leida/(?P<id_notificacion>\d+)/$', 'tareas.views.notificacion_marcar_como_no_leida'),
+    url(r'^nueva_forma_de_pago/$', 'administracion.views.nueva_forma_de_pago'),
+    url(r'^nuevo_tipo_de_gasto/$', 'administracion.views.nuevo_tipo_de_gasto'),
+    url(r'^nuevo_gasto/$', 'administracion.views.nuevo_gasto'),
 )
