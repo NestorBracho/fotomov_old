@@ -97,4 +97,5 @@ urlpatterns = patterns('',
     url(r'^nuevo_tipo_de_gasto/$', 'administracion.views.nuevo_tipo_de_gasto'),
     url(r'^nuevo_gasto/$', 'administracion.views.nuevo_gasto'),
     url(r'^seleccionar_direccion/$', 'modulo_movil.views.selecccionar_direccion'),
+    url(r'^crear_pedidos/(?P<id_evento>\d+)/$', 'modulo_movil.views.crear_pedidos'),
 )
