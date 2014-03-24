@@ -26,7 +26,9 @@ Notificación
         <p>{{ notificacion.notificacion }}</p>
     </div>
     <div class="col-sm-12">
-        <a class="btn btn-primary" onclick="volverNot()"><span class="glyphicon glyphicon-chevron-left"></span> Volver</a>
+        <a class="btn btn-primary" onclick="volverNot()"><span class="glyphicon glyphicon-chevron-left"></span> Buzón</a>
+        <a class="btn btn-default" onclick="NoLeida({{ notificacion.id }})">No leído</a>
+        <a class="btn btn-danger" onclick="eliminarNoti({{ notificacion.id }})">Eliminar</a>
     </div>
 </div>
 
@@ -37,6 +39,22 @@ Notificación
 function volverNot(){
 
     window.location = "/listar_notificaciones/";
+
+}
+
+function NoLeida(iden){
+
+    window.location = "/notificacion_marcar_como_no_leida/"+iden;
+
+}
+
+function eliminarNoti(iden){
+
+    if(confirm("¿Esta seguro que desea eliminar esta notificacion?")){
+
+        window.location = "/eliminar_notificacion/"+iden;
+
+    }
 
 }
 

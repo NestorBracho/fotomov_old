@@ -5,7 +5,7 @@ Lista de notificaciones
 {% endblock %}
 {% block seccion-contenido%}
 <table class="table table-bordered table-hover" id="content">
-    <thead><th>Leido</th><th>Notificación</th><th>fecha</th><th></th></thead>
+    <thead><th>Nuevo</th><th>Notificación</th><th>fecha</th><th></th></thead>
     {% for notificacion in notificaciones %}
     <tr {% if notificacion.fue_revisado == False %} class= "alert-info"{% endif %} id="{{notificacion.id}}">
         <td onclick="verNoti({{notificacion.id}})" id="{{notificacion.id}}-leido">{% if notificacion.fue_revisado %}<span hidden="true">2</span>{% else %}<i class="fa fa-circle"></i></span><span hidden="true">1</span>{% endif %}</td>

@@ -101,3 +101,11 @@ def notificacion_marcar_como_leida(request):
     noti.save()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+
+
+def notificacion_marcar_como_no_leida(request, id_notificacion):
+    noti = Notificacion.objects.get(id = id_notificacion)
+    noti.fue_revisado = False
+    noti.save()
+    notificaciones = Notificacion.objects.all()
+    return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
