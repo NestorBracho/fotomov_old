@@ -6,6 +6,7 @@ from evento.models import *
 from productos.models import *
 from tareas.models import *
 from administracion.models import *
+from modulo_movil.models import *
 
 admin.site.register(Usuario)
 admin.site.register(Privilegios)
@@ -38,4 +39,4 @@ admin.site.register(TipoDeGasto)
 admin.site.register(GastoAdministracion)
 admin.site.register(Pago)
 admin.site.register(RecordatorioPago)
-
+admin.site.register(direccionFuncion)

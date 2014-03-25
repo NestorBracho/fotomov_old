@@ -1,7 +1,7 @@
 from django.db import models
 from clientes.models import Encargado
 from direcciones.models import Direccion
-from clientes.models import Sede
+from clientes.models import Sede, MacroCliente
 #encoding:utf-8
 class Tipos_Eventos(models.Model):
     nombre = models.CharField(max_length=200)
@@ -14,6 +14,7 @@ class Evento(models.Model):
     porcentaje_institucion = models.FloatField()
     encargado = models.ForeignKey(Encargado)
     sede = models.ForeignKey(Sede, null=True)
+    macrocliente = models.ForeignKey(MacroCliente)
     tipo = models.ForeignKey(Tipos_Eventos, verbose_name="Tipo de evento")
 
 class Funcion(models.Model):
