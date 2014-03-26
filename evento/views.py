@@ -52,7 +52,7 @@ def nuevo_evento(request):
                         entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
                         funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
                         funcion_save.save()
-                        directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
+                        directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.evento.sede.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
             #Empieza a crear las tareas del evento
             tareas = TareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
             fechas = Funcion.objects.filter(evento=evento).order_by('dia')
