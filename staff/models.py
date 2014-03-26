@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from evento.models import Funcion
+from evento.models import *
 
 
 class Privilegios(models.Model):
@@ -62,6 +62,7 @@ class StaffPorFuncion(models.Model):
     tipo = models.ForeignKey(Privilegios)
     funcion = models.ForeignKey(Funcion)
     cantidad = models.IntegerField()
+    bloque = models.ForeignKey(Bloque, null=True, blank=True)
 
 class AsistenciaStaffFuncion(models.Model):
     funcion = models.ForeignKey(Funcion)

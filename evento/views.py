@@ -83,6 +83,7 @@ def nuevo_evento(request):
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
 def agregar_staff(request, id_evento):
+    bloques = Bloque.objects.all()
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     tipos_staff = Privilegios.objects.filter(valor=6)
@@ -105,11 +106,11 @@ def agregar_staff(request, id_evento):
                 print str(funcion.id) + "-" + str(staff.id)
                 print request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
-                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad)
+                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad, bloque = Bloque.objects.get(id = request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id))))
                 agregar.save()
         return HttpResponseRedirect("/listar_evento/2")
     print lista
-    return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento}, context_instance= RequestContext(request))
+    return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento, 'bloques':bloques}, context_instance= RequestContext(request))
 
 
 def encargado_ajax(request):

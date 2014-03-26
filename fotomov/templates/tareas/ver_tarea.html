@@ -40,6 +40,9 @@
             <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span>
          </strong>
     </div>
+    <div class="col-sm-4">
+        <input type="button" value="click" onclick="pagar()">
+    </div>
 </div>
 
 {% endblock %}
@@ -68,6 +71,12 @@ function listo(stado,tarea){
         document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-saved");
 
     });
+
+}
+
+function pagar(){
+
+    window.open("http://www.google.com");
 
 }
 

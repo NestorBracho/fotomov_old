@@ -40,3 +40,10 @@ class Pautas(models.Model):
     nombre = models.CharField(max_length=300)
     pauta = models.TextField(max_length=2000)
     fecha = models.DateField(auto_now=True)
+
+class Bloque(models.Model):
+    nombre = models.CharField(max_length=100)
+    honorarios = models.FloatField()
+    unico = models.BooleanField()
+    def __unicode__(self):
+        return self.nombre
