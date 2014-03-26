@@ -11,6 +11,7 @@ from staff.models import *
 from tareas.models import *
 from tareas.forms import *
 from clientes.models import *
+from datetime import *
 import datetime
 
 def crear_tarea(request):
@@ -109,3 +110,65 @@ def notificacion_marcar_como_no_leida(request, id_notificacion):
     noti.save()
     notificaciones = Notificacion.objects.all()
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
+
+def generar_recursividad(request):
+    hoy = datetime.datetime.today()
+    tareasHoy = Tarea.objects.filter(fecha = hoy, es_periodica = True)
+    for tarea in tareasHoy:
+        hoy = hoy + datetime.timedelta(days = 1)
+        gast = GastoAdministracion.objects.get(id = tarea.original)
+        tarea = gast.tipo.nombre+' '+gast.nombre+', '+str(gast.monto)+' Bs. en '+gast.forma_de_pago.nombre
+        if gast.frecuencia == 1:
+            if gast.intervalos_dias == 1:
+                dia = "Monday"
+            elif gast.intervalos_dias == 2:
+                dia = "Tuesday"
+            elif gast.intervalos_dias == 3:
+                dia = "Wednesday"
+            elif gast.intervalos_dias == 4:
+                dia = "Thursday"
+            elif gast.intervalos_dias == 5:
+                dia = "Friday"
+            elif gast.intervalos_dias == 6:
+                dia = "Saturday"
+            elif gast.intervalos_dias == 7:
+                dia = "Sunday"
+            while (hoy.strftime('%A')) != dia:
+                hoy = hoy + datetime.timedelta(days = 1)
+            fech_act = hoy - datetime.timedelta(days = 1)
+            Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = hoy, fecha_activacion = fech_act, lista = 'False', activa = True)
+        elif gast.frecuencia == 2:
+            if hoy.day <= gast.intervalos_dias:
+                hoy = date(hoy.year,hoy.month,gast.intervalos_dias)
+                fech_act = hoy - datetime.timedelta(days = 1)
+                Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = hoy, fecha_activacion = fech_act, lista = 'False', activa = True)
+            else:
+                dtarea = date(hoy.year,hoy.month,gast.intervalos_dias)
+                dtarea = dtarea + datetime.timedelta(days = 15)
+                if hoy.day <= dtarea.day:
+                    if dtarea.day == 30:
+                        dtarea = date(hoy.year,(hoy.month+1),1)
+                        dtarea = dtarea - datetime.timedelta(days = 1)
+                        fech_act = dtarea - datetime.timedelta(days = 1)
+                        Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = dtarea, fecha_activacion = fech_act, lista = 'False', activa = True)
+                    else:
+                        fech_act = dtarea - datetime.timedelta(days = 1)
+                        Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = dtarea, fecha_activacion = fech_act, lista = 'False', activa = True)
+                else:
+                    dtarea = date(hoy.year,hoy.month,gast.intervalos_dias)
+                    aux = dtarea.day
+                    dtarea = dtarea + datetime.timedelta(days = 31)
+                    dtarea = date(dtarea.year,dtarea.month, aux)
+                    fech_act = dtarea - datetime.timedelta(days = 1)
+                    Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = dtarea, fecha_activacion = fech_act, lista = 'False', activa = True)
+        elif gast.frecuencia == 3:
+            if gast.intervalos_dias == 31:
+                dtarea = date(hoy.year,(hoy.month+1),1)
+                dtarea = dtarea - datetime.timedelta(days = 1)
+                fech_act = dtarea - datetime.timedelta(days = 1)
+                Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = dtarea, fecha_activacion = fech_act, lista = 'False', activa = True)
+            else:
+                dtarea = date(hoy.year,hoy.month,gast.intervalos_dias)
+                fech_act = dtarea - datetime.timedelta(days = 1)
+                Tarea.objects.create(asignado = Privilegios.objects.get(valor = 5), nombre = gast.nombre, tarea = tarea, es_periodica = True, original = gasto.id, fecha = dtarea, fecha_activacion = fech_act, lista = 'False', activa = True)
+    return HttpResponseRedirect('/escritorio/')
