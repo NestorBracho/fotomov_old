@@ -1,4 +1,5 @@
 from django.db import models
+from tareas.models import *
 
 class FormaDePago(models.Model):
     nombre = models.CharField(max_length=100)
@@ -16,7 +17,8 @@ class GastoAdministracion(models.Model):
     forma_de_pago = models.ForeignKey(FormaDePago)
     monto = models.FloatField()
     moneda = models.CharField(max_length=100, null=True, blank=True, default = None)
-    fecha_de_pago = models.DateField()
+    frecuencia = models.IntegerField()
+    intervalos_dias = models.IntegerField()
     def __unicode__(self):
         return self.nombre
 
@@ -28,8 +30,3 @@ class Pago(models.Model):
     fehca_de_pago = models.IntegerField()
     banco = models.CharField(max_length=100)
     nro_de_comprobante = models.IntegerField()
-
-class RecordatorioPago(models.Model):
-    pago = models.ForeignKey(Pago)
-    fecha_recordatorio = models.DateField()
-    nota_recordatorio = models.CharField(max_length=500)

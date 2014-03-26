@@ -2,6 +2,7 @@ from django.db import models
 from staff.models import *
 from evento.models import *
 from clientes.models import *
+from administracion.models import *
 # Create your models here.
 
 class Tarea(models.Model):
@@ -14,6 +15,8 @@ class Tarea(models.Model):
     fecha = models.DateField()
     fecha_activacion =  models.DateField(null=True, blank=True)
     activa = models.BooleanField(default=False)
+    es_periodica = models.BooleanField(default=False)
+    fue_hecha = models.BooleanField(default=False)
 
 class Prela(models.Model):
     es_prelada = models.ForeignKey(Tarea, related_name="es_prelada")

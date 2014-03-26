@@ -15,9 +15,9 @@ Nuevo gasto
         <div class="col-xs-12 col-sm-6">{{ formulario.monto | bootstrap }}</div>
         <div class="col-xs-12 col-sm-6">
             <div class="form-group">
-                <label class="control-label" for="id_frecuencia_de_pago">Frecuencia de pago</label>
+                <label class="control-label" for="id_frecuencia">Frecuencia de pago</label>
                 <div>
-                    <select id="id_frecuencia_de_pago" class="form-control" name="frecuencia_de_pago" onchange="setFecha_pago(this.value)" >
+                    <select id="id_frecuencia" class="form-control" name="frecuencia" onchange="setFecha_pago(this.value)" >
                         <option selected="selected" value="">---------</option>
                         <option value="1">Semanal</option>
                         <option value="2">Quincenal</option>
@@ -27,9 +27,9 @@ Nuevo gasto
             </div>
         </div><div class="col-xs-12 col-sm-6">
             <div class="form-group">
-                <label class="control-label" for="id_fecha_de_pago">Día</label>
+                <label class="control-label" for="id_intervalos_dias">Día</label>
                 <div>
-                    <select id="id_fecha_de_pago" class="form-control" name="fecha_de_pago" disabled="true"  onchange="chequear(this.value)" >
+                    <select id="id_intervalos_dias" class="form-control" name="intervalos_dias" disabled="true"  onchange="chequear(this.value)" >
                         <option selected="selected" value="">---------</option>
                     </select>
                 </div>
@@ -70,27 +70,27 @@ function setFecha_pago(val){
 
     if(val == '1'){
 
-        document.getElementById("id_fecha_de_pago").innerHTML = "<option selected='selected' value=''>---------</option><option value='1'>Lunes</option><option value='2'>Martes</option><option value='3'>Miercoles</option><option value='4'>Jueves</option><option value='5'>Viernes</option><option value='6'>Sabado</option><option value='7'>Domingo</option>";
-        document.getElementById("id_fecha_de_pago").removeAttribute('disabled');
+        document.getElementById("id_intervalos_dias").innerHTML = "<option selected='selected' value=''>---------</option><option value='1'>Lunes</option><option value='2'>Martes</option><option value='3'>Miercoles</option><option value='4'>Jueves</option><option value='5'>Viernes</option><option value='6'>Sabado</option><option value='7'>Domingo</option>";
+        document.getElementById("id_intervalos_dias").removeAttribute('disabled');
         document.getElementById("alerta").innerHTML = "";
         document.getElementById("alerta").setAttribute('hidden','true');
 
     }else if(val == '2'){
 
-        document.getElementById("id_fecha_de_pago").innerHTML = "<option selected='selected' value=''>---------</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option><option value='13'>13</option><option value='14'>14</option><option value='15'>15</option>";
-        document.getElementById("id_fecha_de_pago").removeAttribute('disabled');
+        document.getElementById("id_intervalos_dias").innerHTML = "<option selected='selected' value=''>---------</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option><option value='13'>13</option><option value='14'>14</option><option value='15'>15</option>";
+        document.getElementById("id_intervalos_dias").removeAttribute('disabled');
         document.getElementById("alerta").innerHTML = "";
         document.getElementById("alerta").setAttribute('hidden','true');
 
     }else if(val == '3'){
 
-        document.getElementById("id_fecha_de_pago").innerHTML = "<option selected='selected' value=''>---------</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option><option value='13'>13</option><option value='14'>14</option><option value='15'>15</option><option value='16'>16</option><option value='17'>17</option><option value='18'>18</option><option value='19'>19</option><option value='20'>20</option><option value='21'>21</option><option value='22'>22</option><option value='23'>23</option><option value='24'>24</option><option value='25'>25</option><option value='26'>26</option><option value='27'>27</option><option value='28'>28</option><option value='29'>29</option><option value='30'>30</option><option value='31'>ULTIMOS</option>";
-        document.getElementById("id_fecha_de_pago").removeAttribute('disabled');
+        document.getElementById("id_intervalos_dias").innerHTML = "<option selected='selected' value=''>---------</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option><option value='13'>13</option><option value='14'>14</option><option value='15'>15</option><option value='16'>16</option><option value='17'>17</option><option value='18'>18</option><option value='19'>19</option><option value='20'>20</option><option value='21'>21</option><option value='22'>22</option><option value='23'>23</option><option value='24'>24</option><option value='25'>25</option><option value='26'>26</option><option value='27'>27</option><option value='28'>28</option><option value='29'>29</option><option value='30'>30</option><option value='31'>ULTIMOS</option>";
+        document.getElementById("id_intervalos_dias").removeAttribute('disabled');
 
     }else{
 
-        document.getElementById("id_fecha_de_pago").innerHTML = "<option selected='selected' value=''>---------</option>";
-        $("#id_fecha_de_pago").attr("disabled","true");
+        document.getElementById("id_intervalos_dias").innerHTML = "<option selected='selected' value=''>---------</option>";
+        $("#id_intervalos_dias").attr("disabled","true");
         document.getElementById("alerta").innerHTML = "";
         document.getElementById("alerta").setAttribute('hidden','true');
 
