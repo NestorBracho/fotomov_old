@@ -1,0 +1,5 @@
+<ul>
+{% for imagen in imagenes %}
+<li><img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  >{{ actual }}{{ imagen }}</li>
+{% endfor %}
+</ul>

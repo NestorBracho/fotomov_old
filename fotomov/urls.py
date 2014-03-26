@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-
+from fotomov import settings
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'staff.views.ingresar'),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,}),
     url(r'^escritorio/$', 'staff.views.escritorio'),
     url(r'^nueva_marca/$', 'marca.views.nueva_marca'),
     url(r'^nuevo_evento/$', 'evento.views.nuevo_evento'),
@@ -97,5 +98,5 @@ urlpatterns = patterns('',
     url(r'^nuevo_tipo_de_gasto/$', 'administracion.views.nuevo_tipo_de_gasto'),
     url(r'^nuevo_gasto/$', 'administracion.views.nuevo_gasto'),
     url(r'^seleccionar_direccion/$', 'modulo_movil.views.selecccionar_direccion'),
-    url(r'^crear_pedidos/(?P<id_evento>\d+)/$', 'modulo_movil.views.crear_pedidos'),
+    url(r'^crear_pedidos/(?P<id_evento>\d+)/urlseparador/', 'modulo_movil.views.crear_pedidos'),
 )
