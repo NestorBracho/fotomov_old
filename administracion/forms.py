@@ -15,3 +15,7 @@ class GastoForm(forms.ModelForm):
     class Meta:
         model = GastoAdministracion
         exclude = ['moneda']
+
+class PagoForm(forms.ModelForm):
+    class Meta:
+        model = Pago

@@ -66,6 +66,36 @@ Nuevo gasto
 
     });
 
+document.getElementById("id_monto").onkeypress = function date(event){
+
+    var tecla = (document.all) ? event.keyCode : event.which;
+    if (tecla==8) return true;
+    else if (tecla==9) return true;
+    else if (tecla==44) return true;
+    else if (tecla==48) return true;
+    else if (tecla==49) return true;
+    else if (tecla==50) return true;
+    else if (tecla==51) return true;
+    else if (tecla==52) return true;
+    else if (tecla==53) return true;
+    else if (tecla==54) return true;
+    else if (tecla==55) return true;
+    else if (tecla==56) return true;
+    else if (tecla==57) return true;
+    else if (tecla==96) return true;
+    else if (tecla==97) return true;
+    else if (tecla==98) return true;
+    else if (tecla==99) return true;
+    else if (tecla==100) return true;
+    else if (tecla==101) return true;
+    else if (tecla==102) return true;
+    else if (tecla==103) return true;
+    else if (tecla==104) return true;
+    else if (tecla==105) return true;
+    else return false;
+
+}
+
 function setFecha_pago(val){
 
     if(val == '1'){

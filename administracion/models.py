@@ -23,10 +23,11 @@ class GastoAdministracion(models.Model):
         return self.nombre
 
 class Pago(models.Model):
-    gasto = models.ForeignKey(GastoAdministracion)
+    pago = models.TextField(max_length=500)
     forma_de_pago = models.ForeignKey(FormaDePago)
     monto = models.FloatField()
-    frecuencia_de_pago = models.IntegerField()
-    fehca_de_pago = models.IntegerField()
+    fecha_de_pago = models.DateField()
     banco = models.CharField(max_length=100)
-    nro_de_comprobante = models.IntegerField()
+    nro_de_comprobante = models.CharField(max_length=100)
+    def __unicode__(self):
+        return self.pago

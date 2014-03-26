@@ -113,3 +113,12 @@ def nuevo_gasto(request):
     else:
         formulario = GastoForm()
     return render_to_response('administracion/nuevo_gasto.html', {'formulario': formulario}, context_instance = RequestContext(request))
+
+def pagar(request):
+    if request.method == 'POST':
+        formulario = PagoForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+    else:
+        formulario = PagoForm()
+    return render_to_response('administracion/pagar.html', {'formulario': formulario}, context_instance = RequestContext(request))
