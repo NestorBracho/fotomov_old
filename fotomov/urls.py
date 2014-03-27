@@ -100,4 +100,7 @@ urlpatterns = patterns('',
     url(r'^seleccionar_direccion/$', 'modulo_movil.views.selecccionar_direccion'),
     url(r'^crear_pedidos/(?P<id_evento>\d+)/urlseparador/', 'modulo_movil.views.crear_pedidos'),
     url(r'^hacer_pago/$', 'administracion.views.pagar'),
+    url(r'^crear_bloque/$', 'evento.views.crear_bloque'),
+    url(r'^listar_bloques/(?P<id_bloque>\d+)/$', 'evento.views.listar_bloques'),
+    url(r'^editar_bloque/(?P<id_bloque>\d+)/$', 'evento.views.editar_bloque'),
 )

@@ -1,0 +1,68 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+ Lista de bloques
+{% endblock %}
+{% block seccion-contenido %}
+<div class="table-responsive">
+    <table id="content" id="content" class="table table-striped table-bordered table-hover dataTable no-footer" aria-describedby="content_info">
+        <thead>
+            <th>
+                Unico
+            </th>
+            <th>
+                Bloque
+            </th>
+            <th>
+                Honorarios
+            </th>
+            <th>
+                Acciones
+            </th>
+        </thead>
+        <tbody>
+            {% for bloque in bloques %}
+                <tr>
+                    <td>
+                        {% if bloque.unico %}<i class="fa fa-circle"></i>{% endif %}
+                    </td>
+                    <td>
+                        {{ bloque.nombre }}
+                    </td>
+                    <td>
+                        {{ bloque.honorarios }}
+                    </td>
+                    <td>
+                        <a onclick="editarBloque({{bloque.id}})" class="btn-xs btn-default btn">editar</a>
+                        <button type="button" onclick="deleteAlert({{bloque.id}})" class="btn-xs btn-default btn-danger">Eliminar</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div>
+    <a href="/crear_bloque/" class="btn btn-default col-sm-12">Crear Bloque</a>
+</div>
+{%  endblock %}
+{% block js %}
+<script type="text/javascript">
+
+function deleteAlert(iden){
+
+    if(confirm("¿Esta seguro que desea eliminar este bloque de horas?")){
+
+        window.location = "/listar_bloques/"+iden;
+
+    }
+
+}
+
+function editarBloque(iden){
+
+    window.location = "/editar_bloque/"+iden;
+
+}
+
+</script>
+{% endblock %}

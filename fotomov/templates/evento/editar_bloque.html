@@ -1,0 +1,74 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block titulo %}
+Editar bloques de hora
+{% endblock %}
+{% block seccion-contenido %}
+<form method="POST" id="form-tipo-evento">{% csrf_token %}
+    <div class="row">
+        <div class="col-md-4">
+            {{ formulario.nombre | bootstrap }}
+        </div>
+        <div class="col-md-4">
+            {{ formulario.honorarios | bootstrap }}
+        </div>
+        <div class="col-md-4">
+            {{ formulario.unico | bootstrap }}
+        </div>
+    </div>
+    <div class="col-md-12 text-right">
+        <input type='submit' class="btn btn-default btn-primary" onclick="" value='Ingresar'/>
+    </div>
+</form>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+$(function() {
+
+    $( "#id_honorarios").val(3500);
+
+    $( "#id_honorarios" ).spinner({
+        min: 0,
+        step: 50,
+        numberFormat: "C",
+        culture: "en-US"
+    });
+
+});
+
+document.getElementById("id_honorarios").onkeypress = function date(event){
+
+    var tecla = (document.all) ? event.keyCode : event.which;
+    if (tecla==8) return true;
+    else if (tecla==9) return true;
+    else if (tecla==44) return true;
+    else if (tecla==48) return true;
+    else if (tecla==49) return true;
+    else if (tecla==50) return true;
+    else if (tecla==51) return true;
+    else if (tecla==52) return true;
+    else if (tecla==53) return true;
+    else if (tecla==54) return true;
+    else if (tecla==55) return true;
+    else if (tecla==56) return true;
+    else if (tecla==57) return true;
+    else if (tecla==96) return true;
+    else if (tecla==97) return true;
+    else if (tecla==98) return true;
+    else if (tecla==99) return true;
+    else if (tecla==100) return true;
+    else if (tecla==101) return true;
+    else if (tecla==102) return true;
+    else if (tecla==103) return true;
+    else if (tecla==104) return true;
+    else if (tecla==105) return true;
+    else return false;
+
+}
+
+</script>
+{% endblock %}
