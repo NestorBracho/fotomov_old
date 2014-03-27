@@ -99,9 +99,13 @@
                     <ul class="dropdown-menu dropdown-tasks">
                         {% for tarea in tareas %}
                         <li>
+                            <div class="acciones">
+                                <button class="checkmark {% if tarea.lista == "True" %} lista{% endif %}"> {% if tarea.lista == "True" %}{% endif %}</button>
+                                <a href="#" class="no-aplica">No aplica</a>
+                            </div>
                             <a href="/ver_tarea/{{ tarea.id }}">
                                 <div>
-                                        <h6>{{ tarea.nombre }}</h6>
+                                        <h5 class="task-title">{{ tarea.nombre }}</h5>
                                         <div class="datos">
                                             <span class="evento">{% if tarea.evento %}Evento: {{ tarea.evento.nombre }}{% endif %}</span><br>
                                             <span>{{ tarea.fecha }}</span>
@@ -119,6 +123,12 @@
                         </li>
                         <li class="divider"></li>
                         {% endfor %}
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>Todos mis tareas</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
                     </ul>
                     <!-- /.dropdown-tasks -->
                 </li>
@@ -379,6 +389,7 @@
         <div id="main" class="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                    <div class="alertas-ajax"  id="alertas-ajax"></div>
                     <h1 class="page-header">{% block titulo%}{% endblock %}</h1>
                     <p class="heading">{% block subtitulo%}{% endblock %}</p>
                 </div>
@@ -436,8 +447,11 @@
         type:'GET',
         error:function(a,b,c){
 
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
             document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-remove");
-
         }
 
     }).done(function(data){
