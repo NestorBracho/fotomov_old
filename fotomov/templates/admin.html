@@ -112,19 +112,9 @@
                                         </div>
                                 </div>
                             </a>
-{% comment %}
-	                            <div class="checkmark col-sm-6">
-                                <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
-                                    <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
-                                    <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
-                                    <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
-                                </select>
-                            <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span>
-                            </div>
-{% endcomment %}
                         </li>
-                        <li class="divider"></li>
                          {% endfor %}
+                        <li class="divider"></li>
                         <li>
                             <a class="text-center" href="#">
                                 <strong>Todos mis tareas</strong>
@@ -448,7 +438,6 @@ function listo(stado,tarea){
             $('#alertas-ajax').addClass('alert-danger');
             document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
             console.log(c);
-            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-remove");
         }
 
     }).done(function(data){

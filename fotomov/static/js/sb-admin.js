@@ -45,11 +45,9 @@ $('.dropdown.keep-open').on('hide.bs.dropdown', function () {
 });
 
 $(document).click(function() {
-/*     alert('clicked outside'); */
-	$(".dropdown.keep-open .dropdown-menu.dropdown-tasks").toggleClass('open')
+	$(".dropdown.keep-open").toggleClass('open')
 });
 
 $(".dropdown-menu.dropdown-tasks").click(function(event) {
-/*     alert('clicked inside'); */
     event.stopPropagation();
 });
