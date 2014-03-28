@@ -29,3 +29,22 @@ $(function() {
         }
     })
 })
+
+
+
+// Manejo del dropdwon de tareas
+
+
+$(function () {
+    $('.dropdown.keep-open').on({
+        "shown.bs.dropdown": function() {
+            $(this).data('closable', true);
+        },
+        "click": function() {
+            $(this).data('closable', false);
+        },
+        "hide.bs.dropdown": function() {
+            return $(this).data('closable');
+        }
+    });
+});
