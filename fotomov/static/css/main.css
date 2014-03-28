@@ -17,3 +17,70 @@ nav.navbar .navbar-brand.logo{
 nav.navbar .navbar-brand.logo img{
 	padding-top: 3px;
 }
+
+.dropdown-tasks .tarea {
+	min-height: 88px;
+	padding:  3px 10px;
+	border-top: 1px solid #e5e5e5 ;
+}
+
+.dropdown-tasks:first-child{
+	border-top: 0;
+}
+
+
+.dropdown-tasks .tarea .acciones{
+	width: 60px;
+	text-align: left;
+	display: inline-block;	
+}
+
+.dropdown-tasks .tarea .datos{
+	width: 220px;
+	padding: 0px;
+	display: inline-block;
+	}
+.dropdown-tasks .tarea .datos .detalle{
+	padding-left: 50px;
+}
+.dropdown-tasks .tarea .acciones a.no-aplica{
+	font-size: 12px;
+	padding: 0px;
+	color: gray;
+
+}
+button.checkmark{
+	margin: auto;
+	height: 50px;
+	width: 50px;
+	padding: 10px;
+	background: #e5e5e5;
+	border: none;
+	font-family: FontAwesome;
+	text-align: center;
+	font-size: 33px;
+	display: block;
+	color: black;
+	  content: "\f096";
+	    display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border-radius: 50%;
+}
+
+button.checkmark:before {
+	  content: "\f096";
+	  }
+
+
+.butteon.checkmark:not(.listo):before {
+  content: "\f096";
+}
+
+button.checkmark.listo:before {
+  content: "\f046";
+}

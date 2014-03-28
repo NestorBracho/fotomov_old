@@ -97,22 +97,23 @@
                         <i class="fa fa-tasks fa-fw"></i> Tareas <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
-                        {% for tarea in tareas %}
-                        <li>
+                        {% for tarea in tareas %} 
+                        <li class="tarea">
                             <div class="acciones">
-                                <button class="checkmark {% if tarea.lista == "True" %} lista{% endif %}"> {% if tarea.lista == "True" %}{% endif %}</button>
+                                <button class="checkmark {% if tarea.lista == "True" %} listo{% endif %}">{% if tarea.lista == "True" %}{% endif %}</button>
                                 <a href="#" class="no-aplica">No aplica</a>
                             </div>
-                            <a href="/ver_tarea/{{ tarea.id }}">
+                            <a class="datos" href="/ver_tarea/{{ tarea.id }}">
                                 <div>
                                         <h5 class="task-title">{{ tarea.nombre }}</h5>
-                                        <div class="datos">
+                                        <div class="detalle">
                                             <span class="evento">{% if tarea.evento %}Evento: {{ tarea.evento.nombre }}{% endif %}</span><br>
                                             <span>{{ tarea.fecha }}</span>
                                         </div>
                                 </div>
                             </a>
-                            <div class="checkmark col-sm-6">
+{% comment %}
+	                            <div class="checkmark col-sm-6">
                                 <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
                                     <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
                                     <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
@@ -120,9 +121,10 @@
                                 </select>
                             <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span>
                             </div>
+{% endcomment %}
                         </li>
                         <li class="divider"></li>
-                        {% endfor %}
+                         {% endfor %}
                         <li>
                             <a class="text-center" href="#">
                                 <strong>Todos mis tareas</strong>
