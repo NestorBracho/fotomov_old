@@ -34,17 +34,22 @@ $(function() {
 
 // Manejo del dropdwon de tareas
 
+/*
+$('.dropdown-menu').click(function(event){
+     event.stopPropagation();
+ });
+*/
 
-$(function () {
-    $('.dropdown.keep-open').on({
-        "shown.bs.dropdown": function() {
-            $(this).data('closable', true);
-        },
-        "click": function() {
-            $(this).data('closable', false);
-        },
-        "hide.bs.dropdown": function() {
-            return $(this).data('closable');
-        }
-    });
+$('.dropdown.keep-open').on('hide.bs.dropdown', function () {
+    return false;
+});
+
+$(document).click(function() {
+/*     alert('clicked outside'); */
+	$(".dropdown.keep-open .dropdown-menu.dropdown-tasks").toggleClass('open')
+});
+
+$(".dropdown-menu.dropdown-tasks").click(function(event) {
+/*     alert('clicked inside'); */
+    event.stopPropagation();
 });
