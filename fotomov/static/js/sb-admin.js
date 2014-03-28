@@ -32,25 +32,8 @@ $(function() {
 
 
 
-// Manejo del dropdwon de tareas
+// al hacer lcick dentro del menu del dropdown no se ciierra para poder hacer varias tarias cuando el .dropdowntabien tiene .keep-open 
+$('.keep-open .dropdown-tasks').click(function(e) {
+    e.stopPropagation();
 
-/*
-$('.dropdown-menu').click(function(event){
-     event.stopPropagation();
- });
-*/
-
-$('.dropdown.keep-open').on('hide.bs.dropdown', function () {
-    return false;
 });
-/*
-$(document).click(function() {
-	$(".dropdown.keep-open .dropdown-menu.dropdown-tasks").parent().removeClass('open')
-});
-
-
-$(".dropdown-menu.dropdown-tasks").click(function(event) {
-    alert('clicked inside');
-    event.stopPropagation();
-});
-*/
