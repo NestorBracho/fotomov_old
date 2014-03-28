@@ -153,7 +153,14 @@ function ajax_submar(){
             },
             data:{'id': select_marca},
             url:'/macrocliente_ajax/',
-            type: 'get'
+            type: 'get',
+            error:function(a,b,c){
+
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
+            }
 
         }).done(function(data){
 

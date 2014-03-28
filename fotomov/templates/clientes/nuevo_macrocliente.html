@@ -150,7 +150,14 @@ function ajax_submar(){
             },
             data:{'id': select_marca},
             url:'/macrocliente_ajax/',
-            type: 'get'
+            type: 'get',
+            error:function(a,b,c){
+
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
+            }
 
         }).done(function(data){
 
@@ -194,7 +201,14 @@ function aucomloc(id_input){
     $.ajax({
         data:{'locacion':ajax_loc},
         url:'/locacion_ajax/',
-        type:'GET'
+        type:'GET',
+        error:function(a,b,c){
+
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
+        }
     }).done(function(dominio){
 
         var locaciones_finales=[];
@@ -252,7 +266,14 @@ function agregarSede(){
 
         data:{'direc':direccion},
         url:'/agregar_sede_macrocliente_ajax/',
-        type:'GET'
+        type:'GET',
+        error:function(a,b,c){
+
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
+        }
 
     }).done(function(info){
 

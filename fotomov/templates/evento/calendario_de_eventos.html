@@ -35,6 +35,10 @@ function asistir(iden, flag){
             error:function(a,b,c){
 
                 alert(b+"\n"+c+"\n\nNo se pudo registrar su asistencia. Por favor, intente de nuevo en unos minutos.");
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
 
             }
 
@@ -57,6 +61,10 @@ function asistir(iden, flag){
             error:function(a,b,c){
 
                 alert(b+"\n"+c+"\n\nNo se pudo eliminar su asistencia. Por favor, intente de nuevo en unos minutos.");
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
 
             }
 
