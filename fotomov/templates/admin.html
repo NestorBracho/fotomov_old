@@ -98,7 +98,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
                         {% for tarea in tareas %} 
-                        <li class="tarea" id="tarea-{{ tarea.id }}" class="{% if tarea.lista == "None" %} hidden {% endif %}">
+                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
                             <div class="acciones">
                                 <button onclick="listo(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
                                 <a onclick="listo('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
