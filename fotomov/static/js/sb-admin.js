@@ -43,11 +43,14 @@ $('.dropdown-menu').click(function(event){
 $('.dropdown.keep-open').on('hide.bs.dropdown', function () {
     return false;
 });
-
+/*
 $(document).click(function() {
-	$(".dropdown.keep-open").toggleClass('open')
+	$(".dropdown.keep-open .dropdown-menu.dropdown-tasks").parent().removeClass('open')
 });
+
 
 $(".dropdown-menu.dropdown-tasks").click(function(event) {
+    alert('clicked inside');
     event.stopPropagation();
 });
+*/
