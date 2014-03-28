@@ -100,8 +100,8 @@
                         {% for tarea in tareas %} 
                         <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
                             <div class="acciones">
-                                <button onclick="listo(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
-                                <a onclick="listo('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
+                                <button onclick="listoT(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
+                                <a onclick="listoT('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
                             </div>
                             <a class="datos" href="/ver_tarea/{{ tarea.id }}">
                                 <div>
@@ -112,16 +112,6 @@
                                         </div>
                                 </div>
                             </a>
-{% comment %}
-	                            <div class="checkmark col-sm-6">
-                                <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
-                                    <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
-                                    <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
-                                    <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
-                                </select>
-                            <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span>
-                            </div>
-{% endcomment %}
                         </li>
                         <li class="divider"></li>
                          {% endfor %}
@@ -435,7 +425,7 @@
     <script src="{{ STATIC_URL }}/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script type="text/javascript">
 
-function listo(stado,tarea){
+function listoT(stado,tarea){
 
     $.ajax({
 
