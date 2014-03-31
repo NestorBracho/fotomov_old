@@ -44,6 +44,18 @@ def listar_tareas(request):
     tareas = Tarea.objects.filter(asignado = Usuario.objects.get(usuario = request.user).privilegio, activa=True)
     return render_to_response('tareas/listar_tareas.html', {'tareas':tareas}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
+def listar_todas_tareas(request):
+    user = request.user
+    print user
+    usuario = Usuario.objects.get(usuario=user)
+    if usuario.privilegio.valor == 1:
+        tareas = Tarea.objects.order_by('-fecha')
+    else:
+        return HttpResponseRedirect('/')
+    print tareas
+    return render_to_response('tareas/listar_todas_tareas.html', {'tareas': tareas}, context_instance=RequestContext(request))
+
 def modificar_estado_tarea(request):
     #1 pendient
     #2 listo

@@ -43,22 +43,24 @@ def selecccionar_direccion(request):
         return HttpResponseRedirect('/escritorio')
     return render_to_response('modulo_movil/seleccionar_directorio.html', {}, context_instance=RequestContext(request))
 
-def crear_pedidos(request, id_evento):
+def crear_pedidos(request, id_evento, next):
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     generar_rutas(id_evento)
     print "aqui"
     print request.path
     separado = request.path.split('urlseparador')
+    print separado
     year = str(date.today().year)
     if separado[1] == "/NoneValue":
-        current = settings.MEDIA_ROOT + "/eventos/" + year + "/" + evento.macrocliente.submarca.marca.nombre + "/" + evento.macrocliente.submarca.nombre
-        current = current + "/" + evento.macrocliente.nombre + "/" + evento.nombre
+        print separado
+        current = settings.MEDIA_ROOT + "/eventos/"
     else:
         print "estoy en el else"
-        current = separado[1]
+        current = settings.MEDIA_ROOT + "/eventos/" + year + "" + separado[1]
         print "sali del else"
     print "aqui va el current"
+    print current
     short_current = current.split("fotomov_imagenes")[1]
     print "aqui va el short"
     print short_current

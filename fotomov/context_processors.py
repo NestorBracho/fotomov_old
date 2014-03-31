@@ -13,4 +13,4 @@ def obtener_tareas(request):
                 tareas = Tarea.objects.filter(asignado=usuario.privilegio, activa=True)
             except:
                 pass
-    return { 'tareas': tareas }
+    return { 'tareas_menu': tareas }
