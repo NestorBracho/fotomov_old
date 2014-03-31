@@ -68,7 +68,7 @@ def modificar_estado_tarea(request):
     else:
         tarea.lista = 'None'
     tarea.save()
-    data = json.dumps({'status': "hola"})
+    data = json.dumps({'status': tarea.lista})
     return HttpResponse(data, mimetype='application/json')
 
 def ver_tarea(request, id_tarea):

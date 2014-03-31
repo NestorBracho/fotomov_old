@@ -29,3 +29,11 @@ $(function() {
         }
     })
 })
+
+
+
+// al hacer lcick dentro del menu del dropdown no se ciierra para poder hacer varias tarias cuando el .dropdowntabien tiene .keep-open 
+$('.keep-open .dropdown-tasks').click(function(e) {
+    e.stopPropagation();
+
+});

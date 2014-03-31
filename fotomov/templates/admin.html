@@ -6,17 +6,30 @@
     <meta charset="utf-8">
     <title>Intranet Fotomov - {{seccion}}</title>
 
-    <!-- Core CSS - Include with every page -->
-    <link href="{{ STATIC_URL }}/css/bootstrap.min.css" rel="stylesheet">
+    <!-- COMPILED LESS -->
+<!--     <link href="{{ STATIC_URL }}/css/main.css"  type="text/css" rel="stylesheet">      -->
     <link href="{{ STATIC_URL }}/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <!-- Page-Level Plugin CSS - Dashboard -->
-    <link href="{{ STATIC_URL }}/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}/css/plugins/timeline/timeline.css" rel="stylesheet">
+    <!-- uncompiled LESS -->
+    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}/less/main.less" />
+	<script>
+	  less = {
+	    env: "development",
+	    async: true,
+	    fileAsync: false,
+	    poll: 1000,
+	    functions: {},
+	    dumpLineNumbers: "comments",
+	    relativeUrls: false,
+	    rootpath: ":/a.com/"
+	  };
+	</script>
+	<script src="{{ STATIC_URL }}/js/less-1.7.0.min.js"></script>
 
-    <!-- SB Admin CSS - Include with every page -->
-    <link href="{{ STATIC_URL }}/css/sb-admin.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}/css/main.css" rel="stylesheet">
+    <!-- OVERRIDE CSS -->
+<!--     <link href="{{ STATIC_URL }}/css/override.css"  type="text/css" rel="stylesheet"> -->
+
+
     
     {% block css %}
     	{# solo para casos muy particulares #}
@@ -92,33 +105,35 @@
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <li class="dropdown keep-open">
+                    <a class="dropdown-toggle tasks-toggle" id="tasks-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-tasks fa-fw"></i> Tareas <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
-                        {% for tarea in tareas_menu %}
-                        <li>
-                            <a href="/ver_tarea/{{ tarea.id }}">
+                        {% for tarea in tareas %} 
+                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
+                            <div class="acciones">
+                                <button onclick="listo(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
+                                <a onclick="listo('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
+                            </div>
+                            <a class="datos" href="/ver_tarea/{{ tarea.id }}">
                                 <div>
-                                        <h6>{{ tarea.nombre }}</h6>
-                                        <div class="datos">
+                                        <h5 class="task-title">{{ tarea.nombre }}</h5>
+                                        <div class="detalle">
                                             <span class="evento">{% if tarea.evento %}Evento: {{ tarea.evento.nombre }}{% endif %}</span><br>
-                                            <span>{{ tarea.fecha }}</span>
+                                            <span class="fecha"><i class="fa fa-calendar"></i> {{ tarea.fecha }}</span>
                                         </div>
                                 </div>
                             </a>
-                            <div class="checkmark col-sm-6">
-                                <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
-                                    <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
-                                    <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
-                                    <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
-                                </select>
-                            <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span>
-                            </div>
                         </li>
+                         {% endfor %}
                         <li class="divider"></li>
-                        {% endfor %}
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>Todos mis tareas</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
                     </ul>
                     <!-- /.dropdown-tasks -->
                 </li>
@@ -279,10 +294,10 @@
                         <a href="#"><i class="fa fa-tasks fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/crear_tarea">Asignar tarea</a>
+                                <a href="#">Asignar tarea</a>
                             </li>
                             <li>
-                                <a href="/listar_todas_tareas">Supervisar tareas</a>
+                                <a href="#">Supervisar tareas</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -379,6 +394,7 @@
         <div id="main" class="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                    <div class="alertas-ajax"  id="alertas-ajax"></div>
                     <h1 class="page-header">{% block titulo%}{% endblock %}</h1>
                     <p class="heading">{% block subtitulo%}{% endblock %}</p>
                 </div>
@@ -418,31 +434,41 @@
     <script src="{{ STATIC_URL }}/js/sb-admin.js"></script>
 
     <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
-    <script src="js/demo/dashboard-demo.js"></script>
     <script src="{{ STATIC_URL }}/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script type="text/javascript">
 
- function listo(stado,tarea){
+function listo(stado,tarea){
 
     $.ajax({
 
-        beforeSend:function(){
-
-            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-disk");
-
-        },
         data:{estado:stado, tarea:tarea},
         url:'/modificar_estado_tarea/',
         type:'GET',
         error:function(a,b,c){
 
-            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-remove");
-
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
         }
 
     }).done(function(data){
 
-        document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-saved");
+        if(data.status == 'True'){
+
+            $("#check-"+tarea).addClass("listo");
+            $("#check-"+tarea).attr('name','1');
+
+        }else if(data.status == 'False'){
+
+            $("#check-"+tarea).removeClass("listo");
+            $("#check-"+tarea).attr('name','2');
+
+        }else if(data.status == "None"){
+
+            $("#tarea-"+tarea).fadeOut();
+
+        }
 
     });
 

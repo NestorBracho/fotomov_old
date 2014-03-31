@@ -312,3 +312,38 @@ def eliminar_pauta(request, id_pauta):
 def ver_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     return render_to_response('evento/ver_pauta.html', {'pauta': pauta}, context_instance=RequestContext(request))
+
+def crear_bloque(request):
+    if request.method == 'POST':
+        formulario = BloqueForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            bloques = Bloque.objects.all()
+            return render_to_response('evento/listar_bloques.html', {'bloques': bloques}, context_instance=RequestContext(request))
+    else:
+        formulario = BloqueForm()
+    return render_to_response('evento/crear_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_bloques(request, id_bloque):
+    if id_bloque != '0':
+        bloque = Bloque.objects.filter(id = id_bloque)
+        if len(bloque)!=0:
+            bloque = bloque[0]
+            bloque.delete()
+    bloques = Bloque.objects.all()
+    return render_to_response('evento/listar_bloques.html', {'bloques': bloques}, context_instance=RequestContext(request))
+
+def editar_bloque(request, id_bloque):
+    bloque = Bloque.objects.get(id = id_bloque)
+    if request.method == 'POST':
+        formulario = BloqueForm(request.POST)
+        if formulario.is_valid():
+            bloque.nombre = formulario.cleaned_data['nombre']
+            bloque.honorarios = formulario.cleaned_data['honorarios']
+            bloque.unico = formulario.cleaned_data['unico']
+            bloque.save()
+            bloques = Bloque.objects.all()
+            return render_to_response('evento/listar_bloques.html', {'bloques': bloques}, context_instance=RequestContext(request))
+    else:
+        formulario = BloqueForm(initial = {'nombre':bloque.nombre, 'honorarios':bloque.honorarios, 'unico':bloque.unico})
+    return render_to_response('evento/editar_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))

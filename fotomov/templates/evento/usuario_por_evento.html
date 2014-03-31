@@ -63,8 +63,10 @@ function getStaff(func){
             type:'GET',
             error:function(a,b,c){
 
-                alert(c);
-
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
             }
 
         }).done(function(data){
@@ -113,7 +115,14 @@ function setStaff(val, func){
 
             data:{staff: staff, funcion:func, marc:'0'},
             url:'/get_staff_usuarios_usuario_por_evento/',
-            type:'GET'
+            type:'GET',
+            error:function(a,b,c){
+
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
+            }
 
         }).done(function(data){
 
@@ -131,7 +140,11 @@ function setStaff(val, func){
                     url:'/get_staff_usuarios_usuario_por_evento/',
                     type:'GET',
                     error:function(a,b,c){
-                        alert(a+b+c);
+
+                        $('#alertas-ajax').addClass('alert');
+                        $('#alertas-ajax').addClass('alert-danger');
+                        document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                        console.log(c);
                     }
 
                 }).done(function(data1){
@@ -186,7 +199,14 @@ function convocar(iden, func, flag){
 
         data:{usuario:iden, funcion:func},
         url:"/convocar_usuario_a_evento/",
-        type:"GET"
+        type:"GET",
+        error:function(a,b,c){
+
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
+        }
 
     }).done(function(data){
 

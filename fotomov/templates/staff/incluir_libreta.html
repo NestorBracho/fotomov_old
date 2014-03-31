@@ -122,7 +122,14 @@ function ajax_guardar(){
     $.ajax({
         data:{'nombre': nombre, 'direccion': direccion, 'descripcion': descripcion, 'latlng': latlng},
         url:'/guardar_direccion_ajax/',
-        type: 'get'
+        type: 'get',
+        error:function(a,b,c){
+
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
+        }
 
     }).done(function(data){
         for(var i=0; i<data.length; i++){
@@ -155,7 +162,14 @@ function deleteAlert(id, row){
 
             data: {'id':id},
             url: '/eliminar_direccion/',
-            type: 'get'
+            type: 'get',
+            error:function(a,b,c){
+
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
+            }
 
         }).done(function(data){
 

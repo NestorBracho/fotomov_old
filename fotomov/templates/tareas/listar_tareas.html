@@ -37,10 +37,10 @@ function listo(stado,tarea){
         type:'GET',
         error:function(a,b,c){
 
-            console.log(b);
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
             console.log(c);
-            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-remove");
-
         }
 
     }).done(function(data){
