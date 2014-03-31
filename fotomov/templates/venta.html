@@ -46,8 +46,9 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
                         </ul>
+                             <li><a href="/crear_pedidos/{{ evento.id }}/back/urlseparador/back">atras</a></li>
                         {% for directorio in directorios %}
-                            <li><a href="/crear_pedidos/{{ evento.id }}/{{ directorio }}/urlseparador/{{ current }}">{{ directorio }}</a></li>
+                            <li><a href="/crear_pedidos/{{ evento.id }}/{{ directorio }}/urlseparador/ir">{{ directorio }}</a></li>
                         {% endfor %}
                         </ul>
                 <!-- /#side-menu -->
