@@ -66,7 +66,10 @@ def modificar_estado_tarea(request):
     elif request.GET['estado'] == '1':
         tarea.lista = 'False'
     else:
-        tarea.lista = 'None'
+        if tarea.lista == 'None':
+            tarea.lista = 'False'
+        else:
+            tarea.lista = 'None'
     tarea.save()
     data = json.dumps({'status': tarea.lista})
     return HttpResponse(data, mimetype='application/json')
