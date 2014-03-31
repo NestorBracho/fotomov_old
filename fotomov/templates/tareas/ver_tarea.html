@@ -37,7 +37,6 @@
                  <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
                  <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
              </select>
-            <span id='span-{{tarea.id}}' class="glyphicon glyphicon-floppy-disk"></span>
          </strong>
     </div>
     <div class="col-sm-4">
@@ -52,11 +51,6 @@ function listo(stado,tarea){
 
     $.ajax({
 
-        beforeSend:function(){
-
-            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-disk");
-
-        },
         data:{estado:stado, tarea:tarea},
         url:'/modificar_estado_tarea/',
         type:'GET',
@@ -71,7 +65,7 @@ function listo(stado,tarea){
 
     }).done(function(data){
 
-        document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-saved");
+        console.log(data.status);
 
     });
 
