@@ -9,7 +9,7 @@ Lista de tareas
     {% for tarea in tareas %}
     <tr>
         <td>{{tarea.nombre}}</td><td>{{tarea.tarea}}</td><td>{{tarea.evento}}</td><td>{{tarea.fecha}}</td><td>
-            <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
+            <select class="form-control" onchange="listoL(this.value,'{{tarea.id}}')">
                  <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
                  <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
                  <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
@@ -23,7 +23,7 @@ Lista de tareas
 {% block js %}
 <script type="text/javascript">
 
-function listo(stado,tarea){
+function listoL(stado,tarea){
 
     $.ajax({
 
