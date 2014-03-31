@@ -97,7 +97,7 @@ function agregarTarea(){
     iden++;
     document.getElementById('tabla-tareas').setAttribute('name',iden);
 
-    $('#tabla-tareas').append("<tr id="+iden+"><td>"+iden+"</td><td><input type='text' name='nom-"+iden+"' id='nom-"+iden+"' placeholder='Nombre...'></td><td><textarea name='desc-"+iden+"' id='desc-"+iden+"' placeholder='Tarea...'></textarea></td><td><select name='select-staff-"+iden+"' id='select-staff-"+iden+"'><option value='0'>---------</option>{% for staf in staff %}<option value='{{ staf.id }}'>{{ staf.nombre }}</option>{% endfor %}</select></td><td><input name='dias-"+iden+"' id='dias-"+iden+"'><div><input name='aod-"+iden+"' value='True' checked='true' type='radio'><span> Antes del evento</span><br><input name='aod-"+iden+"' value='False' type='radio'><span> Despues del evento</span></div></td><td><select id='prel-"+iden+"' name='prel-"+iden+"'><option value='0'>---</option></select></td></tr>");
+    $('#tabla-tareas').append("<tr id="+iden+"><td>"+iden+"</td><td><input type='text' name='nom-"+iden+"' id='nom-"+iden+"' placeholder='Nombre...'></td><td><textarea name='desc-"+iden+"' id='desc-"+iden+"' placeholder='Tarea...'></textarea></td><td><select name='select-staff-"+iden+"' id='select-staff-"+iden+"'><option value='0'>---------</option>{% for staf in staff %}<option value='{{ staf.id }}'>{{ staf.nombre }}</option>{% endfor %}</select></td><td><input name='dias-"+iden+"' id='dias-"+iden+"'><div><input onclick=set_dias_despues_evento('dias-"+iden+"','True') name='aod-"+iden+"' value='True' checked='true' type='radio'><span> Antes del evento</span><br><input onclick=set_dias_despues_evento('dias-"+iden+"','False') name='aod-"+iden+"' value='False' type='radio'><span> Despues del evento</span></div></td><td><select id='prel-"+iden+"' name='prel-"+iden+"'><option value='0'>---</option></select></td></tr>");
 
     document.getElementById('toDoList').setAttribute('value',iden);
 
@@ -109,7 +109,7 @@ function agregarTarea(){
     }
 
     $("#dias-"+iden).spinner({min:0});
-    $("#dias-"+iden).spinner('value',0);
+    $("#dias-"+iden).spinner('value',14);
 }
 
 function guardarTE(){
@@ -226,6 +226,20 @@ function guardarTE(){
     }else{
 
         document.forms['form-tipo-evento'].submit();
+
+    }
+
+}
+
+function set_dias_despues_evento(iden,val){
+
+    if(val == "True"){
+
+        $("#"+iden).spinner('value',14);
+
+    }else{
+
+        $("#"+iden).spinner('value',1);
 
     }
 
