@@ -1,7 +1,10 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
-{% block titulo %}
-    Ver Tarea: {{ tarea.nombre }}
+{% block header %}
+    <div>
+        <h1 class="page-header titulo-enlinea">Tarea: {{ tarea.nombre }}</h1><button onclick="listoL(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='checkt-{{ tarea.id }}' {% if tarea.lista == "None" %}style='display:None'{% endif %}></button>
+        <a onclick="listoL('0',{{ tarea.id }})" class="no-aplica" id='NA-{{ tarea.id }}'>{% if tarea.lista == "None" %} Si aplica{% else %} No aplica{% endif %}</a>
+    </div>
 {% endblock %}
 {% block seccion-contenido %}
 <div class="row">
@@ -30,14 +33,10 @@
         <p>{{ tarea.tarea }}</p>
     </div>
     <div class="col-sm-4">
-         <strong>
-             Estado:
-             <select class="form-control" onchange="listo(this.value,'{{tarea.id}}')">
-                 <option value="1" {% if tarea.lista == "False" %} selected="True"{% endif %}>Pendiente</option>
-                 <option value="2" {% if tarea.lista == "True" %} selected="True"{% endif %}>Listo</option>
-                 <option value="0" {% if tarea.lista == "None" %} selected="True"{% endif %}>N/A</option>
-             </select>
-         </strong>
+        <strong>
+            Estado:
+        </strong>
+        <div id="el-estado">{% if tarea.lista == "True" %} Listo{% elif tarea.lista == "False" %} Pendiente{% else %}No aplica{% endif %}</div>
     </div>
     <div class="col-sm-4">
         <input type="button" value="click" onclick="pagar()">
@@ -47,7 +46,8 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
-function listo(stado,tarea){
+
+function listoL(stado,tarea){
 
     $.ajax({
 
@@ -65,7 +65,28 @@ function listo(stado,tarea){
 
     }).done(function(data){
 
-        console.log(data.status);
+        if(data.status == 'True'){
+
+            $("#checkt-"+tarea).addClass("listo");
+            $("#checkt-"+tarea).attr('name','1');
+            document.getElementById('el-estado').innerHTML = "Listo";
+
+        }else if(data.status == 'False'){
+
+            $("#checkt-"+tarea).removeClass("listo");
+            $("#checkt-"+tarea).fadeIn();
+            document.getElementById('NA-'+tarea).innerHTML = "No aplica";
+            document.getElementById('el-estado').innerHTML = "Pendiente";
+            $("#checkt-"+tarea).attr('name','2');
+
+        }else if(data.status == "None"){
+
+            $("#checkt-"+tarea).fadeOut();
+            document.getElementById('NA-'+tarea).innerHTML = "Si aplica";
+            document.getElementById('el-estado').innerHTML = "No aplica";
+            //$("#trTarea-"+tarea).fadeOut();
+
+        }
 
     });
 
