@@ -16,7 +16,7 @@
         <strong>Asignada a: </strong>
         <p>{{ tarea.asignado }}</p>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 {% if status == "1" %} maniana {% elif status == "2" %} hoy {% elif status == "3" %} vencido {% endif %}">
         <strong>Fecha de vencimiento:</strong>
         <p>{{ tarea.fecha }}</p>
     </div>
@@ -37,9 +37,6 @@
             Estado:
         </strong>
         <div id="el-estado">{% if tarea.lista == "True" %} Listo{% elif tarea.lista == "False" %} Pendiente{% else %}No aplica{% endif %}</div>
-    </div>
-    <div class="col-sm-4">
-        <input type="button" value="click" onclick="pagar()">
     </div>
 </div>
 
@@ -89,12 +86,6 @@ function listoL(stado,tarea){
         }
 
     });
-
-}
-
-function pagar(){
-
-    window.open("http://www.google.com");
 
 }
 

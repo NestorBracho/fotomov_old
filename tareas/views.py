@@ -41,20 +41,48 @@ def crear_tarea(request):
 
 @login_required(login_url='/')
 def listar_tareas(request):
+    hoy = date(datetime.datetime.today().year,datetime.datetime.today().month,datetime.datetime.today().day)
     tareas = Tarea.objects.filter(asignado = Usuario.objects.get(usuario = request.user).privilegio, activa=True)
-    return render_to_response('tareas/listar_tareas.html', {'tareas':tareas}, context_instance=RequestContext(request))
+    muchos_stats = []
+    for tarea in tareas:
+        if tarea.fecha == hoy:
+            aux = '2-'+str(tarea.id)
+            muchos_stats.append(aux)    #la tarea es hoy!
+        elif hoy + datetime.timedelta(days = 1) == tarea.fecha:
+            aux = '1-'+str(tarea.id)
+            muchos_stats.append(aux)    #la tarea es maniana!
+        elif tarea.fecha < hoy:
+            aux = '3-'+str(tarea.id)
+            muchos_stats.append(aux)    #la tarea esta vencida
+        else:
+            aux = '0-'+str(tarea.id)
+            muchos_stats.append(aux)    #no hay rollo
+    return render_to_response('tareas/listar_tareas.html', {'tareas':tareas, 'stats':muchos_stats}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def listar_todas_tareas(request):
     user = request.user
-    print user
     usuario = Usuario.objects.get(usuario=user)
+    hoy = date(datetime.datetime.today().year,datetime.datetime.today().month,datetime.datetime.today().day)
     if usuario.privilegio.valor == 1:
         tareas = Tarea.objects.order_by('-fecha')
     else:
         return HttpResponseRedirect('/')
-    print tareas
-    return render_to_response('tareas/listar_todas_tareas.html', {'tareas': tareas}, context_instance=RequestContext(request))
+    muchos_stats = []
+    for tarea in tareas:
+        if tarea.fecha == hoy:
+            aux = '2-'+str(tarea.id)
+            muchos_stats.append(aux)    #la tarea es hoy!
+        elif hoy + datetime.timedelta(days = 1) == tarea.fecha:
+            aux = '1-'+str(tarea.id)
+            muchos_stats.append(aux)    #la tarea es maniana!
+        elif tarea.fecha < hoy:
+            aux = '3-'+str(tarea.id)
+            muchos_stats.append(aux)    #la tarea esta vencida
+        else:
+            aux = '0-'+str(tarea.id)
+            muchos_stats.append(aux)    #no hay rollo
+    return render_to_response('tareas/listar_todas_tareas.html', {'tareas': tareas, 'stats':muchos_stats}, context_instance=RequestContext(request))
 
 def modificar_estado_tarea(request):
     #1 pendient
@@ -75,10 +103,19 @@ def modificar_estado_tarea(request):
     return HttpResponse(data, mimetype='application/json')
 
 def ver_tarea(request, id_tarea):
+    hoy = date(datetime.datetime.today().year,datetime.datetime.today().month,datetime.datetime.today().day)
     tarea = Tarea.objects.get(id=id_tarea)
     prela = Prela.objects.filter(prela=tarea)
     es_prelada = Prela.objects.filter(es_prelada=tarea)
-    return render_to_response('tareas/ver_tarea.html', {'tarea':tarea, 'prela':prela, 'es_prelada': es_prelada}, context_instance=RequestContext(request))
+    if tarea.fecha == hoy:
+        stat = '2'    #la tarea es hoy!
+    elif hoy + datetime.timedelta(days = 1) == tarea.fecha:
+        stat = '1'    #la tarea es maniana!
+    elif tarea.fecha < hoy:
+        stat = '3'    #la tarea esta vencida
+    else:
+        stat = '0' #no hay rollo
+    return render_to_response('tareas/ver_tarea.html', {'tarea':tarea, 'prela':prela, 'es_prelada': es_prelada, 'status':stat}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def crear_notificacion(request):

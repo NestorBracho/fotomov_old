@@ -21,6 +21,28 @@ Lista de tareas
 {% block js %}
 <script type="text/javascript">
 
+window.onload = function(){
+
+    var tarea_id, stat;
+
+    {% for stat in stats %}
+
+        tarea_id = "{{ stat }}".split("-");
+        stat = tarea_id[0]
+        tarea_id = tarea_id[1];
+        if(stat == "1"){
+            $("#trTarea-"+tarea_id).addClass("maniana");
+        }else if(stat == "2"){
+            $("#trTarea-"+tarea_id).addClass("hoy");
+        }else if(stat == "3"){
+            $("#trTarea-"+tarea_id).addClass("vencido");
+        }
+
+    {% endfor %}
+
+}
+
+
 function listoL(stado,tarea){
 
     $.ajax({
