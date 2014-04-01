@@ -6,6 +6,8 @@ import datetime
 
 def obtener_tareas(request):
     print settings.MEDIA_ROOT
+    tareas = []
+    muchos_stats = []
     if request.user:
         if request.user.is_authenticated():
             us = request.user
@@ -13,7 +15,6 @@ def obtener_tareas(request):
                 hoy = date(datetime.datetime.today().year,datetime.datetime.today().month,datetime.datetime.today().day)
                 usuario = Usuario.objects.get(usuario=us)
                 tareas = Tarea.objects.filter(asignado=usuario.privilegio, activa=True)
-                muchos_stats = []
                 for tarea in tareas:
                     if tarea.fecha == hoy:
                         aux = '2-'+str(tarea.id)
