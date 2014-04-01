@@ -9,6 +9,7 @@ from django.core import serializers
 from evento.forms import *
 from modulo_movil.models import *
 from evento.models import *
+from productos.models import *
 import csv
 import time
 from datetime import date
@@ -127,3 +128,11 @@ def generar_rutas(id_evento):
         #print ruta
         lista.append(ruta)
     return lista
+
+def generar_pedido(request):
+    if request.method == 'POST':
+        peps = ProductoEventoPedido.objects.filter(pedido = request.POST['numero'])
+        for pep in peps:
+            print pep
+        return render_to_response('modulo_movil/generar_pedido.html', {}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/generar_pedido.html', {}, context_instance=RequestContext(request))

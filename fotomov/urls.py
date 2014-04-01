@@ -104,4 +104,5 @@ urlpatterns = patterns('',
     url(r'^crear_bloque/$', 'evento.views.crear_bloque'),
     url(r'^listar_bloques/(?P<id_bloque>\d+)/$', 'evento.views.listar_bloques'),
     url(r'^editar_bloque/(?P<id_bloque>\d+)/$', 'evento.views.editar_bloque'),
+    url(r'^generar_pedido/$', 'modulo_movil.views.generar_pedido'),
 )
