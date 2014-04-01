@@ -67,12 +67,12 @@ def crear_pedidos(request, id_evento, next, actual):
         print len(split_auxiliar)
         if len(split_auxiliar) > 1:
             print "entre"
-            i=0
-            concatenar = ""
-            while i < len(split_auxiliar) - 1:
-                concatenar = concatenar + split_auxiliar[i] + "\"
-                i = i + 1
-            next = concatenar
+            #i=0
+            #concatenar = ""
+            #while i < len(split_auxiliar) - 1:
+            #    concatenar = concatenar + split_auxiliar[i] + "\"
+            #    i = i + 1
+            #next = concatenar
             print "el nuevo next es =" + next
         auxiliar = dir_actual.directorio
         dir_actual.directorio = auxiliar + next + "/"

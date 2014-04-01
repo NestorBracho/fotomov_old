@@ -29,6 +29,7 @@ class ProductoImpresion(models.Model):
 
 class ProductoEventoPedido(models.Model):
     cantidad = models.IntegerField()
-    ruta = models.CharField(max_length=600)
+    ruta = models.CharField(max_length=10000)
+    num_pedido = models.IntegerField()
     producto = models.ForeignKey(ProductoEvento)
-    pedido = models.ForeignKey(Pedido)
+    pedido = models.ForeignKey(Pedido, null=True, blank=True)
