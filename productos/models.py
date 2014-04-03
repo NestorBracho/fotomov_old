@@ -9,11 +9,12 @@ class Pedido(models.Model):
     id_fiscal = models.CharField(max_length=100, null=True, blank=True)
     direccion_fiscal = models.TextField(max_length=400, null=True, blank=True)
     tlf_fiscal = models.CharField(max_length=11, null=True, blank=True)
-    razon_fiscal = models.CharField(max_length=200, null=True, blank=True)
+    razon_social = models.CharField(max_length=200, null=True, blank=True)
     total = models.FloatField(null=True, blank=True)
     codigo = models.CharField(max_length=100, null=True, blank=True)
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
     envio = models.BooleanField(default=False)
+    fue_pagado = models.BooleanField(default=False)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)

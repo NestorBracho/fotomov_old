@@ -7,6 +7,7 @@ from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from evento.forms import *
+from productos.forms import *
 from modulo_movil.models import *
 from evento.models import *
 from productos.models import *
@@ -19,6 +20,7 @@ from os import makedirs
 from django.conf import settings
 from os import listdir
 from os.path import isfile, join, isdir
+import shutil
 
 def exportar_csv_evento(request):
     eventos = Evento.objects.all().order_by('-id')
@@ -129,10 +131,52 @@ def generar_rutas(id_evento):
         lista.append(ruta)
     return lista
 
-def generar_pedido(request):
+def generar_lote(request, pedido, cedula):#rehacer
+    peps = ProductoEventoPedido.objects.filter(num_pedido = pedido)
+    cliente = Cliente.objects.filter(cedula = cedula)
+    print cliente
+    if len(cliente) > 0:
+        cliente = cliente[0]
+    else:
+        cliente = None
+    formulario = PedidoForm()
     if request.method == 'POST':
-        peps = ProductoEventoPedido.objects.filter(pedido = request.POST['numero'])
+        formulario = PedidoForm(request.POST)
+        ruta = settings.MEDIA_ROOT + "/pedidos/" + str(date.today().year) + '/' + peps[0].producto.evento.macrocliente.submarca.marca.nombre + '/' + peps[0].producto.evento.macrocliente.submarca.nombre + '/' + peps[0].producto.evento.macrocliente.nombre + '/' + peps[0].producto.evento.nombre + '/' + peps[0].producto.evento.sede.nombre + '/' + str(date.today().day) + '-' + str(date.today().month) + '/'
+        if not os.path.exists(ruta):
+            os.makedirs(ruta)
+        shutil.copy(peps[0].ruta,ruta+'4.hola.jpg')
         for pep in peps:
-            print pep
-        return render_to_response('modulo_movil/generar_pedido.html', {}, context_instance=RequestContext(request))
-    return render_to_response('modulo_movil/generar_pedido.html', {}, context_instance=RequestContext(request))
+            Ruta = pep.ruta
+            print Ruta
+            Ruta = Ruta.split(settings.MEDIA_ROOT)
+        return render_to_response('modulo_movil/generar_pedido.html', {'formulario':formulario}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps}, context_instance=RequestContext(request))
+
+def generar_pedido(request, pedido, cedula):
+    peps = ProductoEventoPedido.objects.filter(num_pedido = pedido)
+    cliente = Cliente.objects.filter(cedula = cedula)
+    if len(cliente) > 0:
+        cliente = cliente[0]
+    else:
+        cliente = None
+        if request.method == 'POST':
+            nom = request.POST['nombres_cliente']
+            ape = request.POST['apellidos_cliente']
+            tlf = request.POST['telefono_cliente']
+            mail = request.POST['mail_cliente']
+            direc = request.POST['direccion_fiscal_cliente']
+            rif = request.POST['rif_cliente']
+            ced = request.POST['cedula_cliente']
+            cliente = Cliente.objects.create(nombres = nom, apellidos = ape, telefono = tlf, email = mail, direccion_fiscal = direc, rif = rif, cedula = ced)
+    formulario = PedidoForm()
+    if request.method == 'POST':
+        formulario = PedidoForm(request.POST)
+
+        return render_to_response('modulo_movil/generar_pedido.html', {'formulario':formulario}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
+
+def ingresar_ticket(request):
+    if request.method == 'POST':
+        return HttpResponseRedirect('/generar_pedido/'+request.POST['numero']+'/'+request.POST['cedula_cliente'])
+    return render_to_response('modulo_movil/ingresar_ticket.html', {}, context_instance=RequestContext(request))
