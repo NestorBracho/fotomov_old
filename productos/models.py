@@ -2,6 +2,10 @@ from django.db import models
 from clientes.models import *
 from evento.models import *
 
+class Lotes(models.Model):
+    estado = models.CharField(max_length=100)
+    fecha = models.DateField(auto_now=True)
+
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField()
@@ -15,6 +19,7 @@ class Pedido(models.Model):
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
     envio = models.BooleanField(default=False)
     fue_pagado = models.BooleanField(default=False)
+    lotes = models.ForeignKey(Lotes)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
