@@ -6,3 +6,7 @@ from django import forms
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
+
+class PedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido

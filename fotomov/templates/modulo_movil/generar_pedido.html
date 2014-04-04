@@ -1,0 +1,151 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Generar pedido
+{% endblock %}
+{% block seccion-contenido%}
+<form id="generar_pedido" method="POST">{% csrf_token %}
+    <div class="col-xs-12 col-md-6">
+        {% if cliente == None %}
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="id_nombres_cliente">Nombres</label>
+                <input type="text" id="id_nombres_cliente" name="nombres_cliente" class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="id_apellidos_cliente">Apellidos</label>
+                <input type="text" id="id_apellidos_cliente" name="apellidos_cliente" class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group ">
+                <label class="control-label" for="id_cedula_cliente">Número de cedula del cliente</label>
+                <input type="text" id="id_cedula_cliente" name="cedula_cliente" class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group ">
+                <label class="control-label" for="id_rif_cliente">R.I.F. del cliente</label>
+                <input type="text" id="id_rif_cliente" name="rif_cliente" class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="id_telefono_cliente">Número telefono del cliente</label>
+                <input type="text" id="id_telefono_cliente" name="telefono_cliente" class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="id_mail_cliente">Email del cliente</label>
+                <input type="text" id="id_mail_cliente" name="mail_cliente" class="form-control">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="id_direccion_fiscal_cliente">Direccion fiscal del cliente</label>
+                <input type="text" id="id_direccion_fiscal_cliente" name="direccion_fiscal_cliente" class="form-control">
+            </div>
+        </div>
+        {% else %}
+        <div class="col-xs-12 col-md-12 table-responsive">
+            <table class="table table-bordered">
+                <thead><th colspan="2">{{ cliente.nombres }} {{ cliente.apellidos }} - {{ cliente.cedula }}</th></thead>
+                <tr><td>Email: {{ cliente.email }}</td><td>Telefono: {{ cliente.telefono }}</td></tr>
+                <tr><td>Direccion: {{ cliente.direccion_fiscal }}</td><td>Rif: {{ cliente.rif }}</td></tr>
+            </table>
+        </div>
+        {% endif %}
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.id_fiscal | bootstrap}}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.tlf_fiscal | bootstrap}}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.razon_social | bootstrap}}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.direccion_entrega | bootstrap}}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.direccion_fiscal | bootstrap}}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.fue_pagado | bootstrap}}
+        </div>
+        <div class="col-xs-12 text-right">
+                <input type='button' onclick="generarPedido()" class="btn btn-default btn-primary" value='Generar'/>
+            <div class="col-md-6 hidden-xs hidden-sm"></div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-6 table-responsive">
+        <table class="table table-bordered">
+            <thead><th>Cant.</th><th>Produc.</th><th>Precio</th><th>Eliminar</th></thead>
+            {% for pedido in pedidos %}
+            <tr id="tr-{{ pedido.id }}"><td>{{ pedido.cantidad }}</td><td>{{ pedido.producto.producto.nombre }}</td><td id="total-{{ pedido.id }}">{{ pedido.producto.precio }}</td><td class="text-center"><a data-toggle="modal" data-target="#Foto"><img src="{{MEDIA_URL}}eventos/2014/vzlaSOS.jpg" width="50"></a> <a onclick="borrarProducto('tr-{{ pedido.id }}')"><span class="fa fa-leaf fa-fw"></span></a></td></tr>
+            {% endfor %}
+        </table>
+        <span id="total"></span>
+    </div>
+</form>
+
+<div class="modal fade" id="Foto" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+                <img class="img-responsive" src="{{MEDIA_URL}}eventos/2014/vzlaSOS.jpg"></img>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+
+    var subtotal, total = 0;
+
+    {% if cliente == None %}
+        $('#id_cedula_cliente').val("{{ ced }}");
+    {% endif %}
+
+    {% for pedido in pedidos %}
+
+        subtotal = parseInt("{{ pedido.cantidad }}")*parseInt("{{ pedido.producto.precio }}");
+        total += subtotal;
+
+        document.getElementById("total-{{ pedido.id }}").innerHTML = subtotal;
+
+
+    {% endfor %}
+
+    $("#total").html("Total: "+total+" Bs.");
+
+}
+
+function borrarProducto(iden){
+
+    $("#"+iden).fadeOut();
+    window.setTimeout(function(){document.getElementById(iden).parentNode.removeChild(document.getElementById(iden))},3000);
+
+}
+
+function generarPedido(){
+
+    total = $("#total").html().split(' ');
+    total = total[1];
+
+    $("#total").append("<input type='hidden' name='total' value='"+total+"'>");
+    document.getElementById('generar_pedido').submit();
+}
+
+</script>
+{% endblock %}

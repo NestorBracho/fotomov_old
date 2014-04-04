@@ -1,0 +1,32 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Generar pedido
+{% endblock %}
+{% block seccion-contenido%}
+<form method="POST">{% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <label class="control-label" for="id_numero">Introduzca su número</label>
+            <input type="text" id="id_numero" name="numero" class=" form-control" placeholder="Ticket">
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <label class="control-label" for="id_cedula_cliente">Número de cédula del cliente</label>
+            <input type="text" id="id_cedula_cliente" name="cedula_cliente" class="form-control" placeholder="Cédula">
+        </div>
+        <div class="col-xs-12 text-right">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <input type='submit' class="btn btn-default btn-primary" value='Generar'/>
+                </div>
+                <div class="col-md-6 hidden-xs hidden-sm"></div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
