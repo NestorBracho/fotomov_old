@@ -149,7 +149,7 @@ def generar_lote(request):#rehacer
             rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
             if not os.path.exists(rutalote):
                 os.makedirs(rutalote)
-                lote = Lote.objects.create(estado = 'edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
+                lote = Lote.objects.create(estado = 'creado', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
                 lote.save()
             if not os.path.exists(ruta):
                 os.makedirs(ruta)
