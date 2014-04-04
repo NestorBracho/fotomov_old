@@ -59,9 +59,6 @@ Generar pedido
         </div>
         {% endif %}
         <div class="col-xs-12 col-md-12">
-            {{ formulario.fecha_entrega | bootstrap}}
-        </div>
-        <div class="col-xs-12 col-md-12">
             {{ formulario.id_fiscal | bootstrap}}
         </div>
         <div class="col-xs-12 col-md-12">
@@ -75,6 +72,9 @@ Generar pedido
         </div>
         <div class="col-xs-12 col-md-12">
             {{ formulario.direccion_fiscal | bootstrap}}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.fue_pagado | bootstrap}}
         </div>
         <div class="col-xs-12 text-right">
                 <input type='button' onclick="generarPedido()" class="btn btn-default btn-primary" value='Generar'/>
@@ -129,6 +129,7 @@ function generarPedido(){
     total = total[1];
 
     $("#total").append("<input type='hidden' name='total' value='"+total+"'>");
+    document.getElementById('generar_pedido').submit();
 }
 
 </script>

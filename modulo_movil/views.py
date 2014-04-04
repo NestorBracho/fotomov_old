@@ -20,6 +20,8 @@ from os import makedirs
 from django.conf import settings
 from os import listdir
 from os.path import isfile, join, isdir
+from datetime import *
+import datetime
 import shutil
 
 def exportar_csv_evento(request):
@@ -131,27 +133,31 @@ def generar_rutas(id_evento):
         lista.append(ruta)
     return lista
 
-def generar_lote(request, pedido, cedula):#rehacer
-    peps = ProductoEventoPedido.objects.filter(num_pedido = pedido)
-    cliente = Cliente.objects.filter(cedula = cedula)
-    print cliente
-    if len(cliente) > 0:
-        cliente = cliente[0]
-    else:
-        cliente = None
-    formulario = PedidoForm()
-    if request.method == 'POST':
-        formulario = PedidoForm(request.POST)
-        ruta = settings.MEDIA_ROOT + "/pedidos/" + str(date.today().year) + '/' + peps[0].producto.evento.macrocliente.submarca.marca.nombre + '/' + peps[0].producto.evento.macrocliente.submarca.nombre + '/' + peps[0].producto.evento.macrocliente.nombre + '/' + peps[0].producto.evento.nombre + '/' + peps[0].producto.evento.sede.nombre + '/' + str(date.today().day) + '-' + str(date.today().month) + '/'
-        if not os.path.exists(ruta):
-            os.makedirs(ruta)
-        shutil.copy(peps[0].ruta,ruta+'4.hola.jpg')
+def generar_lote(request):#rehacer
+    pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
+    hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
+    rutalote = ''
+    for pedido in pedidos:
+        peps = ProductoEventoPedido.objects.filter(pedido = pedido)
         for pep in peps:
-            Ruta = pep.ruta
-            print Ruta
-            Ruta = Ruta.split(settings.MEDIA_ROOT)
-        return render_to_response('modulo_movil/generar_pedido.html', {'formulario':formulario}, context_instance=RequestContext(request))
-    return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps}, context_instance=RequestContext(request))
+            nom = pedido.cliente.nombres.split(' ')
+            nom = nom[0]
+            ape = pedido.cliente.apellidos.split(' ')
+            ape = ape[0]
+            client = ape + nom
+            ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + pedido.codigo + '/'
+            rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
+            if not os.path.exists(rutalote):
+                os.makedirs(rutalote)
+                lote = Lote.objects.create(estado = 'edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
+                lote.save()
+            if not os.path.exists(ruta):
+                os.makedirs(ruta)
+            productos = ProductoEventoPedido.objects.filter(pedido = pedido)
+            for producto in productos:
+                for i in range(producto.cantidad):
+                    shutil.copy(pep.ruta, ruta+producto.producto.producto.nombre + '.' + str(i+1) + '.jpg')
+    return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
     peps = ProductoEventoPedido.objects.filter(num_pedido = pedido)
@@ -172,8 +178,43 @@ def generar_pedido(request, pedido, cedula):
     formulario = PedidoForm()
     if request.method == 'POST':
         formulario = PedidoForm(request.POST)
-
-        return render_to_response('modulo_movil/generar_pedido.html', {'formulario':formulario}, context_instance=RequestContext(request))
+        aux = str(datetime.datetime.today())
+        aux = aux.split(' ')
+        cod = ''
+        for au in aux:
+            cod = cod + au
+        aux = cod.split('-')
+        cod = ''
+        for au in aux:
+            cod = cod + au
+        aux = cod.split(':')
+        cod = ''
+        for au in aux:
+            cod = cod + au
+        aux = cod.split('.')
+        cod = ''
+        for au in aux:
+            cod = cod + au
+        aux = []
+        fechas_entrega = Funcion.objects.filter(evento = peps[0].producto.evento)
+        for fecha_entrega in fechas_entrega:
+            aux.append(fecha_entrega.dia)
+        for i in range(len(aux)):
+            if i != len(aux)-1:
+                if aux[i+1] > aux[i]:
+                    dia = aux[i+1]
+        fecha_entrega = dia + datetime.timedelta(days = 15)
+        try:
+            if request.POST['fue_pagado']:
+                pagado = True
+        except:
+            pagado = False
+        pedido_nuevo = Pedido.objects.create(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
+        pedido_nuevo.save()
+        for pep in peps:
+            pep.pedido = pedido_nuevo
+            pep.save()
+        return HttpResponseRedirect('/ingresar_ticket/'+cod+'/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
 def ingresar_ticket(request):
