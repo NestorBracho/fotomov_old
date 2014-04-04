@@ -56,6 +56,10 @@ def crear_pedidos(request, id_evento, next, actual):
         dir_actual = directorio_actual.objects.get(usuario=request.user)
     else:
         dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/")
+    lista_agregados = []
+    productos_pedidos = ProductoEventoPedido.objects.all()
+    for agregado in productos_pedidos:
+        lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     generar_rutas(id_evento)
@@ -118,6 +122,10 @@ def crear_pedidos(request, id_evento, next, actual):
         pass
     return render_to_response('modulo_movil/crear_pedidos.html', {'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento, 'short_current': short_current}, context_instance=RequestContext(request))
 
+    productos = ProductoEvento.objects.filter(evento=evento)
+    return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
+                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados}, context_instance=RequestContext(request))
+
 def generar_rutas(id_evento):
     lista = []
     evento = Evento.objects.get(id=id_evento)
@@ -126,12 +134,34 @@ def generar_rutas(id_evento):
 
     for funcion in funciones:
         direccion = direccionFuncion.objects.get(funcion=funcion)
-        ruta = settings.MEDIA_ROOT + "/eventos/" + year + '/' + direccion.dir
+        ruta = settings.MEDIA_ROOT + '/eventos/' + year + '/' + direccion.dir
         if not os.path.exists(ruta):
             os.makedirs(ruta)
         #print ruta
         lista.append(ruta)
     return lista
+
+@login_required(login_url='/')
+def agregar_item(request):
+    print request.user
+    dir_actual = directorio_actual.objects.get(usuario=request.user)
+    print dir_actual.directorio
+    cantidad = request.GET.get('cantidad')
+    producto = ProductoEvento.objects.get(id=request.GET.get('producto'))
+    imagen = request.GET.get('imagen')
+    productoevento = ProductoEventoPedido.objects.create(cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=1)
+    prodevento = []
+    prodevento.append(productoevento)
+    data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'producto'))
+    return HttpResponse(data, mimetype='application/json')
+
+@login_required(login_url='/')
+def eliminar_ProductoEventoPedido(request, id):
+    proevped = ProductoEventoPedido.objects.get(id=id)
+    evento = proevped.producto.evento
+    proevped.delete()
+    url = "/crear_pedidos/" + str(evento.id) + "/NoneNext/urlseparador/NoneValue/"
+    return HttpResponseRedirect(url)
 
 def generar_lote(request):#rehacer
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)

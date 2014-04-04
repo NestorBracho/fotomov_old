@@ -26,11 +26,15 @@ class Pedido(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=400)
+    def __unicode__(self):
+        return self.nombre
 
 class ProductoEvento(models.Model):
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
+    def __unicode__(self):
+        return self.producto
 
 class ProductoImpresion(models.Model):
     precio = models.FloatField()

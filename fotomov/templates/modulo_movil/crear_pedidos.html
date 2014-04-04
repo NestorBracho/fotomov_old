@@ -1,8 +1,76 @@
 {% extends "venta.html" %}
 {% block seccion-contenido %}
+<div>
 <ul>
 {% for imagen in imagenes %}
-<li><img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  >{{ actual }}{{ imagen }}</li>
+<li><img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  >
+    cantidad<input type="text" id="cantidad{{ imagen }}">
+    <select id="producto{{ imagen }}">
+        {% for producto in productos %}
+            <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
+        {% endfor %}
+    </select>
+    <button onclick="ajax_guardar('{{ imagen }}')">Agregar</button>
+</li>
 {% endfor %}
 </ul>
+</div>
+<aside id="lista_compra">
+<ul id="agregados">
+{% for agregado in productos_pedidos %}
+    <li>{{ agregado.0.cantidad }} {{ agregado.0.producto.producto.nombre }} {{ agregado.1 }}<a class="btn-danger btn-xs" onclick="deleteAlert('{{ agregado.0.id }}')">eliminar</a></li>
+
+{% endfor %}
+</ul>
+</aside>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+function ajax_guardar(imagen){
+    var cantaux = '#cantidad' + imagen;
+    var cantidad = document.getElementById('cantidad'+imagen).value;
+    var producto = document.getElementById('producto'+imagen);
+    var producto_valor = producto.options[producto.selectedIndex].innerHTML;
+
+    $.ajax({
+        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': imagen},
+        url:'/agregar_item/',
+        type: 'get',
+        error:function(a,b,c){
+
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
+        }
+
+    }).done(function(data){
+        for(var i=0; i<data.length; i++){
+            $('#agregados').append("<li>" + data[i].fields.cantidad + " " + producto_valor + " " + imagen + " <a class=\"btn-danger btn-xs\">eliminar</a></li>");
+            //$('#agregados').append("ion('"+ data[i].fields.nombre +"')>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminaaaaaaaaaaaaaar</button></td></tr>");
+        }
+
+        /*if(document.getElementById("toto") != null){
+            document.getElementById(document.getElementById("toto").value).value = data[0].fields.nombre;
+            document.getElementById("close").click();
+        }*/
+    });
+}
+</script>
+<script type="text/javascript">
+        	function deleteAlert(id)
+        	{
+        		var r=confirm("¿Esta seguro que desea eliminar?");
+        		if (r==true)
+        	  {
+        			var string1 = "/eliminar_productoeventopedido/";
+        		  window.location.assign(string1 + id)
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
+</script>
 {% endblock %}

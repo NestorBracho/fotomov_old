@@ -127,7 +127,7 @@ def sede_ajax(request):
 
 def listar_evento(request, creado):
     eventos = Evento.objects.all()
-    return render_to_response('evento/listar_evento.html', {'eventos':eventos, 'creado': creado}, context_instance = RequestContext(request))
+    return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'creado': creado}, context_instance = RequestContext(request))
 
 def locacion_ajax(request):
     locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion'])
