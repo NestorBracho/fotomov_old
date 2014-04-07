@@ -85,7 +85,7 @@ Generar pedido
         <table class="table table-bordered">
             <thead><th>Cant.</th><th>Produc.</th><th>Precio</th><th>Eliminar</th></thead>
             {% for pedido in pedidos %}
-            <tr id="tr-{{ pedido.id }}"><td>{{ pedido.cantidad }}</td><td>{{ pedido.producto.producto.nombre }}</td><td id="total-{{ pedido.id }}">{{ pedido.producto.precio }}</td><td class="text-center"><a data-toggle="modal" data-target="#Foto"><img src="{{MEDIA_URL}}eventos/2014/vzlaSOS.jpg" width="50"></a> <a onclick="borrarProducto('tr-{{ pedido.id }}')"><span class="fa fa-leaf fa-fw"></span></a></td></tr>
+            <tr id="tr-{{ pedido.id }}"><td>{{ pedido.cantidad }}</td><td>{{ pedido.producto.producto.nombre }}</td><td id="total-{{ pedido.id }}">{{ pedido.producto.precio }}</td><td class="text-center" id="borrar-{{ pedido.id }}"></td></tr>
             {% endfor %}
         </table>
         <span id="total"></span>
@@ -93,13 +93,12 @@ Generar pedido
 </form>
 
 <div class="modal fade" id="Foto" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-img">
         <div class="modal-content">
             <div class="modal-header" id="modal-header">
                 <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body text-center" id="modal-body">
-                <img class="img-responsive" src="{{MEDIA_URL}}eventos/2014/vzlaSOS.jpg"></img>
             </div>
         </div>
     </div>
@@ -111,13 +110,19 @@ Generar pedido
 
 window.onload = function(){
 
-    var subtotal, total = 0;
+    var subtotal, total = 0, url_aux;
 
     {% if cliente == None %}
         $('#id_cedula_cliente').val("{{ ced }}");
     {% endif %}
 
     {% for pedido in pedidos %}
+
+        url_aux = "{{ pedido.ruta }}";
+        url_aux = url_aux.split('/fotomov_imagenes/');
+        url_aux = url_aux[1];
+
+        $('#borrar-{{ pedido.id }}').html('<a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}'+url_aux+'") ><img src="{{MEDIA_URL}}'+url_aux+'" width="50"></a> <a onclick=borrarProducto("tr-{{ pedido.id }}")><span class="fa fa-leaf fa-fw"></span></a>');
 
         subtotal = parseInt("{{ pedido.cantidad }}")*parseInt("{{ pedido.producto.precio }}");
         total += subtotal;
@@ -129,12 +134,39 @@ window.onload = function(){
 
     $("#total").html("Total: "+total+" Bs.");
 
+
 }
 
 function borrarProducto(iden){
 
-    $("#"+iden).fadeOut();
-    window.setTimeout(function(){document.getElementById(iden).parentNode.removeChild(document.getElementById(iden))},3000);
+    var idPEV = iden.split('-');
+    idPEV = idPEV[1];
+    var subt = parseFloat($('#total-'+idPEV).html());
+    var total = $('#total').html().split(" ");
+    if(confirm("¿Esta seguro que desea borrar este producto del pedido?")){
+        total = total[1];
+        total = parseFloat(total);
+        total = total - subt;
+        $('#total').html('Total: '+total+' Bs.');
+
+        $.ajax({
+
+            url:'/eliminar_productoeventopedido_en_generarpedido/',
+            data:{'iden': idPEV},
+            type:'GET'
+
+        }).done(function(data){
+
+            $("#"+iden).fadeOut();
+            window.setTimeout(function(){document.getElementById(iden).parentNode.removeChild(document.getElementById(iden))},3000);
+
+        });
+    }
+}
+
+function abrirFoto(url){
+
+    $('#modal-body').html('<img src='+url+'></img>');
 
 }
 

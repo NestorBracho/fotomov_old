@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -186,7 +187,7 @@ def generar_lote(request):#rehacer
             productos = ProductoEventoPedido.objects.filter(pedido = pedido)
             for producto in productos:
                 for i in range(producto.cantidad):
-                    shutil.copy(pep.ruta, ruta+producto.producto.producto.nombre + '.' + str(i+1) + '.jpg')
+                    shutil.copy(producto.ruta, ruta+producto.producto.producto.nombre + '.' + str(i+1) + '.jpg')
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
@@ -251,3 +252,9 @@ def ingresar_ticket(request):
     if request.method == 'POST':
         return HttpResponseRedirect('/generar_pedido/'+request.POST['numero']+'/'+request.POST['cedula_cliente'])
     return render_to_response('modulo_movil/ingresar_ticket.html', {}, context_instance=RequestContext(request))
+
+def eliminar_productoeventopedido_en_generarpedido(request):
+    pep = ProductoEventoPedido.objects.get(id = request.GET['iden'])
+    pep.delete()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
