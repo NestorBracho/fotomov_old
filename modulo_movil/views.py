@@ -164,7 +164,7 @@ def eliminar_ProductoEventoPedido(request, id):
     url = "/crear_pedidos/" + str(evento.id) + "/NoneNext/urlseparador/NoneValue/"
     return HttpResponseRedirect(url)
 
-def generar_lote(request):#rehacer
+def generar_lote(request):
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
@@ -182,12 +182,19 @@ def generar_lote(request):#rehacer
                 os.makedirs(rutalote)
                 lote = Lote.objects.create(estado = 'creado', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
                 lote.save()
-            if not os.path.exists(ruta):
-                os.makedirs(ruta)
+                if pep.pedido.lote == None:
+                    pep.pedido.lote = lote
+                    pep.pedido.save()
             productos = ProductoEventoPedido.objects.filter(pedido = pedido)
             for producto in productos:
+                if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                    os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
                 for i in range(producto.cantidad):
-                    shutil.copy(producto.ruta, ruta+producto.producto.producto.nombre + '.' + str(i+1) + '.jpg')
+                    auxr = producto.ruta.split('/')
+                    auxr = auxr[(len(auxr)-1)]
+                    auxr = auxr.split('.')
+                    auxr = auxr[0]
+                    shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
