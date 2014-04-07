@@ -198,7 +198,7 @@ def generar_lote(request):
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
-    peps = ProductoEventoPedido.objects.filter(num_pedido = pedido)
+    peps = ProductoEventoPedido.objects.filter(pedido__id = pedido)
     cliente = Cliente.objects.filter(cedula = cedula)
     if len(cliente) > 0:
         cliente = cliente[0]
@@ -247,11 +247,14 @@ def generar_pedido(request, pedido, cedula):
                 pagado = True
         except:
             pagado = False
-        pedido_nuevo = Pedido.objects.create(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
+
+        pedido_nuevo = Pedido.objects.get(id=pedido)
+        pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
         pedido_nuevo.save()
-        for pep in peps:
-            pep.pedido = pedido_nuevo
-            pep.save()
+        if pedido_nuevo.fue_pagado == True:
+            for pep in peps:
+                pep.estado = 'Pagado'
+                pep.save()
         return HttpResponseRedirect('/ingresar_ticket/'+cod+'/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
