@@ -110,4 +110,5 @@ urlpatterns = patterns('',
     url(r'^agregar_item/$', 'modulo_movil.views.agregar_item'),
     url(r'^eliminar_productoeventopedido/(?P<id>\d+)$', 'modulo_movil.views.eliminar_ProductoEventoPedido'),
     url(r'^eliminar_productoeventopedido_en_generarpedido/$', 'modulo_movil.views.eliminar_productoeventopedido_en_generarpedido'),
+    url(r'^seleccionar_evento/$', 'modulo_movil.views.seleccionar_evento'),
 )

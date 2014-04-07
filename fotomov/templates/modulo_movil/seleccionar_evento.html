@@ -1,0 +1,17 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Lista de eventos
+{% endblock %}
+{% block tabla %}
+<table class="table table-striped table-bordered table-hover" id="content">
+    <thead>
+        <th>Eventos</th>
+    </thead>
+    {% for evento in eventos %}
+        <tr>
+            <td><a href="/crear_pedidos/{{ evento.id }}/NoneNext/urlseparador/NoneValue/">{{ evento.nombre }}</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

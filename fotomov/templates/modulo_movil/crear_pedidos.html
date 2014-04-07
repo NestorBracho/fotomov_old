@@ -10,7 +10,7 @@
             <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
         {% endfor %}
     </select>
-    <button onclick="ajax_guardar('{{ imagen }}')">Agregar</button>
+    <button onclick="ajax_guardar('{{ imagen }}', '{{ dir_actual.pedido.id }}')">Agregar</button>
 </li>
 {% endfor %}
 </ul>
@@ -26,14 +26,14 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
-function ajax_guardar(imagen){
+function ajax_guardar(imagen, id_pedido){
+    alert(id_pedido);
     var cantaux = '#cantidad' + imagen;
     var cantidad = document.getElementById('cantidad'+imagen).value;
     var producto = document.getElementById('producto'+imagen);
     var producto_valor = producto.options[producto.selectedIndex].innerHTML;
-
     $.ajax({
-        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': imagen},
+        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': imagen, 'id_pedido': id_pedido},
         url:'/agregar_item/',
         type: 'get',
         error:function(a,b,c){

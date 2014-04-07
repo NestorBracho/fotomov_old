@@ -50,15 +50,24 @@ def selecccionar_direccion(request):
     return render_to_response('modulo_movil/seleccionar_directorio.html', {}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
+def seleccionar_evento(request):
+    funciones_hoy = Funcion.objects.filter(dia=date.today())
+    print funciones_hoy
+    eventos = []
+    for funcion in funciones_hoy:
+        eventos.append(funcion.evento)
+    return render_to_response('modulo_movil/seleccionar_evento.html', {'eventos': eventos}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
 def crear_pedidos(request, id_evento, next, actual):
     print next
     #print directorio_actual.objects.filter(usuario = request.user)
     if directorio_actual.objects.filter(usuario = request.user):
         dir_actual = directorio_actual.objects.get(usuario=request.user)
     else:
-        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/")
+        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create())
     lista_agregados = []
-    productos_pedidos = ProductoEventoPedido.objects.all()
+    productos_pedidos = ProductoEventoPedido.objects.filter(pedido=dir_actual.pedido)
     for agregado in productos_pedidos:
         lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
     evento = Evento.objects.get(id=id_evento)
@@ -121,11 +130,9 @@ def crear_pedidos(request, id_evento, next, actual):
     print directorios
     if request.method == 'POST':
         pass
-    return render_to_response('modulo_movil/crear_pedidos.html', {'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento, 'short_current': short_current}, context_instance=RequestContext(request))
-
     productos = ProductoEvento.objects.filter(evento=evento)
     return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
-                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados}, context_instance=RequestContext(request))
+                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados, 'dir_actual': dir_actual}, context_instance=RequestContext(request))
 
 def generar_rutas(id_evento):
     lista = []
@@ -144,13 +151,15 @@ def generar_rutas(id_evento):
 
 @login_required(login_url='/')
 def agregar_item(request):
+    pedido = Pedido.objects.get(id=request.GET.get('id_pedido'))
+    print pedido
     print request.user
     dir_actual = directorio_actual.objects.get(usuario=request.user)
     print dir_actual.directorio
     cantidad = request.GET.get('cantidad')
     producto = ProductoEvento.objects.get(id=request.GET.get('producto'))
     imagen = request.GET.get('imagen')
-    productoevento = ProductoEventoPedido.objects.create(cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=1)
+    productoevento = ProductoEventoPedido.objects.create(cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=1, pedido=pedido)
     prodevento = []
     prodevento.append(productoevento)
     data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'producto'))

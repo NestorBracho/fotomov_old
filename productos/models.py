@@ -10,7 +10,7 @@ class Lote(models.Model):
 
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now=True)
     fecha_entrega = models.DateField(null=True, blank=True)
     id_fiscal = models.CharField(max_length=100, null=True, blank=True)
     direccion_fiscal = models.TextField(max_length=400, null=True, blank=True)
