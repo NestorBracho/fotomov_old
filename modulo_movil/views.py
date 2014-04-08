@@ -157,12 +157,13 @@ def agregar_item(request):
     dir_actual = directorio_actual.objects.get(usuario=request.user)
     print dir_actual.directorio
     cantidad = request.GET.get('cantidad')
+    comentario = request.GET.get('comentario')
     producto = ProductoEvento.objects.get(id=request.GET.get('producto'))
     imagen = request.GET.get('imagen')
-    productoevento = ProductoEventoPedido.objects.create(cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=1, pedido=pedido)
+    productoevento = ProductoEventoPedido.objects.create(comentario=comentario, cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=1, pedido=pedido)
     prodevento = []
     prodevento.append(productoevento)
-    data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'producto'))
+    data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'producto, id'))
     return HttpResponse(data, mimetype='application/json')
 
 @login_required(login_url='/')

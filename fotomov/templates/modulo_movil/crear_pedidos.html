@@ -5,6 +5,7 @@
 {% for imagen in imagenes %}
 <li><img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  >
     cantidad<input type="text" id="cantidad{{ imagen }}">
+    comentario<input type="text" id="comentario{{ imagen }}">
     <select id="producto{{ imagen }}">
         {% for producto in productos %}
             <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
@@ -29,10 +30,11 @@
 function ajax_guardar(imagen, id_pedido){
     var cantaux = '#cantidad' + imagen;
     var cantidad = document.getElementById('cantidad'+imagen).value;
+    var comentario = document.getElementById('comentario'+imagen).value;
     var producto = document.getElementById('producto'+imagen);
     var producto_valor = producto.options[producto.selectedIndex].innerHTML;
     $.ajax({
-        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': imagen, 'id_pedido': id_pedido},
+        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': imagen, 'id_pedido': id_pedido, 'comentario': comentario},
         url:'/agregar_item/',
         type: 'get',
         error:function(a,b,c){
@@ -45,7 +47,7 @@ function ajax_guardar(imagen, id_pedido){
 
     }).done(function(data){
         for(var i=0; i<data.length; i++){
-            $('#agregados').append("<li>" + data[i].fields.cantidad + " " + producto_valor + " " + imagen + " <a class=\"btn-danger btn-xs\">eliminar</a></li>");
+            $('#agregados').append("<li>" + data[i].fields.cantidad + " " + producto_valor + " " + imagen + " <a class=\"btn-danger btn-xs\" onclick=\"deleteAlert(\'"+ data[i].pk +"\')\">eliminar</a></li>");
             //$('#agregados').append("ion('"+ data[i].fields.nombre +"')>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminaaaaaaaaaaaaaar</button></td></tr>");
         }
 
