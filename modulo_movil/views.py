@@ -204,6 +204,7 @@ def generar_lote(request):
                     auxr = auxr.split('.')
                     auxr = auxr[0]
                     shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+            producto.estado = "Edicion"
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
@@ -224,6 +225,7 @@ def generar_pedido(request, pedido, cedula):
             cliente = Cliente.objects.create(nombres = nom, apellidos = ape, telefono = tlf, email = mail, direccion_fiscal = direc, rif = rif, cedula = ced)
     formulario = PedidoForm()
     if request.method == 'POST':
+        dia = date.today()
         formulario = PedidoForm(request.POST)
         aux = str(datetime.datetime.today())
         aux = aux.split(' ')
@@ -257,9 +259,9 @@ def generar_pedido(request, pedido, cedula):
         except:
             pagado = False
 
-        pedido_nuevo = Pedido.objects.get(id=pedido)
+        pedido_nuevo = Pedido.objects.filter(id=pedido)
         pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
-        pedido_nuevo.save()
+        pedido_nuevo = pedido_nuevo[0]
         if pedido_nuevo.fue_pagado == True:
             for pep in peps:
                 pep.estado = 'Pagado'

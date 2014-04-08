@@ -22,6 +22,7 @@ class Pedido(models.Model):
     envio = models.BooleanField(default=False)
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
+    estado = models.CharField(max_length=100)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -34,7 +35,7 @@ class ProductoEvento(models.Model):
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
     def __unicode__(self):
-        return self.producto
+        return self.producto.nombre
 
 class ProductoImpresion(models.Model):
     precio = models.FloatField()

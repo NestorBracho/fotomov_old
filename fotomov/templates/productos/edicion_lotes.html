@@ -1,0 +1,71 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+
+{% endblock %}
+{% block seccion-contenido%}
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table class="table table-bordered">
+        <thead><th>Lote</th><th>Pedidos listos</th><th>Total de pedidos</th></thead>
+        <tbody id="body-edicion"></tbody>
+    </table>
+    <span id="total"></span>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+    var lotes = [], flag = false;
+
+    {% for producto in productos %}
+
+        for(var i = 0; i<lotes.length; i++){
+
+            if('{{ producto.pedido.lote.codigo }}' == lotes[i]){
+                flag = true ;
+            }
+
+        }
+
+        if(flag == false){
+
+            lotes.push('{{ producto.pedido.lote.codigo }}');
+
+        }else{
+
+            flag = false;
+
+        }
+
+    {% endfor %}
+
+    var pedido = [lotes.length][3];
+
+    {% for producto in productos %}
+
+        for(var i = 0; i< lotes.length; i++){
+
+            var totales = 0, listos = 0;
+
+            if('{{ producto.pedido.lote.codigo }}' == lotes[i]){
+
+                for(var k =0; k< pedido.length;k++){
+
+                    if('{{ producto. }}'){
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        $('#body-edicion').html('<tr><td><a href="/edicion_eventos/">'+lotes[i]+'</a></td><td>'+ listos +'</td><td>'+totales+'</td></tr>');
+
+    {% endfor %}
+}
+
+</script>
+{% endblock %}
