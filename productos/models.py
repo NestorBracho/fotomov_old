@@ -46,3 +46,4 @@ class ProductoEventoPedido(models.Model):
     producto = models.ForeignKey(ProductoEvento)
     pedido = models.ForeignKey(Pedido, null=True, blank=True)
     estado = models.CharField(max_length=50)
+    comentario = models.TextField(max_length=1000)
