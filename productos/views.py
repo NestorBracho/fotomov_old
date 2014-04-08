@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -40,3 +41,25 @@ def editar_producto(request, id_producto):
 def eliminar_producto(request, id_producto):
     producto = Producto.objects.get(id=id_producto).delete()
     return HttpResponseRedirect('/listar_producto/3')
+
+def edicion_lotes(request):
+    productos_edicion = ProductoEventoPedido.objects.filter(estado = "Edicion")
+    productos_editados = ProductoEventoPedido.objects.filter(estado = "Editado")
+    productos = []
+    for productos_edicio in productos_edicion:
+        productos.append(productos_edicio)
+    for productos_editado in productos_editados:
+        productos.append(productos_editado)
+    return render_to_response('productos/edicion_lotes.html', {'productos': productos}, context_instance=RequestContext(request))
+
+def edicion_productos(request, pedido):
+    pedidos_edicion = ProductoEventoPedido.objects.filter(pedido = Pedido.objects.get(id = pedido), estado = 'Edicion')
+    pedidos_editados = ProductoEventoPedido.objects.filter(pedido = Pedido.objects.get(id = pedido), estado = 'Editado')
+    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados}, context_instance=RequestContext(request))
+
+def cambiar_estado_producto_edicion_a_editado(request):
+    producto = ProductoEventoPedido.objects.get(id = request.GET['iden'])
+    producto.estado = 'Editado'
+    producto.save()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')
