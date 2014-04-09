@@ -1,10 +1,10 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
 {% block titulo %}
-
+Lotes en edición
 {% endblock %}
 {% block subtitulo %}
-{{pedido.codigo}}
+<h4>Pedido: {{pedido.codigo}}</h4>
 {% endblock %}
 {% block seccion-contenido%}
 <a href="/edicion_pedido/{{pedido.id}}/" class="btn btn-xs btn-default">volver</a>

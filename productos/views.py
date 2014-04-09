@@ -130,3 +130,48 @@ def edicion_pedido(request, lote):
             listo[2] = listo[2]+1
         listos.append(listo)
     return render_to_response('productos/edicion_pedidos.html', {'edicion': pedidos, 'listos':listos, 'lote': Lote.objects.get(id = lote)}, context_instance=RequestContext(request))
+
+def administrar_lotes(request):
+    lotes = Lote.objects.all()
+    return render_to_response('productos/administrar_lotes.html', {'lotes':lotes}, context_instance=RequestContext(request))
+
+def administrar_pedidos(request, lote):
+    lote = Lote.objects.get( id = lote)
+    pedidos = Pedido.objects.filter(lote = lote)
+    return render_to_response('productos/administrar_pedidos.html', {'pedidos':pedidos, 'lote':lote}, context_instance=RequestContext(request))
+
+def cambiar_estado_lotes_desde_administrar_pedidos(request):
+    lote = Lote.objects.get(id = request.GET['lote'])
+    pedidos = Pedido.objects.filter(lote = lote)
+    productos = []
+    productosA = []
+    boton_estado = ''
+    for pedido in pedidos:
+        productosA.append(ProductoEventoPedido.objects.filter(pedido = pedido))
+    for PAU in productosA:
+        for PA in PAU:
+            productos.append(PA)
+
+    if lote.estado == 'Edicion':
+        lote.estado = 'Editado'
+        boton_estado = 'Impresion'
+    elif lote.estado == 'Editado':
+        lote.estado = 'Impresion'
+        boton_estado = 'Impreso'
+    elif lote.estado == 'Impresion':
+        lote.estado = 'Impreso'
+        boton_estado = 'Listo'
+    elif lote.estado == 'Impreso':
+        lote.estado = 'Listo'
+        boton_estado = 'Done'
+    lote.save()
+
+    for pedido in pedidos:
+        pedido.estado = lote.estado
+        pedido.save()
+    for producto in productos:
+        producto.estado = lote.estado
+        producto.save()
+
+    data = json.dumps({'boton': boton_estado, 'estado': lote.estado})
+    return HttpResponse(data, mimetype='application/json')

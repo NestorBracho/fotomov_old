@@ -115,4 +115,7 @@ urlpatterns = patterns('',
     url(r'^edicion_productos/(?P<pedido>\d+)/$', 'productos.views.edicion_productos'),
     url(r'^cambiar_estado_producto_edicion->editado/$', 'productos.views.cambiar_estado_producto_edicion_a_editado'),
     url(r'^edicion_pedido/(?P<lote>\d+)/$', 'productos.views.edicion_pedido'),
+    url(r'^administrar_lotes/$', 'productos.views.administrar_lotes'),
+    url(r'^administrar_pedidos/(?P<lote>\d+)/$', 'productos.views.administrar_pedidos'),
+    url(r'^cambiar_estado_lotes_desde_administrar_pedidos/$', 'productos.views.cambiar_estado_lotes_desde_administrar_pedidos'),
 )

@@ -1,16 +1,17 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
 {% block titulo %}
-
+Lotes en edición
 {% endblock %}
-{% block subtitulo %}{{ lote.codigo }}
+{% block subtitulo %}
+<h4>Lote: {{ lote.codigo }}</h4>
 {% endblock %}
 {% block seccion-contenido%}
 <a class="btn btn-xs btn-default" href="/edicion_lotes/">Volver</a>
 
 <div class="col-xs-12 col-md-12 table-responsive">
     <table class="table table-bordered">
-        <thead><th>Pedido</th><th>Listos</th><th>Productos</th><th>Estado</th></thead>
+        <thead><th>Pedidos</th><th>Listos</th><th>Productos</th><th>Estado</th></thead>
         <tbody id="body-edicion">
         {% for editado in edicion %}
         <tr>
