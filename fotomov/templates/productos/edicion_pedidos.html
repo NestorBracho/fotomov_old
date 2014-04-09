@@ -1,0 +1,51 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+
+{% endblock %}
+{% block subtitulo %}{{ lote.codigo }}
+{% endblock %}
+{% block seccion-contenido%}
+<a class="btn btn-xs btn-default" href="/edicion_lotes/">Volver</a>
+
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table class="table table-bordered">
+        <thead><th>Pedido</th><th>Listos</th><th>Productos</th><th>Estado</th></thead>
+        <tbody id="body-edicion">
+        {% for editado in edicion %}
+        <tr>
+            <td><a href="/edicion_productos/{{ editado.3 }}/">{{ editado.0 }}</a></td><td>{{ editado.1 }}</td><td>{{ editado.2 }}</td><td id="estadoPedido-{{ editado.3 }}">Pendiente</td>
+        </tr>
+        {% endfor %}
+        {% for listo in listos %}
+        <tr>
+            <td><a href="/edicion_productos/{{ listo.3 }}/">{{ listo.0 }}</a></td><td>{{ listo.1 }}</td><td>{{ listo.2 }}</td><td id="estadoPedido-{{ listo.3 }}">Listo</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+
+    {% for editado in edicion %}
+
+        if(parseInt('{{ editado.2 }}') - parseInt('{{ editado.1 }}') == 0){
+
+            $('#estadoPedido-{{ editado.3 }}').html('Listo');
+
+        }else{
+
+            $('#estadoPedido-{{ editado.3 }}').html('Pendiente');
+
+        }
+
+    {% endfor %}
+
+}
+
+</script>
+{% endblock %}

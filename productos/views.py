@@ -43,23 +43,90 @@ def eliminar_producto(request, id_producto):
     return HttpResponseRedirect('/listar_producto/3')
 
 def edicion_lotes(request):
-    productos_edicion = ProductoEventoPedido.objects.filter(estado = "Edicion")
-    productos_editados = ProductoEventoPedido.objects.filter(estado = "Editado")
-    productos = []
-    for productos_edicio in productos_edicion:
-        productos.append(productos_edicio)
-    for productos_editado in productos_editados:
-        productos.append(productos_editado)
-    return render_to_response('productos/edicion_lotes.html', {'productos': productos}, context_instance=RequestContext(request))
+    lotes_edicion = Lote.objects.filter(estado = 'Edicion')
+    lotes_listos = Lote.objects.filter(estado = 'Editado')
+
+    pedidos = []
+    for lote_edicion in lotes_edicion:
+        pedido = [lote_edicion.codigo,0,0,lote_edicion.id]
+        pedidos_en_lote = Pedido.objects.filter(lote = lote_edicion)
+        for pedido_en_lote in pedidos_en_lote:
+            if pedido_en_lote.estado == 'Editado':
+                pedido[1] = pedido[1] + 1
+            pedido[2] = pedido[2] + 1
+        pedidos.append(pedido)
+
+    listos = []
+    for lote_listo in lotes_listos:
+        listo = [lote_listo.codigo,0,0,lote_listo.id]
+        pedidos_en_lote = Pedido.objects.filter(lote = lote_listo)
+        for pedido_en_lote in pedidos_en_lote:
+            if pedido_en_lote.estado == 'Editado':
+                listo[1] = listo[1]+1
+            listo[2] = listo[2]+1
+        listos.append(listo)
+    return render_to_response('productos/edicion_lotes.html', {'edicion': pedidos, 'listos': listos}, context_instance=RequestContext(request))
 
 def edicion_productos(request, pedido):
     pedidos_edicion = ProductoEventoPedido.objects.filter(pedido = Pedido.objects.get(id = pedido), estado = 'Edicion')
     pedidos_editados = ProductoEventoPedido.objects.filter(pedido = Pedido.objects.get(id = pedido), estado = 'Editado')
-    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados}, context_instance=RequestContext(request))
+    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id = pedido)}, context_instance=RequestContext(request))
 
 def cambiar_estado_producto_edicion_a_editado(request):
     producto = ProductoEventoPedido.objects.get(id = request.GET['iden'])
     producto.estado = 'Editado'
     producto.save()
+    tProductos = ProductoEventoPedido.objects.filter(pedido = producto.pedido)
+    parcial = 0
+    total = 0
+    for tProducto in tProductos:
+        total = total + 1
+        if tProducto.estado == 'Editado':
+            parcial = parcial + 1
+    if parcial == total:
+        producto.pedido.estado = "Editado"
+        producto.pedido.save()
+    parcial = 0
+    total = 0
+    tPedidos = Pedido.objects.filter(lote = producto.pedido.lote)
+    aux = []
+    aux2 = []
+    for tPedido in tPedidos:
+        aux.append(ProductoEventoPedido.objects.filter(pedido = tPedido))
+    for a in aux:
+        for au in a:
+            aux2.append(au)
+    tProductos = aux2
+    for tProducto in tProductos:
+        total = total + 1
+        if tProducto.estado == 'Editado':
+            parcial = parcial + 1
+    if parcial == total:
+        producto.pedido.lote.estado = "Editado"
+        producto.pedido.lote.save()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+
+def edicion_pedido(request, lote):
+    pedidos_edicion = Pedido.objects.filter(lote = Lote.objects.get(id = lote), estado = 'Edicion')
+    pedidos_listos = Pedido.objects.filter(lote = Lote.objects.get(id = lote), estado = 'Editado')
+    pedidos = []
+    for pedido_edicion in pedidos_edicion:
+        pedido = [pedido_edicion.codigo,0,0,pedido_edicion.id]
+        productos_en_pedido = ProductoEventoPedido.objects.filter(pedido = pedido_edicion)
+        for producto_en_pedido in productos_en_pedido:
+            if producto_en_pedido.estado == 'Editado':
+                pedido[1] = pedido[1] + 1
+            pedido[2] = pedido[2] + 1
+        pedidos.append(pedido)
+
+    listos = []
+    for pedido_listo in pedidos_listos:
+        listo = [pedido_listo.codigo,0,0,pedido_listo.id]
+        productos_en_pedido = ProductoEventoPedido.objects.filter(pedido = pedido_listo)
+        for producto_en_pedido in productos_en_pedido:
+            if producto_en_pedido.estado == 'Editado':
+                listo[1] = listo[1]+1
+            listo[2] = listo[2]+1
+        listos.append(listo)
+    return render_to_response('productos/edicion_pedidos.html', {'edicion': pedidos, 'listos':listos, 'lote': Lote.objects.get(id = lote)}, context_instance=RequestContext(request))

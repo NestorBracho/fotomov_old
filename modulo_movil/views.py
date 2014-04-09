@@ -190,7 +190,7 @@ def generar_lote(request):
             rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
             if not os.path.exists(rutalote):
                 os.makedirs(rutalote)
-                lote = Lote.objects.create(estado = 'creado', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
+                lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
                 lote.save()
                 if pep.pedido.lote == None:
                     pep.pedido.lote = lote
@@ -205,7 +205,8 @@ def generar_lote(request):
                     auxr = auxr.split('.')
                     auxr = auxr[0]
                     shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-            producto.estado = "Edicion"
+            pep.estado = "Edicion"
+        pedido.estado = "Edicion"
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):

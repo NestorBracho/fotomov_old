@@ -3,7 +3,11 @@
 {% block titulo %}
 
 {% endblock %}
+{% block subtitulo %}
+{{pedido.codigo}}
+{% endblock %}
 {% block seccion-contenido%}
+<a href="/edicion_pedido/{{pedido.id}}/" class="btn btn-xs btn-default">volver</a>
 <div class="col-xs-12 col-md-12 table-responsive">
     <table class="table table-bordered">
         <thead><th>Foto</th><th>Producto</th><th>Cantidad</th><th>Comentarios</th><th>Estado</th></thead>
@@ -61,7 +65,25 @@ window.onload = function(){
 
 function verComentario(iden){
 
-    $('#modal-body').html('El campo \"comentario\" en la tabla de orden d compras (EventoProductoPedido) no exite. Crear');
+    {% for producto in edicion %}
+
+        if('{{ producto.id }}' == iden){
+
+            $('#modal-body').html('{{ producto.comentario }}');
+
+        }
+
+    {% endfor %}
+
+    {% for editado in editados %}
+
+        if('{{ editado.id }}' == iden){
+
+            $('#modal-body').html('{{ editado.comentario }}');
+
+        }
+
+    {% endfor %}
 
 }
 
