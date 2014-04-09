@@ -280,3 +280,24 @@ def eliminar_productoeventopedido_en_generarpedido(request):
     pep.delete()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+
+@login_required(login_url='/')
+def generar_ticket(request, id_evento):
+    info = directorio_actual.objects.get(usuario= request.user)
+    pedido = info.pedido
+    lista_agregados = []
+    productos_pedidos = ProductoEventoPedido.objects.filter(pedido=pedido)
+    for agregado in productos_pedidos:
+        lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
+    productos = ProductoEventoPedido.objects.filter(pedido=pedido)
+    if request.method == 'POST':
+        if '_Nuevo' in request.POST:
+            new = Pedido.objects.create()
+            new.save()
+            info.pedido = new
+            info.save()
+            return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
+        elif '_Cancelar' in request.POST:
+            return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
+    #return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
+    return render_to_response('modulo_movil/generar_ticket.html', {'id_evento': id_evento, 'pedido': pedido, 'productos': lista_agregados}, context_instance=RequestContext(request))

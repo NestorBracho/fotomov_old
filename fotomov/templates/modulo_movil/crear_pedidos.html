@@ -2,8 +2,36 @@
 {% block seccion-contenido %}
 <div>
 <ul>
-{% for imagen in imagenes %}
-<li><img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  >
+<div class="col-xs-12 table-responsive">
+   <table class="table table-bordered">
+        <thead>
+        <th>Imagen</th>
+        <th>Cantidad</th>
+        <th>Comentario</th>
+        <th>Agregar</th>
+        </thead>
+
+    {% for imagen in imagenes %}
+    <tr>
+        <td>
+            <a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}{{ short_current }}/{{ imagen }}","{{ imagen }}") ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}" width="50"></a>
+        </td>
+        <td>
+            <input type="text" id="cantidad{{ imagen }}">
+        </td>
+        <td>
+            <input type="text" id="comentario{{ imagen }}">
+        </td>
+        <td>
+            <button onclick="ajax_guardar('{{ imagen }}', '{{ dir_actual.pedido.id }}')">Agregar</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</div>
+
+<li><a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}{{ short_current }}/{{ imagen }}","{{ imagen }}") ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}" width="50"></a>
+    {# <img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  > #}
     cantidad<input type="text" id="cantidad{{ imagen }}">
     comentario<input type="text" id="comentario{{ imagen }}">
     <select id="producto{{ imagen }}">
@@ -13,8 +41,8 @@
     </select>
     <button onclick="ajax_guardar('{{ imagen }}', '{{ dir_actual.pedido.id }}')">Agregar</button>
 </li>
-{% endfor %}
 </ul>
+<a class="btn btn-primary" href="/generar_ticket/{{evento.id}}">Generar Ticket</a>
 </div>
 <aside id="lista_compra">
 <ul id="agregados">
@@ -24,9 +52,27 @@
 {% endfor %}
 </ul>
 </aside>
+<div class="modal fade" id="Foto" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <h2 id="titulo-imagen"></h2>
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+function abrirFoto(url, imagen){
+    $('#modal-header').html('<h2>'+ imagen +'</h2>')
+    $('#modal-body').html('<img src='+url+' class=\"img-responsive\"></img>');
+
+}
+
 function ajax_guardar(imagen, id_pedido){
     var cantaux = '#cantidad' + imagen;
     var cantidad = document.getElementById('cantidad'+imagen).value;

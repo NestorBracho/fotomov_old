@@ -1,0 +1,16 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block seccion-contenido %}
+Su numero de ticket es: {{ pedido.id }}
+<form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}
+<input type='submit' class="btn btn-default btn-primary" name="_Cancelar" value='Cancelar'/>
+<input type='submit' class="btn btn-default btn-primary" name="_Nuevo" value='Nuevo Pedido'/>
+</form>
+ <aside>
+ <ul>
+     {% for producto in productos %}
+     <li>{{ producto.0.cantidad }} {{ producto.0.producto.producto }} {{ producto.1 }}</li>
+     {% endfor %}
+ </ul>
+ </aside>
+{% endblock %}

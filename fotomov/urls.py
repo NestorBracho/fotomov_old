@@ -114,4 +114,5 @@ urlpatterns = patterns('',
     url(r'^edicion_lotes/$', 'productos.views.edicion_lotes'),
     url(r'^edicion_productos/(?P<pedido>\d+)/$', 'productos.views.edicion_productos'),
     url(r'^cambiar_estado_producto_edicion->editado/$', 'productos.views.cambiar_estado_producto_edicion_a_editado'),
+    url(r'^generar_ticket/(?P<id_evento>\d+)/$', 'modulo_movil.views.generar_ticket'),
 )
