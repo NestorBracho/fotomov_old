@@ -1,15 +1,25 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
 {% block titulo %}
-
+Lotes en edición
 {% endblock %}
 {% block seccion-contenido%}
 <div class="col-xs-12 col-md-12 table-responsive">
     <table class="table table-bordered">
-        <thead><th>Lote</th><th>Pedidos listos</th><th>Total de pedidos</th></thead>
-        <tbody id="body-edicion"></tbody>
+        <thead><th>Lotes</th><th>Listos</th><th>Pedidos</th><th>Estado</th></thead>
+        <tbody id="body-edicion">
+        {% for editado in edicion %}
+        <tr>
+            <td><a href="/edicion_pedido/{{ editado.3 }}/">{{ editado.0 }}</a></td><td>{{ editado.1 }}</td><td>{{ editado.2 }}</td><td id="estadoPedido-{{ editado.3 }}">Pendiente</td>
+        </tr>
+        {% endfor %}
+        {% for listo in listos %}
+        <tr>
+            <td><a href="/edicion_pedido/{{ listo.3 }}/">{{ listo.0 }}</a></td><td>{{ listo.1 }}</td><td>{{ listo.2 }}</td><td id="estadoPedido-{{ listo.3 }}">Listo</td>
+        </tr>
+        {% endfor %}
+        </tbody>
     </table>
-    <span id="total"></span>
 </div>
 {% endblock %}
 {% block js %}
