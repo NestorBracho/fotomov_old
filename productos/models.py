@@ -34,6 +34,7 @@ class ProductoEvento(models.Model):
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
+    precio_produccion = models.FloatField()
     def __unicode__(self):
         return self.producto.nombre
 
