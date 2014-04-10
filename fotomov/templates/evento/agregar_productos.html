@@ -6,12 +6,14 @@
         <th>Seleccionar</th>
         <th>Producto</th>
         <th>Precio</th>
+        <th>Costo</th>
     </thead>
     {% for producto in productos %}
         <tr>
             <td><input type="checkbox" value="{{ producto.0.id }}" name="seleccionados" {% if producto.1 %} checked {% endif %}> </td>
             <td>{{ producto.0.nombre }}</td>
-            <td><input type="text" onkeypress="return numero(event)" value="{{ producto.2 }}" name="{{ producto.0.id }}"></td>
+            <td><input type="text" onkeypress="return numero(event)" value="{{ producto.2 }}" name="{{ producto.0.id }}precio"></td>
+            <td><input type="text" onkeypress="return numero(event)" value="{{ producto.3 }}" name="{{ producto.0.id }}costo"></td>
         </tr>
     {% endfor %}
 </table>

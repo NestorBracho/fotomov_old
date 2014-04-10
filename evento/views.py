@@ -153,7 +153,7 @@ def agregar_productos(request,id_evento):
         if ProductoEvento.objects.filter(evento=evento, producto=producto):
             producto_existente = ProductoEvento.objects.get(evento=evento, producto=producto)
             print producto_existente.precio
-            tupla=(producto,1, producto_existente.precio)
+            tupla=(producto,1, producto_existente.precio, producto_existente.precio_produccion)
             print tupla[2]
         else:
             tupla = (producto,0,0)
@@ -165,9 +165,10 @@ def agregar_productos(request,id_evento):
         for existente in existentes:
             existente.delete()
         for seleccionado in seleccionados:
-            precio = request.POST.get(seleccionado)
+            precio = request.POST.get(seleccionado+'precio')
+            costo = request.POST.get(seleccionado+'costo')
             producto = Producto.objects.get(id=seleccionado)
-            producto_evento = ProductoEvento.objects.create(evento=evento,producto=producto,precio=float(precio.replace(',','.')))
+            producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         return HttpResponseRedirect('/listar_evento/2')
     print lista
     return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
