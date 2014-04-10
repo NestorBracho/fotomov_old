@@ -1,11 +1,11 @@
 {% extends "venta.html" %}
 {% block seccion-contenido %}
 <div>
-<ul>
 <div class="col-xs-12 table-responsive">
    <table class="table table-bordered">
         <thead>
         <th>Imagen</th>
+        <th>Producto</th>
         <th>Cantidad</th>
         <th>Comentario</th>
         <th>Agregar</th>
@@ -14,7 +14,14 @@
     {% for imagen in imagenes %}
     <tr>
         <td>
-            <a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}{{ short_current }}/{{ imagen }}","{{ imagen }}") ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}" width="50"></a>
+            <a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{ imagen }}") ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}" width="50"></a>
+        </td>
+        <td>
+        <select id="producto{{ imagen }}">
+        {% for producto in productos %}
+            <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
+        {% endfor %}
+        </select>
         </td>
         <td>
             <input type="text" id="cantidad{{ imagen }}">
@@ -29,19 +36,6 @@
     {% endfor %}
     </table>
 </div>
-
-<li><a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}{{ short_current }}/{{ imagen }}","{{ imagen }}") ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}" width="50"></a>
-    {# <img id="post-image" class="img-responsive" src="{{ MEDIA_URL }}{{ short_current }}/{{ imagen }}" alt="Post Image"  > #}
-    cantidad<input type="text" id="cantidad{{ imagen }}">
-    comentario<input type="text" id="comentario{{ imagen }}">
-    <select id="producto{{ imagen }}">
-        {% for producto in productos %}
-            <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
-        {% endfor %}
-    </select>
-    <button onclick="ajax_guardar('{{ imagen }}', '{{ dir_actual.pedido.id }}')">Agregar</button>
-</li>
-</ul>
 <a class="btn btn-primary" href="/generar_ticket/{{evento.id}}">Generar Ticket</a>
 </div>
 <aside id="lista_compra">
@@ -67,13 +61,15 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
-function abrirFoto(url, imagen){
-    $('#modal-header').html('<h2>'+ imagen +'</h2>')
-    $('#modal-body').html('<img src='+url+' class=\"img-responsive\"></img>');
+function abrirFoto(imagen){
+    var interno = "<img src=\"{{MEDIA_URL}}{{ short_current }}/" + imagen + "\" class=\"img-responsive\"></img>";
+    $('#modal-header').html('<h2>'+ imagen +'</h2>');
+    document.getElementById('modal-body').innerHTML = interno;
 
 }
 
 function ajax_guardar(imagen, id_pedido){
+    //alert('{{ short_current }}');
     var cantaux = '#cantidad' + imagen;
     var cantidad = document.getElementById('cantidad'+imagen).value;
     var comentario = document.getElementById('comentario'+imagen).value;
