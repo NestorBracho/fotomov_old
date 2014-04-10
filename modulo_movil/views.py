@@ -268,7 +268,7 @@ def generar_pedido(request, pedido, cedula):
             for pep in peps:
                 pep.estado = 'Pagado'
                 pep.save()
-        return HttpResponseRedirect('/ingresar_ticket/'+cod+'/')
+        return HttpResponseRedirect('/ingresar_ticket/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
 def ingresar_ticket(request):
