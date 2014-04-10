@@ -206,7 +206,9 @@ def generar_lote(request):
                     auxr = auxr[0]
                     shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
             pep.estado = "Edicion"
+            pep.save()
         pedido.estado = "Edicion"
+        pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
