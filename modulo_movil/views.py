@@ -177,36 +177,34 @@ def eliminar_ProductoEventoPedido(request, id):
 def generar_lote(request):
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
-    rutalote = ''
+
+    newlote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = settings.MEDIA_ROOT + "/lotes/L-" + hora, codigo = 'L-'+hora)
+
     for pedido in pedidos:
-        peps = ProductoEventoPedido.objects.filter(pedido = pedido)
-        for pep in peps:
+        productos = ProductoEventoPedido.objects.filter(pedido = pedido)
+        for producto in productos:
             nom = pedido.cliente.nombres.split(' ')
             nom = nom[0]
             ape = pedido.cliente.apellidos.split(' ')
             ape = ape[0]
             client = ape + nom
-            ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + pedido.codigo + '/'
-            rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
-            if not os.path.exists(rutalote):
-                os.makedirs(rutalote)
-                lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
-                lote.save()
-                if pep.pedido.lote == None:
-                    pep.pedido.lote = lote
-                    pep.pedido.save()
-            productos = ProductoEventoPedido.objects.filter(pedido = pedido)
-            for producto in productos:
-                if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                    os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                for i in range(producto.cantidad):
-                    auxr = producto.ruta.split('/')
-                    auxr = auxr[(len(auxr)-1)]
-                    auxr = auxr.split('.')
-                    auxr = auxr[0]
-                    shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-            pep.estado = "Edicion"
-        pedido.estado = "Edicion"
+            auxr = producto.ruta.split('/')
+            auxr = auxr[(len(auxr)-1)]
+            auxr = auxr.split('.')
+            auxr = auxr[0]
+            if not os.path.exists(settings.MEDIA_ROOT + "/lotes/L-" + hora + '/' + client + '_' + pedido.codigo + '/' + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                os.makedirs(settings.MEDIA_ROOT + "/lotes/L-" + hora + '/' + client + '_' + pedido.codigo + '/' + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
+            if not os.path.exists(settings.MEDIA_ROOT + "/lotes/L-" + hora + '/' + client + '_' + pedido.codigo + '(Editado)/'):
+                os.makedirs(settings.MEDIA_ROOT + "/lotes/L-" + hora + '/' + client + '_' + pedido.codigo + '(Editado)/')
+            for i in range(producto.cantidad):
+                shutil.copy(producto.ruta, settings.MEDIA_ROOT + "/lotes/L-" + hora + '/' + client + '_' + pedido.codigo + '/' + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+            producto.ruta = settings.MEDIA_ROOT + "/lotes/L-" + hora + '/' + client + '_' + pedido.codigo + '/' + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.1.jpg'
+            producto.estado = 'Edicion'
+            producto.save()
+        pedido.lote = newlote
+        pedido.estado = 'Edicion'
+        pedido.save()
+
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
@@ -262,7 +260,11 @@ def generar_pedido(request, pedido, cedula):
             pagado = False
 
         pedido_nuevo = Pedido.objects.filter(id=pedido)
-        pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
+        total = 0
+        for pep in peps:
+            subt = float(pep.cantidad) * pep.producto.precio
+            total = total + subt
+        pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = total, codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
         pedido_nuevo = pedido_nuevo[0]
         if pedido_nuevo.fue_pagado == True:
             for pep in peps:

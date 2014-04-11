@@ -1,0 +1,24 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Todos los pedidos
+{% endblock %}
+{% block seccion-contenido%}
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table id="content" class="table table-bordered">
+        <thead><th>Codigo</th><th>Cliente</th><th>Cedula</th><th>Fecha de entrega</th><th>Estado</th></thead>
+        <tbody id="body-pedidos">
+        {% for pedido in pedidos %}
+        <tr>
+            <td><a href="/ver_pedido/{{ pedido.id }}/">{{ pedido.codigo }}</a></td><td>{{ pedido.cliente.nombres}} {{ pedido.cliente.apellidos}}</td><td>{{pedido.cliente.cedula}}</td><td>{{ pedido.fecha_entrega }}</td><td>{{ pedido.estado }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
