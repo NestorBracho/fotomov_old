@@ -1,4 +1,6 @@
 import json
+import csv
+import time
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -16,6 +18,7 @@ from direcciones.models import *
 from direcciones.views import *
 from tareas.models import *
 from modulo_movil.models import *
+from datetime import *
 import datetime
 
 def nuevo_evento(request):
@@ -348,3 +351,29 @@ def editar_bloque(request, id_bloque):
     else:
         formulario = BloqueForm(initial = {'nombre':bloque.nombre, 'honorarios':bloque.honorarios, 'unico':bloque.unico})
     return render_to_response('evento/editar_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def editar_evento(request, iden):
+    evento = Evento.objects.get(id = iden)
+    funciones = Funcion.objects.filter(evento = evento)
+    gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
+    direcciones = obtener_direcciones()
+    formulario = EventoForm()
+    return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
+
+def editar_funcion(request):
+    if request.GET['accion']=='1':#actualizar
+        funcion = Funcion.objects.get(id = request.GET['iden'])
+        funcion.nombre = request.GET['nomb']
+        funcion.horas = request.GET['horas']
+        if request.GET['dia'] != '':
+            fecha = datetime.datetime.strptime(request.GET['dia'], "%m/%d/%Y")
+            funcion.dia = fecha
+        funcion.save()
+    elif request.GET['accion']=='2':#agregar
+        evento = Evento.objects.get(id = request.GET['evento'])
+        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = datetime.datetime.strptime(request.GET['dia'], "%m/%d/%Y"), horas = request.GET['horas'], entrega_fotos = '', direccion = evento.sede.direccion)
+    elif request.GET['accion']=='3':#borrar
+        funcion = Funcion.objects.get(id = request.GET['iden'])
+        funcion.delete()
+    data = json.dumps({'id':funcion.id, 'nombre':funcion.nombre , 'evento':funcion.evento.nombre, 'horas':funcion.horas, 'entrega_fotos':funcion.entrega_fotos, 'dia': str(funcion.dia), 'direccion':funcion.direccion.nombre, 'accion': request.GET['accion']})
+    return HttpResponse(data, mimetype='application/json')

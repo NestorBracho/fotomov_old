@@ -123,4 +123,6 @@ urlpatterns = patterns('',
     url(r'^ver_pedido/(?P<pedido>\d+)/$', 'productos.views.ver_pedido'),
     url(r'^verpedido_cambiar_estado_pedido_p-np/$', 'productos.views.verpedido_cambiar_estado_pedido_p_np'),
     url(r'^listar_pedidos_pendientes/$', 'productos.views.listar_pedidos_pendientes'),
+    url(r'^editar_evento/(?P<iden>\d+)/$', 'evento.views.editar_evento'),
+    url(r'^editar_funcion/$', 'evento.views.editar_funcion'),
 )

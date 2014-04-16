@@ -14,14 +14,13 @@ from evento.models import *
 from productos.models import *
 import csv
 import time
-from datetime import date
+from datetime import *
 import os
 from os.path import exists
 from os import makedirs
 from django.conf import settings
 from os import listdir
 from os.path import isfile, join, isdir
-from datetime import *
 import datetime
 import shutil
 
