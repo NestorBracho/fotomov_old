@@ -1,5 +1,6 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import Q
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
@@ -74,37 +75,45 @@ def edicion_productos(request, pedido):
 
 def cambiar_estado_producto_edicion_a_editado(request):
     producto = ProductoEventoPedido.objects.get(id = request.GET['iden'])
-    producto.estado = 'Editado'
-    producto.save()
-    tProductos = ProductoEventoPedido.objects.filter(pedido = producto.pedido)
-    parcial = 0
-    total = 0
-    for tProducto in tProductos:
-        total = total + 1
-        if tProducto.estado == 'Editado':
-            parcial = parcial + 1
-    if parcial == total:
-        producto.pedido.estado = "Editado"
-        producto.pedido.save()
-    parcial = 0
-    total = 0
-    tPedidos = Pedido.objects.filter(lote = producto.pedido.lote)
-    aux = []
-    aux2 = []
-    for tPedido in tPedidos:
-        aux.append(ProductoEventoPedido.objects.filter(pedido = tPedido))
-    for a in aux:
-        for au in a:
-            aux2.append(au)
-    tProductos = aux2
-    for tProducto in tProductos:
-        total = total + 1
-        if tProducto.estado == 'Editado':
-            parcial = parcial + 1
-    if parcial == total:
-        producto.pedido.lote.estado = "Editado"
+    if producto.estado == 'Edicion':
+        producto.estado = 'Editado'
+        producto.save()
+        tProductos = ProductoEventoPedido.objects.filter(pedido = producto.pedido)
+        parcial = 0
+        total = 0
+        for tProducto in tProductos:
+            total = total + 1
+            if tProducto.estado == 'Editado':
+                parcial = parcial + 1
+        if parcial == total:
+            producto.pedido.estado = "Editado"
+            producto.pedido.save()
+        parcial = 0
+        total = 0
+        tPedidos = Pedido.objects.filter(lote = producto.pedido.lote)
+        aux = []
+        aux2 = []
+        for tPedido in tPedidos:
+            aux.append(ProductoEventoPedido.objects.filter(pedido = tPedido))
+        for a in aux:
+            for au in a:
+                aux2.append(au)
+        tProductos = aux2
+        for tProducto in tProductos:
+            total = total + 1
+            if tProducto.estado == 'Editado':
+                parcial = parcial + 1
+        if parcial == total:
+            producto.pedido.lote.estado = "Editado"
+            producto.pedido.lote.save()
+    else:
+        producto.pedido.lote.estado = 'Edicion'
         producto.pedido.lote.save()
-    data = json.dumps({'status': "hola"})
+        producto.pedido.estado = 'Edicion'
+        producto.pedido.save()
+        producto.estado = 'Edicion'
+        producto.save()
+    data = json.dumps({'estado': producto.estado})
     return HttpResponse(data, mimetype='application/json')
 
 def edicion_pedido(request, lote):
@@ -175,3 +184,26 @@ def cambiar_estado_lotes_desde_administrar_pedidos(request):
 
     data = json.dumps({'boton': boton_estado, 'estado': lote.estado})
     return HttpResponse(data, mimetype='application/json')
+
+def listar_pedidos(request):
+    pedidos = Pedido.objects.all()
+    return render_to_response('productos/listar_pedidos.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
+def ver_pedido(request, pedido):
+    pedido = Pedido.objects.get(id = pedido)
+    productos = ProductoEventoPedido.objects.filter(pedido = pedido)
+    return render_to_response('productos/ver_pedido.html', {'pedido': pedido, 'productos': productos}, context_instance=RequestContext(request))
+
+def verpedido_cambiar_estado_pedido_p_np(request):
+    pedido = Pedido.objects.get(id = request.GET['iden'])
+    if pedido.fue_pagado == True:
+        pedido.fue_pagado = False
+    else:
+        pedido.fue_pagado = True
+    pedido.save()
+    data = json.dumps({'estado': pedido.fue_pagado})
+    return HttpResponse(data, mimetype='application/json')
+
+def listar_pedidos_pendientes(request):
+    pedidos = Pedido.objects.filter(fue_pagado = False)
+    return render_to_response('productos/listar_pedidos_pendiente.html', {'pedidos':pedidos}, context_instance=RequestContext(request))

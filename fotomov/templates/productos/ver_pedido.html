@@ -1,0 +1,124 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Pedido
+{% endblock %}
+{% block subtitulo %}
+{% endblock %}
+{% block seccion-contenido%}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <span>Fecha: {{ pedido.fecha }}</span>
+            </div>
+            <div class="col-md-4">
+                <span>Fecha de entrega: {{ pedido.fecha_entrega }}</span>
+            </div>
+            <div class="col-md-4">
+                <span>Ubicación: {{ pedido.estado }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <span>Codigo: {{ pedido.codigo }}</span>
+            </div>
+            <div class="col-md-4">
+                <span>Estado: <b id="EstadoPedido">{% if pedido.fue_pagado %}Pagado{% else %}No pagado{% endif %}</b></span>
+            </div>
+            <div class="col-md-4">
+                <span>{% if pedido.fue_pagado %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a No Pagango</a>{% else %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a Pagango</a>{% endif %}</span>
+            </div>
+        </div>
+        <hr/>
+        <div class="col-md-8">
+            <span>Total: {{ pedido.total }} Bs.</span>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table id="content" class="table table-bordered">
+        <thead><th>producto</th><th>Foto</th><th>Estado</th><th>Cantidad</th><th>Monto sin I.V.A.</th><th>SubTotal</th></thead>
+        <tbody id="body-pedidos">
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.producto.producto.nombre }}</td><td>{% if producto.ruta == None%}N/A{% else %}<a data-toggle="modal" data-target="#FotoPedido" onclick="verFotoProducto('{{producto.ruta}}','{{MEDIA_URL}}')" class="btn btn-xs btn-default">Ver foto</a>{% endif %}</td><td>{{ producto.estado }}</td><td>{{ producto.cantidad }}</td><td>{{ producto.producto.precio }}</td><td id="montosiniva-{{producto.id}}"></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="FotoPedido" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+
+    var subt, Total = 0;
+
+    {% for producto in productos %}
+
+        subt = parseFloat('{{producto.producto.precio}}') * parseFloat('{{producto.cantidad}}')
+        $('#montosiniva-{{producto.id}}').html(subt);
+
+    {% endfor %}
+
+}
+
+function verFotoProducto(url, url2){
+
+    url = url.split('/fotomov_imagenes/');
+    url = url[1];
+
+    $('#modal-body').html('<img src="'+url2+url+'"></img>');
+
+}
+
+function estadoPedido(iden){
+
+    $.ajax({
+
+        url:'/verpedido_cambiar_estado_pedido_p-np/',
+        data:{'iden': iden},
+        type:'get'
+
+    }).done(function(data){
+
+        if(data.estado){
+
+            $('#EstadoPedido').html('Pagado');
+            $('#btn-estado-pedigo').html('Cambiar estado a No Pagado');
+
+        }else{
+
+            $('#EstadoPedido').html('No pagado');
+            $('#btn-estado-pedigo').html('Cambiar estado a Pagado')
+
+        }
+
+    });
+
+}
+
+</script>
+{% endblock %}

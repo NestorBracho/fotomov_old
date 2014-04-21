@@ -223,10 +223,10 @@
                         <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Órdenes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#">Buscar órdenes</a>
+                                <a href="/listar_pedidos">Buscar órdenes</a>
                             </li>
                             <li>
-                                <a href="#">Órdenes pendientes</a>
+                                <a href="/listar_pedidos_pendientes">Órdenes pendientes</a>
                             </li>
                             <li>
                                 <a href="#">Pagos Pendientes</a>
@@ -436,45 +436,30 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- Core Scripts - Include with every page -->
-   <!-- <script src="{{ STATIC_URL }}/js/jquery-1.10.2.js"></script> -->
+  {# CARGAR SIEMPRE  #}
+{#    <script src="{{ STATIC_URL }}/js/jquery-1.10.2.js"></script> #}
     <script>window.jQuery || document.write('<script src="{{STATIC_URL}}/js/jquery-1.10.2.js"><\/script>')</script>
     <script src="{{ STATIC_URL }}/js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
-    <!-- Page-Level Plugin Scripts - Dashboard -->
-<!--
+	{# datepicker #}
+    <script src="{{ STATIC_URL }}/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+
+
+{% comment %}
     <script src="{{ STATIC_URL }}/js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="{{ STATIC_URL }}/js/plugins/morris/morris.js"></script> 
--->
+{% endcomment %}
 
-    <!-- SB Admin Scripts - Include with every page -->
+	{#     SB Admin Scripts - Include with every page #}
     <script src="{{ STATIC_URL }}/js/sb-admin.js"></script>
 
-    <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
+	{# jquery UI #}
     <script src="{{ STATIC_URL }}/js/jquery-ui-1.10.4.custom.min.js"></script>
+
+
     <script type="text/javascript">
 
-window.onload = function(){
-
-    var tarea_id, stat;
-
-    {% for stat in stats %}
-
-        tarea_id = "{{ stat }}".split("-");
-        stat = tarea_id[0]
-        tarea_id = tarea_id[1];
-        if(stat == "1"){
-            $("#tarea-"+tarea_id).addClass("maniana");
-        }else if(stat == "2"){
-            $("#tarea-"+tarea_id).addClass("hoy");
-        }else if(stat == "3"){
-            $("#tarea-"+tarea_id).addClass("vencido");
-        }
-
-    {% endfor %}
-
-}
 
 function listo(stado,tarea){
 

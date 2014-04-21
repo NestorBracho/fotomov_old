@@ -118,6 +118,10 @@ function ajax_guardar(){
     var direccion = $('#formatedAddress').val();
     var descripcion = $('#descripcion').val();
     var latlng = $('#latlng').val();
+    var iden;
+
+
+
 
     $.ajax({
         data:{'nombre': nombre, 'direccion': direccion, 'descripcion': descripcion, 'latlng': latlng},
@@ -138,18 +142,65 @@ function ajax_guardar(){
 
         if(document.getElementById("toto") != null){
             document.getElementById(document.getElementById("toto").value).value = data[0].fields.nombre;
+
+            if($('#'+$('#toto').val()).hasClass('editable')){
+
+                iden = $('#toto').val().split('-');
+                iden = iden[1];
+
+                $.ajax({
+
+                    url:'/editar_funcion',
+                    data:{'accion':'4', 'iden':iden, 'nomb':nom},
+                    type:'GET'
+
+                }).done(function(data){
+
+
+                    $('#'+$('#toto').val()).html(data.nombre);
+
+                });
+
+            }
+
             document.getElementById("close").click();
         }
     });
+
 }
 
 
 
 function obtenerDireccion(nom){
 
+    var iden;
     if(document.getElementById("toto") != null){
         document.getElementById(document.getElementById("toto").value).value = nom;
+
+        if($('#'+$('#toto').val()).hasClass('editable')){
+
+
+
+            iden = $('#toto').val().split('-');
+            iden = iden[1];
+
+            $.ajax({
+
+                url:'/editar_funcion',
+                data:{'accion':'4', 'iden':iden, 'nomb':nom},
+                type:'GET'
+
+            }).done(function(data){
+
+
+                $('#'+$('#toto').val()).html(data.nombre);
+
+            });
+
+        }
+
         document.getElementById("close").click();
+
     }
 
 }
