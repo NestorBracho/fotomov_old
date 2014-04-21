@@ -11,6 +11,7 @@ class Lote(models.Model):
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
+    num_pedido= models.IntegerField()
     fecha_entrega = models.DateField(null=True, blank=True)
     id_fiscal = models.CharField(max_length=100, null=True, blank=True)
     direccion_fiscal = models.TextField(max_length=400, null=True, blank=True)
@@ -46,6 +47,5 @@ class ProductoEventoPedido(models.Model):
     ruta = models.CharField(max_length=10000)
     num_pedido = models.IntegerField()
     producto = models.ForeignKey(ProductoEvento)
-    pedido = models.ForeignKey(Pedido, null=True, blank=True)
     estado = models.CharField(max_length=50)
     comentario = models.TextField(max_length=1000)

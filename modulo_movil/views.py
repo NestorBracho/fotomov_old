@@ -14,7 +14,6 @@ from evento.models import *
 from productos.models import *
 import csv
 import time
-from datetime import date
 import os
 from os.path import exists
 from os import makedirs
@@ -65,7 +64,10 @@ def crear_pedidos(request, id_evento, next, actual):
     if directorio_actual.objects.filter(usuario = request.user):
         dir_actual = directorio_actual.objects.get(usuario=request.user)
     else:
-        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create())
+        ts = time.time()
+        tstr = str(ts).split('.')
+        num_ped = id_evento + tstr[0] + tstr[1]
+        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=num_ped))
     lista_agregados = []
     productos_pedidos = ProductoEventoPedido.objects.filter(pedido=dir_actual.pedido)
     for agregado in productos_pedidos:
