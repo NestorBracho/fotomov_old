@@ -7,6 +7,43 @@
 Editar evento: {{ evento.nombre }}
 {% endblock %}
 {% block seccion-contenido %}
+<input id='toto' type="hidden" value=''>
+<form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Datos del evento</h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-3">
+                {{ formulario.nombre | bootstrap }}
+            </div>
+            <div class="col-sm-3">
+                {{ formulario.macrocliente | bootstrap }}
+            </div>
+            <div class="col-sm-3">
+                <label>Encargado</label>
+                <select id="id_encargado" class="form-control" name="encargado">
+                    <option>---------</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label>Sede</label>
+                <select id="id_sede" class="form-control" name="sede">
+                    <option>---------</option>
+                </select>
+            </div>
+            <div class="col-sm-12">
+                {{ formulario.descripcion | bootstrap }}
+            </div>
+            <div class="col-sm-2">
+                {{ formulario.porcentaje_institucion | bootstrap }}
+            </div>
+            <div class="col-sm-3">
+                {{ formulario.tipo | bootstrap }}
+            </div>
+        </div>
+    </div>
+
 <h3>Funciones</h3>
 <a onclick="agrFuncion(0)" class="btn btn-default pull-right" data-toggle="modal" data-target="#eFuncion"><span class="fa fa-plus fa-fw"></span> Agregar función</a>
 <table class="table table-striped table-bordered table-hover" id="content">
@@ -21,10 +58,10 @@ Editar evento: {{ evento.nombre }}
     {% for funcion in funciones %}
         <tr id="tr-{{funcion.id}}">
             <td id='fun-{{funcion.id}}'>{{ funcion.nombre }}</td>
-            <td><a class="btn btn-xs btn-default" data-toggle="modal" data-target="#addressModal">{{ funcion.direccion.nombre }}</a></td>
+            <td><a id='loc-{{funcion.id}}' onclick="editarDireccion('loc-{{funcion.id}}')" class="editable form-control btn btn-xs btn-default" data-toggle="modal" data-target="#addressModal">{{ funcion.direccion.nombre }}</a></td>
             <td id="horas-{{funcion.id}}">{{ funcion.horas }}</td>
             <td id="dia-{{funcion.id}}">{{ funcion.dia }}</td>
-            <td><a class="btn btn-xs btn-default" onclick="editarFuncion('{{ funcion.id }}','{{ funcion.nombre }}','{{ funcion.lugar }}','{{ funcion.horas }}','{{ funcion.dia }}')" data-toggle="modal" data-target="#eFuncion" ><span class="fa fa-pencil fa-fw"></span></a>  <a class="btn btn-xs btn-danger" onclick="eliFuncion('{{funcion.id}}','3')" ><span class="fa fa-minus fa-fw"></span></a></td>
+            <td><a class="btn btn-xs btn-success" onclick="editarFuncion('{{ funcion.id }}','{{ funcion.nombre }}','{{ funcion.direccion.nombre }}','{{ funcion.horas }}','{{ funcion.dia }}')" data-toggle="modal" data-target="#eFuncion" ><span class="fa fa-pencil fa-fw"></span></a>  <a class="btn btn-xs btn-danger" onclick="eliFuncion('{{funcion.id}}','3')" ><span class="fa fa-minus fa-fw"></span></a></td>
         </tr>
     {% endfor %}
     </tbody>
@@ -58,6 +95,95 @@ Editar evento: {{ evento.nombre }}
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+
+window.onload = function(){
+
+    $('#id_porcentaje_institucion').spinner({ min: 0 });
+    $('#id_porcentaje_institucion').spinner("value",12);
+    if(document.getElementById("id_macrocliente").value<1){
+        document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+        document.getElementById("id_encargado").disabled = true;
+        document.getElementById("id_sede").innerHTML = "<option>---------</option>";
+        document.getElementById("id_sede").disabled = true;
+    }else{
+        ajax_encargado();
+        ajax_sede();
+    }
+
+}
+
+    $('#id_macrocliente').on('change',ajax_encargado);
+    $('#id_macrocliente').on('change',ajax_sede);
+
+function ajax_encargado(){
+
+    var select_macro = $('#id_macrocliente').val();
+
+    if(select_macro>0){
+        $.ajax({
+
+            beforeSend:function(){
+                document.getElementById('id_encargado').innerHTML = '<option>Cargando...</option>';
+            },
+            data:{'id':select_macro},
+            url:'/encargado_ajax/',
+            type:'get',
+            error:function(a,error,otro){
+                document.getElementById("id_encargado").innerHTML = "<option>"+otro+"</option>";
+            }
+
+        }).done(function(data){
+
+            document.getElementById("id_encargado").disabled = false;
+            document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+            for(var i=0;i<data.length;i++){
+                document.getElementById('id_encargado').innerHTML = document.getElementById('id_encargado').innerHTML+'<option value='+data[i].pk+'>'+data[i].fields.nombre+'</option>';
+            }
+
+        });
+    }else{
+
+        document.getElementById("id_encargado").innerHTML = "<option>---------</option>";
+        document.getElementById("id_encargado").disabled = true;
+
+    }
+
+}
+
+function ajax_sede(){
+
+    var select_macro = $('#id_macrocliente').val();
+
+    if(select_macro>0){
+        $.ajax({
+
+            beforeSend:function(){
+                document.getElementById('id_sede').innerHTML = '<option>Cargando...</option>';
+            },
+            data:{'id':select_macro},
+            url:'/sede_ajax/',
+            type:'get',
+            error:function(a,error,otro){
+                document.getElementById("id_sede").innerHTML = "<option>"+otro+"</option>";
+            }
+
+        }).done(function(data){
+
+            document.getElementById("id_sede").disabled = false;
+            document.getElementById("id_sede").innerHTML = "<option>---------</option>";
+            for(var i=0;i<data.length;i++){
+                document.getElementById('id_sede').innerHTML = document.getElementById('id_sede').innerHTML+'<option value='+data[i].pk+'>'+data[i].fields.nombre+'</option>';
+            }
+
+        });
+    }else{
+
+        document.getElementById("id_sede").innerHTML = "<option>---------</option>";
+        document.getElementById("id_sede").disabled = true;
+
+    }
+
+}
 
 function formatoFecha(fecha){
 
@@ -136,7 +262,7 @@ function formatoFecha(fecha){
 
 function editarFuncion(iden, nomb, lug, hor, dia){
 
-    $('#modal-body').html('<div class="row"><div class="col-md-4">Función: <input class="form-control input-sm" type="text" id="nombre-editar"></div><div class="col-md-4">Lugar:</div><div class="col-md-4">Horas: <input id="horas-editar" type="text" class="spinner form-control input-sm"></div><div class="col-md-12">Dia: <span id="dias-editar"></span> <input id="dias-editar-h" type="hidden" value=""> <div class="datepicker" id="datepicker"></div></div><div class="row"><div class="col-md-12"><input onclick="guardarFuncion('+iden+',1)" data-dismiss="modal" class="btn btn-block btn-primary" type="button" value="Actualizar"> </div></div></div>');
+    $('#modal-body').html('<div class="row"><div class="col-md-4">Función: <input class="form-control input-sm" type="text" id="nombre-editar"></div><div class="col-md-4">Lugar:<a id="loc-'+iden+'" onclick="editarDireccion(loc-'+iden+')" class="editable form-control btn btn-xs btn-default" data-toggle="modal" data-target="#addressModal">'+lug+'</a></div><div class="col-md-4">Horas: <input id="horas-editar" type="text" class="spinner form-control input-sm"></div><div class="col-md-12">Dia: <span id="dias-editar"></span> <input id="dias-editar-h" type="hidden" value=""> <div class="datepicker" id="datepicker"></div></div><div class="row"><div class="col-md-12"><input onclick="guardarFuncion('+iden+',1)" data-dismiss="modal" class="btn btn-block btn-primary" type="button" value="Actualizar"> </div></div></div>');
 
     $('.spinner').spinner({ min: 0});
     $('.datepicker').datepicker();
@@ -201,6 +327,12 @@ function agrFuncion(iden){
         $("#dias-editar-h").attr('value',$("#datepicker").datepicker().val())
 
     });
+
+}
+
+function editarDireccion(iden){
+
+    $('#toto').val(iden);
 
 }
 

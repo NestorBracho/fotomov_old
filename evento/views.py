@@ -357,7 +357,16 @@ def editar_evento(request, iden):
     funciones = Funcion.objects.filter(evento = evento)
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
     direcciones = obtener_direcciones()
-    formulario = EventoForm()
+    if request.method == 'POST':
+        formulario = EventoForm(request.POST)
+        if formulario.is_valid():
+            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+            sede = Sede.objects.get(id=request.POST.get('sede'))
+            #evento.update(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                           #porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
+                                           #sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'])
+    else:
+        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion, 'macrocliente': evento.macrocliente, 'tipo': evento.tipo})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
 
 def editar_funcion(request):
@@ -375,5 +384,15 @@ def editar_funcion(request):
     elif request.GET['accion']=='3':#borrar
         funcion = Funcion.objects.get(id = request.GET['iden'])
         funcion.delete()
+    elif request.GET['accion']=='4':#locacion
+        loc = Direccion.objects.filter(nombre = request.GET['nomb'])
+        funcion = Funcion.objects.get(id = request.GET['iden'])
+        if len(loc) > 0:
+            loc = loc[0]
+        funcion.direccion = loc;
+        funcion.save()
+        nomb = loc.nombre
+        data = json.dumps({'nombre':nomb})
+        return HttpResponse(data, mimetype='application/json')
     data = json.dumps({'id':funcion.id, 'nombre':funcion.nombre , 'evento':funcion.evento.nombre, 'horas':funcion.horas, 'entrega_fotos':funcion.entrega_fotos, 'dia': str(funcion.dia), 'direccion':funcion.direccion.nombre, 'accion': request.GET['accion']})
     return HttpResponse(data, mimetype='application/json')
