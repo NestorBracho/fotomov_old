@@ -13,7 +13,7 @@ from modulo_movil.models import *
 from evento.models import *
 from productos.models import *
 import csv
-import time
+import time as tm
 from datetime import *
 import os
 from os.path import exists
@@ -24,6 +24,17 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
+
+def obtener_timestamp():
+    a = tm.time()
+    b = str(a).split('.')
+    c = b[0] + b[1]
+    return c
+
+def date_to_int(dia):
+    dia_split = str(dia).split('-')
+    dia_cont = dia_split[0]
+    return dia_cont
 
 def exportar_csv_evento(request):
     eventos = Evento.objects.all().order_by('-id')
@@ -51,26 +62,32 @@ def selecccionar_direccion(request):
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
-    funciones_hoy = Funcion.objects.filter(dia=date.today())
-    print funciones_hoy
+    direcciones = Direccion.objects.all()
     eventos = []
-    for funcion in funciones_hoy:
-        eventos.append(funcion.evento)
+    for direccion in direcciones:
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
+        if funciones_hoy:
+            eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento.html', {'eventos': eventos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
-def crear_pedidos(request, id_evento, next, actual):
+def crear_pedidos(request, id_evento, id_funcion, next, actual):
     print next
+    evento = Evento.objects.get(id=id_evento)
+    funcion_aux = Funcion.objects.get(id=id_funcion)
+    int_dia = date_to_int(funcion_aux.dia)
     #print directorio_actual.objects.filter(usuario = request.user)
     if directorio_actual.objects.filter(usuario = request.user):
         dir_actual = directorio_actual.objects.get(usuario=request.user)
     else:
-        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create())
+        timestamp = obtener_timestamp()
+        numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
+        int_numero_pedido = int(numero_pedido)
+        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
     lista_agregados = []
-    productos_pedidos = ProductoEventoPedido.objects.filter(pedido=dir_actual.pedido)
+    productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
     for agregado in productos_pedidos:
         lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
-    evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     generar_rutas(id_evento)
     print "aqui"
@@ -132,7 +149,8 @@ def crear_pedidos(request, id_evento, next, actual):
         pass
     productos = ProductoEvento.objects.filter(evento=evento)
     return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
-                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados, 'dir_actual': dir_actual}, context_instance=RequestContext(request))
+                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados,
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
 
 def generar_rutas(id_evento):
     lista = []
@@ -160,18 +178,19 @@ def agregar_item(request):
     comentario = request.GET.get('comentario')
     producto = ProductoEvento.objects.get(id=request.GET.get('producto'))
     imagen = request.GET.get('imagen')
-    productoevento = ProductoEventoPedido.objects.create(comentario=comentario, cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=1, pedido=pedido)
+    productoevento = ProductoEventoPedido.objects.create(comentario=comentario, cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=pedido.num_pedido)
     prodevento = []
     prodevento.append(productoevento)
     data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'producto, id'))
     return HttpResponse(data, mimetype='application/json')
 
 @login_required(login_url='/')
-def eliminar_ProductoEventoPedido(request, id):
+def eliminar_ProductoEventoPedido(request, id, id_funcion):
     proevped = ProductoEventoPedido.objects.get(id=id)
     evento = proevped.producto.evento
+    funcion = Funcion.objects.get(id=id_funcion)
     proevped.delete()
-    url = "/crear_pedidos/" + str(evento.id) + "/NoneNext/urlseparador/NoneValue/"
+    url = "/crear_pedidos/" + str(evento.id) + "/" + str(funcion.direccion.id) + "/NoneNext/urlseparador/NoneValue/"
     return HttpResponseRedirect(url)
 
 def generar_lote(request):
@@ -212,7 +231,8 @@ def generar_lote(request):
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula):
-    peps = ProductoEventoPedido.objects.filter(pedido__id = pedido)
+    pedido_actual = Pedido.objects.get(id=pedido)
+    peps = ProductoEventoPedido.objects.filter(num_pedido = pedido_actual.num_pedido)
     cliente = Cliente.objects.filter(cedula = cedula)
     if len(cliente) > 0:
         cliente = cliente[0]
@@ -285,22 +305,26 @@ def eliminar_productoeventopedido_en_generarpedido(request):
     return HttpResponse(data, mimetype='application/json')
 
 @login_required(login_url='/')
-def generar_ticket(request, id_evento):
+def generar_ticket(request, id_evento, id_funcion):
     info = directorio_actual.objects.get(usuario= request.user)
+    funcion_aux = Funcion.objects.get(id=id_funcion)
+    int_dia = date_to_int(funcion_aux.dia)
     pedido = info.pedido
     lista_agregados = []
-    productos_pedidos = ProductoEventoPedido.objects.filter(pedido=pedido)
+    productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
     for agregado in productos_pedidos:
         lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
-    productos = ProductoEventoPedido.objects.filter(pedido=pedido)
     if request.method == 'POST':
         if '_Nuevo' in request.POST:
-            new = Pedido.objects.create()
+            timestamp = obtener_timestamp()
+            numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
+            int_numero_pedido = int(numero_pedido)
+            new = Pedido.objects.create(num_pedido=int_numero_pedido)
             new.save()
             info.pedido = new
             info.save()
-            return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
+            return HttpResponseRedirect('/crear_pedidos/'+ id_evento + "/" + id_funcion +'/NoneNext/urlseparador/NoneValue/')
         elif '_Cancelar' in request.POST:
-            return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
+            return HttpResponseRedirect('/crear_pedidos/'+ id_evento + "/" + id_funcion +'/NoneNext/urlseparador/NoneValue/')
     #return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
     return render_to_response('modulo_movil/generar_ticket.html', {'id_evento': id_evento, 'pedido': pedido, 'productos': lista_agregados}, context_instance=RequestContext(request))
