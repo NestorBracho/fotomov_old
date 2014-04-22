@@ -362,9 +362,15 @@ def editar_evento(request, iden):
         if formulario.is_valid():
             encargado = Encargado.objects.get(id=request.POST.get('encargado'))
             sede = Sede.objects.get(id=request.POST.get('sede'))
-            #evento.update(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
-                                           #porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-                                           #sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'])
+            evento.nombre = formulario.cleaned_data['nombre']
+            evento.descripcion = formulario.cleaned_data['descripcion']
+            evento.porcentaje_institucion = formulario.cleaned_data['porcentaje_institucion']
+            evento.encargado = encargado
+            evento.sede = sede
+            evento.tipo = formulario.cleaned_data['tipo']
+            evento.macrocliente = formulario.cleaned_data['macrocliente']
+            evento.save()
+            return HttpResponseRedirect('/listar_evento/2/')
     else:
         formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion, 'macrocliente': evento.macrocliente, 'tipo': evento.tipo})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
