@@ -37,17 +37,35 @@ def date_to_int(dia):
     return dia_cont
 
 def exportar_csv_evento(request):
-    eventos = Evento.objects.all().order_by('-id')
-    if request.method == 'POST':
-        pass
-       # exportar = request.POST.getlist('eventos')
-       # nombre = "BDD-" + time.strftime("%d/%m/%Y") + ".csv"
-       # archivo = open(nombre,"w+")
-       # print nombre
-    else:
-        pass
-    return render_to_response('modulo_movil/exportar_csv_evento.html', {'eventos': eventos},
-                              context_instance=RequestContext(request))
+    response = HttpResponse(content_type='text/csv')
+    fecha = datetime.datetime.now()
+    clientes = Cliente.objects.all()
+    pedidos = Pedido.objects.all()
+    pep = ProductoEventoPedido.objects.all()
+
+    nombre = '"db-' + str(fecha) + '.csv"'
+    response['Content-Disposition'] = 'attachment; filename=' + nombre
+
+    writer = csv.writer(response)
+    for cliente in clientes:
+        writer.writerow([cliente.nombres, cliente.apellidos, cliente.telefono, cliente.email,
+                         cliente.direccion_fiscal, cliente.rif, cliente.cedula])
+    for pedido in pedidos:
+        client = pedido.cliente
+        try:
+            client = pedido.cliente.cedula
+        except:
+            client = "None"
+            print "tiene cedula"
+        writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
+                        pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
+                        pedido.total, pedido.codigo, pedido.direccion_entrega, pedido.envio,
+                        pedido.fue_pagado, pedido.lote, pedido.estado])
+    for producto in pep:
+        writer.writerow([producto.cantidad, producto.ruta.encode("utf-8"), producto.num_pedido,
+                         producto.producto.id, producto.estado , producto.comentario])
+
+    return response
 
 def selecccionar_direccion(request):
 #    print settings.MEDIA_ROOT
