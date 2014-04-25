@@ -177,7 +177,26 @@ def agregar_productos(request,id_evento):
     return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
 
 def casilla_administrativa(request, id_evento):
-    return render_to_response('evento/casilla_administrativa.html', {}, context_instance=RequestContext(request))
+    evento = Evento.objects.get(id = id_evento)
+    funciones = Funcion.objects.filter(evento = evento)
+    staffs = AsistenciaStaffFuncion.objects.filter(funcion__in = funciones)
+    usuarios = []
+    for staff in staffs:
+        flag = False
+        for usuario in usuarios:
+            if usuario == staff.usuario:
+                flag = True
+        if flag == False:
+            usuarios.append(staff.usuario)
+    lista = []
+    for usuario in usuarios:
+        aux = []
+        for staff in staffs:
+            if staff.usuario == usuario:
+                bloque = StaffPorFuncion.objects.get(funcion = staff.funcion, tipo = staff.usuario.privilegio)
+                aux.append([staff, bloque.bloque])
+        lista.append([usuario, aux])
+    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):
@@ -185,11 +204,21 @@ def calendario_de_eventos(request):
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
     funciones = StaffPorFuncion.objects.filter(funcion__dia__gt=now.date(), tipo=usuario.privilegio, cantidad__gt = 0).order_by('-funcion__dia').distinct()
+    aux_fun = []
     for funcion in funciones:
-        print funcion.funcion.dia
-        print funcion.tipo.nombre
-    print usuario.nombre
-    return render_to_response('evento/calendario_de_eventos.html', {'funciones': funciones,'user': usuario}, context_instance=RequestContext(request))
+        aux_fun.append(funcion.funcion)
+    asist = AsistenciaStaffFuncion.objects.filter(usuario = usuario, funcion__in = aux_fun)
+    aux_fun = []
+    for funcion in funciones:
+        flag = False
+        for asists in asist:
+            if funcion.funcion.id == asists.funcion.id:
+                flag = True
+        if flag == True:
+            aux_fun.append([funcion, True])
+        else:
+            aux_fun.append([funcion, False])
+    return render_to_response('evento/calendario_de_eventos.html', {'funciones': aux_fun, 'user': usuario}, context_instance=RequestContext(request))
 
 def marcar_asistencia(request):
     if(request.GET['accion'] == 'r'):
@@ -322,8 +351,7 @@ def crear_bloque(request):
         formulario = BloqueForm(request.POST)
         if formulario.is_valid():
             formulario.save()
-            bloques = Bloque.objects.all()
-            return render_to_response('evento/listar_bloques.html', {'bloques': bloques}, context_instance=RequestContext(request))
+            return HttpResponseRedirect('/listar_bloques/0/')
     else:
         formulario = BloqueForm()
     return render_to_response('evento/crear_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))

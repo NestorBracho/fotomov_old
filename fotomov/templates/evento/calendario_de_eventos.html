@@ -11,8 +11,12 @@ Lista de funciones
     </thead>
     {% for funcion in funciones %}
         <tr>
-            <td>{{ funcion.funcion.dia }}</td>
-            <td><a class='btn btn-warning' id='{{ funcion.funcion.id }}' name='0' onclick=asistir(this.id,this.name) ><span class="glyphicon glyphicon-unchecked"></span> Asistir</a></td>
+            <td>{{ funcion.0.funcion.dia }}</td>
+            {% if funcion.1 == True %}
+            <td><a class='btn btn-success' id='{{ funcion.0.funcion.id }}' name='1' onclick=asistir(this.id,this.name) ><span class="glyphicon glyphicon-check"></span> Asistir</a></td>
+            {% else %}
+            <td><a class='btn btn-warning' id='{{ funcion.0.funcion.id }}' name='0' onclick=asistir(this.id,this.name) ><span class="glyphicon glyphicon-unchecked"></span> Asistir</a></td>
+            {% endif %}
         </tr>
     {% endfor %}
 </table>
