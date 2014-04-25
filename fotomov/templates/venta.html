@@ -47,9 +47,9 @@
                 <ul class="nav" id="side-menu">
                         {{ short_current }}
                         </ul>
-                             <li><a href="/crear_pedidos/{{ evento.id }}/back/urlseparador/back">atras</a></li>
+                             <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/back/urlseparador/back">atras</a></li>
                         {% for directorio in directorios %}
-                            <li><a href="/crear_pedidos/{{ evento.id }}/{{ directorio }}/urlseparador/ir">{{ directorio }}</a></li>
+                            <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/{{ directorio }}/urlseparador/ir">{{ directorio }}</a></li>
                         {% endfor %}
                         </ul>
                 <!-- /#side-menu -->

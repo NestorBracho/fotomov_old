@@ -10,7 +10,7 @@ Lista de eventos
     </thead>
     {% for evento in eventos %}
         <tr>
-            <td><a href="/crear_pedidos/{{ evento.id }}/NoneNext/urlseparador/NoneValue/">{{ evento.nombre }}</a></td>
+            <td><a href="/crear_pedidos/{{ evento.evento.id }}/{{ evento.id }}/NoneNext/urlseparador/NoneValue/">{{ evento.evento.nombre }} - {{ evento.direccion.nombre }}</a></td>
         </tr>
     {% endfor %}
 </table>

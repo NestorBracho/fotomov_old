@@ -36,7 +36,7 @@
     {% endfor %}
     </table>
 </div>
-<a class="btn btn-primary" href="/generar_ticket/{{evento.id}}">Generar Ticket</a>
+<a class="btn btn-primary" href="/generar_ticket/{{evento.id}}/{{ id_funcion }}">Generar Ticket</a>
 </div>
 <aside id="lista_compra">
 <ul id="agregados">
@@ -107,7 +107,7 @@ function ajax_guardar(imagen, id_pedido){
         		if (r==true)
         	  {
         			var string1 = "/eliminar_productoeventopedido/";
-        		  window.location.assign(string1 + id)
+        		  window.location.assign(string1 + id + "/" + {{ id_funcion }})
           	}
         		else
           	{
