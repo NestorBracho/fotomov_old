@@ -1,0 +1,202 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block titulo %}
+Administración
+{% endblock %}
+{% block seccion-contenido %}
+<div>
+    <div class="panel panel-default table-responsive">
+        <div class="panel-heading">
+            Honorarios
+        </div>
+        <div class="panel-body">
+            <div>
+                <div>
+                    {% for staff in staffs %}
+                        <p></p>
+                        <div class="col-sm-6">
+                            <div class="col-sm-12"><b>{{ staff.0.nombre }} {{ staff.0.apellido }}</b> ({{ staff.0.privilegio.nombre }})</div>
+                            <div class="col-sm-12" id="{{ staff.0.nombre }}{{ staff.0.apellido }}">0</div>
+                        </div>
+                        <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                        {% for funcion in staff.1 %}
+                            <div class="col-md-6">{{ funcion.0.funcion.nombre }} ({{funcion.1.nombre}}):</div><div class="col-md-6"> <input name="{{ staff.0.nombre }}{{ staff.0.apellido }}" class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ funcion.1.honorarios }}"> </div>
+                        {% endfor %}
+                        </div>
+                        <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    {% endfor %}
+                    <p></p>
+                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-honorarios">0</span></b></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default table-responsive">
+        <div class="panel-heading">
+            Gastos fijos
+        </div>
+        <div class="panel-body">
+            <div>
+                <div id="body-fijo">
+                    <div class="col-sm-6"><b>Viáticos</b></div>
+                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    <p></p>
+                    <div class="col-sm-6"><b>Almuerzo/cena</b></div>
+                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    <p></p>
+                    <div class="col-sm-6"><b>Alquier de equipos</b></div>
+                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    <p></p>
+                    <div class="col-sm-6"><b>Deudas de staff</b></div>
+                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    <p></p>
+                    <div class="col-sm-6"><b>Edición outsourcing</b></div>
+                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                </div>
+                <p></p>
+                <div class="col-sm-6"><a onclick="focusInputAgregarGasto()" data-toggle="modal" data-target="#AgregarGastoFijo" class="btn btn-default"><span class="fa fa-plus fa-fw"></span> Agregar gasto</a></div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-fijos">0</span></b></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AgregarGastoFijo" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <input type="text" class="form-control" id="input-gasto-fijo">
+            </div>
+            <div class="modal-footer">
+                <a onclick="agregarGastoFijo()" data-dismiss="modal" class="btn btn-default"><span class="fa fa-plus fa-fw"></span> Agregar</a></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+
+window.onload = function(){
+
+    {% for staff in staffs %}
+
+        $("[name='{{ staff.0.nombre }}{{ staff.0.apellido }}']").spinner({stop: function(event, ui){
+                                                $("#{{ staff.0.nombre }}{{ staff.0.apellido }}").html("0");
+                                                $("[name='{{ staff.0.nombre }}{{ staff.0.apellido }}']").each(function(){$('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseInt($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseInt($(this).val()))});
+                                                $("#total-honorarios").html("0");
+                                                $('.honorarios').each(function(){$("#total-honorarios").html(parseInt($("#total-honorarios").html())+parseInt($(this).val()));});
+                                            }
+                                });
+
+         $("[name='{{ staff.0.nombre }}{{ staff.0.apellido }}']").each(function(){
+                                                $('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseInt($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseInt($(this).val()))
+                                                })
+
+    {% endfor %}
+
+    $(".fijos").spinner({min: 0, step: 50, stop: function(event, ui){
+                                                $("#total-fijos").html("0");
+                                                $('.fijos').each(function(){$("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));});
+                                            }
+                                });
+
+    $('.honorarios').each(function(){
+                                $(this).spinner("value",parseInt($(this).val()))
+                                $("#total-honorarios").html(parseInt($("#total-honorarios").html())+parseInt($(this).val()));
+                            });
+
+    $('.fijos').each(function(){
+                                $(this).spinner("value",parseInt($(this).val()))
+                                $("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));
+                            });
+
+}
+
+function numero(e) {
+
+    var codigo;
+
+    codigo = (document.all) ? e.keyCode : e.which;
+
+    if (codigo > 31 && (codigo < 48 || codigo > 57) && codigo != 46 ) {
+
+        return false;
+
+    }
+
+    return true;
+}
+
+function sumaTotal(){
+
+    $("#total-honorarios").html("0");
+    $('.honorarios').each(function(){$("#total-honorarios").html(parseInt($("#total-honorarios").html())+parseInt($(this).val()));});
+
+
+}
+
+function agregarGastoFijo(){
+
+    var nombaux ='', nomb = $("#input-gasto-fijo").val();
+
+    nomb = nomb.split(" ");
+
+    for(var i=0; i< nomb.length;i++){
+
+        nombaux = nombaux+nomb[i];
+
+    }
+
+    nomb = $("#input-gasto-fijo").val();
+
+    $("#body-fijo").append('<p></p><div class="col-sm-6"><b>'+nomb+'</b></div><div class="col-sm-6" style="border-left: 1px solid #dedede;"><div class="col-md-6"></div><div class="col-md-6"> <input class="fijos '+nombaux+' form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div></div><div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>');
+
+    setTimeout(function(){
+
+        $('.fijos').each(function(){
+                                    $("#"+nombaux).spinner("value",parseInt($(this).val()))
+                                    $("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));
+                                });
+
+        $("."+nombaux).spinner({min: 0, step: 50, stop: function(event, ui){
+                                                    $("#total-fijos").html("0");
+                                                    $('.fijos').each(function(){$("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));});
+                                                }
+                                    });
+    },1);
+
+    $("#input-gasto-fijo").val('');
+}
+
+function focusInputAgregarGasto(){
+
+    $("#input-gasto-fijo").focus();
+
+}
+
+</script>
+{% endblock %}
