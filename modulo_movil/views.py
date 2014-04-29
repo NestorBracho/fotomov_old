@@ -1,5 +1,6 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
@@ -12,6 +13,7 @@ from productos.forms import *
 from modulo_movil.models import *
 from modulo_movil.forms import ArchivoForm
 from evento.models import *
+from clientes.models import *
 from productos.models import *
 import csv
 import time as tm
@@ -42,6 +44,7 @@ def actualizar_datos():
     pedidos = pedido_aux.objects.all()
     productos = ProductoEventoPedido_aux.objects.all()
     for cliente in clientes:
+        print cliente
         if Cliente.objects.filter(cedula=cliente.cedula):
             aux= Cliente.objects.get(cedula=cliente.cedula)
             aux.nombres = cliente.nombres
@@ -52,15 +55,41 @@ def actualizar_datos():
             aux.rif = cliente.rif
             aux.cedula = cliente.cedula
             aux.save()
+            print aux.cedula
         else:
-            Cliente.objects.create(nombres=cliente.nombres, apellidos=cliente.apellidos, telefono=cliente.telefono, email=cliente.email,
+            aux = Cliente.objects.create(nombres=cliente.nombres, apellidos=cliente.apellidos, telefono=cliente.telefono, email=cliente.email,
                                    direccion_fiscal=cliente.direccion_fiscal, rif=cliente.rif, cedula=cliente.cedula)
+            print aux.cedula
+
     for pedido in pedidos:
-        if Cliente.objects.filter(cedula=pedido.cliente):
-            cliente= Cliente.objects.get(cedula=pedido.cliente)
+        print "pedido"
+        titulo = "Hola! "
+        contenido = "Tu numero de recibo para tu pedido de hoy es: "
+        try:
+            print pedido.cliente.cedula
+            paver = Cliente.objects.filter(cedula='18941663')
+            print "ahi va la vaina"
+            busca = pedido.cliente.cedula
+        except:
+            busca="nada"
+        if Cliente.objects.filter(cedula=busca):
+            print "entreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            cliente= Cliente.objects.get(cedula=pedido.cliente.cedula)
+            titulo = titulo + cliente.nombres
+            contenido = contenido + str(pedido.codigo)
+            correo = EmailMessage(titulo, contenido, to=[cliente.email])
+            try:
+                correo.send()
+                mensaje = "The email was sent correctly"
+            except:
+                mensaje= 'error sending the emal'
         else:
+            print "Elseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
             cliente=None
-        Pedido.objects.create(cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
+        if Pedido.objects.filter(num_pedido=pedido.num_pedido):
+            pass
+        else:
+            Pedido.objects.create(cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
                               envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado)

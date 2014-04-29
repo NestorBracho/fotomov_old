@@ -192,3 +192,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.contrib.messages.context_processors.messages",
   "fotomov.context_processors.obtener_tareas",
 )
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'fotomov.desarrollo@gmail.com'
+EMAIL_HOST_PASSWORD = 'fotomovqazxsw'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
