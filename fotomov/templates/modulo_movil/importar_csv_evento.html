@@ -1,0 +1,13 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block titulo %}
+    Importar datos de evento
+{% endblock %}
+{% block seccion-contenido %}
+
+<form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}
+
+{{ formulario | bootstrap }}
+<input type="submit" value="SUBMIT" class="btn btn-xl btn-primary">
+</form>
+{% endblock %}

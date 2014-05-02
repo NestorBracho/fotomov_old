@@ -1,5 +1,6 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
@@ -10,7 +11,9 @@ from django.core import serializers
 from evento.forms import *
 from productos.forms import *
 from modulo_movil.models import *
+from modulo_movil.forms import ArchivoForm
 from evento.models import *
+from clientes.models import *
 from productos.models import *
 import csv
 import time as tm
@@ -36,6 +39,125 @@ def date_to_int(dia):
     dia_cont = dia_split[0]
     return dia_cont
 
+def actualizar_datos():
+    clientes = cliente_aux.objects.all()
+    pedidos = pedido_aux.objects.all()
+    productos = ProductoEventoPedido_aux.objects.all()
+    for cliente in clientes:
+        print cliente
+        if Cliente.objects.filter(cedula=cliente.cedula):
+            aux= Cliente.objects.get(cedula=cliente.cedula)
+            aux.nombres = cliente.nombres
+            aux.apellidos = cliente.apellidos
+            aux.telefono = cliente.telefono
+            aux.email = cliente.email
+            aux.direccion_fiscal = cliente.direccion_fiscal
+            aux.rif = cliente.rif
+            aux.cedula = cliente.cedula
+            aux.save()
+            print aux.cedula
+        else:
+            aux = Cliente.objects.create(nombres=cliente.nombres, apellidos=cliente.apellidos, telefono=cliente.telefono, email=cliente.email,
+                                   direccion_fiscal=cliente.direccion_fiscal, rif=cliente.rif, cedula=cliente.cedula)
+            print aux.cedula
+
+    for pedido in pedidos:
+        print "pedido"
+        titulo = "Hola! "
+        contenido = "Tu numero de recibo para tu pedido de hoy es: "
+        try:
+            print pedido.cliente.cedula
+            paver = Cliente.objects.filter(cedula='18941663')
+            print "ahi va la vaina"
+            busca = pedido.cliente.cedula
+        except:
+            busca="nada"
+        if Cliente.objects.filter(cedula=busca):
+            print "entreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            cliente= Cliente.objects.get(cedula=pedido.cliente.cedula)
+            titulo = titulo + cliente.nombres
+            contenido = contenido + str(pedido.codigo)
+            correo = EmailMessage(titulo, contenido, to=[cliente.email])
+            try:
+                correo.send()
+                mensaje = "The email was sent correctly"
+            except:
+                mensaje= 'error sending the emal'
+        else:
+            print "Elseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            cliente=None
+        if Pedido.objects.filter(num_pedido=pedido.num_pedido):
+            pass
+        else:
+            Pedido.objects.create(cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
+                              id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
+                              razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
+                              envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado)
+    for producto in productos:
+        prodev= ProductoEvento.objects.get(id=producto.producto)
+        ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
+                                            producto=prodev, estado=producto.estado, comentario=producto.comentario)
+    return HttpResponseRedirect('/escritorio')
+
+def importar_csv_evento(request):
+    if request.method == 'POST':
+        cliente_aux.objects.all().delete()
+        pedido_aux.objects.all().delete()
+        ProductoEventoPedido_aux.objects.all().delete()
+        formulario = ArchivoForm(request.POST, request.FILES)
+        if formulario.is_valid():
+            file = formulario.cleaned_data['archivo']
+            check = str(file).split('.')
+            if check[len(check) - 1] == "csv":
+                #archivo = open(file)
+                manejador = csv.reader(file)
+                tipo = 0
+                for row in manejador:
+                    print row
+                    if tipo == 0:
+                        try:
+                            cliente = cliente_aux.objects.create(nombres=row[0], apellidos=row[1], telefono=row[2], email=row[3],
+                                                             direccion_fiscal=row[4], rif=row[5], cedula=row[6])
+                        except:
+                            pass
+                        if row[0] == '!-endcliente-!':
+                            tipo = 1
+                    if tipo == 1:
+                        if row[0] != '!-endcliente-!':
+                            try:
+                                if row[0] != "None":
+                                    print row[0]
+                                    cl = cliente_aux.objects.get(cedula=row[0])
+                                else:
+                                    cl = None
+                                if row[3] == "":
+                                    row[3]= None
+                                if row[8] == "":
+                                    row[8]= None
+                                pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
+                                                               id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
+                                                               razon_social=row[7], total=row[8], codigo=row[9], direccion_entrega=row[10],
+                                                               envio=row[11], fue_pagado=row[12], estado=row[14])
+                            except:
+                                pass
+                            if row[0] == '!-endpedido-!':
+                                tipo = 2
+
+                    if tipo == 2:
+                        print "despues del tipo 2"
+
+                        if row[0] != '!-endpedido-!':
+                            print "im in"
+                            producto = ProductoEventoPedido_aux.objects.create(cantidad=row[0], ruta=row[1], num_pedido=row[2],
+                                                                               producto=row[3], estado=row[4], comentario=row[5])
+            else:
+                print False
+        actualizar_datos()
+    else:
+        formulario = ArchivoForm()
+    return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+
 def exportar_csv_evento(request):
     response = HttpResponse(content_type='text/csv')
     fecha = datetime.datetime.now()
@@ -50,6 +172,9 @@ def exportar_csv_evento(request):
     for cliente in clientes:
         writer.writerow([cliente.nombres, cliente.apellidos, cliente.telefono, cliente.email,
                          cliente.direccion_fiscal, cliente.rif, cliente.cedula])
+
+    writer.writerow(['!-endcliente-!'])
+
     for pedido in pedidos:
         client = pedido.cliente
         try:
@@ -57,10 +182,14 @@ def exportar_csv_evento(request):
         except:
             client = "None"
             print "tiene cedula"
+
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
                         pedido.total, pedido.codigo, pedido.direccion_entrega, pedido.envio,
                         pedido.fue_pagado, pedido.lote, pedido.estado])
+
+    writer.writerow(['!-endpedido-!'])
+
     for producto in pep:
         writer.writerow([producto.cantidad, producto.ruta.encode("utf-8"), producto.num_pedido,
                          producto.producto.id, producto.estado , producto.comentario])
