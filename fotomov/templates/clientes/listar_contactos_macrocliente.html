@@ -62,7 +62,7 @@ Personas contacto de {{ macrocliente.nombre }}
                                                 <td>{{ contacto.cedula }}</td>
                                                 <td>{{ contacto.telefono }}</td>
                                                 <td>{{ contacto.email }}</td>
-                                                <td><a class="btn btn-default" href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
+                                                <td><a class="btn btn-xs btn-success" href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
                                             </tr>
                                         {% else %}
                                             <tr class="gradeU">
@@ -70,7 +70,7 @@ Personas contacto de {{ macrocliente.nombre }}
                                                 <td>{{ contacto.cedula }}</td>
                                                 <td>{{ contacto.telefono }}</td>
                                                 <td>{{ contacto.email }}</td>
-                                                <td><a class="btn btn-default" href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
+                                                <td><a class="btn btn-xs btn-success" href="/editar_contacto_macrocliente/{{ contacto.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{contacto.id}})">Eliminar</button></td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -86,8 +86,8 @@ Personas contacto de {{ macrocliente.nombre }}
 
 
                         </div>
-                        <div class="panel-body">
-                            <a href="/nuevo_contacto_macrocliente/{{ macrocliente.id }}" class="btn btn-default col-sm-12">Agregar Contacto</a>
+                        <div class="panel-body col-md-12">
+                            <a href="/nuevo_contacto_macrocliente/{{ macrocliente.id }}" class="btn btn-primary btn-block">Agregar Contacto</a>
                         </div>
 
 

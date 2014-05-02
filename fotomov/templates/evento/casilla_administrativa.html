@@ -77,6 +77,30 @@ Administración
             </div>
         </div>
     </div>
+
+    <div class="panel panel-default table-responsive">
+        <div class="panel-heading">
+            Gastos variables
+        </div>
+        <div class="panel-body">
+            <div>
+                <div id="body-variable">
+                    <p></p>
+                    <div class="col-sm-6">
+                        <div class="col-sm-12"><b>Productos</b></div>
+                        <div class="col-sm-12"><span id="total-productos">0</span></div>
+                    </div>
+                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                    {% for producto in productos %}
+                        <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-6"><span class="variables">{{ producto.2 }}</span></div>
+                    {% endfor %}
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-variables">0</span></b></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="AgregarGastoFijo" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
@@ -132,6 +156,10 @@ window.onload = function(){
     $('.fijos').each(function(){
                                 $(this).spinner("value",parseInt($(this).val()))
                                 $("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));
+                            });
+
+    $('.variables').each(function(){
+                                $("#total-productos").html(parseFloat($("#total-productos").html())+parseFloat($(this).html()));
                             });
 
 }
