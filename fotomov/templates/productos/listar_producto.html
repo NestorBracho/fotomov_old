@@ -42,7 +42,7 @@
                         {{ producto.descripcion }}
                     </td>
                     <td>
-                        <a class="btn btn-default" href="/editar_producto/{{ producto.id }}">Editar</a> <button type="button" class="btn btn-default btn-danger" onclick="deleteAlert({{producto.id}})">Eliminar</button>
+                        <a class="btn btn-xs btn-success" href="/editar_producto/{{ producto.id }}">Editar</a> <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{producto.id}})">Eliminar</button>
                     </td>
                 </tr>
             {% endfor %}

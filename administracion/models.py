@@ -31,3 +31,8 @@ class Pago(models.Model):
     nro_de_comprobante = models.CharField(max_length=100)
     def __unicode__(self):
         return self.pago
+
+class GastoEvento(models.Model):
+    nombre = models.CharField(max_length=100)
+    monto = models.FloatField()
+    fecha = models.DateField(auto_now_add=True)
