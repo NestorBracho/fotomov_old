@@ -68,12 +68,10 @@ def actualizar_datos():
         try:
             print pedido.cliente.cedula
             paver = Cliente.objects.filter(cedula='18941663')
-            print "ahi va la vaina"
             busca = pedido.cliente.cedula
         except:
             busca="nada"
         if Cliente.objects.filter(cedula=busca):
-            print "entreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
             cliente= Cliente.objects.get(cedula=pedido.cliente.cedula)
             titulo = titulo + cliente.nombres
             contenido = contenido + str(pedido.codigo)
@@ -84,7 +82,6 @@ def actualizar_datos():
             except:
                 mensaje= 'error sending the emal'
         else:
-            print "Elseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
             cliente=None
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             pass
