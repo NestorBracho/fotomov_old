@@ -115,7 +115,6 @@ def agregar_staff(request, id_evento):
     print lista
     return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento, 'bloques':bloques}, context_instance= RequestContext(request))
 
-
 def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
     contacto = Encargado.objects.filter(macrocliente=macroC)
@@ -171,11 +170,13 @@ def agregar_productos(request,id_evento):
             precio = request.POST.get(seleccionado+'precio')
             costo = request.POST.get(seleccionado+'costo')
             producto = Producto.objects.get(id=seleccionado)
-            producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
-            producto_evento.precio= float(precio.replace(',','.'))
-            producto_evento.costo = float(costo.replace(',','.'))
-            producto_evento.save()
-            #producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
+            try:
+                producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
+                producto_evento.precio= float(precio.replace(',','.'))
+                producto_evento.costo = float(costo.replace(',','.'))
+                producto_evento.save()
+            except:
+                producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         return HttpResponseRedirect('/listar_evento/2')
     print lista
     return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
@@ -430,19 +431,34 @@ def editar_evento(request, iden):
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
 
 def editar_funcion(request):
+    print "entre"
     if request.GET['accion']=='1':#actualizar
         funcion = Funcion.objects.get(id = request.GET['iden'])
         funcion.nombre = request.GET['nomb']
         funcion.horas = request.GET['horas']
         if request.GET['dia'] != '':
-            fecha = datetime.datetime.strptime(request.GET['dia'], "%m/%d/%Y")
-            funcion.dia = fecha
+            #fecha = datetime.datetime.strptime(request.GET['dia'], "%m/%d/%Y")
+            #print fecha
+            dia_split = request.GET['dia'].split('/')
+            dia_final = dia_split[2] + "-" + dia_split[1] + "-" + dia_split[0]
+            funcion.dia = dia_final
         funcion.save()
+        #try:
+        #    direccionFuncion.objects.get(funcion=funcion).delete()
+        #    directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+        #except:
+        directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+        #directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='2':#agregar
         evento = Evento.objects.get(id = request.GET['evento'])
-        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = datetime.datetime.strptime(request.GET['dia'], "%m/%d/%Y"), horas = request.GET['horas'], entrega_fotos = '', direccion = evento.sede.direccion)
+        dia_split = request.GET['dia'].split('/')
+        dia_final = dia_split[2] + "-" + dia_split[1] + "-" + dia_split[0]
+        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = dia_final, horas = request.GET['horas'], entrega_fotos = '', direccion = evento.sede.direccion)
+
+        directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='3':#borrar
         funcion = Funcion.objects.get(id = request.GET['iden'])
+        direccionFuncion.objects.get(funcion=funcion).delete()
         funcion.delete()
     elif request.GET['accion']=='4':#locacion
         loc = Direccion.objects.filter(nombre = request.GET['nomb'])

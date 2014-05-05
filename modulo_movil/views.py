@@ -27,6 +27,8 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
+from escpos import *
+
 
 def obtener_timestamp():
     a = tm.time()
@@ -154,6 +156,12 @@ def importar_csv_evento(request):
         formulario = ArchivoForm()
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+def imprimir_ticket():
+    impresora = printer.Usb(0x1cb0,0x0003)
+    impresora.text("\nFotomov\n")
+    impresora.text("5 x Foto10x10\n")
+    impresora.text("2 x Taza\n")
+    impresora.cut()
 
 def exportar_csv_evento(request):
     response = HttpResponse(content_type='text/csv')
@@ -434,6 +442,7 @@ def generar_pedido(request, pedido, cedula):
             for pep in peps:
                 pep.estado = 'Pagado'
                 pep.save()
+        imprimir_ticket()
         return HttpResponseRedirect('/ingresar_ticket/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 

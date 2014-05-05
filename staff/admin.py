@@ -8,6 +8,7 @@ from tareas.models import *
 from administracion.models import *
 from modulo_movil.models import *
 
+
 admin.site.register(Usuario)
 admin.site.register(Privilegios)
 admin.site.register(Direccion)
