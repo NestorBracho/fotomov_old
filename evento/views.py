@@ -165,13 +165,17 @@ def agregar_productos(request,id_evento):
     if request.method == 'POST':
         seleccionados = request.POST.getlist('seleccionados')
         existentes = ProductoEvento.objects.filter(evento=evento)
-        for existente in existentes:
-            existente.delete()
+        #for existente in existentes:
+            #existente.delete()
         for seleccionado in seleccionados:
             precio = request.POST.get(seleccionado+'precio')
             costo = request.POST.get(seleccionado+'costo')
             producto = Producto.objects.get(id=seleccionado)
-            producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
+            producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
+            producto_evento.precio= float(precio.replace(',','.'))
+            producto_evento.costo = float(costo.replace(',','.'))
+            producto_evento.save()
+            #producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         return HttpResponseRedirect('/listar_evento/2')
     print lista
     return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
@@ -181,6 +185,7 @@ def casilla_administrativa(request, id_evento):
     funciones = Funcion.objects.filter(evento = evento)
     staffs = AsistenciaStaffFuncion.objects.filter(funcion__in = funciones)
     usuarios = []
+    #------------------------------------------------------honorarios
     for staff in staffs:
         flag = False
         for usuario in usuarios:
@@ -196,7 +201,28 @@ def casilla_administrativa(request, id_evento):
                 bloque = StaffPorFuncion.objects.get(funcion = staff.funcion, tipo = staff.usuario.privilegio)
                 aux.append([staff, bloque.bloque])
         lista.append([usuario, aux])
-    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista}, context_instance=RequestContext(request))
+    #-------------------------------------------------------productos
+    productosTotales = []
+    ordenesCompras = []
+    aux = []
+    productosEvento = ProductoEvento.objects.filter(evento = evento)
+    for productoEvento in productosEvento:
+        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento))
+    for au in aux:
+        for a in au:
+            ordenesCompras.append(a)
+    for ordenCompra in ordenesCompras:
+        for productoEvento in productosEvento:
+            if ordenCompra.producto == productoEvento:
+                flag = False
+                for productosTotal in productosTotales:
+                    if productoEvento.producto == productosTotal[0]:
+                        productosTotal[1] = productosTotal[1] + ordenCompra.cantidad
+                        productosTotal[2] = productosTotal[2] + productoEvento.precio_produccion*ordenCompra.cantidad
+                        flag = True
+                if flag == False:
+                    productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad])
+    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'productos': productosTotales}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):
