@@ -165,13 +165,17 @@ def agregar_productos(request,id_evento):
     if request.method == 'POST':
         seleccionados = request.POST.getlist('seleccionados')
         existentes = ProductoEvento.objects.filter(evento=evento)
-        for existente in existentes:
-            existente.delete()
+        #for existente in existentes:
+            #existente.delete()
         for seleccionado in seleccionados:
             precio = request.POST.get(seleccionado+'precio')
             costo = request.POST.get(seleccionado+'costo')
             producto = Producto.objects.get(id=seleccionado)
-            producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
+            producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
+            producto_evento.precio= float(precio.replace(',','.'))
+            producto_evento.costo = float(costo.replace(',','.'))
+            producto_evento.save()
+            #producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         return HttpResponseRedirect('/listar_evento/2')
     print lista
     return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
