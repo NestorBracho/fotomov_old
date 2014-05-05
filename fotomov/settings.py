@@ -148,7 +148,6 @@ INSTALLED_APPS = (
     'direcciones',
     'productos',
     'modulo_movil',
-    'south',
     'tareas',
     'administracion',
 )

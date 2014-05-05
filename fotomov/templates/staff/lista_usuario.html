@@ -55,7 +55,7 @@
             <thead><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Cedula</th><th>Privilegio</th><th>Email</th></th><th>Acciones</th></thead>
             {% for elemento in lista %}
 
-            <tr><td><a href="/ver_perfil/{{ elemento.id }}">{{elemento.usuario.username}}</a></td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td>{{elemento.email}}</td><td><button type="button" onclick="modificar({{elemento.id}})" class="btn btn-xs">Modificar</button> <button type="button" onclick="eliminar({{elemento.id}})" class="btn btn-xs btn-danger">Eliminar</button></td></tr>
+            <tr><td><a href="/ver_perfil/{{ elemento.id }}">{{elemento.usuario.username}}</a></td><td>{{elemento.nombre}}</td><td>{{elemento.apellido}}</td><td>{{elemento.cedula}}</td><td>{{elemento.privilegio.nombre}}</td><td>{{elemento.email}}</td><td><button type="button" onclick="modificar({{elemento.id}})" class="btn btn-xs btn-success">Editar</button> <button type="button" onclick="eliminar({{elemento.id}})" class="btn btn-xs btn-danger">Eliminar</button></td></tr>
 
             {% endfor %}
         </table>
