@@ -440,19 +440,21 @@ def editar_funcion(request):
             #fecha = datetime.datetime.strptime(request.GET['dia'], "%m/%d/%Y")
             #print fecha
             dia_split = request.GET['dia'].split('/')
-            dia_final = dia_split[2] + "-" + dia_split[1] + "-" + dia_split[0]
+            dia_final = dia_split[2] + "-" + dia_split[0] + "-" + dia_split[1]
+            print dia_split
+            print dia_final
             funcion.dia = dia_final
         funcion.save()
-        #try:
-        #    direccionFuncion.objects.get(funcion=funcion).delete()
-        #    directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
-        #except:
-        directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+        try:
+            direccionFuncion.objects.get(funcion=funcion).delete()
+            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+        except:
+            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
         #directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='2':#agregar
         evento = Evento.objects.get(id = request.GET['evento'])
         dia_split = request.GET['dia'].split('/')
-        dia_final = dia_split[2] + "-" + dia_split[1] + "-" + dia_split[0]
+        dia_final = dia_split[2] + "-" + dia_split[0] + "-" + dia_split[1]
         funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = dia_final, horas = request.GET['horas'], entrega_fotos = '', direccion = evento.sede.direccion)
 
         directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)

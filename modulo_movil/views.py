@@ -156,11 +156,16 @@ def importar_csv_evento(request):
         formulario = ArchivoForm()
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
-def imprimir_ticket():
+def imprimir_ticket(pedido):
+    productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
     impresora = printer.Usb(0x1cb0,0x0003)
-    impresora.text("\nFotomov\n")
-    impresora.text("5 x Foto10x10\n")
-    impresora.text("2 x Taza\n")
+    impresora.text("\nRecibo Fotomov\n")
+    impresora.text("num: " + str(pedido.num_pedido) + "\n")
+    for producto in productos:
+        texto = str(producto.cantidad) + " x " + str(producto.producto.producto.nombre) + "\n"
+        impresora.text(texto)
+    #impresora.text("5 x Foto10x10\n")
+    #impresora.text("2 x Taza\n")
     impresora.cut()
 
 def exportar_csv_evento(request):
@@ -442,7 +447,7 @@ def generar_pedido(request, pedido, cedula):
             for pep in peps:
                 pep.estado = 'Pagado'
                 pep.save()
-        imprimir_ticket()
+        imprimir_ticket(pedido_nuevo)
         return HttpResponseRedirect('/ingresar_ticket/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
