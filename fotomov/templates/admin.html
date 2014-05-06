@@ -221,26 +221,58 @@
                     </li>
 
 {% endcomment %}
-                    <li>
-                        <a href="/escritorio"><i class="fa fa-dashboard fa-fw"></i> Escritorio</a>
+                    <li id="menu-escritorio" >
+                        <a href="/escritorio"><i class="fa fa-desktop fa-fw"></i> Escritorio</a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Órdenes<span class="fa arrow"></span></a>
+                    <li id="menu-staff" >
+                        <a href="#"><i class="fa fa-user fa-fw"></i> Staff / usuarios<span class="fa arrow"></span></a>
+                          <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_usuario/0">Listar Usuarios</a>
+                            </li>
+                            <li>
+                                <a href="/nuevo_usuario"><i class="fa fa-plus"></i> Nuevo Usuario</a>
+                            </li>
+                            <li>
+                                <a href="/configurar_staff/0"><i class="fa fa-plus"></i> Configuracion de Staff</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="menu-marcas" >
+                        <a href="#"><i class="fa fa-tags"></i> Marcas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/listar_pedidos">Buscar órdenes</a>
+                                <a href="/listar_marcas/0">Listar Marcas</a>
                             </li>
                             <li>
-                                <a href="/listar_pedidos_pendientes">Órdenes pendientes</a>
-                            </li>
-                            <li>
-                                <a href="#">Pagos Pendientes</a>
+                                <a href="/nueva_marca"><i class="fa fa-plus"></i> Nueva Marca</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Eventos<span class="fa arrow"></span></a>
+                    <li id="menu-macroclientes" >
+                        <a href="#"><i class="fa fa-users fa-fw"></i> Macroclientes<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_macroclientes/0">Lista de Macroclientes</a>
+                            </li>
+                            <li>
+                                <a href="#">Registrar conversaci&oacute;n</a>
+                            </li>
+                            <li>
+                                <a href="#">Historial de conversaci&oacute;n</a>
+                            </li>
+                            <li>
+                                <a href="/nuevo_macrocliente"><i class="fa fa-plus"></i> Nuevo macrocliente</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-clientes" >
+                        <a href="forms.html"><i class="fa fa-male fa-fw"></i> Clientes</a>
+                    </li>
+                    <li id="menu-eventos" >
+                        <a href="#"><i class="fa fa-camera fa-fw"></i> Eventos<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="/listar_evento/0">Lista de eventos</a>
@@ -263,85 +295,8 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-users fa-fw"></i> Macroclientes<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_macroclientes/0">Lista de Macroclientes</a>
-                            </li>
-                            <li>
-                                <a href="#">Registrar conversaci&oacute;n</a>
-                            </li>
-                            <li>
-                                <a href="#">Historial de conversaci&oacute;n</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_macrocliente"><i class="fa fa-plus"></i> Nuevo macrocliente</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-user fa-fw"></i> Clientes</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Staff / usuarios<span class="fa arrow"></span></a>
-                          <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_usuario/0">Listar Usuarios</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_usuario"><i class="fa fa-plus"></i> Nuevo Usuario</a>
-                            </li>
-                            <li>
-                                <a href="/configurar_staff/0"><i class="fa fa-plus"></i> Configuracion de Staff</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-tasks fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/crear_tarea/">Asignar tarea</a>
-                            </li>
-                            <li>
-                                <a href="/listar_tareas/">Mis tareas</a>
-                            </li>
-                            <li>
-                                <a href="/listar_todas_tareas/">Supervisar tareas</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-tags"></i> Marcas<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_marcas/0">Listar Marcas</a>
-                            </li>
-                            <li>
-                                <a href="/nueva_marca"><i class="fa fa-plus"></i> Nueva Marca</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-tags"></i> Productos<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_producto/0">Listar Productos</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_producto"><i class="fa fa-plus"></i>Nuevo Producto</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="/edicion_lotes/"><i class="fa fa-briefcase fa-fw"></i> Edicion lotes (Editor)</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-cog"></i> Administración<span class="fa arrow"></span></a>
+                    <li id="menu-administracion" >
+                        <a href="#"><i class="fa fa-usd fa-fw"></i> Administración<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="/listar_producto/0">Listar Gastos</a>
@@ -372,13 +327,62 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
+                    <li id="menu-tareas" >
+                        <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/crear_tarea/">Asignar tarea</a>
+                            </li>
+                            <li>
+                                <a href="/listar_tareas/">Mis tareas</a>
+                            </li>
+                            <li>
+                                <a href="/listar_todas_tareas/">Supervisar tareas</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-pedidos" >
+                        <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Pedidos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_pedidos">Buscar pedidos</a>
+                            </li>
+                            <li>
+                                <a href="/listar_pedidos_pendientes">Pedidos pendientes</a>
+                            </li>
+                            <li>
+                                <a href="#">Pagos Pendientes</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-edicion" >
+                        <a href="/edicion_lotes/"><i class="fa fa-briefcase fa-fw"></i> Edicion lotes (Editor)</a>
+                    </li>
+                    <li id="menu-generarlotes" >
+                        <a href="/generar_lote"><i class="fa fa-cloud-upload fa-fw"></i> Generar Lotes</a>
+                    <li id="menu-productos" >
+                        <a href="#"><i class="fa fa-tags"></i> Productos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_producto/0">Listar Productos</a>
+                            </li>
+                            <li>
+                                <a href="/nuevo_producto"><i class="fa fa-plus"></i>Nuevo Producto</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-especiales" >
+                        <a href="#"><i class="fa fa-star-o fa-fw"></i> Servicios especiales</a>
+                    </li>
+                    <li id="menu-estadisticas" >
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Estad&iacute;sticas</a>
                     </li>
-                    <li>
-                        <a href="/generar_lote"><i class="fa fa-cloud-upload fa-fw"></i> Boton magico de Toto</a>
                     </li>
-                    <li>
+{% comment %}
+	                    <li id="menu-otro" >
                         <a href="#"><i class="fa fa-lock fa-fw"></i> Otro elemento<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -408,7 +412,8 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                </ul>
+
+{% endcomment %}                </ul>
                 <!-- /#side-menu -->
             </div>
             <!-- /.sidebar-collapse -->
