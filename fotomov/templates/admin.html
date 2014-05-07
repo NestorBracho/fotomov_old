@@ -138,7 +138,8 @@
                     <!-- /.dropdown-tasks -->
                 </li>
                 <!-- /.dropdown -->
-                <li class="dropdown">
+{% comment %}
+	                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
@@ -179,6 +180,7 @@
                     </ul>
                     <!-- /.dropdown-alerts -->
                 </li>
+{% endcomment %}
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -205,7 +207,8 @@
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
+{% comment %}
+	                    <li class="sidebar-search">
                         <div class="input-group custom-search-form">
                             <input type="text" class="form-control" placeholder="Search...">
                             <span class="input-group-btn">
@@ -216,130 +219,87 @@
                         </div>
                         <!-- /input-group -->
                     </li>
-                    <li>
-                        <a href="/escritorio"><i class="fa fa-dashboard fa-fw"></i> Escritorio</a>
+
+{% endcomment %}
+                    <li id="menu-escritorio" >
+                        <a href="/escritorio"><i class="fa fa-desktop fa-fw"></i> Escritorio</a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Órdenes<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_pedidos">Buscar órdenes</a>
-                            </li>
-                            <li>
-                                <a href="/listar_pedidos_pendientes">Órdenes pendientes</a>
-                            </li>
-                            <li>
-                                <a href="#">Pagos Pendientes</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-calendar-o fa-fw"></i> Eventos<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_evento/0">Lista de eventos</a>
-                            </li>
-                            <li>
-                                <a href="/calendario_de_eventos">Calendario de eventos</a>
-                            </li>
-                            <li>
-                                <a href="#">Configuración predeterminada</a>
-                            </li>
-                            <li>
-                                <a href="/listar_bloques/0/">Listar bloques de hora de staff</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_tipo_de_evento/0/">Tipos de eventos</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_evento"><i class="fa fa-plus"></i> Nuevo evento</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-users fa-fw"></i> Macroclientes<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_macroclientes/0">Lista de Macroclientes</a>
-                            </li>
-                            <li>
-                                <a href="#">Registrar conversaci&oacute;n</a>
-                            </li>
-                            <li>
-                                <a href="#">Historial de conversaci&oacute;n</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_macrocliente"><i class="fa fa-plus"></i> Nuevo macrocliente</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-user fa-fw"></i> Clientes</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Staff / usuarios<span class="fa arrow"></span></a>
+                    <li id="menu-staff" >
+                        <a href="#"><i class="fa fa-user fa-fw"></i> Staff<span class="fa arrow"></span></a>
                           <ul class="nav nav-second-level">
                             <li>
-                                <a href="/listar_usuario/0">Listar Usuarios</a>
+                                <a href="/nuevo_usuario"><i class="fa fa-plus fa-fw"></i> Nuevo staff</a>
                             </li>
                             <li>
-                                <a href="/nuevo_usuario"><i class="fa fa-plus"></i> Nuevo Usuario</a>
+                                <a href="/listar_usuario/0"><i class="fa fa-list-ul fa-fw"></i> Lista de staff</a>
                             </li>
                             <li>
-                                <a href="/configurar_staff/0"><i class="fa fa-plus"></i> Configuracion de Staff</a>
+                                <a href="/configurar_staff/0"><i class="fa fa-cog fa-fw"></i> Configuracion privilegios</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-tasks fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/crear_tarea/">Asignar tarea</a>
-                            </li>
-                            <li>
-                                <a href="/listar_tareas/">Mis tareas</a>
-                            </li>
-                            <li>
-                                <a href="/listar_todas_tareas/">Supervisar tareas</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
+                    <li id="menu-marcas" >
                         <a href="#"><i class="fa fa-tags"></i> Marcas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/listar_marcas/0">Listar Marcas</a>
+                                <a href="/nueva_marca"><i class="fa fa-plus fa-fw"></i> Nueva Marca</a>
                             </li>
                             <li>
-                                <a href="/nueva_marca"><i class="fa fa-plus"></i> Nueva Marca</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-tags"></i> Productos<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_producto/0">Listar Productos</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_producto"><i class="fa fa-plus"></i>Nuevo Producto</a>
+                                <a href="/listar_marcas/0"><i class="fa fa-list-ul fa-fw"></i> Lista de Marcas</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
-                        <a href="/edicion_lotes/"><i class="fa fa-briefcase fa-fw"></i> Edicion lotes (Editor)</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-cog"></i> Administración<span class="fa arrow"></span></a>
+                    <li id="menu-macroclientes" >
+                        <a href="#"><i class="fa fa-users fa-fw"></i> Macroclientes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/listar_producto/0">Listar Gastos</a>
+                                <a href="/nuevo_macrocliente"><i class="fa fa-plus fa-fw"></i> Nuevo macrocliente</a>
+                            </li>
+                            <li>
+                                <a href="/listar_macroclientes/0"><i class="fa fa-list-ul fa-fw"></i>Lista de Macroclientes</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-microphone fa-fw"></i> Registrar conversaci&oacute;n</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-folder-open fa-fw"></i> Historial de conversaci&oacute;n</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-clientes" >
+                        <a href="forms.html"><i class="fa fa-male fa-fw"></i> Clientes</a>
+                    </li>
+                    <li id="menu-eventos" >
+                        <a href="#"><i class="fa fa-camera fa-fw"></i> Eventos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/nuevo_evento"><i class="fa fa-plus fa-fw"></i> Nuevo evento</a>
+                            </li>
+                            <li>
+                                <a href="/nuevo_tipo_de_evento/0/"><i class="fa fa-plus fa-fw"></i> Nuevo tipo de eventos</a>
+                            </li>
+                            <li>
+                                <a href="/listar_evento/0"><i class="fa fa-list-ul fa-fw"></i> Lista de eventos</a>
+                            </li>
+                            <li>
+                                <a href="/listar_bloques/0/"> <i class="fa fa-list-ul fa-fw"></i>Lista de bloques de hora de staff</a>
+                            </li>
+                            <li>
+                                <a href="/calendario_de_eventos"><i class="fa fa-calendar fa-fw"></i> Calendario de eventos</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-cof fa-fw"></i> Configuración predeterminada</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-administracion" >
+                        <a href="#"><i class="fa fa-usd fa-fw"></i> Administraci&oacute;n<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_producto/0"><i class="fa fa-"></i></a>
                             </li>
                             <li>
                             <a href="#"><i class="fa fa-briefcase fa-fw"></i> Lotes <span class="fa arrow"></span></a>
@@ -367,13 +327,74 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
+                    <li id="menu-tareas" >
+                        <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/crear_tarea/"><i class="fa fa-plus fa-fw"></i> Asignar tarea</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-list-ul fa-fw"></i> Lista de tareas</a>
+                            </li> 
+                            <li>
+                                <a href="/listar_tareas/"><i class="fa fa-pencil-square-o fa-fw"></i> Mis tareas</a>
+                            </li>
+                            <li>
+                                <a href="/listar_todas_tareas/"><i class="fa fa-road fa-fw"></i> Supervisi&oacute;n tareas</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-plus fa-fw"></i> Asignar notificaci&oacute;n</a>
+                            </li> 
+                            <li>
+                                <a href="#"><i class="fa fa-list-ul fa-fw"></i> Lista de notificaciones</a>
+                            </li> 
+                            <li>
+                                <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Mis notificaciones</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-pedidos" >
+                        <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Pedidos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_pedidos">Buscar pedidos</a>
+                            </li>
+                            <li>
+                                <a href="/listar_pedidos_pendientes">Pedidos pendientes</a>
+                            </li>
+                            <li>
+                                <a href="#">Pagos Pendientes</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-edicion" >
+                        <a href="/edicion_lotes/"><i class="fa fa-briefcase fa-fw"></i> Edicion lotes (Editor)</a>
+                    </li>
+                    <li id="menu-generarlotes" >
+                        <a href="/generar_lote"><i class="fa fa-cloud-upload fa-fw"></i> Generar Lotes</a>
+                    <li id="menu-productos" >
+                        <a href="#"><i class="fa fa-tags"></i> Productos<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/listar_producto/0">Listar Productos</a>
+                            </li>
+                            <li>
+                                <a href="/nuevo_producto"><i class="fa fa-plus"></i>Nuevo Producto</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li id="menu-especiales" >
+                        <a href="#"><i class="fa fa-star-o fa-fw"></i> Servicios especiales</a>
+                    </li>
+                    <li id="menu-estadisticas" >
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Estad&iacute;sticas</a>
                     </li>
-                    <li>
-                        <a href="/generar_lote"><i class="fa fa-cloud-upload fa-fw"></i> Boton magico de Toto</a>
                     </li>
-                    <li>
+{% comment %}
+	                    <li id="menu-otro" >
                         <a href="#"><i class="fa fa-lock fa-fw"></i> Otro elemento<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -403,7 +424,8 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                </ul>
+
+{% endcomment %}                </ul>
                 <!-- /#side-menu -->
             </div>
             <!-- /.sidebar-collapse -->
@@ -426,15 +448,10 @@
             <!-- /.row -->
             {% block seccion-contenido%}
             {% endblock %}
-            <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
 		<footer>
-			Los elementos de la pagina que no se están presentando para revisión se muestran con fines ilustrativos y no necesariamente representan la funcionalidad final<br>
-			<br>
-			Sitio bajo desarollo<br>
-			por Turpial<br>
-			Fotomov C.A.
+			
 		</footer>
     </div>
     <!-- /#wrapper -->

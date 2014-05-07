@@ -27,6 +27,8 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
+from escpos import *
+
 
 def obtener_timestamp():
     a = tm.time()
@@ -68,12 +70,10 @@ def actualizar_datos():
         try:
             print pedido.cliente.cedula
             paver = Cliente.objects.filter(cedula='18941663')
-            print "ahi va la vaina"
             busca = pedido.cliente.cedula
         except:
             busca="nada"
         if Cliente.objects.filter(cedula=busca):
-            print "entreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
             cliente= Cliente.objects.get(cedula=pedido.cliente.cedula)
             titulo = titulo + cliente.nombres
             contenido = contenido + str(pedido.codigo)
@@ -84,7 +84,6 @@ def actualizar_datos():
             except:
                 mensaje= 'error sending the emal'
         else:
-            print "Elseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
             cliente=None
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             pass
@@ -157,6 +156,75 @@ def importar_csv_evento(request):
         formulario = ArchivoForm()
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+def exportar_csv_central(request):
+    direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
+    direccion.save()
+    print direccion.id
+    return True
+
+def exportar_csv_central2(request):
+    clientes = Cliente.objects.all()
+    date = datetime.datetime.now()
+    fecha = str(date).split(" ")
+    direcciones = Direccion.objects.all()
+    funciones = Funcion.objects.filter(dia__gte=fecha[0])
+    eventos = []
+    for funcion in funciones:
+        try:
+            eventos.index(funcion.evento)
+        except:
+            eventos.append(funcion.evento)
+    encargados=[]
+    for evento in eventos:
+        try:
+            encargados.index(evento.encargado)
+        except:
+            encargados.append(evento.encargado)
+    sedes = []
+    for evento in eventos:
+        try:
+            sedes.index(evento.sede)
+        except:
+            sedes.append(evento.sede)
+
+    nombre = '"db-central' + str(fecha) + '.csv"'
+    response['Content-Disposition'] = 'attachment; filename=' + nombre
+
+    writer = csv.writer(response)
+    for cliente in clientes:
+        writer.writerow([cliente.id, cliente.nombres, cliente.apellidos, cliente.telefono, cliente.email,
+                         cliente.direccion_fiscal, cliente.rif, cliente.cedula])
+
+    writer.writerow(['!-endcliente-!'])
+    for direccion in direcciones:
+        writer.writerow([direccion.id, direccion.nombre, direccion.lon, direccion.lat, direccion.descripcion])
+    writer.writerow(['!-enddireccion-!'])
+    for encargado in encargados:
+        writer.writerow([encargado.id, encargado.nombre, encargado.cedula, encargado.cargo, encargado.telefono,
+                         encargado.email, encargado.descripcion, encargado.macrocliente])
+    writer.writerow(['!-endencargado-!'])
+    for sede in sede:
+        writer.writerow([sede.id, sede.nombre, sede.direccion, "1"])
+    for evento in eventos:
+        writer.writerow([evento.id, evento.nombre, evento.descripcion, evento.porcentaje_institucion,
+                         evento.encargado.id, evento.encargado.id, evento.sede.id])
+    for funcion in funciones:
+        writer.writerow([funcion.id, funcion.evento.id, funcion.dia, funcion.horas, funcion.entrega_fotos,
+                         funcion.direccion.id])
+    #eventos = Evento.objects.filter
+    return True
+
+def imprimir_ticket(pedido):
+    productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
+    impresora = printer.Usb(0x1cb0,0x0003)
+    impresora.text("\nRecibo Fotomov\n")
+    impresora.text("num: " + str(pedido.num_pedido) + "\n")
+    for producto in productos:
+        texto = str(producto.cantidad) + " x " + str(producto.producto.producto.nombre) + "\n"
+        impresora.text(texto)
+    #impresora.text("5 x Foto10x10\n")
+    #impresora.text("2 x Taza\n")
+    impresora.cut()
 
 def exportar_csv_evento(request):
     response = HttpResponse(content_type='text/csv')
@@ -165,7 +233,7 @@ def exportar_csv_evento(request):
     pedidos = Pedido.objects.all()
     pep = ProductoEventoPedido.objects.all()
 
-    nombre = '"db-' + str(fecha) + '.csv"'
+    nombre = '"db-movil' + str(fecha) + '.csv"'
     response['Content-Disposition'] = 'attachment; filename=' + nombre
 
     writer = csv.writer(response)
@@ -437,6 +505,7 @@ def generar_pedido(request, pedido, cedula):
             for pep in peps:
                 pep.estado = 'Pagado'
                 pep.save()
+        imprimir_ticket(pedido_nuevo)
         return HttpResponseRedirect('/ingresar_ticket/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
