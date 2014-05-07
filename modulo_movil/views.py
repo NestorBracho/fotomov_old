@@ -28,6 +28,7 @@ from datetime import *
 import datetime
 import shutil
 from escpos import *
+from django.core.management import call_command
 
 
 def obtener_timestamp():
@@ -157,10 +158,23 @@ def importar_csv_evento(request):
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def exportar_csv_central(request):
-    direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
-    direccion.save()
-    print direccion.id
-    return True
+    #direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
+    #direccion.save()
+    #print direccion.id
+    #subprocess.call(['./dump-central.sh'])
+    fecha = datetime.datetime.now()
+    nombre = 'db-movil.json'
+    output = open(settings.MEDIA_ROOT+"/base_datos/" + nombre,'w') # Point stdout at a file for dumping data to.
+    call_command('dumpdata', use_natural_keys=True,format='json',indent=3,stdout=output)
+    output.close()
+    return HttpResponseRedirect('/seleccionar_direccion/1')
+
+def importar_csv_central(request):
+    call_command('syncdb', interactive = False)
+    call_command('flush', interactive= False)
+    call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
+    return HttpResponseRedirect('/')
+
 
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
@@ -264,7 +278,7 @@ def exportar_csv_evento(request):
 
     return response
 
-def selecccionar_direccion(request):
+def selecccionar_direccion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -273,7 +287,9 @@ def selecccionar_direccion(request):
         settings.MEDIA_ROOT = directorio
         print settings.MEDIA_ROOT
         return HttpResponseRedirect('/escritorio')
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {}, context_instance=RequestContext(request))
+    else:
+        directorio = settings.MEDIA_ROOT
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
