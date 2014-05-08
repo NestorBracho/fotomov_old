@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'staff.views.ingresar'),
+    url(r'listar_facturas_pendientes/$', 'productos.views.listar_facturas_pendientes'),
+    url(r'descargar_factura/(?P<id_factura>\d+)$', 'productos.views.descargar_factura'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,}),
     url(r'^escritorio/$', 'staff.views.escritorio'),
     url(r'^nueva_marca/$', 'marca.views.nueva_marca'),
