@@ -170,7 +170,10 @@ def exportar_csv_central(request):
     return HttpResponseRedirect('/seleccionar_direccion/1')
 
 def importar_csv_central(request):
-    call_command('syncdb', interactive = False)
+    try:
+        call_command('syncdb', interactive = False)
+    except:
+        pass
     call_command('flush', interactive= False)
     call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
     return HttpResponseRedirect('/')
