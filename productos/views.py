@@ -214,6 +214,10 @@ def listar_facturas_pendientes(request):
     pedidos=Pedido.objects.filter(fue_pagado=True, factura=False)
     return render_to_response('productos/listar_facturas_pendientes.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
 
+def listar_facturas_todas(request):
+    pedidos=Pedido.objects.filter(fue_pagado=True)
+    return render_to_response('productos/listar_facturas_pendientes.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
 def descargar_factura(request, id_factura):
     # Create the HttpResponse object with the appropriate PDF headers.
     pedido = Pedido.objects.get(id=id_factura)
@@ -256,4 +260,5 @@ def descargar_factura(request, id_factura):
     p.showPage()
     p.save()
     pedido.factura=True
+    pedido.save()
     return response
