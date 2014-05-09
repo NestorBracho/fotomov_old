@@ -20,6 +20,10 @@ def crear_tarea(request):
     if request.method == 'POST':
         formulario = TareaForm(request.POST)
         fecha = request.POST.get('fecha')
+        hoy = str(datetime.datetime.now()).split(" ")
+        hoy_split = hoy[0].split("-")
+        hoy_final = hoy_split[2] + "-" + hoy_split[1] + "-" + hoy_split[0]
+        print hoy
         if fecha == "":
             error_fecha = 1
             return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
@@ -28,10 +32,10 @@ def crear_tarea(request):
             fecha_final= fecha_split[2] + "-" + fecha_split[1] + "-" + fecha_split[0]
             evento = request.POST.get('evento')
             if evento == None:
-                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
+                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], fecha_activacion=hoy[0], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
                                              lista=False, fecha=fecha_final, activa=True)
             else:
-                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
+                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], fecha_activacion=hoy[0], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
                                              lista=False, fecha=fecha_final, evento=Evento.objects.get(id=evento), activa=True)
 
             return HttpResponseRedirect('/listar_tareas/')

@@ -1,4 +1,5 @@
 from staff.models import *
+from tareas.models import *
 from staff.forms import *
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
@@ -104,8 +105,15 @@ def modificar_usuario(request, id_usuario):
 def ver_usuario(request, id_usuario):
     return render_to_response('staff/ver_usuario.html', {'usuario':Usuario.objects.get(id=id_usuario)}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def escritorio(request):
-    return render_to_response('escritorio.html', {}, context_instance=RequestContext(request))
+    user = request.user
+    usuario = Usuario.objects.get(usuario=user)
+    mis_tareas = Tarea.objects.filter(asignado=usuario.privilegio,lista='False',activa=True)
+    #tareas = Tarea.objects.filter(activa=True)[15:]
+    tareas = Tarea.objects.filter(activa=True)
+    print tareas
+    return render_to_response('escritorio.html', {'mis_tareas': mis_tareas, 'tareas': tareas}, context_instance=RequestContext(request))
 
 def configurar_staff(request, creado):
     staff = Privilegios.objects.filter(valor=6)

@@ -61,7 +61,10 @@ Lisb de macroclientes
                                         {% else %}
                                             <tr class="gradeU">
                                                 <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
-                                                <td><a class="btn btn-xs btn-success" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button> <a class="btn btn-xs btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}/0">Contactos</a> </td>
+                                                <td><a class="btn btn-xs btn-success" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button>
+                                                    <a class="btn btn-xs btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}/0">Contactos</a>
+                                                    <a class="btn btn-xs btn-default" href="/listar_eventos_macrocliente/{{ macrcocliente.id }}"></a>
+                                                </td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}

@@ -67,7 +67,6 @@ class StaffPorFuncion(models.Model):
 class AsistenciaStaffFuncion(models.Model):
     funcion = models.ForeignKey(Funcion)
     usuario = models.ForeignKey(Usuario)
-    honorarios = models.FloatField(default = 0)
     asistencia = models.BooleanField(default = False)
     fue_convocado = models.BooleanField(default = False)
     email_enviado = models.BooleanField(default = False)

@@ -1,6 +1,7 @@
 import json
 import csv
 import time
+from django.utils import simplejson
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -185,6 +186,67 @@ def casilla_administrativa(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
     funciones = Funcion.objects.filter(evento = evento)
     staffs = AsistenciaStaffFuncion.objects.filter(funcion__in = funciones)
+    if request.method == 'POST':
+        posts = request.POST.items()
+        for post in posts:
+            aux = post[0].split("-")
+            if aux[0]=="u":#------ honorarios
+                if len(GastoEvento.objects.filter(evento=evento, usuario = Usuario.objects.get(id = aux[1].split(".")[0]), funcion=Funcion.objects.get(id=aux[1].split(".")[1]), nombre = Usuario.objects.get(id = aux[1].split(".")[0]).nombre+" "+Usuario.objects.get(id = aux[1].split(".")[0]).apellido+" honorarios"))>0:
+                    a = GastoEvento.objects.get(evento=evento, usuario = Usuario.objects.get(id = aux[1].split(".")[0]), funcion=Funcion.objects.get(id=aux[1].split(".")[1]), nombre = Usuario.objects.get(id = aux[1].split(".")[0]).nombre+" "+Usuario.objects.get(id = aux[1].split(".")[0]).apellido+" honorarios")
+                    a.monto = post[1]
+                    a.save()
+                else:
+                    GastoEvento.objects.create(evento=evento, monto = post[1], usuario = Usuario.objects.get(id = aux[1].split(".")[0]), funcion=Funcion.objects.get(id=aux[1].split(".")[1]), nombre = Usuario.objects.get(id = aux[1].split(".")[0]).nombre+" "+Usuario.objects.get(id = aux[1].split(".")[0]).apellido+" honorarios")
+            elif aux[0]=="f":#----- gastos fijos
+                gastofijo =aux[1]
+                if len(GastoEvento.objects.filter(evento=evento, tipo="1", nombre = gastofijo))>0:
+                    a = GastoEvento.objects.get(evento=evento, tipo="1", nombre = gastofijo)
+                    a.monto = post[1]
+                    a.save()
+                else:
+                    GastoEvento.objects.create(evento=evento, monto=post[1], tipo="1", nombre = gastofijo)
+            elif aux[0]=="p":#----------porcentaje
+                evento.porcentaje_institucion = post[1]
+                print post[1]
+                evento.save()
+            elif aux[0]=="m":#----------porcentaje(el gasto)
+                if len(GastoEvento.objects.filter(evento=evento, nombre = "Porcentaje de la institcion"))>0:
+                    a = GastoEvento.objects.get(evento=evento, nombre = "Porcentaje de la institcion")
+                    a.monto = post[1]
+                    a.save()
+                else:
+                    GastoEvento.objects.create(evento=evento, monto=post[1], nombre = "Porcentaje de la institcion")
+            elif aux[0]=="pr":#----------Productos!
+                produc = ProductoEvento.objects.get(id = aux[1])
+                if len(GastoEvento.objects.filter(evento=evento, productos = produc, nombre = produc.producto.nombre))>0:
+                    a = GastoEvento.objects.get(evento=evento, productos = produc, nombre = produc.producto.nombre)
+                    a.monto = post[1]
+                    a.save()
+                else:
+                    GastoEvento.objects.create(evento=evento, monto=post[1], productos = produc, nombre = produc.producto.nombre)
+            elif aux[0]=="e":#----------envios
+                envio =aux[2]
+                if len(GastoEvento.objects.filter(evento=evento, tipo="2", nombre = envio))>0:
+                    a = GastoEvento.objects.get(evento=evento, tipo="2", nombre = envio)
+                    a.monto = float(post[1])*float(aux[1])
+                    a.save()
+                else:
+                    GastoEvento.objects.create(evento=evento, monto=float(post[1])*float(aux[1]), tipo="2", nombre = envio)
+    #---------------------------Adicionales
+        if len(GastoEvento.objects.filter(evento=evento, tipo="3"))>0:
+            aux = GastoEvento.objects.get(tipo="3", nombre="Cds", evento=evento)
+            aux.monto = request.POST["Cds"]
+            aux.save()
+            aux = GastoEvento.objects.get(tipo="3", nombre="Sobres", evento=evento)
+            aux.monto = request.POST["Sobres"]
+            aux.save()
+            aux = GastoEvento.objects.get(tipo="3", nombre="Flyers", evento=evento)
+            aux.monto = request.POST["Flyers"]
+            aux.save()
+        else:
+            GastoEvento.objects.create(nombre="Cds", monto=request.POST["Cds"], tipo="3", evento=evento)
+            GastoEvento.objects.create(nombre="Sobres", monto=request.POST["Sobres"], tipo="3", evento=evento)
+            GastoEvento.objects.create(nombre="Flyers", monto=request.POST["Flyers"], tipo="3", evento=evento)
     usuarios = []
     #------------------------------------------------------honorarios
     for staff in staffs:
@@ -200,7 +262,13 @@ def casilla_administrativa(request, id_evento):
         for staff in staffs:
             if staff.usuario == usuario:
                 bloque = StaffPorFuncion.objects.get(funcion = staff.funcion, tipo = staff.usuario.privilegio)
-                aux.append([staff, bloque.bloque])
+                gasto = GastoEvento.objects.filter(usuario=usuario, funcion=staff.funcion)
+                if len(gasto)>0:
+                    gasto = gasto[0]
+                    baux = Bloque(nombre=bloque.bloque.nombre, honorarios=gasto.monto, unico=bloque.bloque.unico)
+                    aux.append([staff, baux])
+                else:
+                    aux.append([staff, bloque.bloque])
         lista.append([usuario, aux])
     #-------------------------------------------------------productos
     productosTotales = []
@@ -223,7 +291,59 @@ def casilla_administrativa(request, id_evento):
                         flag = True
                 if flag == False:
                     productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad])
-    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'productos': productosTotales}, context_instance=RequestContext(request))
+    #-------------------------------------------------------fijos
+    gasto = GastoEvento.objects.filter(evento=evento, tipo=1)
+    fijos = []
+    if len(gasto)>0:
+        for gato in gasto:
+            fijos.append([gato.nombre, gato.monto])
+    else:
+        fijos = [['Viaticos', 0], ['Comidas', 0], ['Alquier de equipos', 0], ['Deudas de staff', 0], ['Edicion outsourcing', 0]]
+    #-------------------------------------------------------envios
+    numPedidos = []
+    pedidos = []
+    envios = []
+    for ordenCompra in ordenesCompras:
+        flag = False
+        for numPed in numPedidos:
+            if ordenCompra.num_pedido == numPed:
+                flag = True
+        if flag == False:
+            numPedidos.append(ordenCompra.num_pedido)
+        ordenCompra.num_pedido
+    for numPed in numPedidos:
+        pedidos.append(Pedido.objects.get(num_pedido=numPed).envio)
+    for pedido in pedidos:
+        flag = False
+        for envio in envios:
+            if pedido == envio[0]:
+                flag = True
+                envio[1] = envio[1]+1
+        if flag == False:
+            nomb=''
+            if pedido == 1:
+                nomb = 'Regional'
+            elif pedido == 2:
+                nomb = 'Nacional'
+            elif pedido == 3:
+                nomb = 'Internacional'
+            gasto = GastoEvento.objects.filter(evento=evento, tipo=2, nombre=nomb)
+            if len(gasto)>0:
+                gasto = gasto[0]
+                envios.append([pedido, 1, gasto.monto])
+            else:
+                envios.append([pedido, 1, 0.0])
+    for envio in envios:
+        envio[2]=envio[2]/envio[1]
+    #-------------------------------------------------------adicionales
+    gasto = GastoEvento.objects.filter(evento=evento, tipo=3)
+    if len(gasto)>0:
+        adicionales = [GastoEvento.objects.get(evento=evento, tipo=3, nombre='Cds').monto, GastoEvento.objects.get(evento=evento, tipo=3, nombre='Sobres').monto, GastoEvento.objects.get(evento=evento, tipo=3, nombre='Flyers').monto]
+    else:
+        adicionales = [0, 0, 0]
+    porcent = evento.porcentaje_institucion
+    print evento.porcentaje_institucion
+    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'fijos': fijos, 'productos': productosTotales, 'envios': envios, 'porcentaje': porcent, 'adicionales': adicionales}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):

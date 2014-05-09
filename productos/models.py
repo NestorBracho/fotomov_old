@@ -24,6 +24,7 @@ class Pedido(models.Model):
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100)
+    factura = models.BooleanField(default=False)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -47,5 +48,5 @@ class ProductoEventoPedido(models.Model):
     ruta = models.CharField(max_length=10000)
     num_pedido = models.IntegerField()
     producto = models.ForeignKey(ProductoEvento)
-    estado = models.CharField(max_length=50)
+    estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)

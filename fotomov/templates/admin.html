@@ -111,10 +111,19 @@
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
                         {% for tarea in tareas_menu %}
-                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
+                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if  tarea.lista == 'None' or tarea.lista == 'True' %} style="display: none" {% endif %}>
                             <div class="acciones">
-                                <button onclick="listo(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
-                                <a onclick="listo('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
+								<button id='realizada-{{ tarea.id }}' name = '2' onclick="listo(this.name,{{ tarea.id }})" class="btn-tarea  btn-xs btn-default btn btn-block {% if tarea.lista == "True" %} activo{% endif %}" ><i class="fa fa-thumbs-o-up"></i> Realizada</button>
+								
+								<button id='pendiente-{{ tarea.id }}'  name = '1' class="btn-tarea btn-xs btn-default btn btn-block  {% if tarea.lista == "False" %} activo{% endif %}" onclick="listo(this.name,{{ tarea.id }})" ><i class="fa fa-thumbs-o-down"></i> Pendiente</button>	
+																
+								<button id='no-aplica-{{ tarea.id }}'  class="btn-tarea btn-xs btn-default btn btn-block no-aplica  {% if tarea.lista == "None" %} activo{% endif %}" onclick="listo('0',{{ tarea.id }})" ><i class="fa fa-times"></i> No Aplica</button>								
+								
+								
+					{% comment %}
+						
+												   <button {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
+					{% endcomment %}
                             </div>
                             <a class="datos" href="/ver_tarea/{{ tarea.id }}">
                                 <div>
@@ -189,7 +198,7 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="/editar_perfil/0"><i class="fa fa-user fa-fw"></i> Mi perfil</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Configuración</a>
+                        <li><a href="/seleccionar_direccion/0"><i class="fa fa-gear fa-fw"></i> Configuración</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Salir</a>
@@ -500,16 +509,18 @@ function listo(stado,tarea){
 
         if(data.status == 'True'){
 
-            $("#check-"+tarea).addClass("listo");
-            $("#check-"+tarea).attr('name','1');
+/*             $("#check-"+tarea).attr('name','1'); */
+            $("#pendiente-"+tarea).removeClass("activo");
+            $("#tarea-"+tarea).fadeOut();
 
         }else if(data.status == 'False'){
 
-            $("#check-"+tarea).removeClass("listo");
-            $("#check-"+tarea).attr('name','2');
+/*             $("#check-"+tarea).attr('name','2'); */
+            $("#realizada-"+tarea).addClass("activo");
+
 
         }else if(data.status == "None"){
-
+            $("#no-aplica-"+tarea).removeClass("activo");
             $("#tarea-"+tarea).fadeOut();
 
         }
