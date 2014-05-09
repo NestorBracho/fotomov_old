@@ -111,11 +111,14 @@
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
                         {% for tarea in tareas_menu %}
-                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
+                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if  tarea.lista == 'None' or tarea.lista == 'True' %} style="display: none" {% endif %}>
                             <div class="acciones">
-								<button id='check-{{ tarea.id }}' name = '2' onclick="listo(this.name,{{ tarea.id }})" class="btn-xs btn-default btn btn-block {% if tarea.lista == "True" %} listo{% endif %}" ><i class="fa fa-thumbs-o-up"></i> Realizada</button>
-								<button  name = '1' class="btn-xs btn-default btn btn-block" ><i class="fa fa-thumbs-o-down"></i> Pendiente</button>									
-								<button class="btn-xs btn-default btn btn-block no-aplica" onclick="listo('0',{{ tarea.id }})" ><i class="fa fa-times"></i> No Aplica</button>								
+								<button id='realizada-{{ tarea.id }}' name = '2' onclick="listo(this.name,{{ tarea.id }})" class="btn-tarea  btn-xs btn-default btn btn-block {% if tarea.lista == "True" %} activo{% endif %}" ><i class="fa fa-thumbs-o-up"></i> Realizada</button>
+								
+								<button id='pendiente-{{ tarea.id }}'  name = '1' class="btn-tarea btn-xs btn-default btn btn-block  {% if tarea.lista == "False" %} activo{% endif %}" onclick="listo(this.name,{{ tarea.id }})" ><i class="fa fa-thumbs-o-down"></i> Pendiente</button>	
+																
+								<button id='no-aplica-{{ tarea.id }}'  class="btn-tarea btn-xs btn-default btn btn-block no-aplica  {% if tarea.lista == "None" %} activo{% endif %}" onclick="listo('0',{{ tarea.id }})" ><i class="fa fa-times"></i> No Aplica</button>								
+								
 								
 					{% comment %}
 						
@@ -506,16 +509,18 @@ function listo(stado,tarea){
 
         if(data.status == 'True'){
 
-            $("#check-"+tarea).addClass("listo");
-            $("#check-"+tarea).attr('name','1');
+/*             $("#check-"+tarea).attr('name','1'); */
+            $("#pendiente-"+tarea).removeClass("activo");
+            $("#tarea-"+tarea).fadeOut();
 
         }else if(data.status == 'False'){
 
-            $("#check-"+tarea).removeClass("listo");
-            $("#check-"+tarea).attr('name','2');
+/*             $("#check-"+tarea).attr('name','2'); */
+            $("#realizada-"+tarea).addClass("activo");
+
 
         }else if(data.status == "None"){
-
+            $("#no-aplica-"+tarea).removeClass("activo");
             $("#tarea-"+tarea).fadeOut();
 
         }
