@@ -10,7 +10,7 @@ class MacroCliente(models.Model):
     direccion_fiscal = models.TextField(max_length=500)
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     def __unicode__(self):
-        return self.nombre
+        return '%s %s' % (self.submarca, self.nombre)  
 
 
 class Encargado(models.Model):
@@ -31,7 +31,7 @@ class Cliente(models.Model):
     rif = models.CharField(max_length=10, null=True, blank=True)
     cedula = models.CharField(max_length=8, null=True, blank=True)
     def __unicode__(self):
-        return self.nombres+" "+self.apellidos
+        return '%s %s %s' % ( self.nombres, self.apellidos, self.cedula)
 
 class Sede(models.Model):
     nombre = models.CharField(max_length=100)

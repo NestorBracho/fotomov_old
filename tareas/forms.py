@@ -12,4 +12,10 @@ class TareaForm(forms.Form):
 class CrearNotificacionFrom(forms.ModelForm):
     class Meta:
         model = Notificacion
+        fields = ('macro_cliente', 'cliente', 'notificacion', 'tipo')
         exclude = ['creado_fecha','fue_revisado','usuario_creador']
+        widgets = {
+        	'tipo' : forms.RadioSelect(),
+        	'cliente' : forms.RadioSelect(),
+        	'macro_cliente': forms.RadioSelect()
+        }
