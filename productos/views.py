@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from productos.models import *
 from productos.forms import *
+from reportlab.pdfgen import canvas
+import datetime
 
 def nuevo_producto(request):
     if request.method == 'POST':
@@ -207,3 +209,56 @@ def verpedido_cambiar_estado_pedido_p_np(request):
 def listar_pedidos_pendientes(request):
     pedidos = Pedido.objects.filter(fue_pagado = False)
     return render_to_response('productos/listar_pedidos_pendiente.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
+def listar_facturas_pendientes(request):
+    pedidos=Pedido.objects.filter(fue_pagado=True, factura=False)
+    return render_to_response('productos/listar_facturas_pendientes.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
+def listar_facturas_todas(request):
+    pedidos=Pedido.objects.filter(fue_pagado=True)
+    return render_to_response('productos/listar_facturas_pendientes.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
+def descargar_factura(request, id_factura):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    pedido = Pedido.objects.get(id=id_factura)
+    factura = "factura-" + pedido.cliente.nombres + "-" + pedido.cliente.apellidos + ".pdf"
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + factura + ''
+    p = canvas.Canvas(response)
+    fecha_aux = str(datetime.datetime.now()).split(" ")
+    fecha = fecha_aux[0]
+    productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
+    subtotal = 0
+    y = 650
+    for producto in productos:
+        cant = str(producto.cantidad)
+        descripcion = str(producto.producto.producto.nombre)
+        precio = str(producto.producto.precio)
+        monto = str(producto.producto.precio * producto.cantidad)
+        p.drawString(100,y,cant)
+        p.drawString(240,y,descripcion)
+        p.drawString(380,y, precio)
+        p.drawString(520,y,monto)
+        subtotal = subtotal + float(monto)
+        print subtotal
+        y = y - 15
+    p.drawString(100,730,pedido.razon_social)
+    lista_dir_fiscal = pedido.direccion_fiscal.split(" ")
+    dir_ini = " ".join(lista_dir_fiscal[:len(lista_dir_fiscal)/2])
+    dir_final = " ".join(lista_dir_fiscal[len(lista_dir_fiscal)/2:])
+    print lista_dir_fiscal[len(lista_dir_fiscal)/2]
+    p.drawString(100,715,dir_ini)
+    p.drawString(100,700,dir_final)
+    p.drawString(400,730,str(fecha))
+    p.drawString(400,715,pedido.id_fiscal)
+    p.drawString(400,700,pedido.tlf_fiscal)
+    p.drawString(400,500, str(subtotal))
+    iva = float(subtotal)*0.12
+    p.drawString(400,485, str(iva))
+    total = subtotal + iva
+    p.drawString(400,470, str(total))
+    p.showPage()
+    p.save()
+    pedido.factura=True
+    pedido.save()
+    return response

@@ -28,6 +28,7 @@ from datetime import *
 import datetime
 import shutil
 from escpos import *
+from django.core.management import call_command
 
 
 def obtener_timestamp():
@@ -156,6 +157,80 @@ def importar_csv_evento(request):
         formulario = ArchivoForm()
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+def exportar_csv_central(request):
+    #direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
+    #direccion.save()
+    #print direccion.id
+    #subprocess.call(['./dump-central.sh'])
+    fecha = datetime.datetime.now()
+    nombre = 'db-movil.json'
+    output = open(settings.MEDIA_ROOT+"/base_datos/" + nombre,'w') # Point stdout at a file for dumping data to.
+    call_command('dumpdata', use_natural_keys=True,format='json',indent=3,stdout=output)
+    output.close()
+    return HttpResponseRedirect('/seleccionar_direccion/1')
+
+def importar_csv_central(request):
+    try:
+        call_command('syncdb', interactive = False)
+    except:
+        pass
+    call_command('flush', interactive= False)
+    call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
+    return HttpResponseRedirect('/')
+
+
+def exportar_csv_central2(request):
+    clientes = Cliente.objects.all()
+    date = datetime.datetime.now()
+    fecha = str(date).split(" ")
+    direcciones = Direccion.objects.all()
+    funciones = Funcion.objects.filter(dia__gte=fecha[0])
+    eventos = []
+    for funcion in funciones:
+        try:
+            eventos.index(funcion.evento)
+        except:
+            eventos.append(funcion.evento)
+    encargados=[]
+    for evento in eventos:
+        try:
+            encargados.index(evento.encargado)
+        except:
+            encargados.append(evento.encargado)
+    sedes = []
+    for evento in eventos:
+        try:
+            sedes.index(evento.sede)
+        except:
+            sedes.append(evento.sede)
+
+    nombre = '"db-central' + str(fecha) + '.csv"'
+    response['Content-Disposition'] = 'attachment; filename=' + nombre
+
+    writer = csv.writer(response)
+    for cliente in clientes:
+        writer.writerow([cliente.id, cliente.nombres, cliente.apellidos, cliente.telefono, cliente.email,
+                         cliente.direccion_fiscal, cliente.rif, cliente.cedula])
+
+    writer.writerow(['!-endcliente-!'])
+    for direccion in direcciones:
+        writer.writerow([direccion.id, direccion.nombre, direccion.lon, direccion.lat, direccion.descripcion])
+    writer.writerow(['!-enddireccion-!'])
+    for encargado in encargados:
+        writer.writerow([encargado.id, encargado.nombre, encargado.cedula, encargado.cargo, encargado.telefono,
+                         encargado.email, encargado.descripcion, encargado.macrocliente])
+    writer.writerow(['!-endencargado-!'])
+    for sede in sede:
+        writer.writerow([sede.id, sede.nombre, sede.direccion, "1"])
+    for evento in eventos:
+        writer.writerow([evento.id, evento.nombre, evento.descripcion, evento.porcentaje_institucion,
+                         evento.encargado.id, evento.encargado.id, evento.sede.id])
+    for funcion in funciones:
+        writer.writerow([funcion.id, funcion.evento.id, funcion.dia, funcion.horas, funcion.entrega_fotos,
+                         funcion.direccion.id])
+    #eventos = Evento.objects.filter
+    return True
+
 def imprimir_ticket(pedido):
     productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
     impresora = printer.Usb(0x1cb0,0x0003)
@@ -175,7 +250,7 @@ def exportar_csv_evento(request):
     pedidos = Pedido.objects.all()
     pep = ProductoEventoPedido.objects.all()
 
-    nombre = '"db-' + str(fecha) + '.csv"'
+    nombre = '"db-movil' + str(fecha) + '.csv"'
     response['Content-Disposition'] = 'attachment; filename=' + nombre
 
     writer = csv.writer(response)
@@ -206,7 +281,7 @@ def exportar_csv_evento(request):
 
     return response
 
-def selecccionar_direccion(request):
+def selecccionar_direccion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -215,7 +290,9 @@ def selecccionar_direccion(request):
         settings.MEDIA_ROOT = directorio
         print settings.MEDIA_ROOT
         return HttpResponseRedirect('/escritorio')
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {}, context_instance=RequestContext(request))
+    else:
+        directorio = settings.MEDIA_ROOT
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
