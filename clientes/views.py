@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from clientes.forms import *
 from clientes.models import *
+from productos.forms import *
+from productos.models import *
 from staff.models import Privilegios, StaffPorFuncion
 from marca.forms import *
 from marca.models import *
@@ -201,9 +203,16 @@ def nuevo_cliente(request):
         formulario = ClienteForm()
     return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
-def listar_cliente(request):
+def listar_clientes(request):
     clientes = Cliente.objects.filter()
     return render_to_response('clientes/listar_cliente.html', {'clientes': clientes}, context_instance=RequestContext(request))
+
+def ver_cliente(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente)
+    clienteF = ClienteForm()
+    pedidos = Pedido.objects.filter(cliente=id_cliente)
+    return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos, 'clienteForm':clienteF}, context_instance=RequestContext(request))
+
 
 def editar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
@@ -219,7 +228,7 @@ def editar_cliente(request, id_cliente):
             cliente.rif = newcliente.rif
             cliente.cedula = newcliente.cedula
             cliente.save()
-            return HttpResponseRedirect('/listar_cliente')
+            return HttpResponseRedirect('/listar_clientes')
     else:
         formulario = ClienteForm(initial={'nombres': cliente.nombres, 'apellidos': cliente.apellidos, 'telefono': cliente.telefono, 'email': cliente.email,
                                  'direccion_fiscal': cliente.direccion_fiscal, 'rif': cliente.rif, 'cedula': cliente.cedula})
@@ -227,7 +236,7 @@ def editar_cliente(request, id_cliente):
 
 def eliminar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente).delete()
-    return HttpResponseRedirect('/listar_cliente')
+    return HttpResponseRedirect('/listar_clientes')
 
 def agregar_sede_macrocliente_ajax(request):
     if Direccion.objects.filter(nombre = request.GET['direc']).count() == 0:

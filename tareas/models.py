@@ -36,9 +36,12 @@ class PrelaTareaTipoEvento(models.Model):
     tipo_evento = models.ForeignKey(Tipos_Eventos)
 
 class Notificacion(models.Model):
+    choices_tipo= (('N/A', 'N/A'), ('Queja', 'Queja'), ('Sugerencia', 'Sugerencia'))
+
     macro_cliente = models.ForeignKey(MacroCliente, null=True, blank=True)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     usuario_creador = models.ForeignKey(Usuario)
     creado_fecha = models.DateTimeField(auto_now_add=True)
     notificacion = models.TextField(max_length=500)
     fue_revisado = models.BooleanField(default = False)
+    tipo = models.CharField(max_length=15, choices=choices_tipo, default=None)
