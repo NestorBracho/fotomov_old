@@ -10,8 +10,8 @@ Todas las tareas
     <tr id='trTarea-{{ tarea.id }}'><td>
 
             <button onclick="listoL(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='checkt-{{ tarea.id }}' {% if tarea.lista == "None" %}style='display:None'{% endif %}></button>
-            <a onclick="listoL('0',{{ tarea.id }})" id='NA-{{ tarea.id }}' class="no-aplica btn-xs btn btn-default">{% if tarea.lista == "None" %}<i class="fa fa-tasks"></i> Aplica{% else %}<i class="fa fa-times"></i> No aplica{% endif %}</a>
-
+            <button onclick="listoL(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %} {% if tarea.lista == "None" %} no-aplica {% endif %}" id='checkt-{{ tarea.id }}' ></button>
+            <a onclick="listoL('0',{{ tarea.id }})" id='NA-{{ tarea.id }}' class="no-aplica btn-xs btn btn-default">{% if tarea.lista == "None" %}S&iacute; Aplica{% else %}<i class="fa fa-times"></i> No aplica{% endif %}</a>
         </td>
         <td><a class="datos" href="/ver_tarea/{{ tarea.id }}">{{tarea.nombre}}</a></td>
         <td>{{tarea.tarea}}</td>
