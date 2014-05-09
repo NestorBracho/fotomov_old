@@ -12,6 +12,7 @@ from clientes.models import *
 from staff.models import Privilegios, StaffPorFuncion
 from marca.forms import *
 from marca.models import *
+from evento.models import *
 from direcciones.models import *
 from direcciones.views import *
 import datetime
@@ -235,3 +236,7 @@ def agregar_sede_macrocliente_ajax(request):
         dirc = 1
     data = json.dumps({'status': dirc})
     return HttpResponse(data, mimetype='application/json')
+
+def listar_eventos_macrocliente(request, id_macrocliente):
+    eventos = Evento.objects.filter(macrocliente__id=id_macrocliente)
+    return render_to_response('evento/listar_evento.html', {'eventos': eventos}, context_instance = RequestContext(request))
