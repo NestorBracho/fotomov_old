@@ -24,7 +24,7 @@ Agregar tipo de evento
                 <div class="col-md-5 hidden-xs hidden-sm"></div>
         </div>
         <div class="col-md-7 table-responsive">
-            <table class="table table-striped table-bordered table-hover">
+            <table class="table table-striped table-responsive table-hover">
                 <thead><th colspan="2">Tipos de eventos</th></thead>
                 {% for evento in eventos %}
                 <tr id="te-{{ evento.id }}"><td>{{ evento.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('te-{{ evento.id }}')">Eliminar</a>  <input type="button" class="btn btn-xs btn-success" onclick="eliminarTipoEvento('te-{{ evento.id }}')" value='Editar'></td></tr>
@@ -35,7 +35,7 @@ Agregar tipo de evento
     <div class="col-md-12">
         <hr>
         <h3>Tareas predefinidas por evento</h3>
-        <table class="table table-bordered table-hover">
+        <table class="table  table-hover">
             <thead><th>Id</th><th>Nombre</th><th>Descripción</th><th>Staff</th><th>Días</th><th>Prela a...</th></thead>
             <tbody name="0" id="tabla-tareas">
             </tbody>

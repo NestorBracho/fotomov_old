@@ -51,7 +51,7 @@ Generar pedido
         </div>
         {% else %}
         <div class="col-xs-12 col-md-12 table-responsive">
-            <table class="table table-bordered">
+            <table class="table ">
                 <thead><th colspan="2">{{ cliente.nombres }} {{ cliente.apellidos }} - {{ cliente.cedula }}</th></thead>
                 <tr><td>Email: {{ cliente.email }}</td><td>Telefono: {{ cliente.telefono }}</td></tr>
                 <tr><td>Direccion: {{ cliente.direccion_fiscal }}</td><td>Rif: {{ cliente.rif }}</td></tr>
@@ -82,7 +82,7 @@ Generar pedido
         </div>
     </div>
     <div class="col-xs-12 col-md-6 table-responsive">
-        <table class="table table-bordered">
+        <table class="table ">
             <thead><th>Cant.</th><th>Produc.</th><th>Precio</th><th>Eliminar</th></thead>
             {% for pedido in pedidos %}
             <tr id="tr-{{ pedido.id }}"><td>{{ pedido.cantidad }}</td><td>{{ pedido.producto.producto.nombre }}</td><td id="total-{{ pedido.id }}">{{ pedido.producto.precio }}</td><td class="text-center" id="borrar-{{ pedido.id }}"></td></tr>

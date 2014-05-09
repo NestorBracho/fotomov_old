@@ -4,7 +4,7 @@
 Lista de notificaciones
 {% endblock %}
 {% block seccion-contenido%}
-<table class="table table-bordered table-hover" id="content">
+<table class="table  table-hover" id="content">
     <thead><th>Nuevo</th><th>Notificación</th><th>fecha</th><th></th></thead>
     {% for notificacion in notificaciones %}
     <tr {% if notificacion.fue_revisado == False %} class= "alert-info"{% endif %} id="{{notificacion.id}}">
