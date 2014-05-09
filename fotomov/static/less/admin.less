@@ -43,13 +43,13 @@ nav.navbar .navbar-brand.logo img{
 
 
 .dropdown-tasks .tarea .acciones{
-	width: 60px;
+	width: 80px;
 	text-align: left;
 	display: inline-block;	
 }
 
 .dropdown-tasks .tarea .datos{
-	width: 220px;
+	width: 200px;
 	padding: 0px;
 	display: inline-block;
 	}
@@ -66,15 +66,14 @@ button.checkmark{
 	margin: auto;
 	height: 20px;
 	width: 20px;
-	padding: 10px;
+	padding: 2px;
 	background: #e5e5e5;
 	border: none;
 	font-family: FontAwesome;
 	text-align: center;
-	font-size: 33px;
+	font-size: 10px;
 	display: block;
 	color: black;
-	  content: "\f096";
 	    display: inline-block;
   font-family: FontAwesome;
   font-style: normal;
@@ -86,10 +85,18 @@ button.checkmark{
 }
 
 button.checkmark:before {
-/* 	  content: "\f096"; */
+	  content: "\f088";
 	  }
 
 button.checkmark.listo:before {
-  content: "\f00c";
+  content: "\f087";
   color: green;
 }
+
+button.checkmark.no-aplica:before {
+  content: "\f00d";
+  color: red;
+}
+
+
+

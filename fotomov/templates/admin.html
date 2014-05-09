@@ -113,8 +113,14 @@
                         {% for tarea in tareas_menu %}
                         <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
                             <div class="acciones">
-                                <button onclick="listo(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
-                                <a onclick="listo('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
+								<button id='check-{{ tarea.id }}' name = '2' onclick="listo(this.name,{{ tarea.id }})" class="btn-xs btn-default btn btn-block {% if tarea.lista == "True" %} listo{% endif %}" ><i class="fa fa-thumbs-o-up"></i> Realizada</button>
+								<button  name = '1' class="btn-xs btn-default btn btn-block" ><i class="fa fa-thumbs-o-down"></i> Pendiente</button>									
+								<button class="btn-xs btn-default btn btn-block no-aplica" onclick="listo('0',{{ tarea.id }})" ><i class="fa fa-times"></i> No Aplica</button>								
+								
+					{% comment %}
+						
+												   <button {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
+					{% endcomment %}
                             </div>
                             <a class="datos" href="/ver_tarea/{{ tarea.id }}">
                                 <div>
