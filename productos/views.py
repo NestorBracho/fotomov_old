@@ -193,7 +193,7 @@ def listar_pedidos(request):
 
 def ver_pedido(request, pedido):
     pedido = Pedido.objects.get(id = pedido)
-    productos = ProductoEventoPedido.objects.filter(pedido = pedido)
+    productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
     return render_to_response('productos/ver_pedido.html', {'pedido': pedido, 'productos': productos}, context_instance=RequestContext(request))
 
 def verpedido_cambiar_estado_pedido_p_np(request):

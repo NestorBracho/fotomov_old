@@ -72,7 +72,7 @@
                                             <tbody>
 
                                                     {% for tarea in tareas %}
-                                                    <tr>
+                                                    <tr class="{% if tarea.lista == "True" %}success{% endif %}">
                                                         <td>{% if tarea.lista == "True" %}Lista{% elif tarea.lista == "False" %}Pendiente{% else %}No Aplica{% endif %}</td>
                                                         <td>{{ tarea.fecha_activacion }}</td>
                                                         <td>{{ tarea.fecha }}</td>
