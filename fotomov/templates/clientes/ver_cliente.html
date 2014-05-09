@@ -1,0 +1,63 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+        Ver Cliente
+{% endblock %}
+{% block seccion-contenido %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Datos Generales</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+		    <div class="col-xs-12 col-md-6">
+		    	Nombre: {{cliente.nombres}}
+		    </div>
+		    <div class="col-xs-12 col-md-6">
+		    	Apellido: {{cliente.apellidos}}
+		    </div>
+	    </div>
+        <div class="row">
+	    	<div class="col-xs-12 col-md-6">
+	    		Cedula: {{cliente.cedula}} {{cliente.rif}}
+	    	</div>
+		    <div class="col-xs-12 col-md-6">
+		    	Email: {{cliente.email}}
+		    </div>
+		</div>
+        <div class="row">
+	    	<div class="col-xs-12 col-md-6">
+	    		Telefono: {{cliente.telefono}}
+	    	</div>
+		    <div class="col-xs-12 col-md-6">
+		    	Direccion: {{cliente.direccion_fiscal}}
+			</div>
+		</div>
+    </div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+        <h4>Pedidos</h4>
+    </div>
+    {%for pedido in pedidos%}
+	    <div class="panel-body">
+	        <div class="row">
+			    <div class="col-xs-12 col-md-6">
+			   		Codigo: <a href="/ver_pedido/{{pedido.id}}/">{{pedido.num_pedido}}</a>
+			    </div>
+			    <div class="col-xs-12 col-md-6">
+			    	Fecha: {{pedido.fecha}}
+			    </div>
+		    </div>
+		    <div class="row">
+			    <div class="col-xs-12 col-md-6">
+			    	Estado: {{pedido.estado}}
+			    </div>
+			    <div class="col-xs-12 col-md-6">
+			    	Entrega: {{pedido.fecha_entrega}}
+			    </div>
+		    </div>
+	    </div>
+	{%endfor%}
+</div>
+{% endblock %}

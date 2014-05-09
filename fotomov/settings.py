@@ -119,6 +119,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'fotomov.urls'
 
+FIXTURE_DIRS = (
+   'C:/Users/franc_000/Documents/GitHub/fotomov/fotomov/static/fixtures/',
+)
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'fotomov.wsgi.application'
 

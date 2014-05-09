@@ -118,7 +118,7 @@ def ver_tarea(request, id_tarea):
     return render_to_response('tareas/ver_tarea.html', {'tarea':tarea, 'prela':prela, 'es_prelada': es_prelada, 'status':stat}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
-def crear_notificacion(request):
+def crear_notificacion(request, creado):
     user = Usuario.objects.get(usuario = request.user)
     if request.method == 'POST':
         formulario = CrearNotificacionFrom(request.POST)
@@ -126,11 +126,14 @@ def crear_notificacion(request):
             noti = formulario.cleaned_data['notificacion']
             mCliente = formulario.cleaned_data['macro_cliente']
             cliente = formulario.cleaned_data['cliente']
-            nNoti = Notificacion.objects.create(notificacion = noti, macro_cliente = mCliente, cliente = cliente, usuario_creador = user)
+            tipo = formulario.cleaned_data['tipo']
+            nNoti = Notificacion.objects.create(notificacion = noti, macro_cliente = mCliente, cliente = cliente, usuario_creador = user, tipo=tipo)
             return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'true'}, context_instance=RequestContext(request))
     else:
         formulario = CrearNotificacionFrom()
-    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'false'}, context_instance=RequestContext(request))
+        clientes = Cliente.objects.all()
+        macro_clientes = MacroCliente.objects.all()
+    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'clientes':clientes, 'macro_clientes':macro_clientes, 'flag': 'false', 'estado':creado}, context_instance=RequestContext(request))
 
 def listar_notificaciones(request):
     notificaciones = Notificacion.objects.all()

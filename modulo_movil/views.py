@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
+# from escpos import *
 
 
 def obtener_timestamp():
