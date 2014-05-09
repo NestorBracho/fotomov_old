@@ -49,12 +49,13 @@ nav.navbar .navbar-brand.logo img{
 }
 
 .dropdown-tasks .tarea .datos{
-	width: 200px;
+	width: 195px;
 	padding: 0px;
 	display: inline-block;
+	padding-left: 5px;
 	}
 .dropdown-tasks .tarea .datos .detalle{
-	padding-left: 50px;
+	padding-left: 20px;
 }
 .dropdown-tasks .tarea .acciones a.no-aplica{
 	font-size: 12px;
@@ -63,12 +64,12 @@ nav.navbar .navbar-brand.logo img{
 
 }
 button.checkmark{
+  .btn;
+  .btn-default;
 	margin: auto;
 	height: 20px;
 	width: 20px;
 	padding: 2px;
-	background: #e5e5e5;
-	border: none;
 	font-family: FontAwesome;
 	text-align: center;
 	font-size: 10px;
@@ -80,7 +81,7 @@ button.checkmark{
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: antialiased;
   border-radius: 50%;
 }
 
@@ -93,10 +94,18 @@ button.checkmark.listo:before {
   color: green;
 }
 
+button.checkmark.no-aplica {
+	background-color: #e5e5e5; 
+  border-color: #e5e5e5;
+}
+
 button.checkmark.no-aplica:before {
   content: "\f00d";
   color: red;
+
 }
 
-
+.btn-tarea.activo{
+	background-color: silver;
+}
 
