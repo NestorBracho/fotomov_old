@@ -355,7 +355,7 @@ def generar_lote(request):
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
     for pedido in pedidos:
-        peps = ProductoEventoPedido.objects.filter(pedido = pedido)
+        peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
         for pep in peps:
             nom = pedido.cliente.nombres.split(' ')
             nom = nom[0]
@@ -371,7 +371,7 @@ def generar_lote(request):
                 if pep.pedido.lote == None:
                     pep.pedido.lote = lote
                     pep.pedido.save()
-            productos = ProductoEventoPedido.objects.filter(pedido = pedido)
+            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
             for producto in productos:
                 if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
                     os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')

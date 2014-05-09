@@ -4,10 +4,10 @@
 <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block titulo %}
-Administración
+Administración de envento
 {% endblock %}
 {% block seccion-contenido %}
-<div>
+<form method="POST" action="" id="administracionEventoFormulario" enctype="multipart/form-data" >{% csrf_token %}
     <div class="panel panel-default table-responsive">
         <div class="panel-heading">
             Honorarios
@@ -19,61 +19,39 @@ Administración
                         <p></p>
                         <div class="col-sm-6">
                             <div class="col-md-12"><b>{{ staff.0.nombre }} {{ staff.0.apellido }}</b> ({{ staff.0.privilegio.nombre }})</div>
-                            <div class="col-md-12" id="{{ staff.0.nombre }}{{ staff.0.apellido }}">0</div>
+                            <div class="col-md-12"><span id="{{ staff.0.nombre }}{{ staff.0.apellido }}">0</span> Bs.</div>
                         </div>
                         <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                         {% for funcion in staff.1 %}
-                            <div class="col-md-6">{{ funcion.0.funcion.nombre }} ({{funcion.1.nombre}}):</div><div class="col-md-6"> <input name="{{ staff.0.nombre }}{{ staff.0.apellido }}" class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ funcion.1.honorarios }}"> </div>
+                            <div class="col-md-6">{{ funcion.0.funcion.nombre }} ({{funcion.1.nombre}}):</div><div class="col-md-6"> <input name="u-{{ staff.0.id }}.{{ funcion.0.funcion.id }}" class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ funcion.1.honorarios }}"> </div>
                         {% endfor %}
                         </div>
                         <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
                     {% endfor %}
                     <p></p>
-                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-honorarios">0</span></b></div>
+                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span class="stotal" id="total-honorarios">0</span></b> Bs.</div>
                 </div>
             </div>
         </div>
     </div>
     <div class="panel panel-default table-responsive">
         <div class="panel-heading">
-            Gastos fijos
+            Gastos fijos<div class="pull-right"><a onclick="focusInputAgregarGasto()" data-toggle="modal" data-target="#AgregarGastoFijo" class="btn btn-xs btn-info"><span class="fa fa-plus fa-fw"></span> Agregar gasto</a></div>
         </div>
         <div class="panel-body">
             <div>
                 <div id="body-fijo">
-                    <div class="col-sm-6"><b>Viáticos</b></div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                    <p></p>
-                    <div class="col-sm-6"><b>Almuerzo/cena</b></div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                    <p></p>
-                    <div class="col-sm-6"><b>Alquier de equipos</b></div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                    <p></p>
-                    <div class="col-sm-6"><b>Deudas de staff</b></div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                    <p></p>
-                    <div class="col-sm-6"><b>Edición outsourcing</b></div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-6"></div><div class="col-md-6"> <input class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                    {% for fijo in fijos %}
+                        <div class="col-sm-6"><b>{{ fijo.0 }}</b></div>
+                        <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                            <div class="col-md-6"></div><div class="col-md-6"> <input name="f-{{ fijo.0 }}" class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ fijo.1 }}"> </div>
+                        </div>
+                        <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                        <p></p>
+                    {% endfor %}
                 </div>
                 <p></p>
-                <div class="col-sm-6"><a onclick="focusInputAgregarGasto()" data-toggle="modal" data-target="#AgregarGastoFijo" class="btn btn-default"><span class="fa fa-plus fa-fw"></span> Agregar gasto</a></div>
-                <div class="col-sm-6" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-fijos">0</span></b></div>
+                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span class="stotal" id="total-fijos">0</span></b> Bs.</div>
             </div>
         </div>
     </div>
@@ -83,56 +61,116 @@ Administración
             Gastos variables
         </div>
         <div class="panel-body">
-            <div>
-                <div id="body-variable">
-                    <p></p>
-                    <div class="col-sm-6">
-                        <div class="col-sm-12"><b>Productos</b></div>
-                        <div class="col-sm-12"><span id="total-productos">0</span></div>
-                    </div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                    {% for producto in productos %}
-                        <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-6"><span class="variables">{{ producto.2 }}</span></div>
-                    {% endfor %}
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                    <p></p>
-                    <div class="col-sm-6">
-                        <div class="col-sm-12"><b>Envios</b></div>
-                        <div class="col-sm-12"><span id="total-envios">0</span></div>
-                    </div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-3">Regional</div><div class="col-sm-3">xnumero</div><div class="col-md-6"><input class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text"></div>
-                        <div class="col-md-3">Nacional</div><div class="col-sm-3">xnumero</div><div class="col-md-6"><input class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text"></div>
-                        <div class="col-md-3">Internacional</div><div class="col-sm-3">xnumero</div><div class="col-md-6"><input class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text"></div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div><p></p>
-                    <div class="col-sm-6">
-                        <div class="col-sm-12"><b>Porcentaje de macrocliente</b></div>
-                        <div class="col-sm-12"><span id="total-procentaje">0</span></div>
-                    </div>
-                    <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                        <div class="col-md-6 pull-right"><input class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text"></div>
-                    </div>
-                    <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-variables">0</span></b></div>
+            <div id="body-variable">
+                <p></p>
+                <div class="col-md-6">
+                    <div class="col-md-12"><b>Productos</b></div>
+                    <div class="col-md-12"><span class="variables" id="total-productos">0</span> Bs.</div>
                 </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                {% for producto in productos %}
+                    <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-6"><span class="productos" name="{{ producto.0.id }}">{{ producto.2 }}</span></div>
+                {% endfor %}
+                </div>
+                <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <p></p>
+                <div class="col-sm-6">
+                    <div class="col-sm-12"><b>Envios</b></div>
+                    <div class="col-sm-12"><span class="variables" id="total-envios">0</span> Bs.</div>
+                </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                    {% for envio in envios %}
+                        {% if  envio.0 == 0 %}
+                            <div class="col-md-3">Sin envio</div><div class="col-sm-3">x<span class="#envios">{{ envio.1 }}</span></div><div class="col-md-6">N/A</div>
+                        {% else %}
+                            <div class="col-md-3">{% if  envio.0 == 1 %}Regional{% elif envio.0 == 2 %}Nacional{% elif envio.0 == 3 %}Internacional{% endif %}</div><div class="col-sm-3">x<span id="{{ envio.0 }}-vv">{{ envio.1 }}</span></div><div class="col-md-6"><input name="{% if  envio.0 == 1 %}e-{{ envio.1 }}-Regional{% elif envio.0 == 2 %}e-{{ envio.1 }}-Nacional{% elif envio.0 == 3 %}e-{{ envio.1 }}-Internacional{% endif %}" id="{{ envio.0 }}-v" class="envios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ envio.2 }}"></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span class="stotal" id="total-variables">0</span></b> Bs.</div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="panel panel-default table-responsive">
+        <div class="panel-heading">
+            Gastos adicionales
+        </div>
+        <div class="panel-body">
+            <div id="body-adicional">
+                <div class="col-sm-6">
+                    <div class="col-sm-12"><b>Porcentaje de macrocliente</b></div>
+                    <div class="col-sm-12"><span id="total-porcentaje">0</span> Bs.</div>
+                </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                    <div class="col-md-6 pull-right"><input name="p-Porcent" id="porcentajeM" class="porcent form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text"></div>
+                </div>
+                <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <p></p>
+                <div class="col-sm-6">
+                    <div class="col-sm-12"><b>CD's</b></div>
+                </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                    <div class="col-md-6"></div><div class="col-md-6"> <input name="Cds" class="adicionales form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ adicionales.0 }}"> </div>
+                </div><div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <p></p>
+                <div class="col-sm-6">
+                    <div class="col-sm-12"><b>Sobres</b></div>
+                </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                    <div class="col-md-6"></div><div class="col-md-6"> <input name="Sobres" class="adicionales form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ adicionales.1 }}"> </div>
+                </div><div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <p></p>
+                <div class="col-sm-6">
+                    <div class="col-sm-12"><b>Flyers promocionales</b></div>
+                </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                    <div class="col-md-6"></div><div class="col-md-6"> <input name="Flyers" class="adicionales form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ adicionales.2 }}"> </div>
+                </div>
+                <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-adicionales">0</span></b> Bs.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default table-responsive">
+        <div class="panel-heading">
+            <b>Total</b>
+        </div>
+        <div class="panel-body">
+            <div id="body-total">
+                <div class="col-sm-6">
+                    <div class="alert alert-warning">
+                        Gastos del evento.<br>Total: <span id="total-evento">0</span> Bs.
+                    </div>
+                </div>
+                <div class="col-sm-6" >
+                    <div class="alert alert-success">
+                        Gastos del evento más gastos adicionales.<br>Total: <span id="total-evento-adicionales">0</span> Bs.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <a onclick="actualizar()" class="btn btn-primary btn-block">Actualizar</a>
+        </div>
+    </div>
+
+</form>
 
 <div class="modal fade" id="AgregarGastoFijo" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="modal-header">
+                <b>Nuevo gasto</b>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" id="modal-body">
-                <input type="text" class="form-control" id="input-gasto-fijo">
+                <input type="text" class="form-control" placeholder="Nombre del gasto" id="input-gasto-fijo">
             </div>
             <div class="modal-footer">
-                <a onclick="agregarGastoFijo()" data-dismiss="modal" class="btn btn-default"><span class="fa fa-plus fa-fw"></span> Agregar</a></a>
+                <a onclick="agregarGastoFijo()" data-dismiss="modal" class="btn btn-primary"><span class="fa fa-plus fa-fw"></span> Agregar</a></a>
             </div>
         </div>
     </div>
@@ -147,39 +185,159 @@ window.onload = function(){
 
     {% for staff in staffs %}
 
-        $("[name='{{ staff.0.nombre }}{{ staff.0.apellido }}']").spinner({stop: function(event, ui){
+        $(".honorarios").spinner({stop: function(event, ui){
                                                 $("#{{ staff.0.nombre }}{{ staff.0.apellido }}").html("0");
-                                                $("[name='{{ staff.0.nombre }}{{ staff.0.apellido }}']").each(function(){$('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseInt($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseInt($(this).val()))});
+                                                $(".honorarios").each(function(){$('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseFloat($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseFloat($(this).val()))});
                                                 $("#total-honorarios").html("0");
-                                                $('.honorarios').each(function(){$("#total-honorarios").html(parseInt($("#total-honorarios").html())+parseInt($(this).val()));});
-                                            }, step: 50
-                                });
-
-         $("[name='{{ staff.0.nombre }}{{ staff.0.apellido }}']").each(function(){
-                                                $('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseInt($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseInt($(this).val()))
-                                                })
-
-    {% endfor %}
-
-    $(".fijos").spinner({min: 0, step: 50, stop: function(event, ui){
-                                                $("#total-fijos").html("0");
-                                                $('.fijos').each(function(){$("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));});
+                                                $('.honorarios').each(function(){$("#total-honorarios").html(parseFloat($("#total-honorarios").html())+parseFloat($(this).val()));});
+                                                macroC();
                                             }
                                 });
 
+         $(".honorarios").each(function(){
+                                            $('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseFloat($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseFloat($(this).val()))
+                                });
+
+    {% endfor %}
+
+    $(".fijos").spinner({min: 0, stop: function(event, ui){
+                                                $("#total-fijos").html("0");
+                                                $('.fijos').each(function(){$("#total-fijos").html(parseFloat($("#total-fijos").html())+parseFloat($(this).val()));});
+                                                macroC();
+                                            }
+                                });
+
+    $('.envios').each(function(){
+
+                                $(this).spinner({stop: function(event, ui){
+                                                $("#total-envios").html("0");
+                                                $('.envios').each(function(){$("#total-envios").html(parseFloat($("#total-envios").html())+(parseFloat($(this).val()))* parseFloat($("#"+$(this).attr("id")+"v").html()));});
+                                                $("#total-variables").html(parseFloat($("#total-envios").html())+parseFloat($("#total-productos").html()));
+                                                macroC();
+                                            },
+                                            min: 0
+                                });
+
+    });
+
+    $('.porcent').each(function(){
+                                var aux=0;
+                                $(this).spinner({stop: function(event, ui){
+                                                $("#total-porcentaje").html("0");
+                                                $('.stotal').each(function(){
+                                                                aux = aux + parseFloat($(this).html())
+                                                                });
+                                                $("#total-porcentaje").html((aux*(parseFloat($(this).val())/100)).toFixed(2));
+                                                aux = 0;
+                                                $("#total-adicionales").html("0");
+                                                $('.adicionales').each(function(){
+                                                                $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($(this).val()));
+                                                                });
+                                                $("#total-adicionales").html((parseFloat($("#total-adicionales").html())+parseFloat($("#total-porcentaje").html())).toFixed(2));
+                                                macroC();
+                                            },
+                                            min: 0
+                                });
+                                aux = '{{ porcentaje }}';
+                                aux = aux.split(',');
+                                if(aux.length>1){
+                                    aux = aux[0]+'.'+aux[1];
+                                    $(this).val(aux);
+                                }else{
+                                    $(this).val(aux[0]);
+                                }
+                                aux = 0;
+    });
+
+    $('.adicionales').each(function(){
+                                $(this).spinner({stop: function(event, ui){
+                                                $("#total-adicionales").html("0");
+                                                $('.adicionales').each(function(){$("#total-adicionales").html((parseFloat($("#total-adicionales").html())+parseFloat($(this).val())).toFixed(2));});
+                                                macroC();
+                                            },
+                                            min: 0
+                                });
+    });
+
     $('.honorarios').each(function(){
-                                $(this).spinner("value",parseInt($(this).val()))
-                                $("#total-honorarios").html(parseInt($("#total-honorarios").html())+parseInt($(this).val()));
+                                $(this).spinner("value",parseFloat($(this).val()))
+                                $("#total-honorarios").html(parseFloat($("#total-honorarios").html())+parseFloat($(this).val()));
                             });
 
     $('.fijos').each(function(){
-                                $(this).spinner("value",parseInt($(this).val()))
-                                $("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));
+                                $(this).spinner("value",parseFloat($(this).val()))
+                                $("#total-fijos").html(parseFloat($("#total-fijos").html())+parseFloat($(this).val()));
+                            });
+
+    $('.productos').each(function(){
+                                var aux = $(this).html();
+                                aux = aux.split(',');
+                                aux = aux[0]+'.'+aux[1]
+                                $(this).html(aux);
+                                $("#total-productos").html(parseFloat($("#total-productos").html())+parseFloat(aux));
+                            });
+
+    $('.envios').each(function(){
+
+                                var aux;
+                                aux = $(this).val();
+                                aux = aux.split(',');
+                                aux = aux[0]+'.'+aux[1];
+                                $(this).val(aux);
+                                aux = 0;
+                                $("#total-envios").html(parseFloat($("#total-envios").html())+(parseFloat($(this).val()))* parseFloat($("#"+$(this).attr("id")+"v").html()));
                             });
 
     $('.variables').each(function(){
-                                $("#total-productos").html(parseFloat($("#total-productos").html())+parseFloat($(this).html()));
+                                $("#total-variables").html(parseInt($("#total-variables").html())+parseInt($(this).html()));
                             });
+
+    $('.stotal').each(function(){
+
+                            $('#total-porcentaje').html((parseFloat($('#total-porcentaje').html())+(parseFloat($(this).html())*parseFloat($('#porcentajeM').val())/100)).toFixed(2));
+                            $("#total-evento").html((parseFloat($('#total-evento').html())+(parseFloat($(this).html()))).toFixed(2));
+
+                            });
+
+    $('.adicionales').each(function(){
+                                var aux;
+                                aux = $(this).val();
+                                aux = aux.split(',');
+                                aux = aux[0]+'.'+aux[1];
+                                $(this).val(parseFloat(aux));
+                                aux = 0;
+                                $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($(this).val()));
+                            });
+
+    $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($("#total-porcentaje").html()))
+    $("#total-evento-adicionales").html((parseFloat($('#total-evento').html())+parseFloat($("#total-adicionales").html())).toFixed(2));
+
+}
+
+function macroC(){
+
+    var aux=0;
+
+    $("#total-variables").html(parseFloat($("#total-envios").html())+parseFloat($("#total-productos").html()));
+
+    $('.stotal').each(function(){
+                    aux = aux + parseFloat($(this).html())
+                    });
+
+    $("#total-porcentaje").html((aux*(parseFloat($('#porcentajeM').val())/100)).toFixed(2));
+
+    $("#total-adicionales").html("0");
+
+    $('.adicionales').each(function(){
+                    $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($(this).val()));
+                    });
+
+    $("#total-adicionales").html((parseFloat($("#total-adicionales").html())+parseFloat($('#total-porcentaje').html())).toFixed(2));
+
+    $("#total-evento").html((aux).toFixed(2));
+    $("#total-evento-adicionales").html((aux+parseFloat($("#total-adicionales").html())).toFixed(2));
+
+    aux = 0;
 
 }
 
@@ -220,7 +378,7 @@ function agregarGastoFijo(){
 
     nomb = $("#input-gasto-fijo").val();
 
-    $("#body-fijo").append('<p></p><div class="col-sm-6"><b>'+nomb+'</b></div><div class="col-sm-6" style="border-left: 1px solid #dedede;"><div class="col-md-6"></div><div class="col-md-6"> <input class="fijos '+nombaux+' form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div></div><div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>');
+    $("#body-fijo").append('<p></p><div class="col-sm-6"><b>'+nomb+'</b></div><div class="col-sm-6" style="border-left: 1px solid #dedede;"><div class="col-md-6"></div><div class="col-md-6"> <input name="f-'+nombaux+'" class="fijos '+nombaux+' form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div></div><div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>');
 
     setTimeout(function(){
 
@@ -229,9 +387,10 @@ function agregarGastoFijo(){
                                     $("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));
                                 });
 
-        $("."+nombaux).spinner({min: 0, step: 50, stop: function(event, ui){
+        $("."+nombaux).spinner({min: 0, stop: function(event, ui){
                                                     $("#total-fijos").html("0");
                                                     $('.fijos').each(function(){$("#total-fijos").html(parseInt($("#total-fijos").html())+parseInt($(this).val()));});
+                                                    macroC();
                                                 }
                                     });
     },1);
@@ -242,6 +401,18 @@ function agregarGastoFijo(){
 function focusInputAgregarGasto(){
 
     $("#input-gasto-fijo").focus();
+
+}
+
+function actualizar(){
+
+    $("#administracionEventoFormulario").append("<input type='hidden' name='m-macro' value='"+$("#total-porcentaje").html()+"'>");
+    $(".productos").each(function(){
+
+        $("#administracionEventoFormulario").append("<input type='hidden' name='pr-"+$(this).attr("name")+"' value='"+$(this).html()+"'>");
+
+    });
+    document.getElementById("administracionEventoFormulario").submit();
 
 }
 
