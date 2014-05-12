@@ -44,7 +44,7 @@ Administración de envento
                     {% for fijo in fijos %}
                         <div class="col-sm-6"><b>{{ fijo.0 }}</b></div>
                         <div class="col-sm-6" style="border-left: 1px solid #dedede;">
-                            <div class="col-md-6"></div><div class="col-md-6"> <input name="f-{{ fijo.0 }}" class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ fijo.1 }}"> </div>
+                            <div class="col-md-6"><input type="text" name="{{ fijo.0 }}" style="margin-top: 5px" class="auc-usu form-control" placeholder="A quien se le debe..." value="{{ fijo.2 }}"></div><div class="col-md-6"> <input name="f-{{ fijo.0 }}" class="fijos form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ fijo.1 }}"> </div>
                         </div>
                         <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
                         <p></p>
@@ -311,6 +311,40 @@ window.onload = function(){
 
     $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($("#total-porcentaje").html()))
     $("#total-evento-adicionales").html((parseFloat($('#total-evento').html())+parseFloat($("#total-adicionales").html())).toFixed(2));
+
+    $(".auc-usu").each(function(){
+        $(this).autocomplete({
+            source: function(request, response){
+                $.get(
+                    '/traer_usuario_gasto_evento_ajax/',
+                    {
+                        usu: request.term
+                    },
+                    function(data){
+                        response(data);
+                    }
+                );
+            },
+            focus: function( event, ui ) {
+                $( this ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( this ).val( ui.item.label );
+                $( "[name='f-"+$(this).attr("name")+"']").each(function(){
+                    $(this).attr( "name", $(this).attr('name')+"-"+ui.item.value )
+                });
+
+                return false;
+            }
+        })
+        .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
+                .appendTo( ul );
+        };
+
+    });
 
 }
 

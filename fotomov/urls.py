@@ -129,4 +129,5 @@ urlpatterns = patterns('',
     url(r'^listar_pedidos_pendientes/$', 'productos.views.listar_pedidos_pendientes'),
     url(r'^editar_evento/(?P<iden>\d+)/$', 'evento.views.editar_evento'),
     url(r'^editar_funcion/$', 'evento.views.editar_funcion'),
+    url(r'^traer_usuario_gasto_evento_ajax/$', 'evento.views.traer_usuario_gasto_evento_ajax'),
 )
