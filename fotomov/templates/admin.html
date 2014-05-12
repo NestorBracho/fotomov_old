@@ -8,10 +8,10 @@
 
     <!-- COMPILED LESS -->
 <!--     <link href="{{ STATIC_URL }}/css/main.css"  type="text/css" rel="stylesheet">      -->
-    <link href="{{ STATIC_URL }}/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <!-- uncompiled LESS -->
-    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}/less/main.less" />
+    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}less/main.less" />
 	<script>
 	  less = {
 	    env: "development",
@@ -21,10 +21,10 @@
 	    functions: {},
 	    dumpLineNumbers: "comments",
 	    relativeUrls: false,
-	    rootpath: ":/a.com/"
+	    rootpath: "/a.com/"
 	  };
 	</script>
-	<script src="{{ STATIC_URL }}/js/less-1.7.0.min.js"></script>
+	<script src="{{ STATIC_URL }}js/less-1.7.0.min.js"></script>
 
     <!-- OVERRIDE CSS -->
 <!--     <link href="{{ STATIC_URL }}/css/override.css"  type="text/css" rel="stylesheet"> -->
@@ -49,7 +49,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo" href="/escritorio/"><img src="{{STATIC_URL}}//img/fotomov-logo.png" alt="Intranet Fotomov"></a>
+                <a class="navbar-brand logo" href="/escritorio/"><img src="{{STATIC_URL}}img/fotomov-logo.png" alt="Intranet Fotomov"></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -111,10 +111,19 @@
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
                         {% for tarea in tareas_menu %}
-                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if tarea.lista == 'None' %} style="display: none" {% endif %}>
+                        <li class="tarea" id="tarea-{{ tarea.id }}" {% if  tarea.lista == 'None' or tarea.lista == 'True' %} style="display: none" {% endif %}>
                             <div class="acciones">
-                                <button onclick="listo(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
-                                <a onclick="listo('0',{{ tarea.id }})" class="no-aplica">No aplica</a>
+								<button id='realizada-{{ tarea.id }}' name = '2' onclick="listo(this.name,{{ tarea.id }})" class="btn-tarea  btn-xs btn-default btn btn-block {% if tarea.lista == "True" %} activo{% endif %}" ><i class="fa fa-thumbs-o-up"></i> Realizada</button>
+								
+								<button id='pendiente-{{ tarea.id }}'  name = '1' class="btn-tarea btn-xs btn-default btn btn-block  {% if tarea.lista == "False" %} activo{% endif %}" onclick="listo(this.name,{{ tarea.id }})" ><i class="fa fa-thumbs-o-down"></i> Pendiente</button>	
+																
+								<button id='no-aplica-{{ tarea.id }}'  class="btn-tarea btn-xs btn-default btn btn-block no-aplica  {% if tarea.lista == "None" %} activo{% endif %}" onclick="listo('0',{{ tarea.id }})" ><i class="fa fa-times"></i> No Aplica</button>								
+								
+								
+					{% comment %}
+						
+												   <button {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='check-{{ tarea.id }}'>{% if tarea.lista == "True" %}{% endif %}</button>
+					{% endcomment %}
                             </div>
                             <a class="datos" href="/ver_tarea/{{ tarea.id }}">
                                 <div>
@@ -269,7 +278,7 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li id="menu-clientes" >
-                        <a href="forms.html"><i class="fa fa-male fa-fw"></i> Clientes</a>
+                        <a href="/listar_clientes/"><i class="fa fa-male fa-fw"></i> Clientes</a>
                     </li>
                     <li id="menu-eventos" >
                         <a href="#"><i class="fa fa-camera fa-fw"></i> Eventos<span class="fa arrow"></span></a>
@@ -343,10 +352,10 @@
                                 <a href="/listar_todas_tareas/"><i class="fa fa-road fa-fw"></i> Supervisi&oacute;n tareas</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-plus fa-fw"></i> Asignar notificaci&oacute;n</a>
+                                <a href="/crear_notificacion/1/"><i class="fa fa-plus fa-fw"></i> Asignar notificaci&oacute;n</a>
                             </li> 
                             <li>
-                                <a href="#"><i class="fa fa-list-ul fa-fw"></i> Lista de notificaciones</a>
+                                <a href="/listar_notificaciones/"><i class="fa fa-list-ul fa-fw"></i> Lista de notificaciones</a>
                             </li> 
                             <li>
                                 <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Mis notificaciones</a>
@@ -458,12 +467,12 @@
 
   {# CARGAR SIEMPRE  #}
 {#    <script src="{{ STATIC_URL }}/js/jquery-1.10.2.js"></script> #}
-    <script>window.jQuery || document.write('<script src="{{STATIC_URL}}/js/jquery-1.10.2.js"><\/script>')</script>
-    <script src="{{ STATIC_URL }}/js/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script>window.jQuery || document.write('<script src="{{STATIC_URL}}js/jquery-1.10.2.js"><\/script>')</script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
 	{# datepicker #}
-    <script src="{{ STATIC_URL }}/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/datepicker/bootstrap-datepicker.js"></script>
 
 
 {% comment %}
@@ -472,10 +481,10 @@
 {% endcomment %}
 
 	{#     SB Admin Scripts - Include with every page #}
-    <script src="{{ STATIC_URL }}/js/sb-admin.js"></script>
+    <script src="{{ STATIC_URL }}js/sb-admin.js"></script>
 
 	{# jquery UI #}
-    <script src="{{ STATIC_URL }}/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui-1.10.4.custom.min.js"></script>
 
 
     <script type="text/javascript">
@@ -500,16 +509,18 @@ function listo(stado,tarea){
 
         if(data.status == 'True'){
 
-            $("#check-"+tarea).addClass("listo");
-            $("#check-"+tarea).attr('name','1');
+/*             $("#check-"+tarea).attr('name','1'); */
+            $("#pendiente-"+tarea).removeClass("activo");
+            $("#tarea-"+tarea).fadeOut();
 
         }else if(data.status == 'False'){
 
-            $("#check-"+tarea).removeClass("listo");
-            $("#check-"+tarea).attr('name','2');
+/*             $("#check-"+tarea).attr('name','2'); */
+            $("#realizada-"+tarea).addClass("activo");
+
 
         }else if(data.status == "None"){
-
+            $("#no-aplica-"+tarea).removeClass("activo");
             $("#tarea-"+tarea).fadeOut();
 
         }

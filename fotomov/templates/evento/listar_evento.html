@@ -22,13 +22,15 @@ Lista de eventos
          ¡Evento eliminado satifactoriamente!
     </div>
 {% endif %}
-<table class="table table-striped table-bordered table-hover" id="content">
+<table class="table table-striped  table-hover" id="content">
     <thead>
+        <th>Macroclientes</th>
         <th>Eventos</th>
         <th>Acciones</th>
     </thead>
     {% for evento in eventos %}
         <tr>
+            <td><a href="/ver_macrocliente/{{ evento.macrocliente.id }}">{{ evento.macrocliente }}</a></td>
             <td>{{ evento.nombre }}</td>
             <td><a href="/agregar_staff/{{ evento.id }}" class="btn btn-default btn-xs" >Staff</a>
             <a href="/agregar_productos/{{ evento.id }}" class="btn btn-default btn-xs" >Productos</a>

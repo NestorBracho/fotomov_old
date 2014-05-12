@@ -14,8 +14,8 @@
 
 {% block js-nivel-1%}
 	{#	poner aquí el codigo JS compartido de todas las tablas, se puede tener un blaoque "JS" único en cada plantilla final #}
-    <script src="{{STATIC_URL}}/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="{{STATIC_URL}}/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="{{STATIC_URL}}js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="{{STATIC_URL}}js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 	{#	Esta es la clave para que funcione la tabla #}
     <script>
@@ -23,12 +23,9 @@
         $('#content').dataTable();
     });
     </script>
-
-
-    
 {% endblock %}
 
 {% block css %}
 	{# solo para casos *MUY* particulares #}
-	    <link href="{{STATIC_URL}}/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+	    <link href="{{STATIC_URL}}css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
 {% endblock %}

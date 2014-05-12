@@ -20,6 +20,10 @@ def crear_tarea(request):
     if request.method == 'POST':
         formulario = TareaForm(request.POST)
         fecha = request.POST.get('fecha')
+        hoy = str(datetime.datetime.now()).split(" ")
+        hoy_split = hoy[0].split("-")
+        hoy_final = hoy_split[2] + "-" + hoy_split[1] + "-" + hoy_split[0]
+        print hoy
         if fecha == "":
             error_fecha = 1
             return render_to_response('tareas/crear_tarea.html', {'formulario': formulario, 'eventos': eventos, 'error_fecha': error_fecha}, context_instance=RequestContext(request))
@@ -28,10 +32,10 @@ def crear_tarea(request):
             fecha_final= fecha_split[2] + "-" + fecha_split[1] + "-" + fecha_split[0]
             evento = request.POST.get('evento')
             if evento == None:
-                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
+                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], fecha_activacion=hoy[0], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
                                              lista=False, fecha=fecha_final, activa=True)
             else:
-                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
+                tarea = Tarea.objects.create(asignado=formulario.cleaned_data['asignado'], fecha_activacion=hoy[0], nombre=formulario.cleaned_data['nombre'], tarea=formulario.cleaned_data['tarea'],
                                              lista=False, fecha=fecha_final, evento=Evento.objects.get(id=evento), activa=True)
 
             return HttpResponseRedirect('/listar_tareas/')
@@ -118,7 +122,7 @@ def ver_tarea(request, id_tarea):
     return render_to_response('tareas/ver_tarea.html', {'tarea':tarea, 'prela':prela, 'es_prelada': es_prelada, 'status':stat}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
-def crear_notificacion(request):
+def crear_notificacion(request, creado):
     user = Usuario.objects.get(usuario = request.user)
     if request.method == 'POST':
         formulario = CrearNotificacionFrom(request.POST)
@@ -126,11 +130,14 @@ def crear_notificacion(request):
             noti = formulario.cleaned_data['notificacion']
             mCliente = formulario.cleaned_data['macro_cliente']
             cliente = formulario.cleaned_data['cliente']
-            nNoti = Notificacion.objects.create(notificacion = noti, macro_cliente = mCliente, cliente = cliente, usuario_creador = user)
+            tipo = formulario.cleaned_data['tipo']
+            nNoti = Notificacion.objects.create(notificacion = noti, macro_cliente = mCliente, cliente = cliente, usuario_creador = user, tipo=tipo)
             return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'true'}, context_instance=RequestContext(request))
     else:
         formulario = CrearNotificacionFrom()
-    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'false'}, context_instance=RequestContext(request))
+        clientes = Cliente.objects.all()
+        macro_clientes = MacroCliente.objects.all()
+    return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'clientes':clientes, 'macro_clientes':macro_clientes, 'flag': 'false', 'estado':creado}, context_instance=RequestContext(request))
 
 def listar_notificaciones(request):
     notificaciones = Notificacion.objects.all()

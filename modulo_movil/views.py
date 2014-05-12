@@ -27,8 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
-from django.core.management import call_command
+# from escpos import *
 
 
 def obtener_timestamp():
@@ -158,26 +157,10 @@ def importar_csv_evento(request):
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def exportar_csv_central(request):
-    #direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
-    #direccion.save()
-    #print direccion.id
-    #subprocess.call(['./dump-central.sh'])
-    fecha = datetime.datetime.now()
-    nombre = 'db-movil.json'
-    output = open(settings.MEDIA_ROOT+"/base_datos/" + nombre,'w') # Point stdout at a file for dumping data to.
-    call_command('dumpdata', use_natural_keys=True,format='json',indent=3,stdout=output)
-    output.close()
-    return HttpResponseRedirect('/seleccionar_direccion/1')
-
-def importar_csv_central(request):
-    try:
-        call_command('syncdb', interactive = False)
-    except:
-        pass
-    call_command('flush', interactive= False)
-    call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
-    return HttpResponseRedirect('/')
-
+    direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
+    direccion.save()
+    print direccion.id
+    return True
 
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
@@ -281,7 +264,7 @@ def exportar_csv_evento(request):
 
     return response
 
-def selecccionar_direccion(request, creado):
+def selecccionar_direccion(request):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -290,9 +273,7 @@ def selecccionar_direccion(request, creado):
         settings.MEDIA_ROOT = directorio
         print settings.MEDIA_ROOT
         return HttpResponseRedirect('/escritorio')
-    else:
-        directorio = settings.MEDIA_ROOT
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
@@ -432,7 +413,7 @@ def generar_lote(request):
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
     for pedido in pedidos:
-        peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        peps = ProductoEventoPedido.objects.filter(pedido = pedido)
         for pep in peps:
             nom = pedido.cliente.nombres.split(' ')
             nom = nom[0]
@@ -448,7 +429,7 @@ def generar_lote(request):
                 if pep.pedido.lote == None:
                     pep.pedido.lote = lote
                     pep.pedido.save()
-            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+            productos = ProductoEventoPedido.objects.filter(pedido = pedido)
             for producto in productos:
                 if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
                     os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')

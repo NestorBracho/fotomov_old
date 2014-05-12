@@ -1,18 +1,12 @@
-{% extends "vacio.html" %}
 {% load bootstrap %}
-{% block css %}
-<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-{% endblock %}
-{% block seccion-contenido %}
  <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
 
-        <div class="modal-body">  <!-- !!! falta arregar apariencia en el modal window -->
-
-                <h2>Libreta de direcciones</h2>
+          <!-- !!! falta arregar apariencia en el modal window -->
+{# 	        <div class="row"> #}
 			    <div class="addresses col-sm-6">
 			            <div id="direccion">
                             <div class='row form-group'>
-                            <table id="content" class="table table-striped table-bordered table-hover dataTable no-footer" aria-describedby="content_info">
+                            <table id="content" class="table table-striped  table-hover dataTable no-footer" aria-describedby="content_info">
                                 <thead>
                                     <th>
                                         Nombre
@@ -84,15 +78,18 @@
 			        <input type="hidden" id="latlng" name="latlng">
                     <button type='button' onclick="ajax_guardar()" class="btn btn-default btn-block">Agregar Direccion <i class="fa fa-plus"></i></button>
 			    </div>
-
-        </div>
+	        </div>
+{#         </div> #}
         <div class="modal-footer">
-        </div>
-
+		<!-- Se sierra este div en el template externo -->	
 
 </form>
-{% endblock %}
-{% block js %}
+
+
+{# Todos los templates que utilicen este necesitan incluir este JS  #}
+{% comment %}
+	
+	{% block js-nivel-3 %}
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
 <script type="text/javascript">
@@ -232,4 +229,5 @@ function deleteAlert(id, row){
     document.getElementById("demo").innerHTML=x;
 }
 </script>
-{% endblock %}
+{% endblock %} {# /JS nivel 3 #}
+{% endcomment %}
