@@ -7,12 +7,10 @@ Generar pedido
 <form method="POST">{% csrf_token %}
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <label class="control-label" for="id_numero">Introduzca su número</label>
-            <input type="text" id="id_numero" name="numero" class=" form-control" placeholder="Ticket">
+            {{ formulario.ticket | bootstrap }}
         </div>
         <div class="col-xs-12 col-md-6">
-            <label class="control-label" for="id_cedula_cliente">Número de cédula del cliente</label>
-            <input type="text" id="id_cedula_cliente" name="cedula_cliente" class="form-control" placeholder="Cédula">
+            {{ formulario.cedula | bootstrap }}
         </div>
         <div class="col-xs-12 text-right">
             <div class="row">

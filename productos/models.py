@@ -9,6 +9,13 @@ class Lote(models.Model):
     codigo = models.CharField(max_length=100)
 
 class Pedido(models.Model):
+    PAGO_CHOICES = (
+        ('C', 'Credito'),
+        ('D', 'Debito'),
+        ('T','Transferencia'),
+        ('Cq', 'Cheque'),
+        ('E', 'Efectivo')
+    )
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
     num_pedido= models.IntegerField()
@@ -25,6 +32,7 @@ class Pedido(models.Model):
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100)
     factura = models.BooleanField(default=False)
+    tipo_pago = models.CharField(max_length=2, choices=PAGO_CHOICES)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)

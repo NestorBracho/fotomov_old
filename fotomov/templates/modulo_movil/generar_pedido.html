@@ -74,7 +74,10 @@ Generar pedido
             {{ formulario.direccion_fiscal | bootstrap}}
         </div>
         <div class="col-xs-12 col-md-12">
-            {{ formulario.fue_pagado | bootstrap}}
+            {{ formulario.envio | bootstrap }}
+        </div>
+        <div class="col-xs-12 col-md-12">
+            {{ formulario.tipo_pago | bootstrap }}
         </div>
         <div class="col-xs-12 text-right">
                 <input type='button' onclick="generarPedido()" class="btn btn-default btn-primary" value='Generar'/>

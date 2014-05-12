@@ -11,7 +11,7 @@ from django.core import serializers
 from evento.forms import *
 from productos.forms import *
 from modulo_movil.models import *
-from modulo_movil.forms import ArchivoForm
+from modulo_movil.forms import ArchivoForm, IngresarTicketForm
 from evento.models import *
 from clientes.models import *
 from productos.models import *
@@ -563,57 +563,64 @@ def generar_pedido(request, pedido, cedula):
             rif = request.POST['rif_cliente']
             ced = request.POST['cedula_cliente']
             cliente = Cliente.objects.create(nombres = nom, apellidos = ape, telefono = tlf, email = mail, direccion_fiscal = direc, rif = rif, cedula = ced)
-    formulario = PedidoForm()
     if request.method == 'POST':
-        dia = date.today()
-        formulario = PedidoForm(request.POST)
-        aux = str(datetime.datetime.today())
-        aux = aux.split(' ')
-        cod = ''
-        for au in aux:
-            cod = cod + au
-        aux = cod.split('-')
-        cod = ''
-        for au in aux:
-            cod = cod + au
-        aux = cod.split(':')
-        cod = ''
-        for au in aux:
-            cod = cod + au
-        aux = cod.split('.')
-        cod = ''
-        for au in aux:
-            cod = cod + au
-        aux = []
-        fechas_entrega = Funcion.objects.filter(evento = peps[0].producto.evento)
-        for fecha_entrega in fechas_entrega:
-            aux.append(fecha_entrega.dia)
-        for i in range(len(aux)):
-            if i != len(aux)-1:
-                if aux[i+1] > aux[i]:
-                    dia = aux[i+1]
-        fecha_entrega = dia + datetime.timedelta(days = 15)
-        try:
-            if request.POST['fue_pagado']:
-                pagado = True
-        except:
-            pagado = False
+        formulario = PedidoCajaForm(request.POST)
+        if formulario.is_valid():
+            dia = date.today()
+            formulario = PedidoForm(request.POST)
+            aux = str(datetime.datetime.today())
+            aux = aux.split(' ')
+            cod = ''
+            for au in aux:
+                cod = cod + au
+            aux = cod.split('-')
+            cod = ''
+            for au in aux:
+                cod = cod + au
+            aux = cod.split(':')
+            cod = ''
+            for au in aux:
+                cod = cod + au
+            aux = cod.split('.')
+            cod = ''
+            for au in aux:
+                cod = cod + au
+            aux = []
+            fechas_entrega = Funcion.objects.filter(evento = peps[0].producto.evento)
+            for fecha_entrega in fechas_entrega:
+                aux.append(fecha_entrega.dia)
+            for i in range(len(aux)):
+                if i != len(aux)-1:
+                    if aux[i+1] > aux[i]:
+                        dia = aux[i+1]
+            fecha_entrega = dia + datetime.timedelta(days = 15)
+            try:
+                if request.POST['fue_pagado']:
+                    pagado = True
+            except:
+                pagado = False
 
-        pedido_nuevo = Pedido.objects.filter(id=pedido)
-        pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
-        pedido_nuevo = pedido_nuevo[0]
-        if pedido_nuevo.fue_pagado == True:
-            for pep in peps:
-                pep.estado = 'Pagado'
-                pep.save()
-        imprimir_ticket(pedido_nuevo)
-        return HttpResponseRedirect('/ingresar_ticket/')
+            pedido_nuevo = Pedido.objects.filter(id=pedido)
+            pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega, id_fiscal = request.POST['id_fiscal'], direccion_fiscal = request.POST['direccion_fiscal'], tlf_fiscal = request.POST['tlf_fiscal'], razon_social = request.POST['razon_social'], total = request.POST['total'], codigo = cod, direccion_entrega = request.POST['direccion_entrega'], fue_pagado = pagado)
+            pedido_nuevo = pedido_nuevo[0]
+            if pedido_nuevo.fue_pagado == True:
+                for pep in peps:
+                    pep.estado = 'Pagado'
+                    pep.save()
+            #imprimir_ticket(pedido_nuevo)
+            return HttpResponseRedirect('/ingresar_ticket/')
+    else:
+        formulario = PedidoCajaForm()
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
 def ingresar_ticket(request):
     if request.method == 'POST':
-        return HttpResponseRedirect('/generar_pedido/'+request.POST['numero']+'/'+request.POST['cedula_cliente'])
-    return render_to_response('modulo_movil/ingresar_ticket.html', {}, context_instance=RequestContext(request))
+        formulario = IngresarTicketForm(request.POST)
+        if formulario.is_valid():
+            return HttpResponseRedirect('/generar_pedido/'+str(formulario.cleaned_data['ticket'])+'/'+str(formulario.cleaned_data['cedula']))
+    else:
+        formulario = IngresarTicketForm()
+    return render_to_response('modulo_movil/ingresar_ticket.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def eliminar_productoeventopedido_en_generarpedido(request):
     pep = ProductoEventoPedido.objects.get(id = request.GET['iden'])
