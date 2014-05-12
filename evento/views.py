@@ -202,12 +202,16 @@ def casilla_administrativa(request, id_evento):
                 if len(GastoEvento.objects.filter(evento=evento, tipo="1", nombre = gastofijo))>0:
                     a = GastoEvento.objects.get(evento=evento, tipo="1", nombre = gastofijo)
                     a.monto = post[1]
+                    if len(aux)==3:
+                        a.usuario = Usuario.objects.get(id=aux[2])
                     a.save()
                 else:
-                    GastoEvento.objects.create(evento=evento, monto=post[1], tipo="1", nombre = gastofijo)
+                    if len(aux)==3:
+                        GastoEvento.objects.create(evento=evento, usuario=Usuario.objects.get(id=aux[2]), monto=post[1], tipo="1", nombre = gastofijo)
+                    else:
+                        GastoEvento.objects.create(evento=evento, monto=post[1], tipo="1", nombre = gastofijo)
             elif aux[0]=="p":#----------porcentaje
                 evento.porcentaje_institucion = post[1]
-                print post[1]
                 evento.save()
             elif aux[0]=="m":#----------porcentaje(el gasto)
                 if len(GastoEvento.objects.filter(evento=evento, nombre = "Porcentaje de la institcion"))>0:
@@ -296,9 +300,12 @@ def casilla_administrativa(request, id_evento):
     fijos = []
     if len(gasto)>0:
         for gato in gasto:
-            fijos.append([gato.nombre, gato.monto])
+            if gato.usuario !=None :
+                fijos.append([gato.nombre, gato.monto, gato.usuario.nombre+" "+gato.usuario.nombre])
+            else:
+                fijos.append([gato.nombre, gato.monto, ""])
     else:
-        fijos = [['Viaticos', 0], ['Comidas', 0], ['Alquier de equipos', 0], ['Deudas de staff', 0], ['Edicion outsourcing', 0]]
+        fijos = [['Viaticos', 0, ''], ['Comidas', 0, ''], ['Alquier de equipos', 0, ''], ['Deudas de staff', 0, ''], ['Edicion outsourcing', 0, '']]
     #-------------------------------------------------------envios
     numPedidos = []
     pedidos = []
@@ -594,3 +601,44 @@ def editar_funcion(request):
         return HttpResponse(data, mimetype='application/json')
     data = json.dumps({'id':funcion.id, 'nombre':funcion.nombre , 'evento':funcion.evento.nombre, 'horas':funcion.horas, 'entrega_fotos':funcion.entrega_fotos, 'dia': str(funcion.dia), 'direccion':funcion.direccion.nombre, 'accion': request.GET['accion']})
     return HttpResponse(data, mimetype='application/json')
+
+def traer_usuario_gasto_evento_ajax(request):
+    usuarioN = Usuario.objects.filter(nombre__contains = request.GET['usu'])
+    usuarioA = Usuario.objects.filter(apellido__contains = request.GET['usu'])
+    usuarioC = Usuario.objects.filter(cedula__contains = request.GET['usu'])
+
+    aux = []
+
+    for usuario in usuarioN:
+        flag = False
+        for au in aux:
+            if au == usuario:
+                flag = True
+        if flag == False:
+            aux.append(usuario)
+
+    for usuario in usuarioA:
+        flag = False
+        for au in aux:
+            if au == usuario:
+                flag = True
+        if flag == False:
+            aux.append(usuario)
+
+    for usuario in usuarioC:
+        flag = False
+        for au in aux:
+            if au == usuario:
+                flag = True
+        if flag == False:
+            aux.append(usuario)
+
+    usuarioN = aux
+    resp = []
+
+    for usuario in usuarioN:
+        resp.append({"value": usuario.id, "label": usuario.nombre+" "+usuario.apellido, "desc": usuario.privilegio.nombre+" - "+usuario.cedula})
+
+    print resp
+
+    return HttpResponse(simplejson.dumps(resp), mimetype='application/json')
