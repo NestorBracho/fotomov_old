@@ -27,8 +27,8 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-# from escpos import *
-
+from escpos import *
+from django.core.management import call_command
 
 def obtener_timestamp():
     a = tm.time()
@@ -157,10 +157,25 @@ def importar_csv_evento(request):
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def exportar_csv_central(request):
-    direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
-    direccion.save()
-    print direccion.id
-    return True
+    #direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
+    #direccion.save()
+    #print direccion.id
+    #subprocess.call(['./dump-central.sh'])
+    fecha = datetime.datetime.now()
+    nombre = 'db-movil.json'
+    output = open(settings.MEDIA_ROOT+"/base_datos/" + nombre,'w') # Point stdout at a file for dumping data to.
+    call_command('dumpdata', use_natural_keys=True,format='json',indent=3,stdout=output)
+    output.close()
+    return HttpResponseRedirect('/seleccionar_direccion/1')
+
+def importar_csv_central(request):
+    try:
+        call_command('syncdb', interactive = False)
+    except:
+        pass
+    call_command('flush', interactive= False)
+    call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
+    return HttpResponseRedirect('/')
 
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
@@ -264,7 +279,7 @@ def exportar_csv_evento(request):
 
     return response
 
-def selecccionar_direccion(request):
+def selecccionar_direccion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -273,7 +288,9 @@ def selecccionar_direccion(request):
         settings.MEDIA_ROOT = directorio
         print settings.MEDIA_ROOT
         return HttpResponseRedirect('/escritorio')
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {}, context_instance=RequestContext(request))
+    else:
+        directorio = settings.MEDIA_ROOT
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
@@ -287,86 +304,170 @@ def seleccionar_evento(request):
 
 @login_required(login_url='/')
 def crear_pedidos(request, id_evento, id_funcion, next, actual):
-    print next
-    evento = Evento.objects.get(id=id_evento)
-    funcion_aux = Funcion.objects.get(id=id_funcion)
-    int_dia = date_to_int(funcion_aux.dia)
-    #print directorio_actual.objects.filter(usuario = request.user)
-    if directorio_actual.objects.filter(usuario = request.user):
-        dir_actual = directorio_actual.objects.get(usuario=request.user)
-    else:
-        timestamp = obtener_timestamp()
-        numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
-        int_numero_pedido = int(numero_pedido)
-        dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
-    lista_agregados = []
-    productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
-    for agregado in productos_pedidos:
-        lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
-    funciones = Funcion.objects.filter(evento=evento)
-    generar_rutas(id_evento)
-    print "aqui"
-    print dir_actual.directorio
-    separado = request.path.split('urlseparador')
-    print separado
-    year = str(date.today().year)
-    if actual == "NoneValue":
-        print "NoneValue"
-        current = dir_actual.directorio
-    elif actual == "ir":
-        split_auxiliar = next.split(" ")
-        print len(split_auxiliar)
-        if len(split_auxiliar) > 1:
-            print "entre"
-            #i=0
-            #concatenar = ""
-            #while i < len(split_auxiliar) - 1:
-            #    concatenar = concatenar + split_auxiliar[i] + "\"
-            #    i = i + 1
-            #next = concatenar
-            print "el nuevo next es =" + next
-        auxiliar = dir_actual.directorio
-        dir_actual.directorio = auxiliar + next + "/"
+    try:
+        print next
+        evento = Evento.objects.get(id=id_evento)
+        funcion_aux = Funcion.objects.get(id=id_funcion)
+        int_dia = date_to_int(funcion_aux.dia)
+        #print directorio_actual.objects.filter(usuario = request.user)
+        if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user)
+        else:
+            print "elseeeeeeeeeeeeeeeeeeee creando!"
+            timestamp = obtener_timestamp()
+            numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
+            int_numero_pedido = int(numero_pedido)
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
+        lista_agregados = []
+        productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
+        for agregado in productos_pedidos:
+            lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
+        funciones = Funcion.objects.filter(evento=evento)
+        generar_rutas(id_evento)
+        print "aqui"
+        print dir_actual.directorio
+        separado = request.path.split('urlseparador')
+        print separado
+        year = str(date.today().year)
+        if actual == "NoneValue":
+            print "NoneValue"
+            current = dir_actual.directorio
+        elif actual == "ir":
+            split_auxiliar = next.split(" ")
+            print len(split_auxiliar)
+            if len(split_auxiliar) > 1:
+                print "entre"
+                #i=0
+                #concatenar = ""
+                #while i < len(split_auxiliar) - 1:
+                #    concatenar = concatenar + split_auxiliar[i] + "\"
+                #    i = i + 1
+                #next = concatenar
+                print "el nuevo next es =" + next
+            auxiliar = dir_actual.directorio
+            dir_actual.directorio = auxiliar + next + "/"
+            current = dir_actual.directorio
+        elif actual == "back":
+            auxiliar = dir_actual.directorio.split("/")
+            i = 0
+            print "antes del while"
+            concatenar = ""
+            while i < len(auxiliar) - 2:
+                if i == 0:
+                    concatenar = concatenar + auxiliar[i]
+                else:
+                    concatenar = concatenar + "/" + auxiliar[i]
+                print auxiliar[i]
+                i= i + 1
+            dir_actual.directorio = concatenar + "/"
+
+            current = dir_actual.directorio
+        else:
+            print "estoy en el else"
+            current = settings.MEDIA_ROOT + "/eventos/" + year + "" + separado[1]
+            print "sali del else"
+        print "aqui va el current"
+        print current
+        short_current = current.split("fotomov_imagenes")[1]
+        print "aqui va el short"
+        print short_current
+        lista_imagenes = []
+        imagenes = [ f for f in listdir(current) if isfile(join(current,f)) ]
+        for imagen in imagenes:
+            dividir_url = imagen.split("fotomov_imagenes")
+        directorios = [ f for f in listdir(current) if isdir(join(current,f)) ]
+        print imagenes
+        print directorios
+        if request.method == 'POST':
+            pass
+        productos = ProductoEvento.objects.filter(evento=evento)
         dir_actual.save()
-        current = dir_actual.directorio
-    elif actual == "back":
-        auxiliar = dir_actual.directorio.split("/")
-        i = 0
-        print "antes del while"
-        concatenar = ""
-        while i < len(auxiliar) - 2:
-            if i == 0:
-                concatenar = concatenar + auxiliar[i]
-            else:
-                concatenar = concatenar + "/" + auxiliar[i]
-            print auxiliar[i]
-            i= i + 1
-        dir_actual.directorio = concatenar + "/"
-        dir_actual.save()
-        current = dir_actual.directorio
-    else:
-        print "estoy en el else"
-        current = settings.MEDIA_ROOT + "/eventos/" + year + "" + separado[1]
-        print "sali del else"
-    print "aqui va el current"
-    print current
-    short_current = current.split("fotomov_imagenes")[1]
-    print "aqui va el short"
-    print short_current
-    lista_imagenes = []
-    imagenes = [ f for f in listdir(current) if isfile(join(current,f)) ]
-    for imagen in imagenes:
-        dividir_url = imagen.split("fotomov_imagenes")
-    directorios = [ f for f in listdir(current) if isdir(join(current,f)) ]
-    print imagenes
-    print directorios
-    if request.method == 'POST':
-        pass
-    productos = ProductoEvento.objects.filter(evento=evento)
-    return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
+        return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
                                                                   'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
+    except:
+        print "exept************************************************************************************"
+        next = "NoneNext"
+        actual = "NoneValue"
+        evento = Evento.objects.get(id=id_evento)
+        funcion_aux = Funcion.objects.get(id=id_funcion)
+        int_dia = date_to_int(funcion_aux.dia)
+        #print directorio_actual.objects.filter(usuario = request.user)
+        if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user)
+        else:
+            timestamp = obtener_timestamp()
+            numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
+            int_numero_pedido = int(numero_pedido)
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
+        lista_agregados = []
+        productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
+        for agregado in productos_pedidos:
+            lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
+        funciones = Funcion.objects.filter(evento=evento)
+        generar_rutas(id_evento)
+        print "aqui"
+        print dir_actual.directorio
+        separado = request.path.split('urlseparador')
+        print separado
+        year = str(date.today().year)
+        if actual == "NoneValue":
+            print "NoneValue"
+            current = dir_actual.directorio
+        elif actual == "ir":
+            split_auxiliar = next.split(" ")
+            print len(split_auxiliar)
+            if len(split_auxiliar) > 1:
+                print "entre"
+                #i=0
+                #concatenar = ""
+                #while i < len(split_auxiliar) - 1:
+                #    concatenar = concatenar + split_auxiliar[i] + "\"
+                #    i = i + 1
+                #next = concatenar
+                print "el nuevo next es =" + next
+            auxiliar = dir_actual.directorio
+            dir_actual.directorio = auxiliar + next + "/"
 
+            current = dir_actual.directorio
+        elif actual == "back":
+            auxiliar = dir_actual.directorio.split("/")
+            i = 0
+            print "antes del while"
+            concatenar = ""
+            while i < len(auxiliar) - 2:
+                if i == 0:
+                    concatenar = concatenar + auxiliar[i]
+                else:
+                    concatenar = concatenar + "/" + auxiliar[i]
+                print auxiliar[i]
+                i= i + 1
+            dir_actual.directorio = concatenar + "/"
+            dir_actual.save()
+            current = dir_actual.directorio
+        else:
+            print "estoy en el else"
+            current = settings.MEDIA_ROOT + "/eventos/" + year + "" + separado[1]
+            print "sali del else"
+        print "aqui va el current"
+        print current
+        short_current = current.split("fotomov_imagenes")[1]
+        print "aqui va el short"
+        print short_current
+        lista_imagenes = []
+        imagenes = [ f for f in listdir(current) if isfile(join(current,f)) ]
+        for imagen in imagenes:
+            dividir_url = imagen.split("fotomov_imagenes")
+        directorios = [ f for f in listdir(current) if isdir(join(current,f)) ]
+        print imagenes
+        print directorios
+        if request.method == 'POST':
+            pass
+        productos = ProductoEvento.objects.filter(evento=evento)
+        dir_actual.save()
+        return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
+                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados,
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
 def generar_rutas(id_evento):
     lista = []
     evento = Evento.objects.get(id=id_evento)
