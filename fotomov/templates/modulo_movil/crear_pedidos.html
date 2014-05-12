@@ -1,4 +1,7 @@
 {% extends "venta.html" %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
 {% block seccion-contenido %}
 <div>
 <div class="col-xs-12 table-responsive">
@@ -14,7 +17,7 @@
     {% for imagen in imagenes %}
     <tr>
         <td>
-            <a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{ imagen }}") ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}" width="50"></a>
+            <a data-toggle="modal" data-target="#Foto" onclick="abrirFoto('{{ imagen }}')" ><img src="{{MEDIA_URL}}{{ short_current }}/{{ imagen }}"  class="imagen" name="{{ imagen }}" width="50"></a>
         </td>
         <td>
         <select id="producto{{ imagen }}">
@@ -53,7 +56,13 @@
                 <h2 id="titulo-imagen"></h2>
                 <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body text-center" id="modal-body">
+            <div class="modal-body text-center row" id="modal-body">
+            </div>
+            <div class="modal-header" id="modal-footer">
+                <div class="row">
+                    <div class="col-md-6"><div class="col-md-6"><span class="pull-right">Cantidad:</span></div><div class="col-md-6"><input onkeypress="return numero(event)" id="modal-spinner" class="form-control" type="text" value="0"></div></div><div class="col-md-6"><input class="form-control" type="text" placeholder="Comentarios"></div>
+                    <div class="col-md-12"><a class="btn btn-primary btn-block" style="margin-top: 5px">Agregar</a></div>
+                </div>
             </div>
         </div>
     </div>
@@ -61,8 +70,15 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+
+window.onload = function(){
+
+    $("#modal-spinner").spinner({min:0});
+
+}
+
 function abrirFoto(imagen){
-    var interno = "<img src=\"{{MEDIA_URL}}{{ short_current }}/" + imagen + "\" class=\"img-responsive\"></img>";
+    var interno = '<div class="col-md-1"><a onclick="anterior()" class="btn btn-default"><i class="fa fa-chevron-left"></i></a></div><div class="col-md-10" ><img id="img" name="' + imagen + '" src="{{MEDIA_URL}}{{ short_current }}/' + imagen + '" class=\'img-responsive\'></img></div><div class="col-md-1"><a class="btn btn-default" onclick="siguiente()"><i class="fa fa-chevron-right"></i></a></div>';
     $('#modal-header').html('<h2>'+ imagen +'</h2>');
     document.getElementById('modal-body').innerHTML = interno;
 
@@ -89,7 +105,7 @@ function ajax_guardar(imagen, id_pedido){
 
     }).done(function(data){
         for(var i=0; i<data.length; i++){
-            $('#agregados').append("<li>" + data[i].fields.cantidad + " " + producto_valor + " " + imagen + " <a class=\"btn-danger btn-xs\" onclick=\"deleteAlert(\'"+ data[i].pk +"\')\">eliminar</a></li>");
+            $('#agregados').append("<li>" + data[i].fields.cantidad + " " + producto_valor + " " + imagen + " <a class=\"btn btn-danger btn-xs\" onclick=\"deleteAlert(\'"+ data[i].pk +"\')\">eliminar</a></li>");
             //$('#agregados').append("ion('"+ data[i].fields.nombre +"')>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminaaaaaaaaaaaaaar</button></td></tr>");
         }
 
@@ -99,21 +115,102 @@ function ajax_guardar(imagen, id_pedido){
         }*/
     });
 }
-</script>
-<script type="text/javascript">
-        	function deleteAlert(id)
-        	{
-        		var r=confirm("¿Esta seguro que desea eliminar?");
-        		if (r==true)
-        	  {
-        			var string1 = "/eliminar_productoeventopedido/";
-        		  window.location.assign(string1 + id + "/" + {{ id_funcion }})
-          	}
-        		else
-          	{
 
-          	}
-        		document.getElementById("demo").innerHTML=x;
+function deleteAlert(id){
+
+    var r=confirm("¿Esta seguro que desea eliminar?");
+    if (r==true){
+
+        var string1 = "/eliminar_productoeventopedido/";
+        window.location.assign(string1 + id + "/" + "{{ id_funcion }}")
+
+    }
+    document.getElementById("demo").innerHTML=x;
+}
+
+function siguiente(){
+
+    var actual = $("#img").attr("name");
+    var flag = false;
+    var auxflag = false;
+
+    $(".imagen").each(function(){
+
+        if(flag==true){
+
+            $("#img").attr("src",$(this).attr("src"));
+            $("#img").attr("name",$(this).attr("name"));
+            $('#modal-header').html('<h2>'+ $(this).attr("name") +'</h2>');
+            auxflag = true;
+            return false;
+
         }
+
+        if(actual == $(this).attr("name")){
+            flag = true;
+        }
+
+    });
+
+    if(auxflag == false){
+
+        $(".imagen").each(function(){
+
+            $("#img").attr("src",$(this).attr("src"));
+            $("#img").attr("name",$(this).attr("name"));
+            $('#modal-header').html('<h2>'+ $(this).attr("name") +'</h2>');
+            auxflag = true;
+            return false;
+
+        });
+
+    }
+
+}
+
+function anterior(){
+
+    var actual = $("#img").attr("name");
+    var sourc, nam;
+
+    $(".imagen").each(function(){
+
+        sourc=$(this).attr("src");
+        nam=$(this).attr("name");
+
+    });
+
+    $(".imagen").each(function(){
+
+        if(actual == $(this).attr("name")){
+
+            $("#img").attr("src",sourc);
+            $("#img").attr("name",nam);
+            $('#modal-header').html('<h2>'+ nam +'</h2>');
+
+        }
+
+        sourc=$(this).attr("src");
+        nam=$(this).attr("name");
+
+    });
+
+
+}
+
+function numero(e) {
+
+    var codigo;
+
+    codigo = (document.all) ? e.keyCode : e.which;
+
+    if (codigo > 31 && (codigo < 48 || codigo > 57) && codigo != 46 ) {
+
+        return false;
+
+    }
+
+    return true;
+}
 </script>
 {% endblock %}
