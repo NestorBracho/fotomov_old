@@ -24,7 +24,6 @@ class Pedido(models.Model):
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100)
-    factura = models.BooleanField(default=False)
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
