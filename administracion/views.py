@@ -19,6 +19,7 @@ from direcciones.views import *
 import datetime
 
 def nueva_forma_de_pago(request):
+    pagos = FormaDePago.objects.all()
     if request.method == 'POST':
         formulario = FormaDePagoForm(request.POST)
         if formulario.is_valid():
@@ -26,7 +27,7 @@ def nueva_forma_de_pago(request):
             forma_pago.save()
     else:
         formulario = FormaDePagoForm()
-    return render_to_response('administracion/nueva_forma_de_pago.html', {'formulario': formulario}, context_instance = RequestContext(request))
+    return render_to_response('administracion/nueva_forma_de_pago.html', {'formulario': formulario, 'pagos': pagos}, context_instance = RequestContext(request))
 
 def nuevo_tipo_de_gasto(request):
     if request.method == 'POST':
