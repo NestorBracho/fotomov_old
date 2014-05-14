@@ -15,17 +15,22 @@ class PedidoForm(forms.ModelForm):
 
 class PedidoCajaForm(forms.ModelForm):
     ENVIO_CHOICES = (
-        ('No', 'Sin Envio'),
-        ('R', 'Regional'),
-        ('Na', 'Nacional'),
-        ('I', 'Internacional'),
+        (0, 'Sin Envio'),
+        (1, 'Regional'),
+        (2, 'Nacional'),
+        (3, 'Internacional'),
     )
     envio = forms.ChoiceField(choices=ENVIO_CHOICES)
     class Meta:
         model = Pedido
         exclude=['cliente', 'fecha', 'num_pedido', 'fecha_entrega', 'total','codigo', 'envio', 'fue_pagado',
-                 'lote', 'estado', 'factura']
+                 'lote', 'estado', 'factura', 'direccion_entrega']
     def __init__(self, *args, **kwargs):
         super(PedidoCajaForm, self).__init__(*args, **kwargs)
         for key in self.fields:
             self.fields[key].required = True
+
+class PedidoPagoForm(forms.Form):
+    tipo_pago = forms.ModelChoiceField(queryset=FormaDePago.objects.all())
+    monto = forms.FloatField()
+    referencia = forms.CharField()

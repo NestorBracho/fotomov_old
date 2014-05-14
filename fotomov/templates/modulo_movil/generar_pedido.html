@@ -68,16 +68,16 @@ Generar pedido
             {{ formulario.razon_social | bootstrap}}
         </div>
         <div class="col-xs-12 col-md-12">
-            {{ formulario.direccion_entrega | bootstrap}}
-        </div>
-        <div class="col-xs-12 col-md-12">
             {{ formulario.direccion_fiscal | bootstrap}}
         </div>
         <div class="col-xs-12 col-md-12">
             {{ formulario.envio | bootstrap }}
         </div>
-        <div class="col-xs-12 col-md-12">
-            {{ formulario.tipo_pago | bootstrap }}
+        <div id="dir_envio" class="col-xs-12 col-md-12">
+            <label class="control-label  " for="id_direccion_entrega">Direccion entrega</label>
+                <div class=" ">
+                    <textarea class=" form-control" cols="40" id="id_direccion_entrega" name="direccion_entrega" rows="10">{{ pedido_actual.direccion_entrega }}</textarea>
+                </div>
         </div>
         <div class="col-xs-12 text-right">
                 <input type='button' onclick="generarPedido()" class="btn btn-default btn-primary" value='Generar'/>
@@ -91,7 +91,44 @@ Generar pedido
             <tr id="tr-{{ pedido.id }}"><td>{{ pedido.cantidad }}</td><td>{{ pedido.producto.producto.nombre }}</td><td id="total-{{ pedido.id }}">{{ pedido.producto.precio }}</td><td class="text-center" id="borrar-{{ pedido.id }}"></td></tr>
             {% endfor %}
         </table>
-        <span id="total"></span>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        Total: <input class="form-control" type="text" name="total_input" id="total_input" value="">
+    </div>
+
+
+
+    <div class="col-xs-12 col-md-6 table-responsive">
+    {% if mensaje.error %}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
+        {{ mensaje.text }}
+    </div>
+    {% endif %}
+    <div id="formsets">
+        {{ pagosForms.management_form }}
+        {% for form in pagosForms %}
+            {{ form | bootstrap }}
+        {% endfor %}
+
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <button type="button" id="agregar_pago" class="btn btn-default">Agregar otro pago</button>
+    </div>
+
+        <!--  <table id="tipos_pagos" class="table ">
+            <thead><th>Tipo</th><th>Monto</th><th>Referencia</th><th>Eliminar</th></thead>
+            <tr>
+                <td name="tipo" >
+                    <select class="form-control">
+                    </select>
+                </td>
+                <td name="monto"><input size="1" style="font-size:24px;" class=" form-control" type="text"></td>
+                <td name="referencia"><input class=" form-control" type="text"></td>
+                <td><input class=" form-control" type="text"><</td>
+            </tr>
+        </table> -->
+        <!--<span id="total"></span> -->
     </div>
 </form>
 
@@ -109,10 +146,9 @@ Generar pedido
 
 {% endblock %}
 {% block js %}
+<script src="{{STATIC_URL}}js/agregar_formsets.js"></script>
 <script type="text/javascript">
-
 window.onload = function(){
-
     var subtotal, total = 0, url_aux;
 
     {% if cliente == None %}
@@ -134,10 +170,89 @@ window.onload = function(){
 
 
     {% endfor %}
+    document.getElementById("total_input").value = total;
 
-    $("#total").html("Total: "+total+" Bs.");
+    if (document.getElementById("id_envio").value == 0){
+        $("#dir_envio").hide();
+    }
+
+}
+
+$(document).ready(function(){
+    var options = [
+        {
+          label: '---------',
+          value: ''
+        },
+        {% for tipo_pago in tipos_pago %}
+            {
+                label: '{{tipo_pago}}',
+                value: {{tipo_pago.id}},
+                discount: '{{ tipo_pago.descuento }}'
+
+            },
+        {% endfor %}
+   ]
+
+    // Funciones para las acciones de los formsets
+    $('#agregar_pago').on('click',function(event){
+        event.preventDefault();
+        agregarFormset(options);
+    });
+
+  $("#id_envio").change(function(){
+      if (document.getElementById("id_envio").value == 0){
+          $("#dir_envio").hide();
+      }else{
+          $("#dir_envio").show();
+      }
+
+  });
+
+  $("#id_form-0-tipo_pago").change(function(){
+        verificar()
+  });
+
+  $("#id_tipo_pago").change(function(){
+      if (document.getElementById("id_tipo_pago").value == ""){
+          $("#tipo_pago").hide();
+      }else{
+          $("#tipo_pago").show();
+      }
+
+  });
+});
 
 
+function verificar(){
+    var options = [
+        {% for tipo_pago in tipos_pago %}
+            {% if tipo_pago.descuento == False %}
+                {{ tipo_pago.id }},
+            {% endif %}
+        {% endfor %}
+    ]
+    var flag = "True";
+    var total = parseInt($('#id_form-TOTAL_FORMS').val(),10);
+    var i = 0;
+
+    while (i<total){
+        var paid = document.getElementById('id_form-'+i+'-tipo_pago').value;
+        $.each(options, function(index, option){
+           if (option == paid){
+               flag="False";
+           }
+        });
+        i++;
+    }
+    if (flag == "False"){
+        document.getElementById('total_input').readOnly = true;
+    }else{
+        document.getElementById('total_input').readOnly = false;
+    }
+    {% comment %}for (var i = 0, len = options.length, text = ""; i < len; i++) {
+        text += cars[i] + "<br>";
+    }{% endcomment %}
 }
 
 function borrarProducto(iden){
@@ -175,11 +290,11 @@ function abrirFoto(url){
 
 function generarPedido(){
 
-    total = $("#total").html().split(' ');
-    total = total[1];
-
-    $("#total").append("<input type='hidden' name='total' value='"+total+"'>");
     document.getElementById('generar_pedido').submit();
+}
+
+function agregar_tipo_pago(){
+
 }
 
 </script>
