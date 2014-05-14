@@ -301,7 +301,7 @@ def casilla_administrativa(request, id_evento):
     if len(gasto)>0:
         for gato in gasto:
             if gato.usuario !=None :
-                fijos.append([gato.nombre, gato.monto, gato.usuario.nombre+" "+gato.usuario.nombre])
+                fijos.append([gato.nombre, gato.monto, gato.usuario.nombre+" "+gato.usuario.apellido])
             else:
                 fijos.append([gato.nombre, gato.monto, ""])
     else:

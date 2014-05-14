@@ -306,15 +306,12 @@ def seleccionar_evento(request):
 @login_required(login_url='/')
 def crear_pedidos(request, id_evento, id_funcion, next, actual):
     try:
-        print next
         evento = Evento.objects.get(id=id_evento)
         funcion_aux = Funcion.objects.get(id=id_funcion)
         int_dia = date_to_int(funcion_aux.dia)
-        #print directorio_actual.objects.filter(usuario = request.user)
         if directorio_actual.objects.filter(usuario = request.user):
             dir_actual = directorio_actual.objects.get(usuario=request.user)
         else:
-            print "elseeeeeeeeeeeeeeeeeeee creando!"
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
@@ -325,10 +322,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
             lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
         funciones = Funcion.objects.filter(evento=evento)
         generar_rutas(id_evento)
-        print "aqui"
-        print dir_actual.directorio
         separado = request.path.split('urlseparador')
-        print separado
         year = str(date.today().year)
         if actual == "NoneValue":
             print "NoneValue"
@@ -498,7 +492,7 @@ def agregar_item(request):
     productoevento = ProductoEventoPedido.objects.create(comentario=comentario, cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=pedido.num_pedido)
     prodevento = []
     prodevento.append(productoevento)
-    data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'producto, id'))
+    data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'comentario', 'producto, id'))
     return HttpResponse(data, mimetype='application/json')
 
 @login_required(login_url='/')
