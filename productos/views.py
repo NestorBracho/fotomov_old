@@ -24,7 +24,7 @@ def nuevo_producto(request):
     return render_to_response('productos/nuevo_producto.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def listar_producto(request, creado):
-    productos = Producto.objects.all()
+    productos = Producto.objects.filter(es_combo=False)
     return render_to_response('productos/listar_producto.html', {'productos': productos, "creado": creado}, context_instance=RequestContext(request))
 
 def editar_producto(request, id_producto):

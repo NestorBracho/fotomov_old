@@ -149,7 +149,7 @@ def listar_pedidos_sede(request, id_sede):
     return True
 
 def agregar_productos(request,id_evento):
-    productos = Producto.objects.all()
+    productos = Producto.objects.filter(es_combo=False)
     evento = Evento.objects.get(id=id_evento)
     lista = []
     for producto in productos:
@@ -180,7 +180,7 @@ def agregar_productos(request,id_evento):
                 producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         return HttpResponseRedirect('/listar_evento/2')
     print lista
-    return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
+    return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento}, context_instance=RequestContext(request))
 
 def casilla_administrativa(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
@@ -642,3 +642,48 @@ def traer_usuario_gasto_evento_ajax(request):
     print resp
 
     return HttpResponse(simplejson.dumps(resp), mimetype='application/json')
+
+def crear_combos(request, evento_id):
+    productos = ProductoEvento.objects.filter(evento = Evento.objects.get(id = evento_id), es_combo=False)
+    if request.method == 'POST':
+        if request.POST['nombre'] != '' and request.POST['precio'] != '' and int(request.POST['numprop']) > 0:
+            combop = Producto.objects.create(nombre = request.POST['nombre'], descripcion = request.POST['desc'], es_combo=True)
+            combo = ProductoEvento(producto = combop, precio = request.POST['precio'], evento=Evento.objects.get(id=evento_id), es_combo=True)
+            produccion = 0
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                produccion = produccion + (float(ProductoEvento.objects.get(id=iden).precio_produccion) * float(cant))
+            combo.precio_produccion = produccion
+            combo.save()
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
+            return HttpResponseRedirect('/listar_combos/'+evento_id+'/')
+    return render_to_response('evento/crear_combos.html', {'iden': evento_id, 'productos': productos}, context_instance=RequestContext(request))
+
+def listar_combos(request, evento_id):
+    combos = ProductoEvento.objects.filter(evento=Evento.objects.get(id=evento_id), es_combo = True)
+    return render_to_response('evento/listar_combos.html', {'iden': evento_id, 'combos': combos}, context_instance=RequestContext(request))
+
+def ver_combo(request, combo_id):
+    combo = ProductoEvento.objects.get(id = combo_id)
+    productos = ProductoeventoCombo.objects.filter(combo = combo)
+    iden = combo.evento.id
+    return render_to_response('evento/ver_combo.html', {'iden': iden, 'combo': combo, 'productos': productos}, context_instance=RequestContext(request))
+
+def eliminar_combo(request, combo_id):
+    combo = ProductoEvento.objects.get(id = combo_id)
+    productos = ProductoeventoCombo.objects.filter(combo = combo)
+    for producto in productos:
+        producto.delete()
+    iden = combo.evento.id
+    combo.delete()
+    return HttpResponseRedirect('/listar_combos/'+str(iden)+'/')
+
+def editar_combo(request, combo_id):
+
+    return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos}, context_instance=RequestContext(request))

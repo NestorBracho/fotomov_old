@@ -7,6 +7,12 @@
 Administración de envento
 {% endblock %}
 {% block seccion-contenido %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="/listar_evento/0/" class="btn btn-default"><span class="fa fa-chevron-left"></span> Eventos</a>
+    </div>
+</div>
+</br>
 <form method="POST" action="" id="administracionEventoFormulario" enctype="multipart/form-data" >{% csrf_token %}
     <div class="panel panel-default table-responsive">
         <div class="panel-heading">
