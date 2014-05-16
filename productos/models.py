@@ -17,6 +17,7 @@ class Lote(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=400)
+    es_combo = models.BooleanField(default=False)
     def __unicode__(self):
         return self.nombre
 
@@ -25,6 +26,7 @@ class ProductoEvento(models.Model):
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
     precio_produccion = models.FloatField()
+    es_combo = models.BooleanField(default=False)
     def __unicode__(self):
         return self.producto.nombre
 
@@ -38,6 +40,7 @@ class ProductoEventoPedido(models.Model):
     producto = models.ForeignKey(ProductoEvento)
     estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)
+
 
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
@@ -62,3 +65,8 @@ class PedidoPago(models.Model):
     tipo_pago = models.ForeignKey(FormaDePago)
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)
+
+class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEvento y Combos
+    producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
+    combo = models.ForeignKey(ProductoEvento, related_name='combo')
+    cantidad = models.IntegerField()
