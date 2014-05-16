@@ -685,5 +685,41 @@ def eliminar_combo(request, combo_id):
     return HttpResponseRedirect('/listar_combos/'+str(iden)+'/')
 
 def editar_combo(request, combo_id):
+    combo = ProductoEvento.objects.get(id = combo_id)
+    iden = combo.evento.id
+    productos = ProductoEvento.objects.filter(evento=combo.evento, es_combo=False)
+    productosCombos = ProductoeventoCombo.objects.filter(combo=combo)
+    for p in productosCombos:
+        print p.id
+    if request.method == 'POST':
+        if request.POST['nombre'] != '' and request.POST['precio'] != '' and int(request.POST['numprop']) > 0:
+            combop = combo.producto
+            combop.nombre = request.POST['nombre']
+            combop.descripcion = request.POST['desc']
+            combop.es_combo=True
+            combop.save()
 
-    return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos}, context_instance=RequestContext(request))
+            combo.producto = combop
+            combo.precio = request.POST['precio']
+            combo.es_combo=True
+
+            produccion = 0
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                produccion = produccion + (float(ProductoEvento.objects.get(id=iden).precio_produccion) * float(cant))
+            combo.precio_produccion = produccion
+            combo.save()
+
+            ps = ProductoeventoCombo.objects.filter(combo = combo)
+            for p in ps:
+                p.delete()
+
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
+            return HttpResponseRedirect('/listar_combos/'+str(combo.evento.id)+'/')
+    return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos, 'productosC': productosCombos}, context_instance=RequestContext(request))

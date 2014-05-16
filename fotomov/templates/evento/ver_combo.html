@@ -7,23 +7,38 @@
 {{ combo.producto.nombre }}
 {% endblock %}
 {% block seccion-contenido %}
-<div class="col-md-12" style="margin-bottom: 10px"><div class="pull-left"><a href="/listar_combos/{{ iden }}/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Combos</a></div></div>
+<div class="col-md-12" style="margin-bottom: 10px"><div class="pull-left"><a href="/listar_combos/{{ iden }}/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Combos</a></div><div class="pull-right"><a href="/editar_combo/{{ combo.id }}/" class="btn btn-success">Editar</a></div></div>
 <div class="col-md-12">
-
-    <table class="table table-striped  table-hover" id="content">
-        <thead>
-            <th>Productos</th>
-            <th>Cantidad</th>
-            <th>Costo</th>
-        </thead>
-        {% for producto in productos %}
-            <tr>
-                <td><a href="/ver_combo/{{ combo.id }}/">{{ producto.producto.producto.nombre }}</a></td>
-                <td>{{ producto.cantidad }}</td>
-                <td>{{ producto.producto.precio_produccion }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="panel panel-default table-responsive">
+        <div class="panel-body">
+            <div class="col-md-6"><b>Costo:</b><span>  {{ combo.precio_produccion }}</span> Bs.</div>
+            <div class="col-md-6"><b>Precio:</b><span>  {{ combo.precio }}</span> Bs.</div>
+            <hr>
+            <div class="col-md-12"><b>Descripción:</b><br><p>{{ combo.producto.descripcion }}</p></div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="panel panel-default table-responsive">
+        <div class="panel-body">
+            <table class="table table-striped" id="content">
+                <thead>
+                    <th>Productos</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Costo</th>
+                </thead>
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.producto.producto.nombre }}</td>
+                        <td>{{ producto.producto.producto.descripcion }}</td>
+                        <td>{{ producto.cantidad }}</td>
+                        <td>{{ producto.producto.precio_produccion }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block js %}

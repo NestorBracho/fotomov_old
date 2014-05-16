@@ -4,7 +4,7 @@
 <link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block titulo %}
-Crear combos
+Editar combo
 {% endblock %}
 {% block seccion-contenido %}
 <div class="col-md-12" style="margin-bottom: 10px"><div class="pull-left"><a href="/listar_combos/{{ iden }}/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Combos</a></div></div>
@@ -18,7 +18,7 @@ Crear combos
 
                 </label>
                 <div class=" ">
-                    <input id="id_nombre_del_combo" class=" form-control" type="text" name="nombre" maxlength="200"></input>
+                    <input id="id_nombre_del_combo" class=" form-control" type="text" name="nombre" maxlength="200" value="{{ combo.producto.nombre }}"></input>
                 </div>
             </div>
             <div class="form-group">
@@ -28,7 +28,7 @@ Crear combos
 
                 </label>
                 <div class=" ">
-                    <input id="id_desc" class="form-control" type="text" name="desc" maxlength="200"></input>
+                    <input id="id_desc" class="form-control" type="text" name="desc" maxlength="200" value="{{ combo.producto.descripcion }}"></input>
                 </div>
             </div>
             <div class="form-group">
@@ -38,7 +38,7 @@ Crear combos
 
                 </label>
                 <div class=" ">
-                    <input id="id_costo_del_combo" onkeypress="return numero(event)" class="precio form-control" type="text" name="precio" maxlength="200" value="0"></input>
+                    <input id="id_costo_del_combo" onkeypress="return numero(event)" class="precio form-control" type="text" name="precio" maxlength="200" value="{{ combo.precio }}"></input>
                 </div>
             </div>
             <div class="form-group">
@@ -54,6 +54,7 @@ Crear combos
                         <th>Costo (Bs.)</th>
                         <th>Cantidad</th>
                     </thead>
+                    <tbody>
                     {% for producto in productos %}
                         <tr>
                             <td><input id="{{ producto.id }}-check" class="form-control check" type="checkbox" value="{{ producto.id }}" name="seleccionados"> </td>
@@ -61,11 +62,8 @@ Crear combos
                             <td><span id="{{ producto.id }}-precio" class="costo">{{ producto.precio_produccion }}</span></td>
                             <td><input id="{{ producto.id }}-cantidad" type="text" onkeypress="return numero(event)" value="1" name="{{ producto.id }}-cantidad" class="spinner form-control" style="width: 50px"></td>
                         </tr>
-                    {% empty %}
-                        <tr>
-                            <td>No hay productos</td>
-                        </tr>
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -75,6 +73,34 @@ Crear combos
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+
+window.onload = function(){
+
+    $(".check").each(function(){
+
+        var flag, aux, iden = $(this).attr("id");
+        iden = iden.split("-");
+        iden = iden[0]
+
+        flag = false;
+
+        {% for producto in productosC %}
+
+            aux = "{{ producto.producto.id }}";
+
+            if(aux == iden){
+
+                $(this).attr("checked", "true");
+                $("#"+iden+"-cantidad").val("{{ producto.cantidad }}");
+
+            }
+
+
+        {% endfor %}
+
+    });
+
+}
 
 $(".spinner").spinner({min: 1, stop: function(event, ui){
         $("#id_costo_del_combo").val(0);
