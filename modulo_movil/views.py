@@ -463,6 +463,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
                                                                   'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
+
 def generar_rutas(id_evento):
     lista = []
     evento = Evento.objects.get(id=id_evento)
@@ -541,11 +542,12 @@ def generar_lote(request):
         pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
-def generar_pedido(request, pedido, cedula):
+def generar_pedido(request, pedido, cedula, id_evento):
     pagosForms = formset_factory(PedidoPagoForm)
     tipos_pago = FormaDePago.objects.all()
     pedido_actual = Pedido.objects.get(id=pedido)
     peps = ProductoEventoPedido.objects.filter(num_pedido = pedido_actual.num_pedido)
+    en_venta = ProductoEvento.objects.filter(evento__id=id_evento)
     cliente = Cliente.objects.filter(cedula = cedula)
     if len(cliente) > 0:
         cliente = cliente[0]
@@ -572,11 +574,20 @@ def generar_pedido(request, pedido, cedula):
                                                                    'pedidos': peps, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
                                                                    'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
-                                                                   'mensaje': mensaje},
+                                                                   'mensaje': mensaje, 'en_venta': en_venta},
                               context_instance=RequestContext(request))
+            print len(formulario_pagos)
+            pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
+
             for form in formulario_pagos:
+                tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                monto = form.cleaned_data['monto']
+                nuevo_pago = PedidoPago.objects.create(num_pedido=pedido_actual.num_pedido, tipo_pago=tipo_pago,
+                                               monto=float(monto), referencia = form.cleaned_data['referencia'])
                 print "holaaa"
-                print form
+                print form.cleaned_data['tipo_pago']
+                print form.cleaned_data['referencia']
+
             dia = date.today()
             #aux = str(datetime.datetime.today())
             #aux = aux.split(' ')
@@ -629,14 +640,14 @@ def generar_pedido(request, pedido, cedula):
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'pedidos': peps, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
-                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms},
+                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms, 'en_venta': en_venta},
                               context_instance=RequestContext(request))
 
-def ingresar_ticket(request):
+def ingresar_ticket(request, id_evento):
     if request.method == 'POST':
         formulario = IngresarTicketForm(request.POST)
         if formulario.is_valid():
-            return HttpResponseRedirect('/generar_pedido/'+str(formulario.cleaned_data['ticket'])+'/'+str(formulario.cleaned_data['cedula']))
+            return HttpResponseRedirect('/generar_pedido/'+str(formulario.cleaned_data['ticket'])+'/'+str(formulario.cleaned_data['cedula'])+'/'+id_evento)
     else:
         formulario = IngresarTicketForm()
     return render_to_response('modulo_movil/ingresar_ticket.html', {'formulario': formulario}, context_instance=RequestContext(request))

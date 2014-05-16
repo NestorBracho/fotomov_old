@@ -31,6 +31,11 @@ class PedidoCajaForm(forms.ModelForm):
             self.fields[key].required = True
 
 class PedidoPagoForm(forms.Form):
-    tipo_pago = forms.ModelChoiceField(queryset=FormaDePago.objects.all())
-    monto = forms.FloatField()
+    tipos = FormaDePago.objects.all()
+    CHOICES = ()
+    for tipo in tipos:
+        tupla = ((tipo.id, tipo.nombre),)
+        CHOICES = CHOICES + tupla
+    tipo_pago = forms.ChoiceField(choices=CHOICES)
     referencia = forms.CharField()
+    monto = forms.FloatField()

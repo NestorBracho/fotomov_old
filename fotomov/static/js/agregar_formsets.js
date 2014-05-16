@@ -52,9 +52,10 @@ function agregarFormset(select_options) {
    var select = $('<select/>', {
 
         id: 'id_form-'+total+'-tipo_pago',
-        name: 'id_form-'+total+'-tipo_pago',
+        name: 'form-'+total+'-tipo_pago',
         class: 'form-control',
-        onchange: 'verificar()'
+        onchange: 'verificar()',
+       style: 'asdas'
    });
 
     $.each(select_options,function(index, option){
@@ -71,19 +72,19 @@ function agregarFormset(select_options) {
    }).appendTo($div)
     $('<input/>', {
         id: 'id_form-'+total+'-referencia',
-        name: 'id_form-'+total+'-referencia',
+        name: 'form-'+total+'-referencia',
         type: 'text',
-        class: 'form-control',
+        class: 'form-control'
     }).appendTo($div);
    $('<label/>', {
        class: "control-label",
        text: "Monto"
    }).appendTo($div)
     $('<input/>', {
-        id: 'id_set-'+total+'-monto',
-        name: 'id_set-'+total+'-monto',
+        id: 'id_form-'+total+'-monto',
+        name: 'form-'+total+'-monto',
         type: 'text',
-        class: 'form-control',
+        class: 'form-control'
     }).appendTo($div);
     $('#formsets').append($div);
     $('#id_form-TOTAL_FORMS').val(total+1);
