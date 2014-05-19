@@ -132,7 +132,7 @@ function setStaff(val, func){
 
             for(var i = 0; i<data.length; i++){
 
-                document.getElementById('content').innerHTML += "<tr><td><a>"+data[i].fields.nombre+" "+data[i].fields.apellido+"</a></td><td> "+data[i].fields.email+"</td><td> "+data[i].fields.telefono_celular+"</td><td><a class='btn btn-warning' id='"+data[i].pk+"' name='0' onclick=convocar(this.id,"+func+",this.name) ><span class='glyphicon glyphicon-unchecked'></span> Convocar</a></td></tr>";
+                document.getElementById('content').innerHTML += "<tr><td><a>"+data[i].fields.nombre+" "+data[i].fields.apellido+"</a></td><td> "+data[i].fields.email+"</td><td> "+data[i].fields.telefono_celular+"</td><td><a class='btn btn-warning' id='"+data[i].pk+"' name='0' onclick=convocar(this.id,"+func+",this.name) ><span class='fa fa-square-o'></span> Convocar</a></td></tr>";
 
                 $.ajax({
 
@@ -155,7 +155,7 @@ function setStaff(val, func){
 
                             document.getElementById(data[t].pk).setAttribute('class','btn btn-success');
                             document.getElementById(data[t].pk).setAttribute('name','1');
-                            document.getElementById(data[t].pk).innerHTML = "<span class='glyphicon glyphicon-check'></span> Convocar";
+                            document.getElementById(data[t].pk).innerHTML = "<span class='fa fa-check-square-o'></span> Convocar";
 
                             document.getElementById('content').setAttribute('name',parseInt(document.getElementById('content').getAttribute('name'))-1);
                             console.log(document.getElementById('content').getAttribute('name'));
@@ -214,7 +214,7 @@ function convocar(iden, func, flag){
 
             document.getElementById(iden).setAttribute('class','btn btn-success');
             document.getElementById(iden).setAttribute('name','1');
-            document.getElementById(iden).innerHTML = "<span class='glyphicon glyphicon-check'></span> Convocar";
+            document.getElementById(iden).innerHTML = "<span class='fa fa-check-square-o'></span> Convocar";
             aux--;
             document.getElementById('content').setAttribute('name',aux);
 
@@ -232,7 +232,7 @@ function convocar(iden, func, flag){
 
             document.getElementById(iden).setAttribute('class','btn btn-warning');
             document.getElementById(iden).setAttribute('name','0');
-            document.getElementById(iden).innerHTML = "<span class='glyphicon glyphicon-unchecked'></span> Convocar";
+            document.getElementById(iden).innerHTML = "<span class='fa fa-square-o'></span> Convocar";
             aux++;
             document.getElementById('content').setAttribute('name',aux);
             document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+" mas</h2>";
