@@ -32,10 +32,11 @@ class PedidoCajaForm(forms.ModelForm):
 
 class PedidoPagoForm(forms.Form):
     tipos = FormaDePago.objects.all()
+
     CHOICES = ()
     for tipo in tipos:
         tupla = ((tipo.id, tipo.nombre),)
         CHOICES = CHOICES + tupla
     tipo_pago = forms.ChoiceField(choices=CHOICES)
     referencia = forms.CharField()
-    monto = forms.FloatField()
+    monto = forms.FloatField(widget=forms.TextInput(attrs={'onkeypress':'return numero_float(event)'}))

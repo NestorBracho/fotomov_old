@@ -107,7 +107,7 @@ Generar pedido
         </table>
     </div>
     <div class="col-xs-12 col-md-6">
-        Total: <input class="form-control" type="text" name="total_input" id="total_input" value="">
+        Total: <input class="form-control" type="text" name="total_input" id="total_input" onkeypress="return numero_float(event)" value="">
     </div>
 
 
@@ -161,6 +161,26 @@ Generar pedido
 {% endblock %}
 {% block js %}
 <script src="{{STATIC_URL}}js/agregar_formsets.js"></script>
+<script>
+    function numero(e) {
+          var codigo;
+          codigo = (document.all) ? e.keyCode : e.which;
+          if (codigo > 31 && (codigo < 48 || codigo > 57) ) {
+          return false;
+          }
+          return true;
+    }
+</script>
+<script>
+    function numero_float(e) {
+          var codigo;
+          codigo = (document.all) ? e.keyCode : e.which;
+          if (codigo > 31 && (codigo < 48 || codigo > 57) && codigo != 46) {
+          return false;
+          }
+          return true;
+    }
+</script>
 <script type="text/javascript">
 window.onload = function(){
     var subtotal, total = 0, url_aux;
