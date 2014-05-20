@@ -31,6 +31,7 @@ from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 
+
 def obtener_timestamp():
     a = tm.time()
     b = str(a).split('.')
@@ -510,7 +511,7 @@ def generar_lote(request):
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
     for pedido in pedidos:
-        peps = ProductoEventoPedido.objects.filter(pedido = pedido)
+        peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
         for pep in peps:
             nom = pedido.cliente.nombres.split(' ')
             nom = nom[0]
@@ -523,10 +524,10 @@ def generar_lote(request):
                 os.makedirs(rutalote)
                 lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
                 lote.save()
-                if pep.pedido.lote == None:
-                    pep.pedido.lote = lote
-                    pep.pedido.save()
-            productos = ProductoEventoPedido.objects.filter(pedido = pedido)
+                if pedido.lote == None:
+                    pedido.lote = lote
+                    pedido.save()
+            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
             for producto in productos:
                 if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
                     os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
@@ -578,15 +579,14 @@ def generar_pedido(request, pedido, cedula, id_evento):
                               context_instance=RequestContext(request))
             print len(formulario_pagos)
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
-
+            pagado = True
             for form in formulario_pagos:
                 tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                if not tipo_pago.pagado:
+                    pagado = False
                 monto = form.cleaned_data['monto']
                 nuevo_pago = PedidoPago.objects.create(num_pedido=pedido_actual.num_pedido, tipo_pago=tipo_pago,
                                                monto=float(monto), referencia = form.cleaned_data['referencia'])
-                print "holaaa"
-                print form.cleaned_data['tipo_pago']
-                print form.cleaned_data['referencia']
 
             dia = date.today()
             #aux = str(datetime.datetime.today())
@@ -615,11 +615,6 @@ def generar_pedido(request, pedido, cedula, id_evento):
                     if aux[i+1] > aux[i]:
                         dia = aux[i+1]
             fecha_entrega = dia + datetime.timedelta(days = 15)
-            try:
-                if request.POST['fue_pagado']:
-                    pagado = True
-            except:
-                pagado = False
             pedido_nuevo = Pedido.objects.filter(id=pedido)
             print request.POST.get('direccion_entrega')
             pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega,
@@ -634,7 +629,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                     pep.estado = 'Pagado'
                     pep.save()
             #imprimir_ticket(pedido_nuevo)
-            return HttpResponseRedirect('/ingresar_ticket/')
+            return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,

@@ -5,6 +5,7 @@ from evento.models import *
 class FormaDePago(models.Model):
     nombre = models.CharField(max_length=100)
     descuento = models.BooleanField(default=True)
+    pagado = models.BooleanField(default=True)
     def __unicode__(self):
         return self.nombre
 
