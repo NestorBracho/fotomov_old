@@ -401,7 +401,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         print directorios
         if request.method == 'POST':
             pass
-        productos = ProductoEvento.objects.filter(evento=evento)
+        productos = ProductoEvento.objects.filter(evento=evento, es_combo=False)
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
@@ -484,7 +484,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         print directorios
         if request.method == 'POST':
             pass
-        productos = ProductoEvento.objects.filter(evento=evento)
+        productos = ProductoEvento.objects.filter(evento=evento, es_combo=False)
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
@@ -702,3 +702,50 @@ def generar_ticket(request, id_evento, id_funcion):
             return HttpResponseRedirect('/crear_pedidos/'+ id_evento + "/" + id_funcion +'/NoneNext/urlseparador/NoneValue/')
     #return HttpResponseRedirect('/crear_pedidos/'+ id_evento +'/NoneNext/urlseparador/NoneValue/')
     return render_to_response('modulo_movil/generar_ticket.html', {'id_evento': id_evento, 'pedido': pedido, 'productos': lista_agregados}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def asignar_combos(request, id_evento, id_funcion, id_pedio):
+    info = directorio_actual.objects.get(usuario= request.user)
+    evento = Evento.objects.get(id = id_evento)
+    pedido = info.pedido
+    productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
+    combos = ProductoEvento.objects.filter(evento = evento, es_combo = True)
+    productosCliente=[]#--------------------->son los productos q esta comprando el cliente
+    combosPosibles=[]#-------------------->son los combos posibles q puede comprar
+    tempProd = []
+    tempCant = []
+
+    for producto in productos:
+        index = False
+
+        try:
+            index = tempProd.index(producto.producto)
+        except:
+            tempProd.append(producto.producto)
+            tempCant.append(producto.cantidad)
+        else:
+            tempCant[index] = int(tempCant[index])+int(producto.cantidad)
+
+    productos = zip(tempProd, tempCant)
+
+    for combo in combos:
+        productosCombo = ProductoeventoCombo.objects.filter(combo = combo)
+        esAplicable = True
+
+        for prodCombo in productosCombo:
+
+            try:
+                index = tempProd.index(prodCombo.producto)
+            except:
+                esAplicable = False
+                break
+            else:
+                if prodCombo.cantidad > tempCant[index]:
+                    esAplicable = False
+                    break
+
+        if esAplicable :
+            combosPosibles.append(combo)
+
+    print combosPosibles
+    return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles}, context_instance=RequestContext(request))
