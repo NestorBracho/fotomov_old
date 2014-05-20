@@ -2,19 +2,181 @@
 {% block seccion-contenido %}
 <div class="col-md-12">
     <div class="col-md-4">
-        <div><a class="btn btn-default"><div>
-            {% for producto in productos %}
-                    {{ producto.0 }} {{ producto.1 }}<br>
-            {% endfor %}
-        </div></a></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Productos</div>
+            <div class="panel-body">
+                <table>
+                {% for producto in productos %}
+                    <tr id="{{ producto.0.1 }}">
+                        <td><a class="btn btn-block btn-default" onclick="SeleccionarProducto('{{ producto.0.1 }}','{{ producto.0.0 }}')">{{ producto.0.0 }}</a></td><td id="cantidad-{{ producto.0.1 }}" name="{{ producto.0.1 }}" class="productos">{{ producto.1 }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+
     </div>
     <div class="col-md-4">
-        <div><a class="btn btn-default"><div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Combos disponibles</div>
+            <div class="panel-body">
             {% for combo in combos %}
-
-                    hola<br>
+                <a class="btn btn-default btn-block comboboton" onclick="seleccionarCombo('{{combo.id}}','{{ combo.producto.nombre }}','{{ combo.precio }}')" id ="combo{{combo.id}}"><div>
+                    {{ combo.producto.nombre }} {{ combo.precio }}<br>
+                    <ul class="list-unstyled">
+                    {% for productoCombo in productoCombos%}
+                        {% if productoCombo.combo == combo %}
+                            <li><span>{{ productoCombo.producto.producto.nombre }}</span> <span name="{{ productoCombo.producto.id }}" class="combos{{combo.id}}">{{ productoCombo.cantidad }}</span></li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </div></a>
             {% endfor %}
-        </div></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Pedido final</div>
+            <div class="panel-body pedidofinal">
+
+            </div>
+        </div>
     </div>
 </div>
 {%endblock%}
+{% block js %}
+<script type="text/javascript">
+
+function seleccionarCombo(combo, nombre, precio){
+
+    var c;
+    var flag = false, f2= false;
+
+    $(".combos"+combo).each(function(){
+
+        c = $(this);
+
+        $(".productos").each(function(){
+
+            if(c.attr("name")==$(this).attr("name")){
+
+                $(this).html(parseInt($(this).html())-parseInt(c.html()));
+
+                if($(this).html()=='0'){
+
+                    $("#"+c.attr("name")).fadeOut();
+
+                }else if(parseInt($(this).html())<0){
+
+                    f2=true;
+
+                }
+
+                if(parseInt($(this).html())-parseInt(c.html())<0){
+
+                    flag = true;
+
+                }
+
+            }
+
+        });
+
+    });
+
+    $(".pedidofinal").each(function(){
+
+        if($("#pf"+combo).html()==null){
+            if(!f2){
+                $(this).append('<div id="pf'+combo+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4">'+precio+'</div><div id="cantidadCombo'+combo+'" class="col-md-4">1</div></div>');
+                $("#pf"+combo).fadeIn();
+            }
+        }else{
+            if(!f2){
+                $("#cantidadCombo"+combo).html(parseInt($("#cantidadCombo"+combo).html())+1);
+            }
+        }
+
+    });
+
+    if(flag == true){
+
+        $("#combo"+combo).fadeOut();
+
+    }
+
+    purgaCombos();
+
+}
+
+function purgaCombos(){
+
+    $(".comboboton").each(function(){
+
+        var iden;
+
+        iden = $(this).attr("id").split("combo");
+        iden = iden[1];
+
+        $(".combos"+iden).each(function(){
+
+            var c = $(this);
+
+            $(".productos").each(function(){
+
+                if(c.attr("name")==$(this).attr("name")){
+
+                    if(parseInt($(this).html())-parseInt(c.html())<0){
+
+                        $("#combo"+iden).fadeOut();
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    });
+
+}
+
+function SeleccionarProducto(iden, nombre){
+
+
+
+    $(".pedidofinal").each(function(){
+
+        if($("#pfp"+iden).html()==null){
+
+            if($("#cantidad-"+iden).html()!='0'){
+
+                $(this).append('<div id="pfp'+iden+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4"></div><div id="cantidadpfp'+iden+'" class="col-md-4">1</div></div>');
+                $("#cantidad-"+iden).html(parseInt($("#cantidad-"+iden).html())-1);
+                $("#pfp"+iden).fadeIn();
+
+            }
+
+        }else{
+
+            if($("#cantidad-"+iden).html()!='0'){
+                $("#cantidad-"+iden).html(parseInt($("#cantidad-"+iden).html())-1);
+                $("#cantidadpfp"+iden).html(parseInt($("#cantidadpfp"+iden).html())+1);
+            }
+        }
+    });
+
+    if($("#cantidad-"+iden).html()=='0'){
+
+        $("#"+iden).fadeOut();
+
+    }
+
+    purgaCombos();
+
+}
+
+</script>
+{% endblock %}

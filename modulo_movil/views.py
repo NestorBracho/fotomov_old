@@ -719,9 +719,9 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         index = False
 
         try:
-            index = tempProd.index(producto.producto)
+            index = tempProd.index([producto.producto, producto.producto.id])
         except:
-            tempProd.append(producto.producto)
+            tempProd.append([producto.producto, producto.producto.id])
             tempCant.append(producto.cantidad)
         else:
             tempCant[index] = int(tempCant[index])+int(producto.cantidad)
@@ -735,7 +735,7 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         for prodCombo in productosCombo:
 
             try:
-                index = tempProd.index(prodCombo.producto)
+                index = tempProd.index([prodCombo.producto, prodCombo.producto.id])
             except:
                 esAplicable = False
                 break
@@ -747,5 +747,11 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         if esAplicable :
             combosPosibles.append(combo)
 
-    print combosPosibles
-    return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles}, context_instance=RequestContext(request))
+    aux=[]
+    productoCombos = []
+    for combo in combos:
+        aux.append(ProductoeventoCombo.objects.filter(combo=combo))
+    for au in aux:
+        for a in au:
+            productoCombos.append(a)
+    return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles, 'productoCombos': productoCombos}, context_instance=RequestContext(request))
