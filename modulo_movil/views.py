@@ -47,6 +47,7 @@ def actualizar_datos():
     clientes = cliente_aux.objects.all()
     pedidos = pedido_aux.objects.all()
     productos = ProductoEventoPedido_aux.objects.all()
+    pagos = PedidoPago_aux.objects.all()
     for cliente in clientes:
         print cliente
         if Cliente.objects.filter(cedula=cliente.cedula):
@@ -98,6 +99,11 @@ def actualizar_datos():
         prodev= ProductoEvento.objects.get(id=producto.producto)
         ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
                                             producto=prodev, estado=producto.estado, comentario=producto.comentario)
+
+    for pago in pagos:
+        tipo = FormaDePago.objects.get(id=pago.tipo_pago)
+        PedidoPago.objects.create(num_pedido=pago.num_pedido, tipo_pago=tipo, monto=pago.monto, referencia=pago.referencia)
+
     return HttpResponseRedirect('/escritorio')
 
 def importar_csv_evento(request):
@@ -105,6 +111,7 @@ def importar_csv_evento(request):
         cliente_aux.objects.all().delete()
         pedido_aux.objects.all().delete()
         ProductoEventoPedido_aux.objects.all().delete()
+        PedidoPago_aux.objects.all().delete()
         formulario = ArchivoForm(request.POST, request.FILES)
         if formulario.is_valid():
             file = formulario.cleaned_data['archivo']
@@ -149,8 +156,19 @@ def importar_csv_evento(request):
 
                         if row[0] != '!-endpedido-!':
                             print "im in"
-                            producto = ProductoEventoPedido_aux.objects.create(cantidad=row[0], ruta=row[1], num_pedido=row[2],
-                                                                               producto=row[3], estado=row[4], comentario=row[5])
+                            try:
+                                producto = ProductoEventoPedido_aux.objects.create(cantidad=row[0], ruta=row[1], num_pedido=row[2],
+                                                                                   producto=row[3], estado=row[4], comentario=row[5])
+                            except:
+                                pass
+                            if row[0] == '!-endproducto-!':
+                                tipo = 3
+                    if tipo == 3:
+                        if row[0] != '!-endproducto-!':
+                            try:
+                                pago = PedidoPago_aux.objects.create(num_pedido=row[0], tipo_pago=row[1], monto=row[2], referencia=row[3])
+                            except:
+                                pass
             else:
                 print False
         actualizar_datos()
@@ -233,6 +251,7 @@ def exportar_csv_central2(request):
 
 def imprimir_ticket(pedido):
     productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
+    evento = productos[0].producto.evento.nombre
     impresora = printer.Usb(0x1cb0,0x0003)
     impresora.text("\nRecibo Fotomov\n")
     impresora.text("num: " + str(pedido.num_pedido) + "\n")
@@ -249,6 +268,7 @@ def exportar_csv_evento(request):
     clientes = Cliente.objects.all()
     pedidos = Pedido.objects.all()
     pep = ProductoEventoPedido.objects.all()
+    forma_pago = PedidoPago.objects.all()
 
     nombre = '"db-movil' + str(fecha) + '.csv"'
     response['Content-Disposition'] = 'attachment; filename=' + nombre
@@ -278,6 +298,11 @@ def exportar_csv_evento(request):
     for producto in pep:
         writer.writerow([producto.cantidad, producto.ruta.encode("utf-8"), producto.num_pedido,
                          producto.producto.id, producto.estado , producto.comentario])
+
+    writer.writerow(['!-endproducto-!'])
+
+    for forma in forma_pago:
+         writer.writerow([forma.num_pedido, forma.tipo_pago.id, forma.monto, forma.referencia])
 
     return response
 
@@ -628,7 +653,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 for pep in peps:
                     pep.estado = 'Pagado'
                     pep.save()
-            #imprimir_ticket(pedido_nuevo)
+            imprimir_ticket(pedido_nuevo)
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)

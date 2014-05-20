@@ -30,11 +30,17 @@ def nuevo_evento(request):
         if formulario.is_valid():
             print "es valido"
             dias = request.POST.getlist('dias')
+            fecha_entrega = request.POST.get('fecha_entrega')
+            print fecha_entrega
+            entrega_split = str(fecha_entrega).split('-')
+            print entrega_split
+            entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
             encargado = Encargado.objects.get(id=request.POST.get('encargado'))
             sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
                                            porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'])
+                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
+                                           fecha_entrega=entrega_final)
             print dias
             for dia in dias:
                 dia_split = dia.split('-')

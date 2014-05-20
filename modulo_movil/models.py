@@ -50,3 +50,9 @@ class ProductoEventoPedido_aux(models.Model):
     producto = models.IntegerField()
     estado = models.CharField(max_length=50)
     comentario = models.TextField(max_length=1000)
+
+class PedidoPago_aux(models.Model):
+    num_pedido = models.IntegerField()
+    tipo_pago = models.IntegerField()
+    monto = models.FloatField()
+    referencia = models.CharField(max_length=100)
