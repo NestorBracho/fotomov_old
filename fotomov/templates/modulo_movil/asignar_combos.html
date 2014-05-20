@@ -1,0 +1,20 @@
+{% extends "venta.html" %}
+{% block seccion-contenido %}
+<div class="col-md-12">
+    <div class="col-md-4">
+        <div><a class="btn btn-default"><div>
+            {% for producto in productos %}
+                    {{ producto.0 }} {{ producto.1 }}<br>
+            {% endfor %}
+        </div></a></div>
+    </div>
+    <div class="col-md-4">
+        <div><a class="btn btn-default"><div>
+            {% for combo in combos %}
+
+                    hola<br>
+            {% endfor %}
+        </div></a></div>
+    </div>
+</div>
+{%endblock%}

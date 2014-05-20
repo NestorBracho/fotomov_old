@@ -23,7 +23,7 @@ Listar combos
                 <td>{{ combo.precio_produccion }}</td>
                 <td>
                     <a href="/editar_combo/{{ combo.id }}/" class="btn btn-xs btn-success">Editar</a>
-                    <a href="/eliminar_combo/{{ combo.id }}/" class="btn btn-xs btn-danger">Eliminar</a>
+                    <a onclick="eliminarCombo('{{ combo.id }}')" class="btn btn-xs btn-danger">Eliminar</a>
                 </td>
             </tr>
         {% endfor %}
@@ -32,6 +32,16 @@ Listar combos
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+
+function eliminarCombo(iden){
+
+    if(confirm("¿Seguro que desea eliminar este combo?")){
+
+        document.location.href = "/eliminar_combo/"+iden+"/";
+
+    }
+
+}
 
 </script>
 {% endblock %}
