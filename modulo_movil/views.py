@@ -508,18 +508,24 @@ def generar_rutas(id_evento):
 @login_required(login_url='/')
 def agregar_item(request):
     pedido = Pedido.objects.get(id=request.GET.get('id_pedido'))
-    print pedido
-    print request.user
-    dir_actual = directorio_actual.objects.get(usuario=request.user)
-    print dir_actual.directorio
     cantidad = request.GET.get('cantidad')
     comentario = request.GET.get('comentario')
     producto = ProductoEvento.objects.get(id=request.GET.get('producto'))
     imagen = request.GET.get('imagen')
-    productoevento = ProductoEventoPedido.objects.create(comentario=comentario, cantidad=cantidad, producto=producto, ruta=dir_actual.directorio + imagen, num_pedido=pedido.num_pedido)
+
+    dir_actual = directorio_actual.objects.get(usuario=request.user)
+
+    productoevento = ProductoEventoPedido.objects.create(
+            comentario=comentario, cantidad=cantidad, producto=producto,
+            ruta=dir_actual.directorio + imagen, num_pedido=pedido.num_pedido
+        )
+
     prodevento = []
     prodevento.append(productoevento)
-    data = serializers.serialize('json', prodevento, fields =('cantidad', 'imagen', 'comentario', 'producto, id'))
+
+    data = serializers.serialize('json', prodevento,
+                                 fields =('cantidad', 'imagen', 'comentario', 'producto, id'))
+
     return HttpResponse(data, mimetype='application/json')
 
 @login_required(login_url='/')
@@ -754,4 +760,4 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
     for au in aux:
         for a in au:
             productoCombos.append(a)
-    return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles, 'productoCombos': productoCombos}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles, 'productoCombos': productoCombos, 'dir_actual': info.pedido.id, 'evento': id_evento, 'funcion': id_funcion}, context_instance=RequestContext(request))

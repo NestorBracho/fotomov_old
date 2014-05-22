@@ -1,45 +1,48 @@
 {% extends "venta.html" %}
 {% block seccion-contenido %}
-<div class="col-md-12">
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Productos</div>
-            <div class="panel-body">
-                <table>
-                {% for producto in productos %}
-                    <tr id="{{ producto.0.1 }}">
-                        <td><a class="btn btn-block btn-default" onclick="SeleccionarProducto('{{ producto.0.1 }}','{{ producto.0.0 }}')">{{ producto.0.0 }}</a></td><td id="cantidad-{{ producto.0.1 }}" name="{{ producto.0.1 }}" class="productos">{{ producto.1 }}</td>
-                    </tr>
-                {% endfor %}
-                </table>
-            </div>
-        </div>
-
-    </div>
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Combos disponibles</div>
-            <div class="panel-body">
-            {% for combo in combos %}
-                <a class="btn btn-default btn-block comboboton" onclick="seleccionarCombo('{{combo.id}}','{{ combo.producto.nombre }}','{{ combo.precio }}')" id ="combo{{combo.id}}"><div>
-                    {{ combo.producto.nombre }} {{ combo.precio }}<br>
-                    <ul class="list-unstyled">
-                    {% for productoCombo in productoCombos%}
-                        {% if productoCombo.combo == combo %}
-                            <li><span>{{ productoCombo.producto.producto.nombre }}</span> <span name="{{ productoCombo.producto.id }}" class="combos{{combo.id}}">{{ productoCombo.cantidad }}</span></li>
-                        {% endif %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Productos</div>
+                <div class="panel-body">
+                    <table class="table table-responsive">
+                    {% for producto in productos %}
+                        <tr id="{{ producto.0.1 }}" name="{{ producto.0.0 }}" class="tr-productos">
+                            <td><a class="btn btn-block btn-default" onclick="SeleccionarProducto('{{ producto.0.1 }}','{{ producto.0.0 }}')">{{ producto.0.0 }}</a></td><td id="cantidad-{{ producto.0.1 }}" name="{{ producto.0.1 }}" class="productos">{{ producto.1 }}</td>
+                        </tr>
                     {% endfor %}
-                    </ul>
-                </div></a>
-            {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Combos disponibles</div>
+                <div class="panel-body">
+                {% for combo in combos %}
+                    <a class="btn btn-default btn-block comboboton" onclick="seleccionarCombo('{{combo.id}}','{{ combo.producto.nombre }}','{{ combo.precio }}')" id ="combo{{combo.id}}"><div>
+                        <b>{{ combo.producto.nombre }} {{ combo.precio }}</b><br>
+                        <ul class="list-unstyled">
+                        {% for productoCombo in productoCombos%}
+                            {% if productoCombo.combo == combo %}
+                                <li><span>{{ productoCombo.producto.producto.nombre }}</span> <span name="{{ productoCombo.producto.id }}" class="combos{{combo.id}}">{{ productoCombo.cantidad }}</span></li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </div></a>
+                {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Pedido final</div>
-            <div class="panel-body pedidofinal">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Pedido final</div>
+                <div class="panel-body pedidofinal">
 
+                </div>
+                <div class="panel-footer"><a id="boton-confirm" onclick="generarPedido('{{ dir_actual }}','{{ evento }}','{{ funcion }}')" class="btn btn-block btn-info">Generar pedido</a></div>
             </div>
         </div>
     </div>
@@ -89,7 +92,7 @@ function seleccionarCombo(combo, nombre, precio){
 
         if($("#pf"+combo).html()==null){
             if(!f2){
-                $(this).append('<div id="pf'+combo+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4">'+precio+'</div><div id="cantidadCombo'+combo+'" class="col-md-4">1</div></div>');
+                $(this).append('<div class="pf" id="pf'+combo+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4">'+precio+'</div><div id="cantidadCombo'+combo+'" class="col-md-4">1</div></div>');
                 $("#pf"+combo).fadeIn();
             }
         }else{
@@ -176,6 +179,60 @@ function SeleccionarProducto(iden, nombre){
 
     purgaCombos();
 
+}
+
+function generarPedido(id_pedido, evento, funcion){
+
+    $(".tr-productos").each(function(){
+
+        while(parseInt($("#cantidad-"+$(this).attr("id")).html())!=0){
+
+            SeleccionarProducto($(this).attr("id"), $(this).attr("name"));
+
+        };
+
+    });
+
+    $("#boton-confirm").text("Confirmar");
+    $("#boton-confirm").removeClass("btn-info");
+    $("#boton-confirm").addClass("btn-primary");
+    $("#boton-confirm").attr("onclick", "confirmarPedido('"+id_pedido+"','"+evento+"','"+funcion+"')");
+
+}
+
+function confirmarPedido(id_pedido, evento, funcion){
+
+    var cantidad, comentario, producto, imagen;
+
+    $(".pf").each(function(){
+        producto = $(this).attr("id").split("pf");
+        producto = producto[1];
+        cantidad = parseInt($('#cantidadCombo'+producto).html());
+        comentario = '-';
+        imagen = '-';
+
+        $.ajax({
+            async : true,
+            data:{
+                'cantidad': cantidad,
+                'producto': producto,
+                'imagen': imagen,
+                'id_pedido': id_pedido,
+                'comentario': comentario
+            },
+            url:'/agregar_item/',
+            type: 'get',
+            error:function(jqHRX, status, error){
+                console.log(error)
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                $('#alertas-ajax').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+ error +"</div>");
+            }
+        });
+
+    });
+
+    setTimeout(function(){ document.location.href = "/generar_ticket/"+evento+"/"+funcion;}, 1);
 }
 
 </script>
