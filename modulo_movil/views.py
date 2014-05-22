@@ -599,7 +599,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'pedidos': peps, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
-                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
+                                                                   'tipos_pago': tipos_pago, 'pagosForms': formulario_pagos,
                                                                    'mensaje': mensaje, 'en_venta': en_venta},
                               context_instance=RequestContext(request))
             print len(formulario_pagos)
@@ -653,7 +653,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 for pep in peps:
                     pep.estado = 'Pagado'
                     pep.save()
-            imprimir_ticket(pedido_nuevo)
+            #imprimir_ticket(pedido_nuevo)
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)
