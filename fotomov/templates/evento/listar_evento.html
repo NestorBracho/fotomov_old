@@ -2,6 +2,9 @@
 {% load bootstrap %}
 {% block titulo %}
 Lista de eventos
+    {% if macrocliente %}
+        de {{ macrocliente.nombre }}
+    {% endif %}
 {% endblock %}
 {% block tabla %}
 {% if creado == '1' %}
