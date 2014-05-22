@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
+#from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 
@@ -251,13 +251,30 @@ def exportar_csv_central2(request):
 
 def imprimir_ticket(pedido):
     productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
+    pagos = PedidoPago.objects.filter(num_pedido=pedido.num_pedido)
     evento = productos[0].producto.evento.nombre
     impresora = printer.Usb(0x1cb0,0x0003)
     impresora.text("\nRecibo Fotomov\n")
+    impresora.text(evento+"\n")
     impresora.text("num: " + str(pedido.num_pedido) + "\n")
+    impresora.text("Productos:\n")
     for producto in productos:
         texto = str(producto.cantidad) + " x " + str(producto.producto.producto.nombre) + "\n"
         impresora.text(texto)
+    impresora.text("\n")
+    for pago in pagos:
+        texto = pago.tipo_pago.nombre + " " + str(pago.monto) + " Bs.\n"
+        impresora.text(texto)
+    impresora.text("\nTotal: " + str(pedido.total) + " Bs.\n\n")
+    if pedido.envio != 0:
+        impresora.text("direccion de entrega:\n")
+        impresora.text(pedido.direccion_entrega+"\n\n")
+    impresora.text("Contacto:\n")
+    impresora.text("tlf: 0212-1111111\n")
+    impresora.text("twitter: @Fotomov\n")
+    impresora.text("Instagram: @fotomov\n")
+    impresora.text("www.fotomov.com\n")
+    impresora.text("www.facebook.com/Fotomov\n")
     #impresora.text("5 x Foto10x10\n")
     #impresora.text("2 x Taza\n")
     impresora.cut()
