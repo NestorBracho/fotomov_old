@@ -10,6 +10,3 @@ class SubMarca(models.Model):
     marca = models.ForeignKey(Marca)
     def __unicode__(self):
         return self.nombre
-
-
-

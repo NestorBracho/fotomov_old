@@ -12,6 +12,8 @@ class Evento(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=1000)
     porcentaje_institucion = models.FloatField()
+
+    #Claves foraneas
     encargado = models.ForeignKey(Encargado)
     sede = models.ForeignKey(Sede, null=True)
     macrocliente = models.ForeignKey(MacroCliente)
@@ -24,7 +26,6 @@ class Funcion(models.Model):
     horas = models.IntegerField(max_length=2, null=True, blank=True)
     entrega_fotos = models.CharField(max_length=20)
     direccion = models.ForeignKey(Direccion)
-
 
 class Gasto(models.Model):
     nombre = models.CharField(max_length=100)

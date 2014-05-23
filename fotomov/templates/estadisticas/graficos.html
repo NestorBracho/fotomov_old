@@ -1,0 +1,58 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+       Gr&aacute;ficos
+{% endblock %}
+{% block seccion-contenido %}
+<div class="row">
+	<div class="col-lg-6"></div>
+	<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="magnitudes">
+		{% csrf_token %}
+		{{MagnitudForm.magnitud | bootstrap}}
+	</form>
+	<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="categorias">
+		{% csrf_token %}
+		{{CategoriasForm.categoria | bootstrap}}
+	</form>
+	<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="registros" >
+		{% csrf_token %}
+		{{RegistroForm.registro | bootstrap}}
+	</form>
+</div>
+<div class="row">
+	<div class="col-lg-12 col-md-12" id="bar-example" style="height: 250px; display:none"></div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+	Morris.Bar({
+	  element: 'bar-example',
+	  data: [
+	    { y: 'Enero', a: 100, b: 90, c:23, d:85, e:90},
+	    { y: 'Febrero', a: 75,  b: 65, c:32 },
+	    { y: 'Marzo', a: 50,  b: 40, c:82, d:81 },
+	    { y: 'Abril', a: 75,  b: 65, c:20, d:13 },
+	    { y: 'Mayo', a: 50,  b: 40, c:32, d:70 },
+	    { y: 'Junio', a: 75,  b: 65, c:10, e:29 },
+	    { y: 'Julio', a: 100, b: 90, c:12 },
+	    { y: 'Agosto', a: 75,  b: 65, c:32 },
+	    { y: 'Septiembre', a: 50,  b: 40, c:56 },
+	    { y: 'Octubre', a: 75,  b: 65, c:32 },
+	  	{ y: 'Noviembre', a: 75,  b: 65, c:30, d:85 },
+	  	{ y: 'Diciembre', a: 75,  b: 65, c:32 }
+	  ],
+	  xkey: 'y',
+	  barColors:['#0066FF','#CC0000','#009900','#CC3300','#FFCC00'],
+	  ykeys: ['a', 'b', 'c', 'd', 'e'],
+	  labels: ['Cliente A', 'Cliente B', 'Cliente C', 'Cliente D', 'Cliente E'],
+	  gridTextSize: 12,
+	});
+</script>
+<script type="text/javascript">
+	$( document ).ready(function(){
+		$( '#id_categoria' ).change(function(){
+			$( '#id_registro' ).prop('disabled', false);
+		});
+	});
+</script>
+{% endblock js %}

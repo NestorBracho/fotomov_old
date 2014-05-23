@@ -1,0 +1,64 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+       Estad&iacute;sticas de Staff
+{% endblock %}
+{% block seccion-contenido %}
+<div class="row">
+	<div class="col-lg-10 col-md-8 col-sm-6">
+		
+	</div>
+	<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="privilegios">
+		{% csrf_token %}
+		{{StaffForm.privilegios | bootstrap}}
+	</form>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Staffs</h4>
+    </div>
+    <div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Staff</th>
+					<th>Eventos Postulado</th>
+					<th>Eventos Contratado</th>
+					<th>Pagado</th>
+					<th>Deuda</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for staff in staffs%}
+					<tr>
+						<td>
+							{{staff.0}}
+						</td>
+						<td>
+							{{staff.1}}
+						</td>
+						<td>
+							{{staff.2}}
+						</td>
+						<td>
+							{{staff.3}}
+						</td>
+						<td>
+							{{staff.4}}
+						</td>
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+	$( document ).ready(function(){
+		$( '#id_privilegios' ).change(function(){
+			$( '#privilegios' ).submit();
+		});
+	});
+</script>
+{% endblock js %}

@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
+# from escpos import *
 from django.core.management import call_command
 
 def obtener_timestamp():
@@ -606,7 +606,7 @@ def generar_pedido(request, pedido, cedula):
             for pep in peps:
                 pep.estado = 'Pagado'
                 pep.save()
-        imprimir_ticket(pedido_nuevo)
+        # imprimir_ticket(pedido_nuevo)
         return HttpResponseRedirect('/ingresar_ticket/')
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
