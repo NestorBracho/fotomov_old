@@ -427,42 +427,74 @@ def convocar_usuario_a_evento(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
-def nuevo_tipo_de_evento(request, creado):
+def nuevo_tipo_de_evento(request, editado):
     tipo_eventos = Tipos_Eventos.objects.all()
     staff = Privilegios.objects.filter(valor__lt = 6)
     prelaciones = []
-    if(request.method == 'POST'):
-        formulario = TiposEventoForm(request.POST)
-        if(formulario.is_valid()):
-            tipoE = formulario.save()
-            tareas = int(request.POST['tareas'])
-            for tarea in range(1, tareas+1):
-                nom = request.POST['nom-'+str(tarea)]
-                desc = request.POST['desc-'+str(tarea)]
-                staffneed = request.POST['select-staff-'+str(tarea)]
-                dias = request.POST['dias-'+str(tarea)]
-                aod = request.POST['aod-'+str(tarea)]
-                prel = request.POST['prel-'+str(tarea)]
-                if aod == 'False':
-                    dias = int(dias)*(-1)
-                print staffneed
-                TTE = TareaTipoEvento.objects.create(asignado = Privilegios.objects.get(id = staffneed), nombre = nom, tarea = desc, tipo_evento = tipoE, dias = dias, id_aux = str(tarea))
-                if prel != '0':
-                    aux = str(tarea)+"-"+request.POST['prel-'+str(tarea)]
-                    prelaciones.append(aux)
-            for prelacion in prelaciones:
-                aux = prelacion.split('-')
-                tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
-                tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
-                PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tipoE)
-            for tarea in range(1, tareas+1):
-                TareaAux = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = str(tarea))
-                TareaAux.id_aux = None
-                TareaAux.save()
-            return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
+    if editado == '0':
+        if(request.method == 'POST'):
+            formulario = TiposEventoForm(request.POST)
+            if(formulario.is_valid()):
+                tipoE = formulario.save()
+                tareas = int(request.POST['tareas'])
+                for tarea in range(1, tareas+1):
+                    nom = request.POST['nom-'+str(tarea)]
+                    desc = request.POST['desc-'+str(tarea)]
+                    staffneed = request.POST['select-staff-'+str(tarea)]
+                    dias = request.POST['dias-'+str(tarea)]
+                    aod = request.POST['aod-'+str(tarea)]
+                    prel = request.POST['prel-'+str(tarea)]
+                    if aod == 'False':
+                        dias = int(dias)*(-1)
+                    TTE = TareaTipoEvento.objects.create(asignado = Privilegios.objects.get(id = staffneed), nombre = nom, tarea = desc, tipo_evento = tipoE, dias = dias, id_aux = str(tarea))
+                    if prel != '0':
+                        aux = str(tarea)+"-"+request.POST['prel-'+str(tarea)]
+                        prelaciones.append(aux)
+                for prelacion in prelaciones:
+                    aux = prelacion.split('-')
+                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
+                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
+                    PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tipoE)
+                return HttpResponseRedirect('/nuevo_tipo_de_evento/0/')
+        else:
+            formulario = TiposEventoForm()
     else:
-        formulario = TiposEventoForm()
-    return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
+        tEvento = Tipos_Eventos.objects.get(id = editado)
+        tareas = TareaTipoEvento.objects.filter(tipo_evento = tEvento)
+        Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = Tipos_Eventos.objects.get(id = editado))
+        if(request.method == 'POST'):
+            formulario = TiposEventoForm(request.POST)
+            if(formulario.is_valid()):
+                for prelacion in prelaciones:
+                    prelacion.delete()
+                for tarea in tareas:
+                    tarea.delete()
+                tEvento.nombre = request.POST['nombre']
+                tEvento.save()
+                tareas = int(request.POST['tareas'])
+                for tarea in range(1, tareas+1):
+                    nom = request.POST['nom-'+str(tarea)]
+                    desc = request.POST['desc-'+str(tarea)]
+                    staffneed = request.POST['select-staff-'+str(tarea)]
+                    dias = request.POST['dias-'+str(tarea)]
+                    aod = request.POST['aod-'+str(tarea)]
+                    prel = request.POST['prel-'+str(tarea)]
+                    if aod == 'False':
+                        dias = int(dias)*(-1)
+                    TTE = TareaTipoEvento.objects.create(asignado = Privilegios.objects.get(id = staffneed), nombre = nom, tarea = desc, tipo_evento = tEvento, dias = dias, id_aux = str(tarea))
+                    if prel != '0':
+                        aux = str(tarea)+"-"+request.POST['prel-'+str(tarea)]
+                        prelaciones.append(aux)
+                for prelacion in prelaciones:
+                    aux = prelacion.split('-')
+                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[1])
+                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[0])
+                    PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tEvento)
+                return HttpResponseRedirect('/nuevo_tipo_de_evento/0/')
+        else:
+            formulario = TiposEventoForm(initial={"nombre": tEvento.nombre})
+        return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado, 'tipoEvento': tEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
+    return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado}, context_instance=RequestContext(request))
 
 def nueva_pauta(request, id_evento):
     evento = Evento.objects.get(id=id_evento)

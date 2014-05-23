@@ -212,7 +212,7 @@ function confirmarPedido(id_pedido, evento, funcion){
         imagen = '-';
 
         $.ajax({
-            async : true,
+            async : false,
             data:{
                 'cantidad': cantidad,
                 'producto': producto,
@@ -232,7 +232,7 @@ function confirmarPedido(id_pedido, evento, funcion){
 
     });
 
-    setTimeout(function(){ document.location.href = "/generar_ticket/"+evento+"/"+funcion;}, 1);
+    document.location.href = "/generar_ticket/"+evento+"/"+funcion;
 }
 
 </script>
