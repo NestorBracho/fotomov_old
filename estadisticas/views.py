@@ -31,6 +31,7 @@ def estadisticas_marcas(request):
 		egresos_evento = 0
 		total_evento = 0
 		mes = ''
+		ano = ''
 		mes_anterior = ''
 		fecha_actual = ''
 		marcas_total = []
@@ -56,6 +57,10 @@ def estadisticas_marcas(request):
 					mesesF = MesesForm(request.POST)
 					if mesesF.is_valid():
 						mes = mesesF.cleaned_data['mes']
+
+					aniosF = AnosForm(request.POST)
+					if aniosF.is_valid():
+						ano = aniosF.cleaned_data['ano']
 
 				#Caso en el que se coloco un mes en el filtro
 				if len(mes) > 0:
@@ -418,10 +423,11 @@ def estadisticas_graficos(request):
 	registroF = RegistroForm()
 
 	#Estadisticas de gastos e ingresos
-
 	marcas = Marca.objects.all()
 	submarcas = SubMarca.objects.all()
 	macros = MacroCliente.objects.all()
+
+
 	
 	ctx = {'MagnitudForm':magnitudF, 'CategoriasForm':categoriasF,
 	'RegistroForm':registroF, 'marcas':marcas, 'submarcas':submarcas,

@@ -28,7 +28,7 @@ class AnosForm(forms.Form):
 	for ano in anios:
 		choices.append((ano,ano),)
 
-	ano = forms.ChoiceField(choices=choices)
+	ano = forms.ChoiceField(choices=choices, required=False)
 
 #Formulario de filtrado de staff
 class StaffForm(forms.Form):
@@ -56,11 +56,11 @@ class CategoriasForm(forms.Form):
 	choices = (('','- categoria -'), ('marca','Marca'),('submarca','Submarca'),
 	('macro','Macroclientes'),)
 
-	categoria = forms.ChoiceField(choices=choices, required=False)
+	categoria = forms.ChoiceField(choices=choices, required=False, widget=forms.Select(attrs={'disabled':'true'}))
 
 #Formulario de registros de busqueda del grafico de estadisticas
 class RegistroForm(forms.Form):
 
-	choices = (('','- registro -'), ('',''))
+	choices = (('','- registro -'), ('0',''))
 
 	registro = forms.ChoiceField(choices=choices, required=False, widget=forms.Select(attrs={'disabled':'true'}))
