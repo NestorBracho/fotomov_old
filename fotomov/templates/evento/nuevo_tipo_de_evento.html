@@ -45,7 +45,7 @@ Agregar tipo de evento
             {% endif %}
             </tbody>
         </table>
-        <input type="hidden" name="tareas" id="toDoList" value="0">
+        <input type="hidden" name="tareas" id="toDoList" {% if editado != '0' %} value="{{ tareas|length }}" {% else %} value="0" {% endif %}>
     </div>
     <div class="col-md-12">
         <a class="btn btn-danger" onclick="eliminarTarea()"><span class="glyphicon glyphicon-minus"></span> Eliminar tarea</a> <a onclick="agregarTarea()" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Agregar tarea</a>
