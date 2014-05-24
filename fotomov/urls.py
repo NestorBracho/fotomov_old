@@ -137,6 +137,7 @@ urlpatterns = patterns('',
     url(r'^listar_combos/(?P<evento_id>\d+)/$', 'evento.views.listar_combos'),
     url(r'^ver_combo/(?P<combo_id>\d+)/$', 'evento.views.ver_combo'),
     url(r'^eliminar_combo/(?P<combo_id>\d+)/$', 'evento.views.eliminar_combo'),
+    url(r'^eliminar_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.eliminar_tipo_evento'),
     url(r'^editar_combo/(?P<combo_id>\d+)/$', 'evento.views.editar_combo'),
     url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
 )

@@ -761,3 +761,14 @@ def editar_combo(request, combo_id):
                 ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
             return HttpResponseRedirect('/listar_combos/'+str(combo.evento.id)+'/')
     return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos, 'productosC': productosCombos}, context_instance=RequestContext(request))
+
+def eliminar_tipo_evento(request, tipo_id):
+    tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
+    tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    prelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    for prelacion in prelaciones:
+        prelacion.delete()
+    for tarea in tareas:
+        tarea.delete()
+    tipoEvento.delete()
+    return HttpResponseRedirect("/nuevo_tipo_de_evento/0/")

@@ -27,7 +27,7 @@ Agregar tipo de evento
             <table class="table table-striped table-responsive table-hover">
                 <thead><th colspan="2">Tipos de eventos</th></thead>
                 {% for evento in eventos %}
-                <tr id="te-{{ evento.id }}"><td>{{ evento.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('te-{{ evento.id }}')">Eliminar</a>  <a class="btn btn-xs btn-success" href="/nuevo_tipo_de_evento/{{ evento.id }}/">Editar</a></td></tr>
+                <tr id="te-{{ evento.id }}"><td>{{ evento.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('{{ evento.id }}')">Eliminar</a>  <a class="btn btn-xs btn-success" href="/nuevo_tipo_de_evento/{{ evento.id }}/">Editar</a></td></tr>
                 {% endfor %}
             </table>
         </div>
@@ -97,7 +97,15 @@ $(".dias").each(function(){
 
 function eliminarTipoEvento(iden){
 
-    alert("Ehh! borrar borrar =]");
+    if(confirm("Eliminar este elemento puede traducirse en perder data importante de la base de datos y es altamente recomendable q no lo haga.\n ¿Está REALMENTE SEGURO que desea eliminar este elemento?")){
+
+        if(confirm("Me temo que debo insistir en que reconsidere el eliminar este elemento. Esta acción puede que tenga altas repercuciones entre las que pueden destacar la eliminación de Eventos, Estadisticas, entre otras.\n De nuevo, ¿está REALMENTE SEGURO que desea eliminar este elemento?")){
+
+            window.location.href = "/eliminar_tipo_evento/"+iden+"/";
+
+        }
+
+    }
 
 }
 
