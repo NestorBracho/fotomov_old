@@ -461,5 +461,11 @@ function deleteAlert(id, row){
     }
     document.getElementById("demo").innerHTML=x;
 }
+
+$("#addressModal").on("shown.bs.modal",function(){
+        initialize();
+    })
+
+
 </script>
 {% endblock %} {# /JS nivel 3 #}

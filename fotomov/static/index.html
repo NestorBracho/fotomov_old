@@ -1,0 +1,233 @@
+{% load bootstrap %}
+ <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+
+          <!-- !!! falta arregar apariencia en el modal window -->
+{# 	        <div class="row"> #}
+			    <div class="addresses col-sm-6">
+			            <div id="direccion">
+                            <div class='row form-group'>
+                            <table id="content" class="table table-striped  table-hover dataTable no-footer" aria-describedby="content_info">
+                                <thead>
+                                    <th>
+                                        Nombre
+                                    </th>
+                                    <th>
+                                        Direccion
+                                    </th>
+                                    <th>
+                                        Acciones
+                                    </th>
+                                </thead>
+                                {% for direccion in direcciones %}
+                                <tr id="{{ direccion.nombre }}">
+                                    <td onclick="obtenerDireccion('{{ direccion.nombre }}')">{{ direccion.nombre }}</td>
+                                    <td onclick="obtenerDireccion('{{ direccion.nombre }}')">{{ direccion.direccion }}</td>
+                                    <td><button type="button" class="btn btn-default btn-danger btn-xs" onclick="deleteAlert('{{direccion.id}}','{{ direccion.nombre }}')">Eliminar</button></td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            </div>
+			            </div><!-- OJO no cambiar este id, lo usa una funcion -->
+			            <div id="warning"></div><!-- OJO no cambiar este id, lo usa una funcion -->
+			    </div>
+
+			    <div class="addresses col-sm-6">
+					<div class="row">
+					        <div class=" form-group">
+					            <label class="control-label col-sm-3">
+					                Buscar
+					            </label>
+
+					             <div class="col-sm-12">
+				            	    <div class="input-group">
+								      <input type="text" class="form-control" id="address" size="29"/>
+								      <span class="input-group-btn">
+								        <input type="button" class="btn btn-default" value="Ir" onclick="geocode()">
+								      </span>
+								    </div><!-- /input-group -->
+					            </div>
+                                <label  class=" control-label col-sm-3">Nombre</label>
+						        <div class="col-md-12" >
+		      			            <input type="text" id="nombre" name="nombre" class="form-control">
+						        </div>
+						        <label  class=" control-label col-sm-3">Direccion</label>
+						        <div class="col-md-12" >
+		      			            <input type="text" id="formatedAddress" name="direccion" class="form-control">
+						        </div>
+                                <label  class="control-label col-sm-3">Descripcion</label>
+						        <div class="col-md-12" >
+		      			            <input type="text" id="descripcion" name="descripcion" class="form-control">
+						        </div>
+                                <div class="col-sm-12 col-sm-offset-4">
+                                   <br>
+
+
+				                </div>
+						    </div>
+						</div> {# /.row #}
+						<div id="map">
+				            <div id="map_canvas" class="goog-maps" style="width:100%; height:320px"></div>
+				            <div id="crosshair"></div>
+				        </div>
+					          <div class="form-group">
+							    <label class="-3 control-label">Lat/Lng</label>
+							    <div class="col-md-9" id="ll">
+
+							    </div>
+						  </div>
+			        <input type="hidden" id="latlng" name="latlng">
+                    <button type='button' onclick="ajax_guardar()" class="btn btn-default btn-block">Agregar Direccion <i class="fa fa-plus"></i></button>
+			    </div>
+	        </div>
+{#         </div> #}
+        <div class="modal-footer">
+		<!-- Se sierra este div en el template externo -->	
+
+</form>
+
+
+{# Todos los templates que utilicen este necesitan incluir este JS  #}
+{% comment %}
+	
+	{% block js-nivel-3 %}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/maps.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+        setTimeout(function() {
+            var latlng = new google.maps.LatLng(34.0883632,18.3788381);
+            var myOptions = {
+                zoom: 10,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+            createMarker(latlng);
+        }, 500);
+
+});
+
+function ajax_guardar(){
+    var nombre = $('#nombre').val();
+    var direccion = $('#formatedAddress').val();
+    var descripcion = $('#descripcion').val();
+    var latlng = $('#latlng').val();
+    var iden;
+
+
+
+
+    $.ajax({
+        data:{'nombre': nombre, 'direccion': direccion, 'descripcion': descripcion, 'latlng': latlng},
+        url:'/guardar_direccion_ajax/',
+        type: 'get',
+        error:function(a,b,c){
+
+            $('#alertas-ajax').addClass('alert');
+            $('#alertas-ajax').addClass('alert-danger');
+            document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+            console.log(c);
+        }
+
+    }).done(function(data){
+        for(var i=0; i<data.length; i++){
+            $('#content').append("<tr><td onclick=obtenerDireccion('"+ data[i].fields.nombre +"')>"+ data[i].fields.nombre +"</td><td onclick=obtenerDireccion('"+ data[i].fields.nombre +"')>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminar</button></td></tr>");
+        }
+
+        if(document.getElementById("toto") != null){
+            document.getElementById(document.getElementById("toto").value).value = data[0].fields.nombre;
+
+            if($('#'+$('#toto').val()).hasClass('editable')){
+
+                iden = $('#toto').val().split('-');
+                iden = iden[1];
+
+                $.ajax({
+
+                    url:'/editar_funcion',
+                    data:{'accion':'4', 'iden':iden, 'nomb':nom},
+                    type:'GET'
+
+                }).done(function(data){
+
+
+                    $('#'+$('#toto').val()).html(data.nombre);
+
+                });
+
+            }
+
+            document.getElementById("close").click();
+        }
+    });
+
+}
+
+
+
+function obtenerDireccion(nom){
+
+    var iden;
+    if(document.getElementById("toto") != null){
+        document.getElementById(document.getElementById("toto").value).value = nom;
+
+        if($('#'+$('#toto').val()).hasClass('editable')){
+
+
+
+            iden = $('#toto').val().split('-');
+            iden = iden[1];
+
+            $.ajax({
+
+                url:'/editar_funcion',
+                data:{'accion':'4', 'iden':iden, 'nomb':nom},
+                type:'GET'
+
+            }).done(function(data){
+
+
+                $('#'+$('#toto').val()).html(data.nombre);
+
+            });
+
+        }
+
+        document.getElementById("close").click();
+
+    }
+
+}
+
+function deleteAlert(id, row){
+
+    if (confirm("¿Esta seguro que desea eliminar?")){
+
+        $.ajax({
+
+            data: {'id':id},
+            url: '/eliminar_direccion/',
+            type: 'get',
+            error:function(a,b,c){
+
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
+            }
+
+        }).done(function(data){
+
+            document.getElementById(row).parentNode.removeChild(document.getElementById(row));
+
+        });
+
+    }
+    document.getElementById("demo").innerHTML=x;
+}
+</script>
+{% endblock %} {# /JS nivel 3 #}
+{% endcomment %}
