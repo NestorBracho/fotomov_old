@@ -56,3 +56,8 @@ class PedidoPago_aux(models.Model):
     tipo_pago = models.IntegerField()
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)
+
+
+class Configuracion(models.Model):
+    nombre = models.CharField(max_length=30)
+    valor = models.DecimalField(decimal_places=0, max_digits=5)
