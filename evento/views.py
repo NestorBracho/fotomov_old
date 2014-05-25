@@ -372,7 +372,7 @@ def calendario_de_eventos(request):
     now = datetime.datetime.now()
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
-    funciones = StaffPorFuncion.objects.filter(funcion__dia__gt=now.date(), tipo=usuario.privilegio, cantidad__gt = 0).order_by('-funcion__dia').distinct()
+    funciones = StaffPorFuncion.objects.filter(funcion__dia__gte=now.date(), tipo=usuario.privilegio, cantidad__gt = 0).order_by('-funcion__dia').distinct()
     aux_fun = []
     for funcion in funciones:
         aux_fun.append(funcion.funcion)
