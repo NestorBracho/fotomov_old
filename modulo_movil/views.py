@@ -663,6 +663,18 @@ def generar_pedido(request, pedido, cedula, id_evento):
     tipos_pago = FormaDePago.objects.all()
     pedido_actual = Pedido.objects.get(id=pedido)
     peps = ProductoEventoPedido.objects.filter(num_pedido = pedido_actual.num_pedido)
+    combos = []
+    productos = []
+    # Se busca cuales de los productos del pedido son combos
+    for pep in peps:
+        if pep.producto.es_combo:
+            combos.append(pep)
+        else:
+            productos.append(pep)
+    # A esos combos se les busca que productos y cuandos estan incluidos en el combo
+    for combo in combos:
+        combo.productos = ProductoeventoCombo.objects.filter(combo=combo.producto)
+    iva = Configuracion.objects.get(nombre='iva')
     en_venta = ProductoEvento.objects.filter(evento__id=id_evento)
     cliente = Cliente.objects.filter(cedula = cedula)
     if len(cliente) > 0:
@@ -687,10 +699,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
             else:
                 mensaje = {"error":1,"text": "Todos los campos del metodo de pago deben estar llenos"}
                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
-                                                                   'pedidos': peps, 'ced': cedula,
+                                                                   'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
                                                                    'tipos_pago': tipos_pago, 'pagosForms': formulario_pagos,
-                                                                   'mensaje': mensaje, 'en_venta': en_venta},
+                                                                   'mensaje': mensaje, 'en_venta': en_venta, 'iva': iva},
                               context_instance=RequestContext(request))
             print len(formulario_pagos)
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
@@ -748,9 +760,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
-                                                                   'pedidos': peps, 'ced': cedula,
+                                                                   'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
-                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms, 'en_venta': en_venta},
+                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
+                                                                   'en_venta': en_venta, 'iva': iva},
                               context_instance=RequestContext(request))
 
 def ingresar_ticket(request, id_evento):
