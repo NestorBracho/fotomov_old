@@ -461,5 +461,12 @@ function deleteAlert(id, row){
     }
     document.getElementById("demo").innerHTML=x;
 }
+
+$("#addressModal").on("shown.bs.modal",function(){
+        google.maps.event.trigger(map,'resize');
+
+    })
+
+
 </script>
 {% endblock %} {# /JS nivel 3 #}

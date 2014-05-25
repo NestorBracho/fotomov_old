@@ -1,0 +1,28 @@
+{% extends 'modulo_movil.html' %}
+{% block titulo %}
+    Seleccione el directorio del disco duro
+{% endblock %}
+{% block seccion-contenido %}
+    {% if creado == '1' %}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
+        ¡La base de datos se ha exportado exitosamente!
+    </div>
+
+{% elif creado == '2' %}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
+        ¡La base de datos se ha importado exitosamente!
+    </div>
+{% endif %}
+    <form method="POST">{% csrf_token %}
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-xs-offset-3">
+            <strong>Nota: Siempre debe terminar en fotomov_imagenes</strong>
+            <input class="form-control" name="directorio" type="text" value="{{ directorio }}"/>
+            <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/>
+        </div>
+    </div>
+    </form>
+
+{% endblock %}

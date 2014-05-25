@@ -27,35 +27,85 @@ Agregar tipo de evento
             <table class="table table-striped table-responsive table-hover">
                 <thead><th colspan="2">Tipos de eventos</th></thead>
                 {% for evento in eventos %}
-                <tr id="te-{{ evento.id }}"><td>{{ evento.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('te-{{ evento.id }}')">Eliminar</a>  <input type="button" class="btn btn-xs btn-success" onclick="eliminarTipoEvento('te-{{ evento.id }}')" value='Editar'></td></tr>
+                <tr id="te-{{ evento.id }}"><td>{{ evento.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('{{ evento.id }}')">Eliminar</a>  <a class="btn btn-xs btn-success" href="/nuevo_tipo_de_evento/{{ evento.id }}/">Editar</a></td></tr>
                 {% endfor %}
             </table>
         </div>
     </div>
     <div class="col-md-12">
         <hr>
-        <h3>Tareas predefinidas por evento</h3>
+        <h3>Tareas predefinidas por tipo de evento</h3>
         <table class="table  table-hover">
             <thead><th>Id</th><th>Nombre</th><th>Descripción</th><th>Staff</th><th>Días</th><th>Prela a...</th></thead>
-            <tbody name="0" id="tabla-tareas">
+            <tbody {% if editado != '0' %} name="{{ tareas|length }}" {% else %} name="0" {% endif %} id="tabla-tareas">
+            {% if editado != '0' %}
+                {% for tarea in tareas %}
+                    <tr id="{{ forloop.counter }}"><td>{{ forloop.counter }}</td><td><input class='form-control' type='text' name='nom-{{ forloop.counter }}' id='nom-{{ forloop.counter }}' placeholder='Nombre...' value='{{ tarea.nombre }}'></td><td><textarea class='form-control' name='desc-{{ forloop.counter }}' id='desc-{{ forloop.counter }}' placeholder='Tarea...'>{{ tarea.tarea }}</textarea></td><td><select class='form-control' name='select-staff-{{ forloop.counter }}' id='select-staff-{{ forloop.counter }}'><option value='0'>---------</option>{% for staf in staff %}<option value='{{ staf.id }}' {% if staf.id == tarea.asignado.id %}selected{% endif %}>{{ staf.nombre }}</option>{% endfor %}</select></td><td><input class="dias" name='dias-{{ forloop.counter }}' id='dias-{{ forloop.counter }}' value='{{ tarea.dias }}'><div><input onclick="set_dias_despues_evento('dias-{{ forloop.counter }}','True')" name='aod-{{ forloop.counter }}' value='True' checked='true' type='radio'><span> Antes del evento</span><br><input onclick="set_dias_despues_evento('dias-{{ forloop.counter }}','False')" name='aod-{{ forloop.counter }}' value='False' {% if tarea.dias < 0 %} checked {% endif %} type='radio'><span> Despues del evento</span></div></td><td><select class='form-control prelacion' id='prel-{{ forloop.counter }}' name='prel-{{ forloop.counter }}'><option value='0'>---</option></select></td></tr>
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
-        <input type="hidden" name="tareas" id="toDoList" value="0">
+        <input type="hidden" name="tareas" id="toDoList" {% if editado != '0' %} value="{{ tareas|length }}" {% else %} value="0" {% endif %}>
     </div>
     <div class="col-md-12">
         <a class="btn btn-danger" onclick="eliminarTarea()"><span class="glyphicon glyphicon-minus"></span> Eliminar tarea</a> <a onclick="agregarTarea()" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Agregar tarea</a>
     </div>
     <div class="col-md-12 text-right">
-        <input type='button' class="btn btn-default btn-primary" onclick="guardarTE()" value='Ingresar'/>
+        <input type='button' class="btn btn-default btn-primary" onclick="guardarTE()" value='Guardar'/>
     </div>
 </form>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
 
+$(".prelacion").each(function(){
+
+    var numTareas = "{{ tareas|length }}", iden = $(this).attr("id");
+    numTareas = parseInt(numTareas);
+    iden = iden.split("prel-");
+    iden = iden[1]
+
+
+    for(var i=0; i<numTareas; i++){
+
+        if(iden != (i+1)){
+            $(this).append("<option value='"+(i+1)+"'>"+(i+1)+"</option>");
+        }
+
+    }
+
+    {% for prelacion in prelaciones %}
+
+        if('{{ prelacion.es_prelada.id_aux }}'==iden){
+
+            $(this).val('{{ prelacion.prela.id_aux }}');
+
+        }
+
+    {% endfor %}
+
+});
+
+$(".dias").each(function(){
+
+    if(parseInt($(this).val())<0){
+        $(this).val(parseInt($(this).val())*-1);
+    }
+    $(this).spinner({min:0});
+
+});
+
 function eliminarTipoEvento(iden){
 
-    alert("Ehh! borrar borrar =]");
+    if(confirm("Eliminar este elemento puede traducirse en perder data importante de la base de datos y es altamente recomendable q no lo haga.\n ¿Está REALMENTE SEGURO que desea eliminar este elemento?")){
+
+        if(confirm("Me temo que debo insistir en que reconsidere el eliminar este elemento. Esta acción puede que tenga altas repercuciones entre las que pueden destacar la eliminación de Eventos, Estadisticas, entre otras.\n De nuevo, ¿está REALMENTE SEGURO que desea eliminar este elemento?")){
+
+            window.location.href = "/eliminar_tipo_evento/"+iden+"/";
+
+        }
+
+    }
 
 }
 
@@ -97,7 +147,7 @@ function agregarTarea(){
     iden++;
     document.getElementById('tabla-tareas').setAttribute('name',iden);
 
-    $('#tabla-tareas').append("<tr id="+iden+"><td>"+iden+"</td><td><input type='text' name='nom-"+iden+"' id='nom-"+iden+"' placeholder='Nombre...'></td><td><textarea name='desc-"+iden+"' id='desc-"+iden+"' placeholder='Tarea...'></textarea></td><td><select name='select-staff-"+iden+"' id='select-staff-"+iden+"'><option value='0'>---------</option>{% for staf in staff %}<option value='{{ staf.id }}'>{{ staf.nombre }}</option>{% endfor %}</select></td><td><input name='dias-"+iden+"' id='dias-"+iden+"'><div><input onclick=set_dias_despues_evento('dias-"+iden+"','True') name='aod-"+iden+"' value='True' checked='true' type='radio'><span> Antes del evento</span><br><input onclick=set_dias_despues_evento('dias-"+iden+"','False') name='aod-"+iden+"' value='False' type='radio'><span> Despues del evento</span></div></td><td><select id='prel-"+iden+"' name='prel-"+iden+"'><option value='0'>---</option></select></td></tr>");
+    $('#tabla-tareas').append("<tr id="+iden+"><td>"+iden+"</td><td><input class='form-control' type='text' name='nom-"+iden+"' id='nom-"+iden+"' placeholder='Nombre...'></td><td><textarea class='form-control' name='desc-"+iden+"' id='desc-"+iden+"' placeholder='Tarea...'></textarea></td><td><select class='form-control' name='select-staff-"+iden+"' id='select-staff-"+iden+"'><option value='0'>---------</option>{% for staf in staff %}<option value='{{ staf.id }}'>{{ staf.nombre }}</option>{% endfor %}</select></td><td><input name='dias-"+iden+"' id='dias-"+iden+"'><div><input onclick=set_dias_despues_evento('dias-"+iden+"','True') name='aod-"+iden+"' value='True' checked='true' type='radio'><span> Antes del evento</span><br><input onclick=set_dias_despues_evento('dias-"+iden+"','False') name='aod-"+iden+"' value='False' type='radio'><span> Despues del evento</span></div></td><td><select class='form-control' id='prel-"+iden+"' name='prel-"+iden+"'><option value='0'>---</option></select></td></tr>");
 
     document.getElementById('toDoList').setAttribute('value',iden);
 

@@ -247,5 +247,6 @@ def agregar_sede_macrocliente_ajax(request):
     return HttpResponse(data, mimetype='application/json')
 
 def listar_eventos_macrocliente(request, id_macrocliente):
+    macrocliente = MacroCliente.objects.get(id=id_macrocliente)
     eventos = Evento.objects.filter(macrocliente__id=id_macrocliente)
-    return render_to_response('evento/listar_evento.html', {'eventos': eventos}, context_instance = RequestContext(request))
+    return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'macrocliente': macrocliente}, context_instance = RequestContext(request))
