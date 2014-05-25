@@ -20,7 +20,12 @@ Agregar Staff
                                 <select name="bloque-{{ funcion.0.id }}-{{ staff.tipo.id }}">
                                     <option value="">----------</option>
                                     {% for bloque in bloques %}
-                                    <option value="{{ bloque.id }}">{{ bloque.nombre }}</option>
+                                        {% if bloque == staff.bloque %}
+                                            <option value="{{ bloque.id }}" selected>{{ bloque.nombre }}</option>
+                                        {% else %}
+                                            <option value="{{ bloque.id }}">{{ bloque.nombre }}</option>
+                                        {% endif %}
+
                                     {% endfor %}
                                 </select>
                             </div>

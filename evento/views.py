@@ -115,9 +115,18 @@ def agregar_staff(request, id_evento):
             for staff in tipos_staff:
                 print str(funcion.id) + "-" + str(staff.id)
                 print request.POST.get(str(funcion.id) + "-" + str(staff.id))
-                cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
-                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad, bloque = Bloque.objects.get(id = request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id))))
-                agregar.save()
+                cantidad = int(request.POST.get(str(funcion.id) + "-" + str(staff.id)))
+                actualizado = StaffPorFuncion.objects.get(tipo=staff, funcion=funcion)
+                actualizado.cantidad=cantidad
+                try:
+                    bloque = Bloque.objects.get(id = request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id)))
+                    print bloque
+                    actualizado.bloque=bloque
+                except:
+                    pass
+                actualizado.save()
+                #agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad, bloque = bloque)
+                #agregar.save()
         return HttpResponseRedirect("/listar_evento/2")
     print lista
     return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento, 'bloques':bloques}, context_instance= RequestContext(request))
