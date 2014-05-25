@@ -30,7 +30,7 @@ Pedido
                 <span>Estado: <b id="EstadoPedido">{% if pedido.fue_pagado %}Pagado{% else %}No pagado{% endif %}</b></span>
             </div>
             <div class="col-md-4">
-                <span>{% if pedido.fue_pagado %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a No Pagado</a>{% else %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a Pagango</a>{% endif %}</span>
+                <span>{% if pedido.fue_pagado %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a No Pagado</a>{% else %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a Pagado</a>{% endif %}</span>
             </div>
         </div>
         <div class="row">
