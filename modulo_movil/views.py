@@ -195,7 +195,7 @@ def importar_csv_central(request):
         pass
     call_command('flush', interactive= False)
     call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/seleccionar_evento_caja')
 
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
@@ -345,6 +345,18 @@ def seleccionar_evento(request):
         if funciones_hoy:
             eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento.html', {'eventos': eventos}, context_instance=RequestContext(request))
+
+
+@login_required(login_url='/')
+def seleccionar_evento_caja(request):
+    direcciones = Direccion.objects.all()
+    eventos = []
+    for direccion in direcciones:
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
+        if funciones_hoy:
+            eventos.append(funciones_hoy[0])
+    return render_to_response('modulo_movil/seleccionar_evento_caja.html', {'eventos': eventos}, context_instance=RequestContext(request))
+
 
 @login_required(login_url='/')
 def crear_pedidos(request, id_evento, id_funcion, next, actual):
