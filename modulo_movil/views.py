@@ -31,6 +31,48 @@ import shutil
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 
+def ingresar(request):
+    if request.method=='POST':
+	formulario = AuthenticationForm(request.POST)
+	if formulario.is_valid:
+	  usuario = request.POST['username']
+	  clave = request.POST['password']
+	  acceso = authenticate(username = usuario, password = clave)
+	  if acceso is not None:
+	    if acceso.is_active:
+		login(request, acceso)
+		return HttpResponseRedirect('/seleccionar_evento_caja')
+	    else:
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+	  else:
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    else:
+	formulario = AuthenticationForm()
+    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+def ingresar_vendedor(request):
+    if request.method=='POST':
+	formulario = AuthenticationForm(request.POST)
+	if formulario.is_valid:
+	  usuario = request.POST['username']
+	  clave = request.POST['password']
+	  acceso = authenticate(username = usuario, password = clave)
+	  if acceso is not None:
+	    if acceso.is_active:
+		login(request, acceso)
+		return HttpResponseRedirect('/seleccionar_evento')
+	    else:
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+	  else:
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    else:
+	formulario = AuthenticationForm()
+    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+
+
+def configurar_db(request):
+    return render_to_response('modulo_movil/configurar_db.html', {}, context_instance=RequestContext(request))
 
 def obtener_timestamp():
     a = tm.time()
@@ -195,7 +237,7 @@ def importar_csv_central(request):
         pass
     call_command('flush', interactive= False)
     call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
-    return HttpResponseRedirect('/seleccionar_evento_caja')
+    return HttpResponseRedirect('/iniciar_sesion')
 
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
@@ -323,7 +365,7 @@ def exportar_csv_evento(request):
 
     return response
 
-def selecccionar_direccion(request, creado):
+def configuracion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -331,10 +373,23 @@ def selecccionar_direccion(request, creado):
         directorio = request.POST.get('directorio')
         settings.MEDIA_ROOT = directorio
         print settings.MEDIA_ROOT
-        return HttpResponseRedirect('/escritorio')
+        return HttpResponseRedirect('/modulo_movil_configurar_db')
     else:
         directorio = settings.MEDIA_ROOT
     return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
+
+def selecccionar_direccion(request):
+#    print settings.MEDIA_ROOT
+#    settings.MEDIA_ROOT = '/home/leonardo/turpial'
+#    print settings.MEDIA_ROOT
+    if request.method == 'POST':
+        directorio = request.POST.get('directorio')
+        settings.MEDIA_ROOT = directorio
+        print settings.MEDIA_ROOT
+        return HttpResponseRedirect('/modulo_movil_configurar_db')
+    else:
+        directorio = settings.MEDIA_ROOT
+    return render_to_response('modulo_movil/seleccionar_directorio_modulo_movil.html', {'directorio': directorio}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
