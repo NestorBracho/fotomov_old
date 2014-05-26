@@ -6,9 +6,9 @@ import os
 
 #Busqueda de la ruta de la BD
 RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
-_ruta_db = RUTA_PROYECTO.split("/")
-_ruta_db = _ruta_db[0:len(_ruta_db)-2] + ["base","base.db"]
-_ruta_db = "/".join(_ruta_db)
+# _ruta_db = RUTA_PROYECTO.split("/")
+# _ruta_db = _ruta_db[0:len(_ruta_db)-2] + ["base","base.db"]
+# _ruta_db = "/".join(_ruta_db)
 
 _ruta_static = RUTA_PROYECTO.split("/")
 _ruta_static = _ruta_static[0:len(_ruta_static)-2] + ["fotomov","static"]
@@ -24,12 +24,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME':_ruta_db,                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME':'base_foto',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
 }

@@ -72,11 +72,14 @@
 			}
 		});
 	});
+
 	/*Funcion que desbloquea el campo de registro cuando cliquean el campo Categoria*/
 	$( document ).ready(function(){
 		$( '#id_categoria' ).change(function(){
 			if (document.getElementById( 'id_categoria' ).value != ''){
 				$( '#id_registro' ).prop('disabled', false);
+				$( '#caegorias' ).submit();
+
 			}else{
 				$( '#id_registro' ).prop('disabled', true);
 				document.getElementById( 'id_registro' ).value = '';
@@ -85,7 +88,7 @@
 		});
 	});
 
-	/*Funcion que muestra el grafico inicialmente*/
+	/*Funcion que oculta/muestra el grafico inicialmente*/
 	$( document ).ready(function(){
 		$( '#id_registro' ).change(function(){
 			if (document.getElementById( 'id_registro' ).value != ''){
