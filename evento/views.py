@@ -40,14 +40,9 @@ def nuevo_evento(request):
             sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
                                            porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-<<<<<<< HEAD
-                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'])
-
-=======
                                            sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
                                            fecha_entrega=entrega_final)
             print dias
->>>>>>> 794dc8dcd0285929f03a72b36b14b1bd272511c8
             for dia in dias:
                 dia_split = dia.split('-')
                 dia_id = dia_split[0]
@@ -420,7 +415,7 @@ def usuario_por_evento(request, id_evento):
 
 def correo_staff(request):
     correoF = CorreoForm()
-
+    evento_id = "0"
     if request.method == 'POST':
         correoF = CorreoForm(request.POST)
         if correoF.is_valid():
@@ -446,7 +441,7 @@ def correo_staff(request):
                 correos.append(usuario.email)
 
             #mensaje = 'Evento: '+str(evento.nombre)+'\nDescripcion: '+str(evento.descripcion+'\nFuncion: '+funcion.nombre+'\nTipo Staff: '+tipo_staff.nombre+'\nCantidad necesitada: '+staffs[1])
-            mensaje = 'El evento '+str(evento.nombre)+' ha sido publicado con las siguientes funcion: \n'+funcion.nombre+' y el dia: '+funcion.dia+'\nIngrese al siguiente enlace para postularse!'
+            mensaje = 'El evento '+str(evento.nombre)+' ha sido publicado con las siguientes funcion: \n'+funcion.nombre+' y el dia: '+str(funcion.dia)+'\nIngrese al siguiente enlace para postularse!'
             send_mail('[FotoMov] Solicitud de staff para evento.', mensaje, '', correos, fail_silently=False)
 
     ctx = {}
