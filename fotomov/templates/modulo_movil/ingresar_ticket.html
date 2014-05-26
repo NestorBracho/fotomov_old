@@ -1,4 +1,4 @@
-{% extends 'tabla.html' %}
+{% extends 'modulo_movil.html' %}
 {% load bootstrap %}
 {% block titulo %}
 Generar pedido
@@ -6,17 +6,15 @@ Generar pedido
 {% block seccion-contenido%}
 <form method="POST">{% csrf_token %}
     <div class="row">
-        <div class="col-xs-12 col-md-6">
-            <label class="control-label" for="id_numero">Introduzca su número</label>
-            <input type="text" id="id_numero" name="numero" class=" form-control" placeholder="Ticket">
+        <div class="col-xs-8 col-md-4 col-md-offset-2">
+            {{ formulario.ticket | bootstrap }}
         </div>
-        <div class="col-xs-12 col-md-6">
-            <label class="control-label" for="id_cedula_cliente">Número de cédula del cliente</label>
-            <input type="text" id="id_cedula_cliente" name="cedula_cliente" class="form-control" placeholder="Cédula">
+        <div class="col-xs-8 col-md-4">
+            {{ formulario.cedula | bootstrap }}
         </div>
         <div class="col-xs-12 text-right">
             <div class="row">
-                <div class="col-xs-12 col-md-6">
+                <div class="col-xs-10 col-md-6 col-md-offset-4">
                     <input type='submit' class="btn btn-default btn-primary" value='Generar'/>
                 </div>
                 <div class="col-md-6 hidden-xs hidden-sm"></div>

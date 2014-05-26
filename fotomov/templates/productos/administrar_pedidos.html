@@ -32,7 +32,7 @@ Lote
         <thead><th>Pedidos</th><th>Cliente</th><th>Fecha</th><th>Estado</th></thead>
         <tbody>
         {% for pedido in pedidos %}
-            <tr><td><a href="administrar_pedidos/{{ pedido.id }}/">{{ pedido.codigo }}</a></td><td>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}</td><td>{{ pedido.fecha }}</td><td>{{ pedido.estado }}</td></tr>
+            <tr><td><a href="/ver_pedido/{{ pedido.id }}/">{{ pedido.num_pedido }}</a></td><td>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}</td><td>{{ pedido.fecha }}</td><td>{{ pedido.estado }}</td></tr>
         {% endfor %}
         </tbody>
     </table>

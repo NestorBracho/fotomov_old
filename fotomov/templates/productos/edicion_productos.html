@@ -4,7 +4,7 @@
 Lotes en edición
 {% endblock %}
 {% block subtitulo %}
-<h4>Pedido: {{pedido.cliente.nombres}} {{pedido.cliente.apellidos}} - {{pedido.codigo}}</h4>
+<h4>Pedido: {{pedido.cliente.nombres}} {{pedido.cliente.apellidos}} - {{pedido.num_pedido}}</h4>
 {% endblock %}
 {% block seccion-contenido%}
 <a href="/edicion_pedido/{{pedido.id}}/" class="btn btn-xs btn-default">volver</a>

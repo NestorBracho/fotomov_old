@@ -4,11 +4,6 @@ from staff.models import *
 from evento.models import *
 from productos.models import *
 
-class FormaDePago(models.Model):
-    nombre = models.CharField(max_length=100)
-    def __unicode__(self):
-        return self.nombre
-
 class TipoDeGasto(models.Model):
     nombre = models.CharField(max_length=100)
     def __unicode__(self):

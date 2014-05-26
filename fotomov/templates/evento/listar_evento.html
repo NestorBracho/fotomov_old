@@ -2,6 +2,9 @@
 {% load bootstrap %}
 {% block titulo %}
 Lista de eventos
+    {% if macrocliente %}
+        de {{ macrocliente.nombre }}
+    {% endif %}
 {% endblock %}
 {% block tabla %}
 {% if creado == '1' %}
@@ -24,8 +27,8 @@ Lista de eventos
 {% endif %}
 <table class="table table-striped  table-hover" id="content">
     <thead>
-        <th>Macroclientes</th>
-        <th>Eventos</th>
+        <th>Macrocliente</th>
+        <th>Evento</th>
         <th>Acciones</th>
     </thead>
     {% for evento in eventos %}

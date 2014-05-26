@@ -7,6 +7,12 @@
 Administración de envento
 {% endblock %}
 {% block seccion-contenido %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="/listar_evento/0/" class="btn btn-default"><span class="fa fa-chevron-left"></span> Eventos</a>
+    </div>
+</div>
+</br>
 <form method="POST" action="" id="administracionEventoFormulario" enctype="multipart/form-data" >{% csrf_token %}
     <div class="panel panel-default table-responsive">
         <div class="panel-heading">
@@ -23,7 +29,7 @@ Administración de envento
                         </div>
                         <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                         {% for funcion in staff.1 %}
-                            <div class="col-md-6">{{ funcion.0.funcion.nombre }} ({{funcion.1.nombre}}):</div><div class="col-md-6"> <input name="u-{{ staff.0.id }}.{{ funcion.0.funcion.id }}" class="honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ funcion.1.honorarios }}"> </div>
+                            <div class="col-md-6">{{ funcion.0.funcion.nombre }} ({{funcion.1.nombre}}):</div><div class="col-md-6"> <input name="u-{{ staff.0.id }}.{{ funcion.0.funcion.id }}" class="{{ staff.0.nombre }}{{ staff.0.apellido }} honorarios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ funcion.1.honorarios }}"> </div>
                         {% endfor %}
                         </div>
                         <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
@@ -185,16 +191,16 @@ window.onload = function(){
 
     {% for staff in staffs %}
 
-        $(".honorarios").spinner({stop: function(event, ui){
+        $(".{{ staff.0.nombre }}{{ staff.0.apellido }}").spinner({stop: function(event, ui){
                                                 $("#{{ staff.0.nombre }}{{ staff.0.apellido }}").html("0");
-                                                $(".honorarios").each(function(){$('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseFloat($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseFloat($(this).val()))});
+                                                $(".{{ staff.0.nombre }}{{ staff.0.apellido }}").each(function(){$('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseFloat($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseFloat($(this).val()))});
                                                 $("#total-honorarios").html("0");
                                                 $('.honorarios').each(function(){$("#total-honorarios").html(parseFloat($("#total-honorarios").html())+parseFloat($(this).val()));});
                                                 macroC();
                                             }
                                 });
 
-         $(".honorarios").each(function(){
+         $(".{{ staff.0.nombre }}{{ staff.0.apellido }}").each(function(){
                                             $('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html(parseFloat($('#{{ staff.0.nombre }}{{ staff.0.apellido }}').html())+parseFloat($(this).val()))
                                 });
 
@@ -412,7 +418,7 @@ function agregarGastoFijo(){
 
     nomb = $("#input-gasto-fijo").val();
 
-    $("#body-fijo").append('<p></p><div class="col-sm-6"><b>'+nomb+'</b></div><div class="col-sm-6" style="border-left: 1px solid #dedede;"><div class="col-md-6"></div><div class="col-md-6"> <input name="f-'+nombaux+'" class="fijos '+nombaux+' form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div></div><div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>');
+    $("#body-fijo").append('<p></p><div class="col-sm-6"><b>'+nomb+'</b></div><div class="col-sm-6" style="border-left: 1px solid #dedede;"><div class="col-md-6"><input type="text" name="'+nomb+'" style="margin-top: 5px" class="auc-usu form-control" placeholder="A quien se le debe..."></div><div class="col-md-6"> <input name="f-'+nombaux+'" class="fijos '+nombaux+' form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="0"> </div></div><div class="col-md-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>');
 
     setTimeout(function(){
 
@@ -427,6 +433,41 @@ function agregarGastoFijo(){
                                                     macroC();
                                                 }
                                     });
+
+        $(".auc-usu").each(function(){
+            $(this).autocomplete({
+                source: function(request, response){
+                    $.get(
+                        '/traer_usuario_gasto_evento_ajax/',
+                        {
+                            usu: request.term
+                        },
+                        function(data){
+                            response(data);
+                        }
+                    );
+                },
+                focus: function( event, ui ) {
+                    $( this ).val( ui.item.label );
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $( this ).val( ui.item.label );
+                    $( "[name='f-"+$(this).attr("name")+"']").each(function(){
+                        $(this).attr( "name", $(this).attr('name')+"-"+ui.item.value )
+                    });
+
+                    return false;
+                }
+            })
+            .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li>" )
+                    .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
+                    .appendTo( ul );
+            };
+
+        });
+
     },1);
 
     $("#input-gasto-fijo").val('');

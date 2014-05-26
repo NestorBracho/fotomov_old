@@ -6,15 +6,28 @@ Nueva forma de pago
 {% block seccion-contenido %}
 <form method="POST" action="">{% csrf_token %}
     <div class="row">
-        <div class="col-xs-12 col-sm-6">{{ formulario.nombre | bootstrap }}</div>
-        <div class="col-xs-12 text-right">
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
-                </div>
-                <div class="col-md-6 hidden-xs hidden-sm"></div>
-            </div>
+        <div class="col-xs-12 col-sm-6">
+            {{ formulario.nombre | bootstrap }}
+            <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
+        </div>
+        <div class="col-xs-12 col-md-6 table-responsive">
+            <table class="table table-striped table-responsive">
+                <thead><th colspan="2">Tipos de pagos</th></thead>
+                {% for pago in pagos %}
+                <tr id="te-{{ pago.id }}"><td>{{ pago.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('te-{{ pago.id }}')">Eliminar</a>  <input type="button" class="btn btn-xs btn-success" onclick="eliminarTipoEvento('te-{{ pago.id }}')" value='Editar'></td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-6 text-right">
+        <div class="row">
+            <div class="col-md-6 hidden-xs hidden-sm"></div>
         </div>
     </div>
 </form>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+</script>
 {% endblock %}

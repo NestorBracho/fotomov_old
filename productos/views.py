@@ -24,7 +24,7 @@ def nuevo_producto(request):
     return render_to_response('productos/nuevo_producto.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def listar_producto(request, creado):
-    productos = Producto.objects.all()
+    productos = Producto.objects.filter(es_combo=False)
     return render_to_response('productos/listar_producto.html', {'productos': productos, "creado": creado}, context_instance=RequestContext(request))
 
 def editar_producto(request, id_producto):
@@ -71,16 +71,17 @@ def edicion_lotes(request):
     return render_to_response('productos/edicion_lotes.html', {'edicion': pedidos, 'listos': listos}, context_instance=RequestContext(request))
 
 def edicion_productos(request, pedido):
-    pedidos_edicion = ProductoEventoPedido.objects.filter(pedido = Pedido.objects.get(id = pedido), estado = 'Edicion')
-    pedidos_editados = ProductoEventoPedido.objects.filter(pedido = Pedido.objects.get(id = pedido), estado = 'Editado')
+    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido = Pedido.objects.get(id = pedido).num_pedido, estado = 'Edicion')
+    pedidos_editados = ProductoEventoPedido.objects.filter(num_pedido = Pedido.objects.get(id = pedido).num_pedido, estado = 'Editado')
     return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id = pedido)}, context_instance=RequestContext(request))
 
 def cambiar_estado_producto_edicion_a_editado(request):
     producto = ProductoEventoPedido.objects.get(id = request.GET['iden'])
+    pedido = Pedido.objects.get(num_pedido=producto.num_pedido)
     if producto.estado == 'Edicion':
         producto.estado = 'Editado'
         producto.save()
-        tProductos = ProductoEventoPedido.objects.filter(pedido = producto.pedido)
+        tProductos = ProductoEventoPedido.objects.filter(num_pedido = producto.num_pedido)
         parcial = 0
         total = 0
         for tProducto in tProductos:
@@ -88,15 +89,16 @@ def cambiar_estado_producto_edicion_a_editado(request):
             if tProducto.estado == 'Editado':
                 parcial = parcial + 1
         if parcial == total:
-            producto.pedido.estado = "Editado"
-            producto.pedido.save()
+
+            pedido.estado = "Editado"
+            pedido.save()
         parcial = 0
         total = 0
-        tPedidos = Pedido.objects.filter(lote = producto.pedido.lote)
+        tPedidos = Pedido.objects.filter(lote = pedido.lote)
         aux = []
         aux2 = []
         for tPedido in tPedidos:
-            aux.append(ProductoEventoPedido.objects.filter(pedido = tPedido))
+            aux.append(ProductoEventoPedido.objects.filter(num_pedido = tPedido.num_pedido))
         for a in aux:
             for au in a:
                 aux2.append(au)
@@ -106,13 +108,14 @@ def cambiar_estado_producto_edicion_a_editado(request):
             if tProducto.estado == 'Editado':
                 parcial = parcial + 1
         if parcial == total:
-            producto.pedido.lote.estado = "Editado"
-            producto.pedido.lote.save()
+            pedido.lote.estado = "Editado"
+            pedido.lote.save()
     else:
-        producto.pedido.lote.estado = 'Edicion'
-        producto.pedido.lote.save()
-        producto.pedido.estado = 'Edicion'
-        producto.pedido.save()
+        pedido = Pedido.objects.get(num_pedido=producto.num_pedido)
+        pedido.lote.estado = 'Edicion'
+        pedido.lote.save()
+        pedido.estado = 'Edicion'
+        pedido.save()
         producto.estado = 'Edicion'
         producto.save()
     data = json.dumps({'estado': producto.estado})
@@ -123,8 +126,8 @@ def edicion_pedido(request, lote):
     pedidos_listos = Pedido.objects.filter(lote = Lote.objects.get(id = lote), estado = 'Editado')
     pedidos = []
     for pedido_edicion in pedidos_edicion:
-        pedido = [pedido_edicion.codigo,0,0,pedido_edicion.id]
-        productos_en_pedido = ProductoEventoPedido.objects.filter(pedido = pedido_edicion)
+        pedido = [pedido_edicion.num_pedido,0,0,pedido_edicion.id]
+        productos_en_pedido = ProductoEventoPedido.objects.filter(num_pedido = pedido_edicion.num_pedido)
         for producto_en_pedido in productos_en_pedido:
             if producto_en_pedido.estado == 'Editado':
                 pedido[1] = pedido[1] + 1
@@ -133,8 +136,8 @@ def edicion_pedido(request, lote):
 
     listos = []
     for pedido_listo in pedidos_listos:
-        listo = [pedido_listo.codigo,0,0,pedido_listo.id]
-        productos_en_pedido = ProductoEventoPedido.objects.filter(pedido = pedido_listo)
+        listo = [pedido_listo.num_pedido,0,0,pedido_listo.id]
+        productos_en_pedido = ProductoEventoPedido.objects.filter(num_pedido = pedido_listo.num_pedido)
         for producto_en_pedido in productos_en_pedido:
             if producto_en_pedido.estado == 'Editado':
                 listo[1] = listo[1]+1
@@ -158,7 +161,7 @@ def cambiar_estado_lotes_desde_administrar_pedidos(request):
     productosA = []
     boton_estado = ''
     for pedido in pedidos:
-        productosA.append(ProductoEventoPedido.objects.filter(pedido = pedido))
+        productosA.append(ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido))
     for PAU in productosA:
         for PA in PAU:
             productos.append(PA)

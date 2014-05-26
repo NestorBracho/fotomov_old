@@ -1,0 +1,47 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block titulo %}
+Listar combos
+{% endblock %}
+{% block seccion-contenido %}
+<div class="col-md-12" style="margin-bottom: 10px"><div class="pull-left"><a href="/agregar_productos/{{ iden }}/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Productos</a></div><div class="pull-right"><a href="/crear_combos/{{ iden }}/" class="btn btn-info">Crear combo</a></div></div>
+<div class="col-md-12" style="margin-bottom: 10px">
+    <table class="table table-striped  table-hover" id="content">
+        <thead>
+            <th>Combo</th>
+            <th>P.V.P.</th>
+            <th>Costo</th>
+            <th>Acciones</th>
+        </thead>
+        {% for combo in combos %}
+            <tr>
+                <td><a href="/ver_combo/{{ combo.id }}/">{{ combo.producto.nombre }}</a></td>
+                <td>{{ combo.precio }}</td>
+                <td>{{ combo.precio_produccion }}</td>
+                <td>
+                    <a href="/editar_combo/{{ combo.id }}/" class="btn btn-xs btn-success">Editar</a>
+                    <a onclick="eliminarCombo('{{ combo.id }}')" class="btn btn-xs btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+function eliminarCombo(iden){
+
+    if(confirm("¿Seguro que desea eliminar este combo?")){
+
+        document.location.href = "/eliminar_combo/"+iden+"/";
+
+    }
+
+}
+
+</script>
+{% endblock %}

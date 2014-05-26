@@ -2,11 +2,49 @@ from django.db import models
 from clientes.models import *
 from evento.models import *
 
+class FormaDePago(models.Model):
+    nombre = models.CharField(max_length=100)
+    descuento = models.BooleanField(default=True)
+    pagado = models.BooleanField(default=True)
+    def __unicode__(self):
+        return self.nombre
+
 class Lote(models.Model):
     estado = models.CharField(max_length=100)
     fecha = models.DateField(auto_now=True)
     ruta = models.CharField(max_length=10000)
     codigo = models.CharField(max_length=100)
+
+class Producto(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=400)
+    es_combo = models.BooleanField(default=False)
+    def __unicode__(self):
+        return self.nombre
+
+class ProductoEvento(models.Model):
+    evento = models.ForeignKey(Evento)
+    producto = models.ForeignKey(Producto)
+    precio = models.FloatField()
+    precio_produccion = models.FloatField()
+    es_combo = models.BooleanField(default=False)
+    def __unicode__(self):
+        return self.producto.nombre
+
+class ProductoImpresion(models.Model):
+    precio = models.FloatField()
+
+class ProductoEventoPedido(models.Model):
+    cantidad = models.IntegerField()
+    ruta = models.CharField(max_length=10000)
+    num_pedido = models.IntegerField()
+    producto = models.ForeignKey(ProductoEvento)
+    estado = models.CharField(max_length=50, default='Creado')
+<<<<<<< HEAD
+    comentario = models.TextField(max_length=1000)
+=======
+    comentario = models.TextField(max_length=1000)
+
 
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
@@ -26,27 +64,14 @@ class Pedido(models.Model):
     estado = models.CharField(max_length=100)
     factura = models.BooleanField(default=False)
 
-class Producto(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField(max_length=400)
-    def __unicode__(self):
-        return self.nombre
-
-class ProductoEvento(models.Model):
-    evento = models.ForeignKey(Evento)
-    producto = models.ForeignKey(Producto)
-    precio = models.FloatField()
-    precio_produccion = models.FloatField()
-    def __unicode__(self):
-        return self.producto.nombre
-
-class ProductoImpresion(models.Model):
-    precio = models.FloatField()
-
-class ProductoEventoPedido(models.Model):
-    cantidad = models.IntegerField()
-    ruta = models.CharField(max_length=10000)
+class PedidoPago(models.Model):
     num_pedido = models.IntegerField()
-    producto = models.ForeignKey(ProductoEvento)
-    estado = models.CharField(max_length=50, default='Creado')
-    comentario = models.TextField(max_length=1000)
+    tipo_pago = models.ForeignKey(FormaDePago)
+    monto = models.FloatField()
+    referencia = models.CharField(max_length=100)
+
+class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEvento y Combos
+    producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
+    combo = models.ForeignKey(ProductoEvento, related_name='combo')
+    cantidad = models.IntegerField()
+>>>>>>> 794dc8dcd0285929f03a72b36b14b1bd272511c8

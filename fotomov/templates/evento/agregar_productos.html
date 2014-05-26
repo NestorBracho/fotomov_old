@@ -1,28 +1,34 @@
 {% extends 'tabla.html' %}
+{% block titulo %}
+Agregar productos
+{% endblock %}
 {% block tabla %}
-<form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
-<table class="table table-striped table-responsive table-hover" id="content">
-    <thead>
-        <th>Seleccionar</th>
-        <th>Producto</th>
-        <th>Precio</th>
-        <th>Costo</th>
-    </thead>
-    {% for producto in productos %}
-        <tr>
-            <td><input type="checkbox" value="{{ producto.0.id }}" name="seleccionados" {% if producto.1 %} checked {% endif %}> </td>
-            <td>{{ producto.0.nombre }}</td>
-            <td><input type="text" onkeypress="return numero(event)" value="{{ producto.2 }}" name="{{ producto.0.id }}precio"></td>
-            <td><input type="text" onkeypress="return numero(event)" value="{{ producto.3 }}" name="{{ producto.0.id }}costo"></td>
-        </tr>
-    {% empty %}
-        <tr>
-            <td>hola</td>
-        </tr>
-    {% endfor %}
-</table>
-<input type="submit" class="btn btn-primary" value="guardar">
-</form>
+<div class="col-md-12" style="margin-bottom: 10px"><div class="pull-left"><a href="/listar_evento/0/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Eventos</a></div><div class="pull-right"><a href="/listar_combos/{{ iden }}/" class="btn btn-info">Combos</a></div></div>
+<div class="col-md-12" style="margin-bottom: 10px">
+    <form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+        <table class="table table-striped table-responsive table-hover" id="content">
+            <thead>
+                <th>Seleccionar</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Costo</th>
+            </thead>
+            {% for producto in productos %}
+                <tr>
+                    <td><input type="checkbox" value="{{ producto.0.id }}" name="seleccionados" {% if producto.1 %} checked {% endif %}> </td>
+                    <td>{{ producto.0.nombre }}</td>
+                    <td><input type="text" onkeypress="return numero(event)" value="{{ producto.2 }}" name="{{ producto.0.id }}precio"></td>
+                    <td><input type="text" onkeypress="return numero(event)" value="{{ producto.3 }}" name="{{ producto.0.id }}costo"></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>No hay productos</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" class="btn btn-primary" value="guardar">
+    </form>
+</div>
 {% endblock %}
 {% block js %}
         <script>

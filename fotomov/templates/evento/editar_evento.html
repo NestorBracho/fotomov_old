@@ -81,19 +81,20 @@ Editar evento: {{ evento.nombre }}
     </div>
 </div>
 
-<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true"> <!-- Revisar usabilidady ARIA -->
-    <div class="modal-dialog">
-      <div class="modal-content modal-direccion">
-        <div class="modal-header">
-          <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h2 class="modal-title">Seleccionar Direcciones</h2>
-        </div>
-        <div class="modal-body">  <!-- !!! falta arregar apariencia en el modal window -->
-            {% include "staff/incluir_libreta.html" %}
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true"> <!-- Revisar usabilidady ARIA -->
+     <div class="modal-dialog modal-direccion">
+       <div class="modal-content modal-address">
+         <div class="modal-header">
+           <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+           <h2 class="modal-title">Seleccionar Direcciones</h2>
+         </div>
+		 <div class="modal-body">
+			 {% include "staff/incluir_libreta.html" %}
+		 </div>
+       </div><!-- /.modal-content -->
+     </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
@@ -524,5 +525,10 @@ function deleteAlert(id, row){
     }
     document.getElementById("demo").innerHTML=x;
 }
+
+$("#addressModal").on("shown.bs.modal",function(){
+        google.maps.event.trigger(map,'resize');
+
+    })
 </script>
 {% endblock %} {# /JS nivel 3 #}

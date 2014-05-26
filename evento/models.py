@@ -17,6 +17,7 @@ class Evento(models.Model):
     encargado = models.ForeignKey(Encargado)
     sede = models.ForeignKey(Sede, null=True)
     macrocliente = models.ForeignKey(MacroCliente)
+    fecha_entrega = models.DateField()
     tipo = models.ForeignKey(Tipos_Eventos, verbose_name="Tipo de evento")
 
 class Funcion(models.Model):
