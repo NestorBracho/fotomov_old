@@ -30,11 +30,11 @@ def nuevo_evento(request):
         if formulario.is_valid():
             print "es valido"
             dias = request.POST.getlist('dias')
-            fecha_entrega = request.POST.get('fecha_entrega')
-            print fecha_entrega
-            entrega_split = str(fecha_entrega).split('-')
-            print entrega_split
-            entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
+            entrega_final = formulario.cleaned_data['fecha_entrega']
+            #print fecha_entrega
+            #entrega_split = str(fecha_entrega).split('-')
+            #print entrega_split
+            #entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
             encargado = Encargado.objects.get(id=request.POST.get('encargado'))
             sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
@@ -595,13 +595,15 @@ def editar_evento(request, iden):
             evento.descripcion = formulario.cleaned_data['descripcion']
             evento.porcentaje_institucion = formulario.cleaned_data['porcentaje_institucion']
             evento.encargado = encargado
+            evento.fecha_entrega = formulario.cleaned_data['fecha_entrega']
             evento.sede = sede
             evento.tipo = formulario.cleaned_data['tipo']
             evento.macrocliente = formulario.cleaned_data['macrocliente']
             evento.save()
             return HttpResponseRedirect('/listar_evento/2/')
     else:
-        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion, 'macrocliente': evento.macrocliente, 'tipo': evento.tipo})
+        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                         'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
 
 def editar_funcion(request):
