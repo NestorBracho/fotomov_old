@@ -23,7 +23,7 @@ Tipo de evento
                 <td>{{ tarea.tarea }}</td>
                 <td>{{ tarea.asignado.nombre }}</td>
                 <td class="dias">{{ tarea.dias }}</td>
-                <td class="prela"></td>
+                <td class="prela" id="{{ tarea.id }}"></td>
             </tr>
         {% endfor %}
         </tbody>
@@ -45,6 +45,20 @@ $(".dias").each(function(){
         $(this).html( $(this).html()+" día(s) despues del evento" );
 
     }
+
+});
+
+$(".prela").each(function(){
+
+    {% for prelacion in prelaciones %}
+
+        if($(this).attr("id")=="{{prelacion.es_prelada.id}}"){
+
+            $(this).html("{{ prelacion.prela.nombre }}");
+
+        }
+
+    {% endfor %}
 
 });
 

@@ -831,5 +831,4 @@ def ver_tipo_evento(request, tipo_id):
     tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
     tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
-
-    return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas}, context_instance=RequestContext(request))
+    return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
