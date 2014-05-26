@@ -7,13 +7,14 @@ Usuarios por eventos
 {{ evento.nombre }}
 {% endblock %}
 {% block seccion-contenido %}
-<form method="POST" action="" enctype="multipart/form-data" >{% csrf_token %}
+<form method="POST" action="" enctype="multipart/form-data" >
+    {% csrf_token %}
     <div class="col-sm-4">
         <label>Funcion</label>
         <select class=" form-control" id="select_funcion" onchange="getStaff(this.value)">
             <option value="0">---------</option>
             {% for funcion in funciones %}
-                <option value="{{ funcion.id }}">{{ funcion.nombre }}</option>
+                <option value="{{funcion.id}}">{{funcion.nombre}}</option>
             {% endfor %}
         </select>
     </div>
@@ -31,6 +32,13 @@ Usuarios por eventos
         </table>
     </div>
 </form>
+<form action="/correo_staff/" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{CorreoForm.evento}}
+    {{CorreoForm.funcion}}
+    {{CorreoForm.staff}}
+    <input id="boton_correo" style="display:none" type="submit" class="btn btn-primary" value="Enviar Correos">
+</form>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
@@ -43,7 +51,6 @@ window.onload = function(){
     }else{
         getStaff(document.getElementById('select_funcion').getAttribute('value'));
     }
-
 }
 
 function getStaff(func){
@@ -97,9 +104,7 @@ function getStaff(func){
         document.getElementById("select_staff").disabled = true;
         document.getElementById("content").innerHTML = "";
         document.getElementById('cont').innerHTML = "";
-
     }
-
 }
 
 function setStaff(val, func){
@@ -173,21 +178,20 @@ function setStaff(val, func){
             if(parseInt(document.getElementById('content').getAttribute('name')) != 0){
 
                 document.getElementById('cont').innerHTML = "<h2>Faltan "+document.getElementById('content').getAttribute('name')+"</h2>";
-
             }else{
-
                 document.getElementById('cont').innerHTML = "<h2>Listo!</h2>";
-
             }
-
         });
 
     }else{
-
         document.getElementById("content").innerHTML = "";
         document.getElementById('cont').innerHTML = "";
-
     }
+    /*Seccion del boton de correo y de los campos ocultos*/
+    document.getElementById('evento').value = {{evento.id}};
+    document.getElementById('funcion').value = document.getElementById('select_funcion').value;
+    document.getElementById('staff').value = document.getElementById('select_staff').value;
+    $('#boton_correo').show();
 
 }
 

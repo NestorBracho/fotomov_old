@@ -40,6 +40,9 @@ class ProductoEventoPedido(models.Model):
     num_pedido = models.IntegerField()
     producto = models.ForeignKey(ProductoEvento)
     estado = models.CharField(max_length=50, default='Creado')
+<<<<<<< HEAD
+    comentario = models.TextField(max_length=1000)
+=======
     comentario = models.TextField(max_length=1000)
 
 
@@ -71,3 +74,4 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
+>>>>>>> 794dc8dcd0285929f03a72b36b14b1bd272511c8

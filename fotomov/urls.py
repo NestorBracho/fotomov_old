@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,}),
     url(r'^escritorio/$', 'staff.views.escritorio'),
     url(r'^nueva_marca/$', 'marca.views.nueva_marca'),
+    url(r'^nueva_submarca/(?P<id_marca>\d+)/$', 'marca.views.nueva_submarca'),
     url(r'^nuevo_evento/$', 'evento.views.nuevo_evento'),
     url(r'^nuevo_macrocliente/$', 'clientes.views.nuevo_macrocliente'),
     url(r'^listar_eventos_macrocliente/(?P<id_macrocliente>\d+)/$', 'clientes.views.listar_eventos_macrocliente'),
@@ -82,6 +83,7 @@ urlpatterns = patterns('',
     url(r'^calendario_de_eventos/$', 'evento.views.calendario_de_eventos'),
     url(r'^regis_asistencia/$', 'evento.views.marcar_asistencia'),
     url(r'^usuario_por_evento/(?P<id_evento>\d+)/$', 'evento.views.usuario_por_evento'),
+    url(r'^correo_staff/$', 'evento.views.correo_staff'),
     url(r'^get_staff_usuario_por_evento/$', 'evento.views.get_staff_usuario_por_evento'),
     url(r'^get_staff_usuarios_usuario_por_evento/$', 'evento.views.get_staff_usuarios_usuario_por_evento'),
     url(r'^convocar_usuario_a_evento/$', 'evento.views.convocar_usuario_a_evento'),
@@ -138,6 +140,19 @@ urlpatterns = patterns('',
     url(r'^editar_evento/(?P<iden>\d+)/$', 'evento.views.editar_evento'),
     url(r'^editar_funcion/$', 'evento.views.editar_funcion'),
     url(r'^traer_usuario_gasto_evento_ajax/$', 'evento.views.traer_usuario_gasto_evento_ajax'),
+<<<<<<< HEAD
+
+    #Urls de las Estadisticas
+    url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),
+    url(r'^estadisticas_submarcas/(?P<id_marca>\d+)/$', 'estadisticas.views.estadisticas_submarcas'),
+    url(r'^estadisticas_macros/(?P<id_submarca>\d+)/$', 'estadisticas.views.estadisticas_macros'),
+    url(r'^estadisticas_eventos/(?P<id_macro>\d+)/$', 'estadisticas.views.estadisticas_eventos'),
+    url(r'^estadisticas_clientes/$', 'estadisticas.views.estadisticas_clientes'),
+    url(r'^estadisticas_staff/$', 'estadisticas.views.estadisticas_staff'),
+    url(r'^estadisticas_graficos/$', 'estadisticas.views.estadisticas_graficos'),
+            
+)
+=======
     url(r'^crear_combos/(?P<evento_id>\d+)/$', 'evento.views.crear_combos'),
     url(r'^listar_combos/(?P<evento_id>\d+)/$', 'evento.views.listar_combos'),
     url(r'^ver_combo/(?P<combo_id>\d+)/$', 'evento.views.ver_combo'),
@@ -146,3 +161,4 @@ urlpatterns = patterns('',
     url(r'^editar_combo/(?P<combo_id>\d+)/$', 'evento.views.editar_combo'),
     url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
 )
+>>>>>>> 794dc8dcd0285929f03a72b36b14b1bd272511c8
