@@ -52,9 +52,9 @@ $(".prela").each(function(){
 
     {% for prelacion in prelaciones %}
 
-        if($(this).attr("id")=="{{prelacion.es_prelada.id}}"){
+        if($(this).attr("id")=="{{prelacion.prela.id}}"){
 
-            $(this).html("{{ prelacion.prela.nombre }}");
+            $(this).html("{{ prelacion.es_prelada.nombre }}");
 
         }
 
