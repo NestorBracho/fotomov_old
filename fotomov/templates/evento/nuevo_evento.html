@@ -1,7 +1,7 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
 {% block css %}
-<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block titulo %}
 Nuevo Evento
@@ -41,9 +41,10 @@ Nuevo Evento
             <div class="col-sm-3">
                 {{ formulario.tipo | bootstrap }}
             </div>
-            <div class="col-sm-3">
-                <label>Fecha de entrega</label>
-                <input id="id_input_fecha_entrega" name="fecha_entrega" type="text" class="form-control" placeholder="Fecha...">
+              <div class="col-sm-3">
+                {{ formulario.fecha_entrega | bootstrap }}
+                {# <label>Fecha de entrega</label> #}
+                {# <input id="id_input_fecha_entrega" name="fecha_entrega" type="text" class="form-control" placeholder="Fecha..."> #}
             </div>
         </div>
         <div id="campos"></div>
@@ -57,7 +58,7 @@ Nuevo Evento
     </div>
 </div>
 
-        <input type="button" value="SUBMIT" class="btn btn-xl btn-primary" onclick="submit()">
+        <input type="button" value="Ingresar" class="btn btn-xl btn-primary" onclick="submit()">
 
 <div id='dialog'></div>
 <div id='inphid'></div>
@@ -86,7 +87,7 @@ Nuevo Evento
 // From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
 
 window.onload = function(){
-    $('#id_input_fecha_entrega').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
+    $('#id_fecha_entrega').datepicker({ dateFormat: "yy-mm-dd", minDate: 0 });
     $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
     $('#id_porcentaje_institucion').spinner({ min: 0 });
     $('#id_porcentaje_institucion').spinner("value",12);

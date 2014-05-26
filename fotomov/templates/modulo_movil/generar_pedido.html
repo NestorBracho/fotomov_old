@@ -91,12 +91,12 @@ Generar pedido
             <tr id="tr-{{ producto.id }}" class="producto">
                 <td><input id="cant-{{ producto.id }}" class="form-control cant-prod" name="cant-{{ producto.id }}" type="number" value="{{ producto.cantidad }}"></td>
                 <td><select id="prod-{{ producto.id }}" class="form-control prod" name="prod-{{ producto.id }}" onchange="actualizar_total()">
-                    {% for producto in en_venta %}
-                        {%  if not producto.es_combo %}
-                            {% if producto.id == producto.producto.id %}
-                                <option value="{{ producto.id }}-{{ producto.precio }}" selected>{{ producto.producto.nombre }}</option>
+                    {% for product in en_venta %}
+                        {%  if not product.es_combo %}
+                            {% if product.id == producto.producto.id %}
+                                <option value="{{ product.id }}-{{ product.precio }}" selected>{{ product.producto.nombre }}</option>
                             {% else %}
-                                <option value="{{ producto.id }}-{{ producto.precio }}">{{ producto.producto.nombre }}</option>
+                                <option value="{{ product.id }}-{{ product.precio }}">{{ product.producto.nombre }}</option>
                             {% endif %}
                         {% endif %}
 
@@ -313,26 +313,26 @@ $(document).ready(function(){
     $(".cant-combo").each(function(){
         $(this).data("previous-value", $(this).val());
     });
+    $(".prod").each(function(){
+        $(this).data("previous-value", $(this).val());
+    });
     actualizar_total();
 });
 
 
 $(".cant-prod").change(function() {
     if ($(this).val() < 0) {
-        $(this).val(0);
+        $(this).val($(this).data("previous-value"));
     } else {
-        if ($(this).data("previous-value") > $(this).val()){
-            var id = $(this).attr('id').split("-");
-            id = id[1];
-            var producto = $('#prod-'+id+' :selected');
-            producto = producto.text();
-            if (cantidad_productos[producto] <= prod_combos[producto]){
-                alert('No puede reducir la cantidad de '+producto+' porque son parte de un combo.');
-                $(this).val($(this).data("previous-value"));
-            } else {
-                $(this).data("previous-value", $(this).val());
-                actualizar_total();
-            }
+        var id = $(this).attr('id').split("-");
+        id = id[1];
+        var producto = $('#prod-'+id+' :selected');
+        producto = producto.text();
+        actualizar_total();
+        if (cantidad_productos[producto] < prod_combos[producto]){
+            alert('No puede reducir la cantidad de '+producto+' porque son parte de un combo.');
+            $(this).val($(this).data("previous-value"));
+            actualizar_total();
         } else {
             $(this).data("previous-value", $(this).val());
             actualizar_total();
@@ -349,7 +349,7 @@ $(".cant-combo").change(function() {
         actualizar_total();
         $.each(prod_combos, function(key, value){
             if (value > cantidad_productos[key]){
-                alert('Tiene que agregar más ' + key + ' para poder aumentar el combo.')
+                alert('Tiene que agregar más ' + key + ' para poder aumentar el combo.');
                 pass = false;
             }
         });
@@ -362,6 +362,45 @@ $(".cant-combo").change(function() {
     }
 });
 
+$(".prod").change(function() {
+    cantidad_productos = {};
+    var prod = $(this);
+    $('.producto').each(function(){
+        var id = $(this).attr('id').split("-");
+        id = id[1];
+        var producto = $('#prod-'+id+' :selected');
+        var nombre = producto.text();
+        var cantidad = parseInt($('#cant-'+id).val());
+        if (nombre in cantidad_productos){
+            cantidad_productos[nombre] += cantidad;
+        } else {
+            cantidad_productos[nombre] = cantidad;
+        }
+    });
+    $.each(cantidad_productos, function(key, value){
+        if (key in prod_combos){
+            if (prod_combos[key] > value){
+                alert('No se puede cambiar el producto porque es parte de un combo.');
+                prod.val(prod.data("previous-value"));
+                actualizar_total();
+                return false;
+            }
+        }
+    });
+    $(this).data("previous-value", $(this).val());
+    actualizar_total();
+});
+
+
+$("#total_input").change(function() {
+    if ($(this).val() < 0) {
+        $(this).val(0);
+    } else {
+        var iva = $('#iva').html().split('%');
+        iva = iva[0];
+        $('#total').html(($('#total_input').val()*(parseFloat('1.'+iva))).toFixed(2));
+    }
+});
 
 function actualizar_total(){
     costo_productos = {};
@@ -456,6 +495,7 @@ function borrarProducto(iden){
         if (cantidad_productos[producto] < prod_combos[producto]){
             alert('No puede eliminar '+producto+' porque son parte de un combo.');
             cant.val(cant.data("previous-value"));
+            actualizar_total();
             return false;
         }
     }

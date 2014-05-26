@@ -1,0 +1,66 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+       Estad&iacute;sticas de Macroclientes
+{% endblock %}
+{% block seccion-contenido %}
+<div class="row">
+	<div class="col-lg-10 col-md-8 col-sm-6">
+		
+	</div>
+	<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="meses">
+		{% csrf_token %}
+		{{MesesForm.mes | bootstrap}}
+	</form>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Macroclientes</h4>
+    </div>
+    <div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Macrocliente</th>
+					<th>Eventos</th>
+					<th>Ingresos</th>
+					<th>Egresos</th>
+					<th>Ganancia</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for macro in macros%}
+					<tr>
+						<td>
+							<a href="/estadisticas_eventos/{{macro.0}}/">
+								{{macro.1}}
+							</a>
+						</td>
+						<td>
+							{{macro.2}}
+						</td>
+						<td>
+							{{macro.3}}
+						</td>
+						<td>
+							{{macro.4}}
+						</td>
+						<td>
+							{{macro.5}}
+						</td>
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+	$( document ).ready(function(){
+		$( '#id_mes' ).change(function(){
+			$( '#meses' ).submit();
+		});
+	});
+</script>
+{% endblock js %}
