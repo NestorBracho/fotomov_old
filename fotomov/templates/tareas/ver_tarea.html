@@ -1,10 +1,13 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
-{% block header %}
-    <div>
-        <h1 class="page-header titulo-enlinea">Tarea: {{ tarea.nombre }}</h1><button onclick="listoL(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='checkt-{{ tarea.id }}' {% if tarea.lista == "None" %}style='display:None'{% endif %}></button>
-        <a onclick="listoL('0',{{ tarea.id }})" class="no-aplica" id='NA-{{ tarea.id }}'>{% if tarea.lista == "None" %} Si aplica{% else %} No aplica{% endif %}</a>
-    </div>
+{% block titulo %}
+        Tarea: {{ tarea.nombre }}
+{% endblock %}
+{% block subtitulo %}
+<div>
+    <button onclick="listoL(this.name,{{ tarea.id }})" {% if tarea.lista == "True" %} name = '1'{% else %}name = '2'{% endif %} class="checkmark {% if tarea.lista == "True" %} listo{% endif %}" id='checkt-{{ tarea.id }}' {% if tarea.lista == "None" %}style='display:None'{% endif %}></button>
+    <a onclick="listoL('0',{{ tarea.id }})" class="no-aplica" id='NA-{{ tarea.id }}'>{% if tarea.lista == "None" %} Si aplica{% else %} No aplica{% endif %}</a>
+</div>
 {% endblock %}
 {% block seccion-contenido %}
 <div class="row">
