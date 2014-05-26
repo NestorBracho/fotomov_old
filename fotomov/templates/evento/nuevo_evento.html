@@ -76,8 +76,7 @@ Nuevo Evento
        </div><!-- /.modal-content -->
      </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-<div id='dialog'></div>
+</div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
@@ -278,8 +277,8 @@ function AgregarFuncion(tablaid,main){
 
     var nombre = document.getElementById(main).innerHTML;
     document.getElementById('dialog').innerHTML = "<div><label>Into el nombre de la funcion</label><input type='text' id= input"+main+" /><hr/><input type='button' value='Agregar' onclick=AgregarRegistroFuncion('"+tablaid+"','input"+main+"','"+main+"') /></div>";
-    $("#dialog").dialog({title:nombre, hide:false, height:200 , width:300 });
 
+    $("#dialog").dialog({title:nombre, hide:false, height:200 , width:300 });
 
 }
 
@@ -292,8 +291,8 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;
         document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+" name=0 >"+document.getElementById(inputid).value+"</label><input type='button' class='btn btn-xs' onclick=EliminarFuncion('"+main+"') value='Eliminar'/></br></div>";
-    }
-    $("#dialog").dialog("close");
+    };
+    $("#dialog").dialog( "close" );
 }
 
 function EliminarDia(main){

@@ -27,7 +27,7 @@ Agregar tipo de evento
             <table class="table table-striped table-responsive table-hover">
                 <thead><th colspan="2">Tipos de eventos</th></thead>
                 {% for evento in eventos %}
-                <tr id="te-{{ evento.id }}"><td>{{ evento.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('{{ evento.id }}')">Eliminar</a>  <a class="btn btn-xs btn-success" href="/nuevo_tipo_de_evento/{{ evento.id }}/">Editar</a></td></tr>
+                <tr id="te-{{ evento.id }}"><td><a href="/ver_tipo_evento/{{ evento.id }}/">{{ evento.nombre }}</a></td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('{{ evento.id }}')">Eliminar</a>  <a class="btn btn-xs btn-success" href="/nuevo_tipo_de_evento/{{ evento.id }}/">Editar</a></td></tr>
                 {% endfor %}
             </table>
         </div>
