@@ -427,7 +427,23 @@ def estadisticas_graficos(request):
 	submarcas = SubMarca.objects.all()
 	macros = MacroCliente.objects.all()
 
+	#Verificacion que se hizo un post en la pagina
+	if request.method == 'POST':
+		magnitudF = MagnitudForm(request)
+		categoriasF = CategoriasForm(request)
+		registroF = RegistroForm(request)
 
+		#Verificacion de que se rellenaron los campos
+		if magnitudF.is_valid() and categoriasF.is_valid() and registroF.is_valid():
+			magnitud = magnitudF.cleaned_data['magnitud']
+			categoria = categoriasF.cleaned_data['categoria']
+			registro = registroF.cleaned_data['registro']
+
+			#Verificacion de que cada campo o puede estar en blanco o en la opcion inicial
+			if magnitud != '' and categoria != '' and registro != '':
+				print "Aca!"
+			elif magnitud != '' and categoria != '':
+				print "Alla!"
 	
 	ctx = {'MagnitudForm':magnitudF, 'CategoriasForm':categoriasF,
 	'RegistroForm':registroF, 'marcas':marcas, 'submarcas':submarcas,
