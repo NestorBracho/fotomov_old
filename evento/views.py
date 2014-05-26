@@ -426,7 +426,7 @@ def correo_staff(request):
                 correos.append(usuario.email)
 
             #mensaje = 'Evento: '+str(evento.nombre)+'\nDescripcion: '+str(evento.descripcion+'\nFuncion: '+funcion.nombre+'\nTipo Staff: '+tipo_staff.nombre+'\nCantidad necesitada: '+staffs[1])
-            mensaje = 'El evento '+str(evento.nombre)+' ha sido publicado con las siguientes funcion: \n'+funcion.nombre+' y el dia: '+str(funcion.dia)+'\nIngrese al siguiente enlace para postularse!'
+            mensaje = 'El evento '+str(evento.nombre)+' ha sido publicado con las siguientes funcion: \n'+funcion.nombre+' y el dia: '+funcion.dia+'\nIngrese al siguiente enlace para postularse!'
             send_mail('[FotoMov] Solicitud de staff para evento.', mensaje, '', correos, fail_silently=False)
 
     ctx = {}
