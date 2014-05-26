@@ -27,11 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-<<<<<<< HEAD
 # from escpos import *
-=======
-#from escpos import *
->>>>>>> 794dc8dcd0285929f03a72b36b14b1bd272511c8
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 
@@ -695,7 +691,6 @@ def generar_pedido(request, pedido, cedula, id_evento):
             ced = request.POST['cedula_cliente']
             cliente = Cliente.objects.create(nombres = nom, apellidos = ape, telefono = tlf, email = mail, direccion_fiscal = direc, rif = rif, cedula = ced)
     if request.method == 'POST':
-<<<<<<< HEAD
         dia = date.today()
         formulario = PedidoForm(request.POST)
         aux = str(datetime.datetime.today())
@@ -742,7 +737,6 @@ def generar_pedido(request, pedido, cedula, id_evento):
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente, 'pedidos': peps, 'ced': cedula}, context_instance=RequestContext(request))
 
 def ingresar_ticket(request):
-=======
         formulario = PedidoCajaForm(request.POST)
         formulario_pagos = pagosForms(request.POST)
         if formulario.is_valid():
@@ -809,17 +803,16 @@ def ingresar_ticket(request):
                     pep.save()
             #imprimir_ticket(pedido_nuevo)
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
-    else:
-        formulario = PedidoCajaForm(instance=pedido_actual)
-    return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
+        else:
+            formulario = PedidoCajaForm(instance=pedido_actual)
+        return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
                                                                    'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
                                                                    'en_venta': en_venta, 'iva': iva},
-                              context_instance=RequestContext(request))
+                                                                    context_instance=RequestContext(request))
 
 def ingresar_ticket(request, id_evento):
->>>>>>> 794dc8dcd0285929f03a72b36b14b1bd272511c8
     if request.method == 'POST':
         formulario = IngresarTicketForm(request.POST)
         if formulario.is_valid():
