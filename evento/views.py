@@ -94,7 +94,10 @@ def nuevo_evento(request):
 
             #Seccion de envio de correo
             mensaje = 'Se ha publicado un nuevo evento!\nNombre del evento: '+formulario.cleaned_data['nombre']+'\nDescripcion: '+formulario.cleaned_data['descripcion']
-            send_mail('[FotoMov] Nuevo evento disponible.', mensaje, '', correos, fail_silently=False)
+            try:
+                send_mail('[FotoMov] Nuevo evento disponible.', mensaje, '', correos, fail_silently=False)
+            except:
+                pass
             return HttpResponseRedirect("/listar_evento/1")
     else:
         formulario = EventoForm()
