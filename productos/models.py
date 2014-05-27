@@ -43,6 +43,7 @@ class ProductoEventoPedido(models.Model):
     comentario = models.TextField(max_length=1000)
 
 
+
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)

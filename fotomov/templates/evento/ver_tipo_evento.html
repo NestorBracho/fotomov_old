@@ -1,0 +1,66 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Tipo de evento
+{% endblock %}
+{% block subtitulo %}
+<h3>{{ tipoe.nombre }}</h3>
+{% endblock %}
+{% block seccion-contenido %}
+<div class="col-md-12">
+    <table class="table table-responsive" id="content">
+        <thead>
+            <th>Tarea</th>
+            <th>Descrición de la tarea</th>
+            <th>Gerencia</th>
+            <th>Días</th>
+            <th>Prela a...</th>
+        </thead>
+        <tbody>
+        {% for tarea in tareas %}
+            <tr>
+                <td>{{ tarea.nombre }}</td>
+                <td>{{ tarea.tarea }}</td>
+                <td>{{ tarea.asignado.nombre }}</td>
+                <td class="dias">{{ tarea.dias }}</td>
+                <td class="prela" id="{{ tarea.id }}"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+$(".dias").each(function(){
+
+    if(parseInt($(this).html()) < 0){
+
+        $(this).html( parseInt($(this).html())*(-1) );
+        $(this).html( $(this).html()+" día(s) antes del evento");
+
+    }else{
+
+        $(this).html( $(this).html()+" día(s) despues del evento" );
+
+    }
+
+});
+
+$(".prela").each(function(){
+
+    {% for prelacion in prelaciones %}
+
+        if($(this).attr("id")=="{{prelacion.es_prelada.id}}"){
+
+            $(this).html("{{ prelacion.prela.nombre }}");
+
+        }
+
+    {% endfor %}
+
+});
+
+</script>
+{% endblock%}

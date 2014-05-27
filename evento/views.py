@@ -31,12 +31,18 @@ def nuevo_evento(request):
         if formulario.is_valid():
 
             dias = request.POST.getlist('dias')
+            entrega_final = formulario.cleaned_data['fecha_entrega']
+            #print fecha_entrega
+            #entrega_split = str(fecha_entrega).split('-')
+            #print entrega_split
+            #entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
             encargado = Encargado.objects.get(id=request.POST.get('encargado'))
             sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
                                            porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'])
-
+                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
+                                           fecha_entrega=entrega_final)
+            print dias
             for dia in dias:
                 dia_split = dia.split('-')
                 dia_id = dia_split[0]
@@ -400,7 +406,7 @@ def usuario_por_evento(request, id_evento):
 
 def correo_staff(request):
     correoF = CorreoForm()
-
+    evento_id = "0"
     if request.method == 'POST':
         correoF = CorreoForm(request.POST)
         if correoF.is_valid():
@@ -591,13 +597,15 @@ def editar_evento(request, iden):
             evento.descripcion = formulario.cleaned_data['descripcion']
             evento.porcentaje_institucion = formulario.cleaned_data['porcentaje_institucion']
             evento.encargado = encargado
+            evento.fecha_entrega = formulario.cleaned_data['fecha_entrega']
             evento.sede = sede
             evento.tipo = formulario.cleaned_data['tipo']
             evento.macrocliente = formulario.cleaned_data['macrocliente']
             evento.save()
             return HttpResponseRedirect('/listar_evento/2/')
     else:
-        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion, 'macrocliente': evento.macrocliente, 'tipo': evento.tipo})
+        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                         'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
 
 def editar_funcion(request):
@@ -685,3 +693,101 @@ def traer_usuario_gasto_evento_ajax(request):
     print resp
 
     return HttpResponse(simplejson.dumps(resp), mimetype='application/json')
+
+def crear_combos(request, evento_id):
+    productos = ProductoEvento.objects.filter(evento = Evento.objects.get(id = evento_id), es_combo=False)
+    if request.method == 'POST':
+        if request.POST['nombre'] != '' and request.POST['precio'] != '' and int(request.POST['numprop']) > 0:
+            combop = Producto.objects.create(nombre = request.POST['nombre'], descripcion = request.POST['desc'], es_combo=True)
+            combo = ProductoEvento(producto = combop, precio = request.POST['precio'], evento=Evento.objects.get(id=evento_id), es_combo=True)
+            produccion = 0
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                produccion = produccion + (float(ProductoEvento.objects.get(id=iden).precio_produccion) * float(cant))
+            combo.precio_produccion = produccion
+            combo.save()
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
+            return HttpResponseRedirect('/listar_combos/'+evento_id+'/')
+    return render_to_response('evento/crear_combos.html', {'iden': evento_id, 'productos': productos}, context_instance=RequestContext(request))
+
+def listar_combos(request, evento_id):
+    combos = ProductoEvento.objects.filter(evento=Evento.objects.get(id=evento_id), es_combo = True)
+    return render_to_response('evento/listar_combos.html', {'iden': evento_id, 'combos': combos}, context_instance=RequestContext(request))
+
+def ver_combo(request, combo_id):
+    combo = ProductoEvento.objects.get(id = combo_id)
+    productos = ProductoeventoCombo.objects.filter(combo = combo)
+    iden = combo.evento.id
+    return render_to_response('evento/ver_combo.html', {'iden': iden, 'combo': combo, 'productos': productos}, context_instance=RequestContext(request))
+
+def eliminar_combo(request, combo_id):
+    combo = ProductoEvento.objects.get(id = combo_id)
+    productos = ProductoeventoCombo.objects.filter(combo = combo)
+    for producto in productos:
+        producto.delete()
+    iden = combo.evento.id
+    combo.delete()
+    return HttpResponseRedirect('/listar_combos/'+str(iden)+'/')
+
+def editar_combo(request, combo_id):
+    combo = ProductoEvento.objects.get(id = combo_id)
+    iden = combo.evento.id
+    productos = ProductoEvento.objects.filter(evento=combo.evento, es_combo=False)
+    productosCombos = ProductoeventoCombo.objects.filter(combo=combo)
+    for p in productosCombos:
+        print p.id
+    if request.method == 'POST':
+        if request.POST['nombre'] != '' and request.POST['precio'] != '' and int(request.POST['numprop']) > 0:
+            combop = combo.producto
+            combop.nombre = request.POST['nombre']
+            combop.descripcion = request.POST['desc']
+            combop.es_combo=True
+            combop.save()
+
+            combo.producto = combop
+            combo.precio = request.POST['precio']
+            combo.es_combo=True
+
+            produccion = 0
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                produccion = produccion + (float(ProductoEvento.objects.get(id=iden).precio_produccion) * float(cant))
+            combo.precio_produccion = produccion
+            combo.save()
+
+            ps = ProductoeventoCombo.objects.filter(combo = combo)
+            for p in ps:
+                p.delete()
+
+            for i in range(int(request.POST['numprop'])):
+                aux = request.POST['check-'+str(i)].split("-")
+                iden = aux[0]
+                cant = aux[1]
+                ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
+            return HttpResponseRedirect('/listar_combos/'+str(combo.evento.id)+'/')
+    return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos, 'productosC': productosCombos}, context_instance=RequestContext(request))
+
+def eliminar_tipo_evento(request, tipo_id):
+    tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
+    tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    prelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    for prelacion in prelaciones:
+        prelacion.delete()
+    for tarea in tareas:
+        tarea.delete()
+    tipoEvento.delete()
+    return HttpResponseRedirect("/nuevo_tipo_de_evento/0/")
+
+def ver_tipo_evento(request, tipo_id):
+    tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
+    tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
