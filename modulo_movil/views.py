@@ -30,6 +30,7 @@ import shutil
 #from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
+from unicodedata import normalize
 
 def ingresar(request):
     if request.method=='POST':
@@ -633,7 +634,7 @@ def generar_lote(request):
             ape = pedido.cliente.apellidos.split(' ')
             ape = ape[0]
             client = ape + nom
-            ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + pedido.codigo + '/'
+            ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + str(pedido.num_pedido) + '/'
             rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
             if not os.path.exists(rutalote):
                 os.makedirs(rutalote)
@@ -651,7 +652,7 @@ def generar_lote(request):
                     auxr = auxr[(len(auxr)-1)]
                     auxr = auxr.split('.')
                     auxr = auxr[0]
-                    shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+                    shutil.copy(normalize('NFKD', producto.ruta).encode('ascii', 'ignore') + ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
             pep.estado = "Edicion"
             pep.save()
         pedido.estado = "Edicion"
