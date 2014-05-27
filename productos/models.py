@@ -43,6 +43,7 @@ class ProductoEventoPedido(models.Model):
     comentario = models.TextField(max_length=1000)
 
 
+
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
@@ -71,3 +72,4 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
+

@@ -27,10 +27,52 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-#from escpos import *
+# from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 
+def ingresar(request):
+    if request.method=='POST':
+	formulario = AuthenticationForm(request.POST)
+	if formulario.is_valid:
+	  usuario = request.POST['username']
+	  clave = request.POST['password']
+	  acceso = authenticate(username = usuario, password = clave)
+	  if acceso is not None:
+	    if acceso.is_active:
+		login(request, acceso)
+		return HttpResponseRedirect('/seleccionar_evento_caja')
+	    else:
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+	  else:
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    else:
+	formulario = AuthenticationForm()
+    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+def ingresar_vendedor(request):
+    if request.method=='POST':
+	formulario = AuthenticationForm(request.POST)
+	if formulario.is_valid:
+	  usuario = request.POST['username']
+	  clave = request.POST['password']
+	  acceso = authenticate(username = usuario, password = clave)
+	  if acceso is not None:
+	    if acceso.is_active:
+		login(request, acceso)
+		return HttpResponseRedirect('/seleccionar_evento')
+	    else:
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+	  else:
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    else:
+	formulario = AuthenticationForm()
+    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+
+
+def configurar_db(request):
+    return render_to_response('modulo_movil/configurar_db.html', {}, context_instance=RequestContext(request))
 
 def obtener_timestamp():
     a = tm.time()
@@ -144,8 +186,8 @@ def importar_csv_evento(request):
                                     row[8]= None
                                 pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
                                                                id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
-                                                               razon_social=row[7], total=row[8], codigo=row[9], direccion_entrega=row[10],
-                                                               envio=row[11], fue_pagado=row[12], estado=row[14])
+                                                               razon_social=row[7], total=row[8], direccion_entrega=row[9],
+                                                               envio=row[10], fue_pagado=row[11], estado=row[13])
                             except:
                                 pass
                             if row[0] == '!-endpedido-!':
@@ -186,16 +228,12 @@ def exportar_csv_central(request):
     output = open(settings.MEDIA_ROOT+"/base_datos/" + nombre,'w') # Point stdout at a file for dumping data to.
     call_command('dumpdata', use_natural_keys=True,format='json',indent=3,stdout=output)
     output.close()
-    return HttpResponseRedirect('/seleccionar_direccion/1')
+    return HttpResponseRedirect('/configuracion/1')
 
 def importar_csv_central(request):
-    try:
-        call_command('syncdb', interactive = False)
-    except:
-        pass
     call_command('flush', interactive= False)
     call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/iniciar_sesion')
 
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
@@ -307,7 +345,7 @@ def exportar_csv_evento(request):
 
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
-                        pedido.total, pedido.codigo, pedido.direccion_entrega, pedido.envio,
+                        pedido.total, pedido.direccion_entrega, pedido.envio,
                         pedido.fue_pagado, pedido.lote, pedido.estado])
 
     writer.writerow(['!-endpedido-!'])
@@ -323,7 +361,7 @@ def exportar_csv_evento(request):
 
     return response
 
-def selecccionar_direccion(request, creado):
+def configuracion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -331,10 +369,28 @@ def selecccionar_direccion(request, creado):
         directorio = request.POST.get('directorio')
         settings.MEDIA_ROOT = directorio
         print settings.MEDIA_ROOT
-        return HttpResponseRedirect('/escritorio')
+        return HttpResponseRedirect('/modulo_movil_configurar_db')
     else:
         directorio = settings.MEDIA_ROOT
     return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
+
+def selecccionar_direccion(request):
+#    print settings.MEDIA_ROOT
+#    settings.MEDIA_ROOT = '/home/leonardo/turpial'
+#    print settings.MEDIA_ROOT
+    try:
+        print "voyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+        call_command('syncdb', interactive = False)
+    except:
+        pass
+    if request.method == 'POST':
+        directorio = request.POST.get('directorio')
+        settings.MEDIA_ROOT = directorio
+        print settings.MEDIA_ROOT
+        return HttpResponseRedirect('/modulo_movil_configurar_db')
+    else:
+        directorio = settings.MEDIA_ROOT
+    return render_to_response('modulo_movil/seleccionar_directorio_modulo_movil.html', {'directorio': directorio}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
@@ -345,6 +401,18 @@ def seleccionar_evento(request):
         if funciones_hoy:
             eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento.html', {'eventos': eventos}, context_instance=RequestContext(request))
+
+
+@login_required(login_url='/')
+def seleccionar_evento_caja(request):
+    direcciones = Direccion.objects.all()
+    eventos = []
+    for direccion in direcciones:
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
+        if funciones_hoy:
+            eventos.append(funciones_hoy[0])
+    return render_to_response('modulo_movil/seleccionar_evento_caja.html', {'eventos': eventos}, context_instance=RequestContext(request))
+
 
 @login_required(login_url='/')
 def crear_pedidos(request, id_evento, id_funcion, next, actual):
@@ -556,39 +624,48 @@ def eliminar_ProductoEventoPedido(request, id, id_funcion):
 
 def generar_lote(request):
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
+    print pedidos
+    for pedido in pedidos:
+        print pedido.num_pedido
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
     for pedido in pedidos:
-        peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-        for pep in peps:
-            nom = pedido.cliente.nombres.split(' ')
-            nom = nom[0]
-            ape = pedido.cliente.apellidos.split(' ')
-            ape = ape[0]
-            client = ape + nom
-            ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + pedido.codigo + '/'
-            rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
-            if not os.path.exists(rutalote):
-                os.makedirs(rutalote)
-                lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
-                lote.save()
+        if pedido.cliente != None:
+            peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido, producto__es_combo=False)
+            print peps
+            for pep in peps:
+                print pep.producto.es_combo
+                nom = pedido.cliente.nombres.split(' ')
+                nom = nom[0]
+                ape = pedido.cliente.apellidos.split(' ')
+                ape = ape[0]
+                client = ape + nom
+                ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + str(pedido.num_pedido) + '/'
+                rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
+                if not os.path.exists(rutalote):
+                    os.makedirs(rutalote)
+                    lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
+                    lote.save()
                 if pedido.lote == None:
                     pedido.lote = lote
                     pedido.save()
-            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-            for producto in productos:
-                if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                    os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                for i in range(producto.cantidad):
-                    auxr = producto.ruta.split('/')
-                    auxr = auxr[(len(auxr)-1)]
-                    auxr = auxr.split('.')
-                    auxr = auxr[0]
-                    shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-            pep.estado = "Edicion"
-            pep.save()
-        pedido.estado = "Edicion"
-        pedido.save()
+                productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+                for producto in productos:
+                    if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                        os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
+                    for i in range(producto.cantidad):
+                        auxr = producto.ruta.split('/')
+                        auxr = auxr[(len(auxr)-1)]
+                        auxr = auxr.split('.')
+                        auxr = auxr[0]
+                        try:
+                            shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+                        except:
+                            pass
+                pep.estado = "Edicion"
+                pep.save()
+            pedido.estado = "Edicion"
+            pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula, id_evento):
@@ -596,6 +673,18 @@ def generar_pedido(request, pedido, cedula, id_evento):
     tipos_pago = FormaDePago.objects.all()
     pedido_actual = Pedido.objects.get(id=pedido)
     peps = ProductoEventoPedido.objects.filter(num_pedido = pedido_actual.num_pedido)
+    combos = []
+    productos = []
+    # Se busca cuales de los productos del pedido son combos
+    for pep in peps:
+        if pep.producto.es_combo:
+            combos.append(pep)
+        else:
+            productos.append(pep)
+    # A esos combos se les busca que productos y cuandos estan incluidos en el combo
+    for combo in combos:
+        combo.productos = ProductoeventoCombo.objects.filter(combo=combo.producto)
+    iva = Configuracion.objects.get(nombre='iva')
     en_venta = ProductoEvento.objects.filter(evento__id=id_evento)
     cliente = Cliente.objects.filter(cedula = cedula)
     if len(cliente) > 0:
@@ -620,10 +709,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
             else:
                 mensaje = {"error":1,"text": "Todos los campos del metodo de pago deben estar llenos"}
                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
-                                                                   'pedidos': peps, 'ced': cedula,
+                                                                   'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
                                                                    'tipos_pago': tipos_pago, 'pagosForms': formulario_pagos,
-                                                                   'mensaje': mensaje, 'en_venta': en_venta},
+                                                                   'mensaje': mensaje, 'en_venta': en_venta, 'iva': iva},
                               context_instance=RequestContext(request))
             print len(formulario_pagos)
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
@@ -681,10 +770,87 @@ def generar_pedido(request, pedido, cedula, id_evento):
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
-                                                                   'pedidos': peps, 'ced': cedula,
+                                                                   'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
-                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms, 'en_venta': en_venta},
+                                                                   'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
+                                                                   'en_venta': en_venta, 'iva': iva},
                               context_instance=RequestContext(request))
+
+# def ingresar_ticket(request):
+#         formulario = PedidoCajaForm(request.POST)
+#         formulario_pagos = pagosForms(request.POST)
+#         if formulario.is_valid():
+#             if formulario_pagos.is_valid():
+#                 pass
+#             else:
+#                 mensaje = {"error":1,"text": "Todos los campos del metodo de pago deben estar llenos"}
+#                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
+#                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
+#                                                                    'pedido_actual': pedido_actual,
+#                                                                    'tipos_pago': tipos_pago, 'pagosForms': formulario_pagos,
+#                                                                    'mensaje': mensaje, 'en_venta': en_venta, 'iva': iva},
+#                               context_instance=RequestContext(request))
+#             print len(formulario_pagos)
+#             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
+#             pagado = True
+#             for form in formulario_pagos:
+#                 tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+#                 if not tipo_pago.pagado:
+#                     pagado = False
+#                 monto = form.cleaned_data['monto']
+#                 nuevo_pago = PedidoPago.objects.create(num_pedido=pedido_actual.num_pedido, tipo_pago=tipo_pago,
+#                                                monto=float(monto), referencia = form.cleaned_data['referencia'])
+#
+#             dia = date.today()
+#             #aux = str(datetime.datetime.today())
+#             #aux = aux.split(' ')
+#             cod = ''
+#             #for au in aux:
+#             #    cod = cod + au
+#             #aux = cod.split('-')
+#             #cod = ''
+#             #for au in aux:
+#             #    cod = cod + au
+#             #aux = cod.split(':')
+#             #cod = ''
+#             #for au in aux:
+#             #    cod = cod + au
+#             #aux = cod.split('.')
+#             #cod = ''
+#             #for au in aux:
+#             #    cod = cod + au
+#             aux = []
+#             fechas_entrega = Funcion.objects.filter(evento = peps[0].producto.evento)
+#             for fecha_entrega in fechas_entrega:
+#                 aux.append(fecha_entrega.dia)
+#             for i in range(len(aux)):
+#                 if i != len(aux)-1:
+#                     if aux[i+1] > aux[i]:
+#                         dia = aux[i+1]
+#             fecha_entrega = dia + datetime.timedelta(days = 15)
+#             pedido_nuevo = Pedido.objects.filter(id=pedido)
+#             print request.POST.get('direccion_entrega')
+#             pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega,
+#                                 id_fiscal = formulario.cleaned_data['id_fiscal'], direccion_fiscal = formulario.cleaned_data['direccion_fiscal'],
+#                                 tlf_fiscal = formulario.cleaned_data['tlf_fiscal'], razon_social = formulario.cleaned_data['razon_social'],
+#                                 total = request.POST.get('total_input'),
+#                                 direccion_entrega = request.POST.get('direccion_entrega'),
+#                                 fue_pagado = pagado, envio= formulario.cleaned_data['envio'])
+#             pedido_nuevo = pedido_nuevo[0]
+#             if pedido_nuevo.fue_pagado == True:
+#                 for pep in peps:
+#                     pep.estado = 'Pagado'
+#                     pep.save()
+#             #imprimir_ticket(pedido_nuevo)
+#             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
+#         else:
+#             formulario = PedidoCajaForm(instance=pedido_actual)
+#         return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
+#                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
+#                                                                    'pedido_actual': pedido_actual,
+#                                                                    'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
+#                                                                    'en_venta': en_venta, 'iva': iva},
+#                                                                     context_instance=RequestContext(request))
 
 def ingresar_ticket(request, id_evento):
     if request.method == 'POST':

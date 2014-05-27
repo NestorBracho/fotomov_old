@@ -38,7 +38,7 @@ class pedido_aux(models.Model):
     total = models.FloatField(null=True, blank=True)
     codigo = models.CharField(max_length=100, null=True, blank=True)
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
-    envio = models.BooleanField(default=False)
+    envio = models.IntegerField()
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100)
@@ -56,3 +56,8 @@ class PedidoPago_aux(models.Model):
     tipo_pago = models.IntegerField()
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)
+
+
+class Configuracion(models.Model):
+    nombre = models.CharField(max_length=30)
+    valor = models.DecimalField(decimal_places=0, max_digits=5)

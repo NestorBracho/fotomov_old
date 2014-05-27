@@ -18,7 +18,7 @@
     </script>
 {% endblock %}
 {% block titulo %}
-Lisb de macroclientes
+Lista de macroclientes
 {% endblock %}
 {% block seccion-contenido %}
 {% if creado == '1' %}
@@ -48,6 +48,7 @@ Lisb de macroclientes
                                     <thead>
                                         <tr>
                                             <th>Macrocliente</th>
+                                            <th>Submarca</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -56,6 +57,7 @@ Lisb de macroclientes
                                         {% if forloop.counter|divisibleby:2 %}
                                             <tr class="gradeC">
                                                 <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
+                                                <td>{{ macrocliente.submarca }}</td>
                                                 <td><a class="btn btn-xs btn-success" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button>
                                                     <a class="btn btn-xs btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}/0">Contactos</a>
                                                     <a class="btn btn-xs btn-default" href="/listar_eventos_macrocliente/{{ macrocliente.id }}">Eventos</a>
@@ -64,6 +66,7 @@ Lisb de macroclientes
                                         {% else %}
                                             <tr class="gradeU">
                                                 <td><a href="/ver_macrocliente/{{ macrocliente.id }}">{{ macrocliente.nombre }}</a></td>
+                                                <td>{{ macrocliente.submarca }}</td>
                                                 <td><a class="btn btn-xs btn-success" href="/editar_macrocliente/{{ macrocliente.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{macrocliente.id}})">Eliminar</button>
                                                     <a class="btn btn-xs btn-default" href="/listar_contactos_macrocliente/{{ macrocliente.id }}/0">Contactos</a>
                                                     <a class="btn btn-xs btn-default" href="/listar_eventos_macrocliente/{{ macrocliente.id }}">Eventos</a>

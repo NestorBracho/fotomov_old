@@ -16,8 +16,7 @@ def nueva_marca(request):
             marca = Marca.objects.create(nombre=nombre)
             return HttpResponseRedirect('/listar_marcas/1')
     else:
-        pass
-    formulario = MarcaForm()
+        formulario = MarcaForm()
     return render_to_response('marca/nueva_marca.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def editar_marca(request, id_marca):

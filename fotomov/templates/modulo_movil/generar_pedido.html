@@ -86,28 +86,57 @@ Generar pedido
     </div>
     <div class="col-xs-12 col-md-6 table-responsive">
         <table class="table " id="tabla-productos">
-            <thead><th>Cant.</th><th>Produc.</th><th>Precio</th><th>Eliminar</th></thead>
-            {% for pedido in pedidos %}
-            <tr id="tr-{{ pedido.id }}">
-                <td><input id="cant-{{ pedido.id }}" class="form-control" name="cant-{{ pedido.id }}" type="number" value="{{ pedido.cantidad }}" onchange="ajustar_total_producto('prod-{{ pedido.id }}','total-{{ pedido.id }}','cant-{{ pedido.id }}')" onkeyup="ajustar_total_producto('prod-{{ pedido.id }}','total-{{ pedido.id }}','cant-{{ pedido.id }}')"></td>
-                <td><select id="prod-{{ pedido.id }}" class="form-control" name="prod-{{ pedido.id }}" onchange="ajustar_total_producto('prod-{{ pedido.id }}','total-{{ pedido.id }}','cant-{{ pedido.id }}')">
-                    {% for producto in en_venta %}
-                        {% if producto.id == pedido.producto.id %}
-                            <option value="{{ producto.id }}-{{ producto.precio }}" selected>{{ producto.producto.nombre }}</option>
-                        {% else %}
-                            <option value="{{ producto.id }}-{{ producto.precio }}">{{ producto.producto.nombre }}</option>
+            <thead><th>Cant.</th><th>Produc.</th><th>Precio Und.</th><th>Eliminar</th></thead>
+            {% for producto in productos %}
+            <tr id="tr-{{ producto.id }}" class="producto">
+                <td><input id="cant-{{ producto.id }}" class="form-control cant-prod" name="cant-{{ producto.id }}" type="number" value="{{ producto.cantidad }}"></td>
+                <td><select id="prod-{{ producto.id }}" class="form-control prod" name="prod-{{ producto.id }}" onchange="actualizar_total()">
+                    {% for product in en_venta %}
+                        {%  if not product.es_combo %}
+                            {% if product.id == producto.producto.id %}
+                                <option value="{{ product.id }}-{{ product.precio }}" selected>{{ product.producto.nombre }}</option>
+                            {% else %}
+                                <option value="{{ product.id }}-{{ product.precio }}">{{ product.producto.nombre }}</option>
+                            {% endif %}
                         {% endif %}
 
                     {% endfor %}
                 </select></td>
-                <td id="total-{{ pedido.id }}">{{ pedido.producto.precio }}</td>
-                <td class="text-center" id="borrar-{{ pedido.id }}"></td>
+                <td id="total-{{ producto.id }}">{{ producto.producto.precio }}</td>
+                <td class="text-center" id="borrar-{{ producto.id }}"></td>
             </tr>
+            {% endfor %}
+        </table>
+        <table class="table " id="tabla-combos">
+            {% for combo in combos %}
+                <tbody class="combo-{{ combo.id }}">
+                    <tr id="tr-{{ combo.id }}">
+                        <td><input id="cant-{{ combo.id }}" class="form-control cant-combo" name="cant-{{ combo.id }}" type="number" value="{{ combo.cantidad }}"></td>
+                        <td>{{ combo.producto.producto.nombre }}</td>
+                        <td id="total-{{ combo.id }}" class="precio-combo">{{ combo.producto.precio }}</td>
+                        <td class="text-center" id="borrar-{{ combo.id }}"></td>
+                    </tr>
+                    {% for producto in combo.productos %}
+                        <tr>
+                            <td class="cant-prod-combo">{{ producto.cantidad }}</td>
+                            <td class="prod-combo">{{ producto.producto.producto.nombre }}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             {% endfor %}
         </table>
     </div>
     <div class="col-xs-12 col-md-6">
-        Total: <input class="form-control" type="text" name="total_input" id="total_input" onkeypress="return numero_float(event)" value="">
+        <table class="table">
+            <thead><th>Sub Total</th><th>IVA</th><th>Total</th></thead>
+            <tr>
+                <td><input class="form-control" type="text" name="total_input" id="total_input" onkeypress="return numero_float(event)" value=""></td>
+                <td id="iva">{{ iva.valor }}</td>
+                <td id="total"></td>
+            </tr>
+        </table>
     </div>
 
 
@@ -182,6 +211,10 @@ Generar pedido
     }
 </script>
 <script type="text/javascript">
+var costo_productos = {};
+var cantidad_productos = {};
+var prod_combos = {};
+var costo_combos = 0;
 window.onload = function(){
     var subtotal, total = 0, url_aux;
 
@@ -189,21 +222,39 @@ window.onload = function(){
         $('#id_cedula_cliente').val("{{ ced }}");
     {% endif %}
 
-    {% for pedido in pedidos %}
+    {% for producto in productos %}
 
-        url_aux = "{{ pedido.ruta }}";
+        url_aux = "{{ producto.ruta }}";
         url_aux = url_aux.split('/fotomov_imagenes/');
         url_aux = url_aux[1];
 
-        $('#borrar-{{ pedido.id }}').html('<a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}'+url_aux+'") ><img src="{{MEDIA_URL}}'+url_aux+'" width="50"></a> <a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarProducto("tr-{{ pedido.id }}")>Eliminar</a>');
+        $('#borrar-{{ producto.id }}').html('<a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}'+url_aux+'") ><img src="{{MEDIA_URL}}'+url_aux+'" width="50"></a> <a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarProducto("tr-{{ producto.id }}")>Eliminar</a>');
 
-        subtotal = parseInt("{{ pedido.cantidad }}")*parseInt("{{ pedido.producto.precio }}");
+        subtotal = parseInt("{{ producto.cantidad }}")*parseInt("{{ producto.producto.precio }}");
         total += subtotal;
 
-        document.getElementById("total-{{ pedido.id }}").innerHTML = subtotal;
+        // document.getElementById("total-{{ producto.id }}").innerHTML = subtotal;
 
 
     {% endfor %}
+
+
+    {% for producto in combos %}
+
+        url_aux = "{{ producto.ruta }}";
+        url_aux = url_aux.split('/fotomov_imagenes/');
+        url_aux = url_aux[1];
+
+        $('#borrar-{{ producto.id }}').html('<a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarProducto("tr-{{ producto.id }}")>Eliminar</a>');
+
+        subtotal = parseInt("{{ producto.cantidad }}")*parseInt("{{ producto.producto.precio }}");
+        total += subtotal;
+
+        document.getElementById("total-{{ producto.id }}").innerHTML = subtotal;
+
+
+    {% endfor %}
+
     document.getElementById("total_input").value = total;
 
     if (document.getElementById("id_envio").value == 0){
@@ -256,24 +307,147 @@ $(document).ready(function(){
       }
 
   });
+    $(".cant-prod").each(function(){
+        $(this).data("previous-value", $(this).val());
+    });
+    $(".cant-combo").each(function(){
+        $(this).data("previous-value", $(this).val());
+    });
+    $(".prod").each(function(){
+        $(this).data("previous-value", $(this).val());
+    });
+    actualizar_total();
 });
 
-function ajustar_total_producto(id, total_id, cant_id){
-    var elem = document.getElementById(id),
-    selectedNode = elem.options[elem.selectedIndex];
-    var valor = selectedNode.value.split("-");
-    var total_producto = parseInt(document.getElementById(cant_id).value)*parseFloat(valor[1]);
-    document.getElementById(total_id).innerHTML = total_producto;
+
+$(".cant-prod").change(function() {
+    if ($(this).val() < 0) {
+        $(this).val($(this).data("previous-value"));
+    } else {
+        var id = $(this).attr('id').split("-");
+        id = id[1];
+        var producto = $('#prod-'+id+' :selected');
+        producto = producto.text();
+        actualizar_total();
+        if (cantidad_productos[producto] < prod_combos[producto]){
+            alert('No puede reducir la cantidad de '+producto+' porque son parte de un combo.');
+            $(this).val($(this).data("previous-value"));
+            actualizar_total();
+        } else {
+            $(this).data("previous-value", $(this).val());
+            actualizar_total();
+        }
+    }
+});
+
+$(".cant-combo").change(function() {
+    if ($(this).val() < 0) {
+        $(this).val(0);
+    } else {
+        var cant_combo = parseInt($(this).val());
+        var pass = true;
+        actualizar_total();
+        $.each(prod_combos, function(key, value){
+            if (value > cantidad_productos[key]){
+                alert('Tiene que agregar más ' + key + ' para poder aumentar el combo.');
+                pass = false;
+            }
+        });
+        if (pass == false){
+            $(this).val($(this).data("previous-value"));
+        } else {
+            $(this).data("previous-value", $(this).val());
+        }
+        actualizar_total();
+    }
+});
+
+$(".prod").change(function() {
+    cantidad_productos = {};
+    var prod = $(this);
+    $('.producto').each(function(){
+        var id = $(this).attr('id').split("-");
+        id = id[1];
+        var producto = $('#prod-'+id+' :selected');
+        var nombre = producto.text();
+        var cantidad = parseInt($('#cant-'+id).val());
+        if (nombre in cantidad_productos){
+            cantidad_productos[nombre] += cantidad;
+        } else {
+            cantidad_productos[nombre] = cantidad;
+        }
+    });
+    $.each(cantidad_productos, function(key, value){
+        if (key in prod_combos){
+            if (prod_combos[key] > value){
+                alert('No se puede cambiar el producto porque es parte de un combo.');
+                prod.val(prod.data("previous-value"));
+                actualizar_total();
+                return false;
+            }
+        }
+    });
+    $(this).data("previous-value", $(this).val());
     actualizar_total();
-}
+});
+
+
+$("#total_input").change(function() {
+    if ($(this).val() < 0) {
+        $(this).val(0);
+    } else {
+        var iva = $('#iva').html().split('%');
+        iva = iva[0];
+        $('#total').html(($('#total_input').val()*(parseFloat('1.'+iva))).toFixed(2));
+    }
+});
 
 function actualizar_total(){
-    var tabla = document.getElementById("tabla-productos");
-    var total = 0
-    for (var i = 1, row; row = tabla.rows[i]; i++) {
-        total = parseFloat(total) + parseFloat(row.cells[2].innerHTML);
-    }
-    document.getElementById('total_input').value =  total;
+    costo_productos = {};
+    cantidad_productos = {};
+    prod_combos = {};
+    costo_combos = 0;
+    $('.producto').each(function(){
+        var id = $(this).attr('id').split("-");
+        id = id[1];
+        var producto = $('#prod-'+id+' :selected');
+        var costo = producto.val().split('-');
+        costo = costo[1];
+        var nombre = producto.text();
+        var cantidad = parseInt($('#cant-'+id).val());
+        costo_productos[nombre] = parseFloat(costo);
+        if (nombre in cantidad_productos){
+            cantidad_productos[nombre] += cantidad;
+        } else {
+            cantidad_productos[nombre] = cantidad;
+        }
+    });
+    $('.prod-combo').each(function(){
+        if ($(this).html() in prod_combos){
+            prod_combos[$(this).html()] += (parseInt($(this).prev().html()) * parseInt($(this).parents('tbody').find('.cant-combo').val()));
+        } else {
+            prod_combos[$(this).html()] = (parseInt($(this).prev().html()) * parseInt($(this).parents('tbody').find('.cant-combo').val()));
+        }
+    });
+
+    var total = 0;
+    $.each(costo_productos, function(key, value){
+        if (key in prod_combos){
+            total += (cantidad_productos[key] - prod_combos[key]) * value;
+        } else {
+            total += cantidad_productos[key] * value;
+        }
+    });
+
+    $('.cant-combo').each(function(){
+        costo_combos += parseInt($(this).val()) * parseInt($(this).parent().siblings('.precio-combo').html());
+    });
+
+    $('#total_input').val(total+costo_combos);
+    var iva = $('#iva').html().split('%');
+    iva = iva[0];
+    $('#total').html(($('#total_input').val()*(parseFloat('1.'+iva))).toFixed(2));
+
 }
 
 function verificar(){
@@ -312,16 +486,20 @@ function borrarProducto(iden){
     var idPEV = iden.split('-');
     idPEV = idPEV[1];
 
-    var subt = parseFloat($('#total-'+idPEV).html());
-
-    var total = $('#total_input').val();
-
+    var cant  = $('#cant-'+idPEV);
+    cant.val(0);
+    var producto = $('#prod-'+idPEV+' :selected');
+    producto = producto.text();
+    actualizar_total();
+    if (producto in cantidad_productos) {
+        if (cantidad_productos[producto] < prod_combos[producto]){
+            alert('No puede eliminar '+producto+' porque son parte de un combo.');
+            cant.val(cant.data("previous-value"));
+            actualizar_total();
+            return false;
+        }
+    }
     if(confirm("¿Esta seguro que desea borrar este producto del pedido?")){
-        total = total;
-        total = parseFloat(total);
-        total = total - subt;
-        $('#total_input').val(total);
-
         $.ajax({
 
             url:'/eliminar_productoeventopedido_en_generarpedido/',
@@ -334,6 +512,9 @@ function borrarProducto(iden){
             window.setTimeout(function(){document.getElementById(iden).parentNode.removeChild(document.getElementById(iden))},3000);
 
         });
+    } else {
+        cant.val(cant.data("previous-value"));
+        actualizar_total();
     }
 }
 

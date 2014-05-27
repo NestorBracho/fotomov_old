@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Intranet Fotomov - {{seccion}}</title>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="{{ STATIC_URL }}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    <link href="{{ STATIC_URL }}/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}/css/plugins/timeline/timeline.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="{{ STATIC_URL }}/css/sb-admin.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}/css/main.css" rel="stylesheet">
+
+    {% block css %}
+    	{# solo para casos muy particulares #}
+    {% endblock %}
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Men&uacute;</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand logo" href="/escritorio/"><img src="{{STATIC_URL}}//img/fotomov-logo.png" alt="Intranet Fotomov"></a>
+            </div>
+
+        </nav>
+        <!-- /.navbar-static-top -->
+
+
+        <!-- /.navbar-static-side -->
+
+        <div id="main" class="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{% block titulo%}{% endblock %}</h1>
+                    <p class="heading">{% block subtitulo%}{% endblock %}</p>
+                </div>
+                {% block breadcrumbs %}
+                {% endblock %}
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            {% block seccion-contenido%}
+            {% endblock %}
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+		<footer>
+			Los elementos de la pagina que no se están presentando para revisión se muestran con fines ilustrativos y no necesariamente representan la funcionalidad final<br>
+			<br>
+			Sitio bajo desarollo<br>
+			por Turpial<br>
+			Fotomov C.A.
+		</footer>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Core Scripts - Include with every page -->
+   <!-- <script src="{{ STATIC_URL }}/js/jquery-1.10.2.js"></script> -->
+    <script>window.jQuery || document.write('<script src="{{STATIC_URL}}/js/jquery-1.10.2.js"><\/script>')</script>
+    <script src="{{ STATIC_URL }}/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <!-- Page-Level Plugin Scripts - Dashboard -->
+<!--
+    <script src="{{ STATIC_URL }}/js/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="{{ STATIC_URL }}/js/plugins/morris/morris.js"></script>
+-->
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="{{ STATIC_URL }}/js/sb-admin.js"></script>
+
+    <!-- Page-Level Demo Scripts - Dashboard - Use for reference -->
+    <script src="js/demo/dashboard-demo.js"></script>
+    <script src="{{ STATIC_URL }}/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript">
+
+ function listo(stado,tarea){
+
+    $.ajax({
+
+        beforeSend:function(){
+
+            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-disk");
+
+        },
+        data:{estado:stado, tarea:tarea},
+        url:'/modificar_estado_tarea/',
+        type:'GET',
+        error:function(a,b,c){
+
+            document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-remove");
+
+        }
+
+    }).done(function(data){
+
+        document.getElementById("span-"+tarea).setAttribute("class","glyphicon glyphicon-floppy-saved");
+
+    });
+
+}
+
+</script>
+
+	{% block js-nivel-1 %}
+	{% endblock %}
+	{% block js-nivel-2 %}
+	{% endblock %}
+	{% block js-nivel-3 %}
+	{% endblock %}
+
+	{% block js %}
+	{% endblock %}
+
+</body>
+
+</html>

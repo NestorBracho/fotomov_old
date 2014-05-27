@@ -1,4 +1,7 @@
-{% extends 'admin.html' %}
+{% extends 'modulo_movil.html' %}
+{% block titulo %}
+    Seleccione el directorio del disco duro
+{% endblock %}
 {% block seccion-contenido %}
     {% if creado == '1' %}
     <div class="alert alert-success">
@@ -14,19 +17,10 @@
 {% endif %}
     <form method="POST">{% csrf_token %}
     <div class="row">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-6 col-xs-offset-3">
+            <strong>Nota: Siempre debe terminar en fotomov_imagenes</strong>
             <input class="form-control" name="directorio" type="text" value="{{ directorio }}"/>
             <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-6 col-md-6">
-            <a href="/exportar_csv_central" class="btn btn-default btn-primary">Exportar a modulo movil</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-6 col-md-6">
-            <a href="/importar_csv_evento" class="btn btn-default btn-primary">Importar csv de modulo movil</a>
         </div>
     </div>
     </form>
