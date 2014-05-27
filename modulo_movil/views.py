@@ -186,8 +186,8 @@ def importar_csv_evento(request):
                                     row[8]= None
                                 pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
                                                                id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
-                                                               razon_social=row[7], total=row[8], codigo=row[9], direccion_entrega=row[10],
-                                                               envio=row[11], fue_pagado=row[12], estado=row[14])
+                                                               razon_social=row[7], total=row[8], direccion_entrega=row[9],
+                                                               envio=row[10], fue_pagado=row[11], estado=row[13])
                             except:
                                 pass
                             if row[0] == '!-endpedido-!':
@@ -345,7 +345,7 @@ def exportar_csv_evento(request):
 
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
-                        pedido.total, pedido.codigo, pedido.direccion_entrega, pedido.envio,
+                        pedido.total, pedido.direccion_entrega, pedido.envio,
                         pedido.fue_pagado, pedido.lote, pedido.estado])
 
     writer.writerow(['!-endpedido-!'])
