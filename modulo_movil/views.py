@@ -630,36 +630,42 @@ def generar_lote(request):
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
     for pedido in pedidos:
-        peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-        for pep in peps:
-            nom = pedido.cliente.nombres.split(' ')
-            nom = nom[0]
-            ape = pedido.cliente.apellidos.split(' ')
-            ape = ape[0]
-            client = ape + nom
-            ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + str(pedido.num_pedido) + '/'
-            rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
-            if not os.path.exists(rutalote):
-                os.makedirs(rutalote)
-                lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
-                lote.save()
-            if pedido.lote == None:
-                pedido.lote = lote
-                pedido.save()
-            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-            for producto in productos:
-                if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                    os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                for i in range(producto.cantidad):
-                    auxr = producto.ruta.split('/')
-                    auxr = auxr[(len(auxr)-1)]
-                    auxr = auxr.split('.')
-                    auxr = auxr[0]
-                    shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-            pep.estado = "Edicion"
-            pep.save()
-        pedido.estado = "Edicion"
-        pedido.save()
+        if pedido.cliente != None:
+            peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido, producto__es_combo=False)
+            print peps
+            for pep in peps:
+                print pep.producto.es_combo
+                nom = pedido.cliente.nombres.split(' ')
+                nom = nom[0]
+                ape = pedido.cliente.apellidos.split(' ')
+                ape = ape[0]
+                client = ape + nom
+                ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + str(pedido.num_pedido) + '/'
+                rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
+                if not os.path.exists(rutalote):
+                    os.makedirs(rutalote)
+                    lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
+                    lote.save()
+                if pedido.lote == None:
+                    pedido.lote = lote
+                    pedido.save()
+                productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+                for producto in productos:
+                    if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                        os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
+                    for i in range(producto.cantidad):
+                        auxr = producto.ruta.split('/')
+                        auxr = auxr[(len(auxr)-1)]
+                        auxr = auxr.split('.')
+                        auxr = auxr[0]
+                        try:
+                            shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+                        except:
+                            pass
+                pep.estado = "Edicion"
+                pep.save()
+            pedido.estado = "Edicion"
+            pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula, id_evento):
