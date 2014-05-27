@@ -5,6 +5,7 @@ from marca.models import *
 from clientes.models import *
 from evento.models import *
 from administracion.models import *
+from django.utils import simplejson
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
@@ -415,12 +416,14 @@ def estadisticas_staff(request):
 
 
 #Vista de los graficos
-def estadisticas_graficos(request):
+def estadisticas_graficos(request, ):
 
 	#Formularios y variables declaradas
-	magnitudF = MagnitudForm()
-	categoriasF = CategoriasForm()
-	registroF = RegistroForm()
+	# magnitudF = MagnitudForm()
+	# categoriasF = CategoriasForm()
+	# registroF = RegistroForm()
+
+	graficoForm = GraficoForm()
 
 	#Estadisticas de gastos e ingresos
 	marcas = Marca.objects.all()
@@ -429,15 +432,18 @@ def estadisticas_graficos(request):
 
 	#Verificacion que se hizo un post en la pagina
 	if request.method == 'POST':
-		magnitudF = MagnitudForm(request)
-		categoriasF = CategoriasForm(request)
-		registroF = RegistroForm(request)
+		# magnitudF = MagnitudForm(request)
+		# categoriasF = CategoriasForm(request)
+		# registroF = RegistroForm(request)
+
+		graficoForm = GraficoForm(request.POST)
 
 		#Verificacion de que se rellenaron los campos
-		if magnitudF.is_valid() and categoriasF.is_valid() and registroF.is_valid():
-			magnitud = magnitudF.cleaned_data['magnitud']
-			categoria = categoriasF.cleaned_data['categoria']
-			registro = registroF.cleaned_data['registro']
+		#if magnitudF.is_valid() and categoriasF.is_valid() and registroF.is_valid():
+		if graficoForm.is_valid() :
+			magnitud = graficoForm.cleaned_data['magnitud']
+			categoria = graficoForm.cleaned_data['categoria']
+			registro = graficoForm.cleaned_data['registro']
 
 			#Verificacion de que cada campo o puede estar en blanco o en la opcion inicial
 			if magnitud != '' and categoria != '' and registro != '':
@@ -445,7 +451,15 @@ def estadisticas_graficos(request):
 			elif magnitud != '' and categoria != '':
 				print "Alla!"
 	
-	ctx = {'MagnitudForm':magnitudF, 'CategoriasForm':categoriasF,
-	'RegistroForm':registroF, 'marcas':marcas, 'submarcas':submarcas,
-	'macroclientes':macros}
-	return render_to_response('estadisticas/graficos.html', ctx, context_instance = RequestContext(request))
+	ctx = {
+		'graficoForm' : graficoForm, 
+		'marcas':marcas, 
+		'submarcas':submarcas,
+		'macroclientes':macros
+	}
+
+	return render_to_response(
+					'estadisticas/graficos.html', 
+					ctx, 
+					context_instance = RequestContext(request)
+				)

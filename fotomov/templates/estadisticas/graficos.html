@@ -5,17 +5,15 @@
 {% endblock %}
 {% block seccion-contenido %}
 	<div class="row">
-		<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="magnitudes">
+		<form class="col-lg-6 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="grafico-form">
 			{% csrf_token %}
-			{{MagnitudForm.magnitud | bootstrap}}
-		</form>
-		<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="categorias">
-			{% csrf_token %}
-			{{CategoriasForm.categoria | bootstrap}}
-		</form>
-		<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="registros" >
-			{% csrf_token %}
-			{{RegistroForm.registro | bootstrap}}
+			{{graficoForm.magnitud | bootstrap}}
+		
+			{{graficoForm.categoria | bootstrap}}
+
+			{{graficoForm.registro | bootstrap}}
+
+			<input type="submit" name="submit-grafico" id="submit-grafico" value="Generar Grafico" class="btn btn-primary">
 		</form>
 	</div>
 	<div class="row">
@@ -53,13 +51,15 @@
 <!--Codigo de campos bloqueados y divs bloqueados -->
 <script type="text/javascript">
 
+	$( '#grafico-form' ).submit(function(event) {
+		return false;
+	});
+
 	/*Funcion que oculta el grafico inicialmente*/
 	$( document ).ready(function(){
 		document.getElementById( 'grafico' ).style.display = 'none';
-	});
 
-	/*Funcion que desbloquea el campo de categoria cuando cliquean el campo de Magnitud*/
-	$( document ).ready(function(){
+		/*Funcion que desbloquea el campo de categoria cuando cliquean el campo de Magnitud*/
 		$( '#id_magnitud' ).change(function(){
 			if (document.getElementById( 'id_magnitud' ).value != ''){
 				$( '#id_categoria' ).prop('disabled', false);
@@ -71,14 +71,29 @@
 				document.getElementById( 'grafico' ).style.display = 'none';
 			}
 		});
-	});
 
-	/*Funcion que desbloquea el campo de registro cuando cliquean el campo Categoria*/
-	$( document ).ready(function(){
+		/*Funcion que desbloquea el campo de registro cuando cliquean el campo Categoria*/
 		$( '#id_categoria' ).change(function(){
 			if (document.getElementById( 'id_categoria' ).value != ''){
-				$( '#id_registro' ).prop('disabled', false);
-				$( '#caegorias' ).submit();
+				cat = $( this ).val();
+				alert( cat );
+				return false;
+
+				$.ajax({
+					url: '/path/to/file',
+					type: 'GET',
+					dataType: 'json',
+					data: { categoria: cat },
+				})
+				.done(function() {
+					console.log("success");
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
 
 			}else{
 				$( '#id_registro' ).prop('disabled', true);
@@ -86,17 +101,15 @@
 				document.getElementById( 'grafico' ).style.display = 'none';
 			}
 		});
-	});
 
-	/*Funcion que oculta/muestra el grafico inicialmente*/
-	$( document ).ready(function(){
-		$( '#id_registro' ).change(function(){
-			if (document.getElementById( 'id_registro' ).value != ''){
-				document.getElementById( 'grafico' ).style.display = 'block';
-			}else{
-				document.getElementById( 'grafico' ).style.display = 'none';
-			}
-		});
+		/*Funcion que oculta/muestra el grafico inicialmente*/
+		// $( '#id_registro' ).change(function(){
+		// 	if (document.getElementById( 'id_registro' ).value != ''){
+		// 		document.getElementById( 'grafico' ).style.display = 'block';
+		// 	}else{
+		// 		document.getElementById( 'grafico' ).style.display = 'none';
+		// 	}
+		// });
 	});
 </script>
 {% endblock js %}

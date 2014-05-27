@@ -42,25 +42,19 @@ class StaffForm(forms.Form):
 
 	privilegios = forms.ChoiceField(choices=choices, required=False)
 
-#Formulario de magnitudes de busqueda del grafico de estadisticas
-class MagnitudForm(forms.Form):
-
-	choices = (('','- magnitud -'), ('ingreso','Ingreso'),('egreso','Egreso'),
+# Formulario para generar graficos
+class GraficoForm(forms.Form):
+	choicesM = (('','- magnitud -'), ('ingreso','Ingreso'),('egreso','Egreso'),
 	('ganancia','Ganancia'),('cantidad','Cantidad'),)
 
-	magnitud = forms.ChoiceField(choices=choices, required=False)
-
-#Formulario de categorias de busqueda del grafico de estadisticas
-class CategoriasForm(forms.Form):
-
-	choices = (('','- categoria -'), ('marca','Marca'),('submarca','Submarca'),
+	choicesC = (('','- categoria -'), ('marca','Marca'),('submarca','Submarca'),
 	('macro','Macroclientes'),)
+	
+	choicesR = (('','- registro -'), ('0',''))
 
-	categoria = forms.ChoiceField(choices=choices, required=False, widget=forms.Select(attrs={'disabled':'true'}))
+	magnitud = forms.ChoiceField(choices=choicesM, required=False)
 
-#Formulario de registros de busqueda del grafico de estadisticas
-class RegistroForm(forms.Form):
+	categoria = forms.ChoiceField(choices=choicesC, required=False, widget=forms.Select(attrs={'disabled':'true'}))
 
-	choices = (('','- registro -'), ('0',''))
+	registro = forms.ChoiceField(choices=choicesR, required=False, widget=forms.Select(attrs={'disabled':'true'}))
 
-	registro = forms.ChoiceField(choices=choices, required=False, widget=forms.Select(attrs={'disabled':'true'}))
