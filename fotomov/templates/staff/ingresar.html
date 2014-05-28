@@ -1,12 +1,82 @@
 {% load bootstrap %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Ingreso al sistema de Fotomov</h4>
-    </div>
-    <div class="panel-body">
-        <form id='form' method='POST' action=''>{% csrf_token %}
-          <div class="col-sm-6">{{formulario|bootstrap}}</div>
-          <div class="col-sm-12"><input type='submit' class="btn btn-default" value='Registrar' /></div>
-        </form>
-    </div>
-</div>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- uncompiled LESS -->
+    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}less/main.less" />
+	<script>
+	  less = {
+	    env: "development",
+	    async: true,
+	    fileAsync: false,
+	    poll: 1000,
+	    functions: {},
+	    dumpLineNumbers: "comments",
+	    relativeUrls: false,
+	    rootpath: "/a.com/"
+	  };
+	</script>
+<script src="{{ STATIC_URL }}js/less-1.7.0.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form id='form' method='POST' action='' class="form-signin" role="form">{% csrf_token %}
+          <div class="row" style="margin-top:50px;">
+              <div class="col-sm-4 col-sm-offset-4 text-center"><img src="{{STATIC_URL}}img/fotomov-logo.png" class="center-block img-responsive" alt="Intranet Fotomov"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-4"><h2 class="form-signin-heading">Iniciar Sesión</h2></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">{{formulario|bootstrap}}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-4"><input type='submit' class="btn btn-lg btn-primary btn-block" value='Registrar' /></div>
+          </div>
+
+
+      </form>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  </body>
+</html>
+ <script>window.jQuery || document.write('<script src="{{STATIC_URL}}js/jquery-1.10.2.js"><\/script>')</script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+	{# datepicker #}
+    <script src="{{ STATIC_URL }}js/plugins/datepicker/bootstrap-datepicker.js"></script>
+
+
+    {# Libreria Morris para graficos #}
+    <script src="{{ STATIC_URL }}js/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/morris/morris.js"></script>
+
+
+	{#     SB Admin Scripts - Include with every page #}
+    <script src="{{ STATIC_URL }}js/sb-admin.js"></script>
+
+	{# jquery UI #}
+    <script src="{{ STATIC_URL }}js/jquery-ui-1.10.4.custom.min.js"></script>
+
+
+    <script type="text/javascript">
