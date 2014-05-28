@@ -213,6 +213,10 @@ def listar_pedidos_pendientes(request):
     pedidos = Pedido.objects.filter(fue_pagado = False)
     return render_to_response('productos/listar_pedidos_pendiente.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
 
+def listar_pedidos_sin_pagar(request):
+    pedidos = Pedido.objects.filter(fue_pagado=False)
+    return render_to_response('productos/listar_pedidos_sin_pagar.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
 def listar_facturas_pendientes(request):
     pedidos=Pedido.objects.filter(fue_pagado=True, factura=False)
     return render_to_response('productos/listar_facturas_pendientes.html', {'pedidos':pedidos}, context_instance=RequestContext(request))

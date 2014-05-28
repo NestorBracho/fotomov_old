@@ -45,6 +45,7 @@ class ProductoEventoPedido(models.Model):
 
 
 class Pedido(models.Model):
+    evento = models.ForeignKey(Evento)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
     num_pedido= models.IntegerField()

@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-# from escpos import *
+from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 
@@ -41,7 +41,7 @@ def ingresar(request):
 	  if acceso is not None:
 	    if acceso.is_active:
 		login(request, acceso)
-		return HttpResponseRedirect('/seleccionar_evento_caja')
+		return HttpResponseRedirect('/seleccionar_evento')
 	    else:
 		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 	  else:
@@ -69,7 +69,24 @@ def ingresar_vendedor(request):
 	formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
-
+def ingresar_caja(request):
+    if request.method=='POST':
+	formulario = AuthenticationForm(request.POST)
+	if formulario.is_valid:
+	  usuario = request.POST['username']
+	  clave = request.POST['password']
+	  acceso = authenticate(username = usuario, password = clave)
+	  if acceso is not None:
+	    if acceso.is_active:
+		login(request, acceso)
+		return HttpResponseRedirect('/seleccionar_evento_caja')
+	    else:
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+	  else:
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    else:
+	formulario = AuthenticationForm()
+    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 def configurar_db(request):
     return render_to_response('modulo_movil/configurar_db.html', {}, context_instance=RequestContext(request))
@@ -133,7 +150,7 @@ def actualizar_datos():
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             pass
         else:
-            Pedido.objects.create(cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
+            Pedido.objects.create(evento=pedido.evento, cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
                               envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado)
@@ -187,7 +204,7 @@ def importar_csv_evento(request):
                                 pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
                                                                id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
                                                                razon_social=row[7], total=row[8], direccion_entrega=row[9],
-                                                               envio=row[10], fue_pagado=row[11], estado=row[13])
+                                                               envio=row[10], fue_pagado=row[11], estado=row[13], evento=Evento.objects.get(id=row[14]))
                             except:
                                 pass
                             if row[0] == '!-endpedido-!':
@@ -346,7 +363,7 @@ def exportar_csv_evento(request):
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
                         pedido.total, pedido.direccion_entrega, pedido.envio,
-                        pedido.fue_pagado, pedido.lote, pedido.estado])
+                        pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id])
 
     writer.writerow(['!-endpedido-!'])
 
@@ -396,6 +413,8 @@ def selecccionar_direccion(request):
 def seleccionar_evento(request):
     direcciones = Direccion.objects.all()
     eventos = []
+    if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
         funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
         if funciones_hoy:
@@ -426,7 +445,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
-            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido, evento=Evento.objects.get(id=id_evento)))
         lista_agregados = []
         productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
         for agregado in productos_pedidos:
@@ -505,7 +524,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
-            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido, evento=Evento.objects.get(id=id_evento)))
         lista_agregados = []
         productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
         for agregado in productos_pedidos:
@@ -707,6 +726,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
             if formulario_pagos.is_valid():
                 pass
             else:
+
                 mensaje = {"error":1,"text": "Todos los campos del metodo de pago deben estar llenos"}
                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
@@ -768,6 +788,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
             #imprimir_ticket(pedido_nuevo)
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
+
         formulario = PedidoCajaForm(instance=pedido_actual)
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
@@ -869,6 +890,7 @@ def eliminar_productoeventopedido_en_generarpedido(request):
 
 @login_required(login_url='/')
 def generar_ticket(request, id_evento, id_funcion):
+    evento = Evento.objects.get(id=id_evento)
     info = directorio_actual.objects.get(usuario= request.user)
     funcion_aux = Funcion.objects.get(id=id_funcion)
     int_dia = date_to_int(funcion_aux.dia)
@@ -882,7 +904,7 @@ def generar_ticket(request, id_evento, id_funcion):
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
-            new = Pedido.objects.create(num_pedido=int_numero_pedido)
+            new = Pedido.objects.create(num_pedido=int_numero_pedido, evento=evento)
             new.save()
             info.pedido = new
             info.save()
