@@ -1,0 +1,55 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+       Estad&iacute;sticas de Clientes
+{% endblock %}
+{% block seccion-contenido %}
+<div class="row">
+	<div class="col-lg-10 col-md-8 col-sm-6">
+		
+	</div>
+	<form class="col-lg-2 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" onchange="javascript:">
+		{% csrf_token %}
+		{{MesesForm.mes | bootstrap}}
+	</form>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Clientes</h4>
+    </div>
+    <div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Cliente</th>
+					<th>Total Gastado</th>
+					<th>Total Pendiente</th>
+					<th>Productos</th>
+					<th>Pedidos</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for cliente in clientes%}
+					<tr>
+						<td>
+							{{cliente.0}}
+						</td>
+						<td>
+							{{cliente.1}}
+						</td>
+						<td>
+							{{cliente.2}}
+						</td>
+						<td>
+							{{cliente.3}}
+						</td>
+						<td>
+							{{cliente.4}}
+						</td>
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

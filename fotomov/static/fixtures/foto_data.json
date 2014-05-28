@@ -1,0 +1,110 @@
+[
+{
+    "pk": 2, 
+    "model": "productos.producto", 
+    "fields": {
+        "descripcion": "Mosaico de imagenes colocadas en orden", 
+        "nombre": "Collage"
+    }
+},
+{
+    "pk": 3, 
+    "model": "productos.producto", 
+    "fields": {
+        "descripcion": "Fotos de tamano x", 
+        "nombre": "Fotos"
+    }
+},
+{
+    "pk": 3, 
+    "model": "productos.productoevento", 
+    "fields": {
+        "producto": 2, 
+        "evento": 3, 
+        "precio_produccion": 20.0, 
+        "precio": 50.0
+    }
+},
+{
+    "pk": 1, 
+    "model": "marca.marca", 
+    "fields": {
+        "nombre": "Kodak"
+    }
+},
+{
+    "pk": 2, 
+    "model": "marca.marca", 
+    "fields": {
+        "nombre": "Fujifilm"
+    }
+},
+{
+    "pk": 1, 
+    "model": "marca.submarca", 
+    "fields": {
+        "nombre": "Photoshoot", 
+        "marca": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "productos.producto", 
+    "fields": {
+        "descripcion": "Mosaico de imagenes colocadas en orden", 
+        "nombre": "Collage"
+    }
+},
+{
+    "pk": 3, 
+    "model": "productos.producto", 
+    "fields": {
+        "descripcion": "Fotos de tamano x", 
+        "nombre": "Fotos"
+    }
+},
+{
+    "pk": 3, 
+    "model": "productos.productoevento", 
+    "fields": {
+        "producto": 2, 
+        "evento": 3, 
+        "precio_produccion": 20.0, 
+        "precio": 50.0
+    }
+},
+{
+    "pk": 1, 
+    "model": "tareas.tarea", 
+    "fields": {
+        "evento": 3, 
+        "fecha_activacion": null, 
+        "activa": true, 
+        "fecha": "2014-05-31", 
+        "asignado": 2, 
+        "es_periodica": false, 
+        "fue_hecha": false, 
+        "nombre": "Twittear todos los dias", 
+        "tarea": "Debe twittear al menos una vez al dia", 
+        "lista": "False", 
+        "original": null
+    }
+},
+{
+    "pk": 2, 
+    "model": "tareas.tarea", 
+    "fields": {
+        "evento": 3, 
+        "fecha_activacion": null, 
+        "activa": true, 
+        "fecha": "2014-05-31", 
+        "asignado": 1, 
+        "es_periodica": false, 
+        "fue_hecha": false, 
+        "nombre": "Twittear todos los dias", 
+        "tarea": "Debe twittear al menos una vez al dia", 
+        "lista": "False", 
+        "original": null
+    }
+}
+]

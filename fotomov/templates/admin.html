@@ -308,9 +308,6 @@
                         <a href="#"><i class="fa fa-usd fa-fw"></i> Administraci&oacute;n<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/listar_producto/0"><i class="fa fa-"></i></a>
-                            </li>
-                            <li>
                             <a href="#"><i class="fa fa-briefcase fa-fw"></i> Lotes <span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     <li>
@@ -399,7 +396,21 @@
                         <a href="#"><i class="fa fa-star-o fa-fw"></i> Servicios especiales</a>
                     </li>
                     <li id="menu-estadisticas" >
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Estad&iacute;sticas</a>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Estad&iacute;sticas<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/estadisticas_marcas/">Marcas</a>
+                            </li>
+                            <li>
+                                <a href="/estadisticas_clientes/">Clientes</a>
+                            </li>
+                            <li>
+                                <a href="/estadisticas_staff/">Staff</a>
+                            </li>
+                            <li>
+                                <a href="/estadisticas_graficos/">Gr&aacute;ficos</a>
+                            </li>
+                        </ul>
                     </li>
                     </li>
 {% comment %}
@@ -474,11 +485,11 @@
 	{# datepicker #}
     <script src="{{ STATIC_URL }}js/plugins/datepicker/bootstrap-datepicker.js"></script>
 
+    
+    {# Libreria Morris para graficos #}
+    <script src="{{ STATIC_URL }}js/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="{{ STATIC_URL }}js/plugins/morris/morris.js"></script> 
 
-{% comment %}
-    <script src="{{ STATIC_URL }}/js/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="{{ STATIC_URL }}/js/plugins/morris/morris.js"></script> 
-{% endcomment %}
 
 	{#     SB Admin Scripts - Include with every page #}
     <script src="{{ STATIC_URL }}js/sb-admin.js"></script>

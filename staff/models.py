@@ -4,10 +4,10 @@ from evento.models import *
 
 
 class Privilegios(models.Model):
-  valor = models.IntegerField()
-  nombre = models.TextField(max_length=60,unique=True)
-  def __unicode__(self):
-      return self.nombre
+    valor = models.IntegerField()
+    nombre = models.TextField(max_length=60,unique=True)
+    def __unicode__(self):
+        return self.nombre
 
 class Equipos(models.Model):
     marca = models.CharField(max_length=300, verbose_name="Marca y modelo de camara", null=True, blank=True)
@@ -45,18 +45,18 @@ class Usuario(models.Model):
     datos_pago = models.ForeignKey(DatoDePago, null=True, blank=True)
 
 class TipoStaff(models.Model):
-  nombre = models.CharField(max_length=100)
-  descripcion = models.CharField(max_length=1000)
-  def __unicode__(self):
-      return self.nombre
+    nombre = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=1000)
+    def __unicode__(self):
+        return self.nombre
 
 class Notificacion(models.Model):
-  categoria = models.TextField()
-  mensaje = models.TextField()
-  fecha_creado = models.DateField(auto_now=True)
-  hora = models.DateTimeField(auto_now=True)
-  realizado = models.BooleanField()
-  fecha_asignacion = models.DateField()
+    categoria = models.TextField()
+    mensaje = models.TextField()
+    fecha_creado = models.DateField(auto_now=True)
+    hora = models.DateTimeField(auto_now=True)
+    realizado = models.BooleanField()
+    fecha_asignacion = models.DateField()
 
 class StaffPorFuncion(models.Model):
     tipo = models.ForeignKey(Privilegios)

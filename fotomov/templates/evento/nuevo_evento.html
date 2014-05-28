@@ -1,7 +1,7 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
 {% block css %}
-<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block titulo %}
 Nuevo Evento
@@ -21,14 +21,14 @@ Nuevo Evento
                 {{ formulario.macrocliente | bootstrap }}
             </div>
             <div class="col-sm-3">
-                <label>Encargado</label>
-                <select id="id_encargado" class="form-control" name="encargado">
+                <label>Sede</label>
+                <select id="id_sede" class="form-control" name="sede">
                     <option>---------</option>
                 </select>
             </div>
             <div class="col-sm-3">
-                <label>Sede</label>
-                <select id="id_sede" class="form-control" name="sede">
+                <label>Encargado</label>
+                <select id="id_encargado" class="form-control" name="encargado">
                     <option>---------</option>
                 </select>
             </div>
@@ -41,9 +41,10 @@ Nuevo Evento
             <div class="col-sm-3">
                 {{ formulario.tipo | bootstrap }}
             </div>
-            <div class="col-sm-3">
-                <label>Fecha de entrega</label>
-                <input id="id_input_fecha_entrega" name="fecha_entrega" type="text" class="form-control" placeholder="Fecha...">
+              <div class="col-sm-3">
+                {{ formulario.fecha_entrega | bootstrap }}
+                {# <label>Fecha de entrega</label> #}
+                {# <input id="id_input_fecha_entrega" name="fecha_entrega" type="text" class="form-control" placeholder="Fecha..."> #}
             </div>
         </div>
         <div id="campos"></div>
@@ -57,7 +58,7 @@ Nuevo Evento
     </div>
 </div>
 
-        <input type="button" value="SUBMIT" class="btn btn-xl btn-primary" onclick="submit()">
+        <input type="button" value="Ingresar" class="btn btn-xl btn-primary" onclick="submit()">
 
 <div id='dialog'></div>
 <div id='inphid'></div>
@@ -76,8 +77,7 @@ Nuevo Evento
        </div><!-- /.modal-content -->
      </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-<div id='dialog'></div>
+</div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
@@ -87,7 +87,7 @@ Nuevo Evento
 // From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
 
 window.onload = function(){
-    $('#id_input_fecha_entrega').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
+    $('#id_fecha_entrega').datepicker({ dateFormat: "yy-mm-dd", minDate: 0 });
     $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
     $('#id_porcentaje_institucion').spinner({ min: 0 });
     $('#id_porcentaje_institucion').spinner("value",12);
@@ -278,8 +278,8 @@ function AgregarFuncion(tablaid,main){
 
     var nombre = document.getElementById(main).innerHTML;
     document.getElementById('dialog').innerHTML = "<div><label>Into el nombre de la funcion</label><input type='text' id= input"+main+" /><hr/><input type='button' value='Agregar' onclick=AgregarRegistroFuncion('"+tablaid+"','input"+main+"','"+main+"') /></div>";
-    $("#dialog").dialog({title:nombre, hide:false, height:200 , width:300 });
 
+    $("#dialog").dialog({title:nombre, hide:false, height:200 , width:300 });
 
 }
 
@@ -292,8 +292,8 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;
         document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+" name=0 >"+document.getElementById(inputid).value+"</label><input type='button' class='btn btn-xs' onclick=EliminarFuncion('"+main+"') value='Eliminar'/></br></div>";
-    }
-    $("#dialog").dialog("close");
+    };
+    $("#dialog").dialog( "close" );
 }
 
 function EliminarDia(main){

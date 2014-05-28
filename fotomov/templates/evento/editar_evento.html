@@ -41,6 +41,9 @@ Editar evento: {{ evento.nombre }}
             <div class="col-sm-3">
                 {{ formulario.tipo | bootstrap }}
             </div>
+            <div class="col-sm-3">
+                {{ formulario.fecha_entrega | bootstrap }}
+            </div>
         </div>
     </div>
 
@@ -100,7 +103,7 @@ Editar evento: {{ evento.nombre }}
 <script type="text/javascript">
 
 window.onload = function(){
-
+    $('#id_fecha_entrega').datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
     $('#id_porcentaje_institucion').spinner({ min: 0 });
     $('#id_porcentaje_institucion').spinner("value",12);
     if(document.getElementById("id_macrocliente").value<1){

@@ -20,6 +20,7 @@ from direcciones.views import *
 from tareas.models import *
 from modulo_movil.models import *
 from datetime import *
+from django.core.mail import send_mail
 import datetime
 
 def nuevo_evento(request):
@@ -28,13 +29,13 @@ def nuevo_evento(request):
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-            print "es valido"
+
             dias = request.POST.getlist('dias')
-            fecha_entrega = request.POST.get('fecha_entrega')
-            print fecha_entrega
-            entrega_split = str(fecha_entrega).split('-')
-            print entrega_split
-            entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
+            entrega_final = formulario.cleaned_data['fecha_entrega']
+            #print fecha_entrega
+            #entrega_split = str(fecha_entrega).split('-')
+            #print entrega_split
+            #entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
             encargado = Encargado.objects.get(id=request.POST.get('encargado'))
             sede = Sede.objects.get(id=request.POST.get('sede'))
             evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
@@ -66,14 +67,11 @@ def nuevo_evento(request):
             #Empieza a crear las tareas del evento
             tareas = TareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
             fechas = Funcion.objects.filter(evento=evento).order_by('dia')
-            for fecha in fechas:
-                print fecha.dia
-            print "las que saque"
+
             fecha_ini = fechas[0].dia
             fecha_fin = fechas[len(fechas) - 1].dia
             prueba_antes = fecha_ini - datetime.timedelta(days=2)
-            print fecha_ini
-            print prueba_antes
+
             for tarea in tareas:
                 if tarea.dias > 0:
                     tarea_evento = Tarea.objects.create(asignado=tarea.asignado, nombre=tarea.nombre, tarea=tarea.tarea, lista="False", evento=evento,
@@ -87,6 +85,19 @@ def nuevo_evento(request):
                 prela = Tarea.objects.get(evento=evento, original=prelacion.prela.id)
                 prelacion_evento = Prela.objects.create(es_prelada=es_prelada, prela=prela)
                 prelacion_evento.save()
+
+            usuarios = Usuario.objects.all()
+
+            correos = []
+            for usuario in usuarios:
+                correos.append(usuario.email)
+
+            #Seccion de envio de correo
+            mensaje = 'Se ha publicado un nuevo evento!\nNombre del evento: '+formulario.cleaned_data['nombre']+'\nDescripcion: '+formulario.cleaned_data['descripcion']
+            try:
+                send_mail('[FotoMov] Nuevo evento disponible.', mensaje, '', correos, fail_silently=False)
+            except:
+                pass
             return HttpResponseRedirect("/listar_evento/1")
     else:
         formulario = EventoForm()
@@ -399,10 +410,45 @@ def marcar_asistencia(request):
     return HttpResponse(data, mimetype='application/json')
 
 def usuario_por_evento(request, id_evento):
+    correoForm = CorreoForm()
     even = Evento.objects.get(id = id_evento)
     funciones = Funcion.objects.filter( evento = even)
     priv = Privilegios.objects.filter( valor = 6)
-    return render_to_response('evento/usuario_por_evento.html', {'funciones': funciones, 'staff':priv, 'evento': even}, context_instance=RequestContext(request))
+    return render_to_response('evento/usuario_por_evento.html', {'funciones': funciones, 'staff':priv, 'evento': even, 'CorreoForm': correoForm}, context_instance=RequestContext(request))
+
+def correo_staff(request):
+    correoF = CorreoForm()
+    evento_id = "0"
+    if request.method == 'POST':
+        correoF = CorreoForm(request.POST)
+        if correoF.is_valid():
+            evento_id = correoF.cleaned_data['evento']
+            funcion = correoF.cleaned_data['funcion']
+            staff = correoF.cleaned_data['staff']
+
+            #Informacion que se extrae para el mensaje del correo
+            evento = Evento.objects.get(id=evento_id)
+            
+            #Funcion
+            funcion = Funcion.objects.get(id=funcion)
+            
+            #Staff
+            staffs = staff.split('.')
+            tipo_staff = Privilegios.objects.get(id=staffs[0])
+            
+            #Correo que se enviara
+            usuarios = Usuario.objects.filter(privilegio=tipo_staff)
+
+            correos = []
+            for usuario in usuarios:
+                correos.append(usuario.email)
+
+            #mensaje = 'Evento: '+str(evento.nombre)+'\nDescripcion: '+str(evento.descripcion+'\nFuncion: '+funcion.nombre+'\nTipo Staff: '+tipo_staff.nombre+'\nCantidad necesitada: '+staffs[1])
+            mensaje = 'El evento '+str(evento.nombre)+' ha sido publicado con las siguientes funcion: \n'+funcion.nombre+' y el dia: '+str(funcion.dia)+'\nIngrese al siguiente enlace para postularse!'
+            send_mail('[FotoMov] Solicitud de staff para evento.', mensaje, '', correos, fail_silently=False)
+
+    ctx = {}
+    return HttpResponseRedirect("/usuario_por_evento/"+ str(evento_id))
 
 def get_staff_usuario_por_evento(request):
     elStaff = StaffPorFuncion.objects.filter(funcion = Funcion.objects.get( id = request.GET['funcion']), cantidad__gt = 0)
@@ -595,13 +641,15 @@ def editar_evento(request, iden):
             evento.descripcion = formulario.cleaned_data['descripcion']
             evento.porcentaje_institucion = formulario.cleaned_data['porcentaje_institucion']
             evento.encargado = encargado
+            evento.fecha_entrega = formulario.cleaned_data['fecha_entrega']
             evento.sede = sede
             evento.tipo = formulario.cleaned_data['tipo']
             evento.macrocliente = formulario.cleaned_data['macrocliente']
             evento.save()
             return HttpResponseRedirect('/listar_evento/2/')
     else:
-        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion, 'macrocliente': evento.macrocliente, 'tipo': evento.tipo})
+        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                         'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
 
 def editar_funcion(request):
@@ -781,3 +829,9 @@ def eliminar_tipo_evento(request, tipo_id):
         tarea.delete()
     tipoEvento.delete()
     return HttpResponseRedirect("/nuevo_tipo_de_evento/0/")
+
+def ver_tipo_evento(request, tipo_id):
+    tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
+    tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
+    return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))

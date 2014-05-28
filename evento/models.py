@@ -12,6 +12,8 @@ class Evento(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=1000)
     porcentaje_institucion = models.FloatField()
+
+    #Claves foraneas
     encargado = models.ForeignKey(Encargado)
     sede = models.ForeignKey(Sede, null=True)
     macrocliente = models.ForeignKey(MacroCliente)
@@ -20,12 +22,13 @@ class Evento(models.Model):
 
 class Funcion(models.Model):
     nombre = models.CharField(max_length=200)
-    evento = models.ForeignKey(Evento)
     dia = models.DateField()
     horas = models.IntegerField(max_length=2, null=True, blank=True)
     entrega_fotos = models.CharField(max_length=20)
+    
+    #Claves foraneas
+    evento = models.ForeignKey(Evento)
     direccion = models.ForeignKey(Direccion)
-
 
 class Gasto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -33,15 +36,19 @@ class Gasto(models.Model):
 
 class Gastos_Funcion(models.Model):
     monto = models.FloatField()
+
+    #Claves foraneas
     gasto = models.ForeignKey(Gasto)
     funcion = models.ForeignKey(Funcion)
 
 class Pautas(models.Model):
-    evento = models.ForeignKey(Evento)
     nombre = models.CharField(max_length=300)
     pauta = models.TextField(max_length=2000)
     fecha = models.DateField(auto_now=True)
 
+    #Claves foraneas
+    evento = models.ForeignKey(Evento)
+    
 class Bloque(models.Model):
     nombre = models.CharField(max_length=100)
     honorarios = models.FloatField()
