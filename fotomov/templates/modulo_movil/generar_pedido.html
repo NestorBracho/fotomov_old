@@ -216,6 +216,9 @@ var cantidad_productos = {};
 var prod_combos = {};
 var costo_combos = 0;
 window.onload = function(){
+    $('.precio-combo').each(function(){
+        alert($(this).html());
+    });
     var subtotal, total = 0, url_aux;
 
     {% if cliente == None %}
@@ -223,44 +226,33 @@ window.onload = function(){
     {% endif %}
 
     {% for producto in productos %}
-
         url_aux = "{{ producto.ruta }}";
         url_aux = url_aux.split('/fotomov_imagenes/');
         url_aux = url_aux[1];
-
-        $('#borrar-{{ producto.id }}').html('<a data-toggle="modal" data-target="#Foto" onclick=abrirFoto("{{MEDIA_URL}}'+url_aux+'") ><img src="{{MEDIA_URL}}'+url_aux+'" width="50"></a> <a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarProducto("tr-{{ producto.id }}")>Eliminar</a>');
-
-        subtotal = parseInt("{{ producto.cantidad }}")*parseInt("{{ producto.producto.precio }}");
-        total += subtotal;
-
-        // document.getElementById("total-{{ producto.id }}").innerHTML = subtotal;
-
+        var url_final = {{MEDIA_URL}}+url_aux;
+        url_final= encodeURI(url_final);
+        var elem = "<a data-toggle=\"modal\" data-target=\"#Foto\" onclick=abrirFoto('";
+        elem += url_final;
+        elem += "') ><img src=\""+url_final+"\" width=\"50\"></a> <a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarProducto(\"tr-{{ producto.id }}\")>Eliminar</a>";
+        $('#borrar-{{ producto.id }}').html(elem);
 
     {% endfor %}
 
 
     {% for producto in combos %}
-
         url_aux = "{{ producto.ruta }}";
         url_aux = url_aux.split('/fotomov_imagenes/');
         url_aux = url_aux[1];
 
-        $('#borrar-{{ producto.id }}').html('<a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarProducto("tr-{{ producto.id }}")>Eliminar</a>');
-
-        subtotal = parseInt("{{ producto.cantidad }}")*parseInt("{{ producto.producto.precio }}");
-        total += subtotal;
-
-        document.getElementById("total-{{ producto.id }}").innerHTML = subtotal;
-
-
+        $('#borrar-{{ producto.id }}').html('<a class=\"btn btn-default btn-xs btn-danger\" onclick=borrarCombo("tr-{{ producto.id }}")>Eliminar</a>');
     {% endfor %}
 
-    document.getElementById("total_input").value = total;
 
     if (document.getElementById("id_envio").value == 0){
         $("#dir_envio").hide();
     }
     $('#id_form-TOTAL_FORMS').val(1);
+
 
 }
 
@@ -318,7 +310,6 @@ $(document).ready(function(){
     });
     actualizar_total();
 });
-
 
 $(".cant-prod").change(function() {
     if ($(this).val() < 0) {
@@ -442,7 +433,6 @@ function actualizar_total(){
     $('.cant-combo').each(function(){
         costo_combos += parseInt($(this).val()) * parseInt($(this).parent().siblings('.precio-combo').html());
     });
-
     $('#total_input').val(total+costo_combos);
     var iva = $('#iva').html().split('%');
     iva = iva[0];
@@ -518,8 +508,33 @@ function borrarProducto(iden){
     }
 }
 
-function abrirFoto(url){
+function borrarCombo(iden){
 
+    var idPEV = iden.split('-');
+    idPEV = idPEV[1];
+    var cant  = $('#cant-'+idPEV);
+    cant.val(0);
+    actualizar_total();
+    if(confirm("¿Esta seguro que desea borrar este combo del pedido?")){
+        $.ajax({
+
+            url:'/eliminar_productoeventopedido_en_generarpedido/',
+            data:{'iden': idPEV},
+            type:'GET'
+
+        }).done(function(data){
+            var quitar = $("#"+iden).parents('tbody');
+            quitar.fadeOut();
+            quitar.remove();
+
+        });
+    } else {
+        cant.val(cant.data("previous-value"));
+        actualizar_total();
+    }
+}
+
+function abrirFoto(url){
     $('#modal-body').html('<img src='+url+'></img>');
 
 }

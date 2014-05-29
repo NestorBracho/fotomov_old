@@ -719,7 +719,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
             pagado = True
             for form in formulario_pagos:
-                tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                try:
+                    tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                except:
+                    continue
                 if not tipo_pago.pagado:
                     pagado = False
                 monto = form.cleaned_data['monto']
