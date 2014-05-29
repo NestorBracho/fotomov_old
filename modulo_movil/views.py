@@ -380,7 +380,6 @@ def selecccionar_direccion(request):
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
     try:
-        print "voyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
         call_command('syncdb', interactive = False)
     except:
         pass
