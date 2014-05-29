@@ -10,6 +10,7 @@ from django.core import serializers
 from staff.models import *
 from tareas.models import *
 from tareas.forms import *
+from django.db.models import Q
 from clientes.models import *
 from datetime import *
 import datetime
@@ -123,6 +124,8 @@ def ver_tarea(request, id_tarea):
 
 @login_required(login_url='/')
 def crear_notificacion(request, creado):
+    clientes = Cliente.objects.all()
+    macro_clientes = MacroCliente.objects.all()
     user = Usuario.objects.get(usuario = request.user)
     if request.method == 'POST':
         formulario = CrearNotificacionFrom(request.POST)
@@ -132,15 +135,17 @@ def crear_notificacion(request, creado):
             cliente = formulario.cleaned_data['cliente']
             tipo = formulario.cleaned_data['tipo']
             nNoti = Notificacion.objects.create(notificacion = noti, macro_cliente = mCliente, cliente = cliente, usuario_creador = user, tipo=tipo)
-            return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'flag': 'true'}, context_instance=RequestContext(request))
+            return HttpResponseRedirect('/listar_notificaciones')
     else:
         formulario = CrearNotificacionFrom()
-        clientes = Cliente.objects.all()
-        macro_clientes = MacroCliente.objects.all()
     return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'clientes':clientes, 'macro_clientes':macro_clientes, 'flag': 'false', 'estado':creado}, context_instance=RequestContext(request))
 
 def listar_notificaciones(request):
     notificaciones = Notificacion.objects.all()
+    return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
+
+def listar_notificaciones_macroclientes(request):
+    notificaciones = Notificacion.objects.filter(cliente = None).exclude(macro_cliente=None)
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
 def ver_notificacion(request, id_notificacion):

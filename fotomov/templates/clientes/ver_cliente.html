@@ -46,7 +46,7 @@
 			   		Codigo: <a href="/ver_pedido/{{pedido.id}}/">{{pedido.num_pedido}}</a>
 			    </div>
 			    <div class="col-xs-12 col-md-6">
-			    	Fecha: {{pedido.fecha}}
+			    	Fecha de compra: {{pedido.fecha}}
 			    </div>
 		    </div>
 		    <div class="row">
@@ -54,8 +54,11 @@
 			    	Estado: {{pedido.estado}}
 			    </div>
 			    <div class="col-xs-12 col-md-6">
-			    	Entrega: {{pedido.fecha_entrega}}
+			    	Entrega de entrega: {{pedido.fecha_entrega}}
 			    </div>
+                <div class="col-xs-12 col-md-6">
+                    Estado de cobro: {% if pedido.fue_pagado %}<strong>Pagado</strong>{% else %}<strong>Sin pagar</strong>{% endif %}
+                </div>
 		    </div>
 	    </div>
 	{%endfor%}

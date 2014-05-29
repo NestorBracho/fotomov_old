@@ -509,7 +509,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
-                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
     except:
         print "exept************************************************************************************"
         next = "NoneNext"
@@ -592,7 +592,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
-                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
 
 def generar_rutas(id_evento):
     lista = []
@@ -788,7 +788,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 for pep in peps:
                     pep.estado = 'Pagado'
                     pep.save()
-            #imprimir_ticket(pedido_nuevo)
+            imprimir_ticket(pedido_nuevo)
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
 

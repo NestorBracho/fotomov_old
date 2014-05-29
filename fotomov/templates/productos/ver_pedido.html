@@ -8,7 +8,7 @@ Pedido
 {% block seccion-contenido%}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</h4>
+        <h4><a href="/ver_cliente/{{ pedido.cliente.id }}">{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</a></h4>
     </div>
     <div class="panel-body">
         <div class="row">
