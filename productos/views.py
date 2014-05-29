@@ -71,22 +71,23 @@ def edicion_lotes(request):
     return render_to_response('productos/edicion_lotes.html', {'edicion': pedidos, 'listos': listos}, context_instance=RequestContext(request))
 
 def edicion_productos(request, pedido):
-    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido = Pedido.objects.get(id = pedido).num_pedido, estado = 'Edicion')
-    pedidos_editados = ProductoEventoPedido.objects.filter(num_pedido = Pedido.objects.get(id = pedido).num_pedido, estado = 'Editado')
-    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id = pedido)}, context_instance=RequestContext(request))
+    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Edicion')
+    pedidos_editados = ProductoEventoPedido.objects.filter(Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Editado') | Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Vale por foto'))
+    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id=pedido)}, context_instance=RequestContext(request))
 
-def cambiar_estado_producto_edicion_a_editado(request):
+
+def cambiar_estado_producto_edicion(request):
     producto = ProductoEventoPedido.objects.get(id = request.GET['iden'])
     pedido = Pedido.objects.get(num_pedido=producto.num_pedido)
     if producto.estado == 'Edicion':
-        producto.estado = 'Editado'
+        producto.estado = request.GET['estado']
         producto.save()
         tProductos = ProductoEventoPedido.objects.filter(num_pedido = producto.num_pedido)
         parcial = 0
         total = 0
         for tProducto in tProductos:
             total = total + 1
-            if tProducto.estado == 'Editado':
+            if tProducto.estado == 'Editado' or tProducto.estado == 'Vale por foto':
                 parcial = parcial + 1
         if parcial == total:
 
@@ -105,7 +106,7 @@ def cambiar_estado_producto_edicion_a_editado(request):
         tProductos = aux2
         for tProducto in tProductos:
             total = total + 1
-            if tProducto.estado == 'Editado':
+            if tProducto.estado == 'Editado' or tProducto.estado == 'Vale por foto':
                 parcial = parcial + 1
         if parcial == total:
             pedido.lote.estado = "Editado"

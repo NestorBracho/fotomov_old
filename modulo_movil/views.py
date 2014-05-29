@@ -30,6 +30,7 @@ import shutil
 from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
+from unicodedata import normalize
 
 def ingresar(request):
     if request.method=='POST':
@@ -396,7 +397,6 @@ def selecccionar_direccion(request):
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
     try:
-        print "voyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
         call_command('syncdb', interactive = False)
     except:
         pass
@@ -668,23 +668,23 @@ def generar_lote(request):
                 if pedido.lote == None:
                     pedido.lote = lote
                     pedido.save()
-                productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-                for producto in productos:
-                    if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                        os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                    for i in range(producto.cantidad):
-                        auxr = producto.ruta.split('/')
-                        auxr = auxr[(len(auxr)-1)]
-                        auxr = auxr.split('.')
-                        auxr = auxr[0]
-                        try:
-                            shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-                        except:
-                            pass
-                pep.estado = "Edicion"
-                pep.save()
-            pedido.estado = "Edicion"
-            pedido.save()
+            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+            for producto in productos:
+                if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                    os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
+                for i in range(producto.cantidad):
+                    auxr = producto.ruta.split('/')
+                    auxr = auxr[(len(auxr)-1)]
+                    auxr = auxr.split('.')
+                    auxr = auxr[0]
+                    try:
+                        shutil.copy(normalize('NFKD', producto.ruta).encode('ascii', 'ignore') + ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+                    except:
+                        pass
+            pep.estado = "Edicion"
+            pep.save()
+        pedido.estado = "Edicion"
+        pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula, id_evento):
@@ -738,7 +738,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
             pagado = True
             for form in formulario_pagos:
-                tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                try:
+                    tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                except:
+                    continue
                 if not tipo_pago.pagado:
                     pagado = False
                 monto = form.cleaned_data['monto']

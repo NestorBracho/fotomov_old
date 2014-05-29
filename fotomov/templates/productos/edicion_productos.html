@@ -13,10 +13,10 @@ Lotes en edición
         <thead><th>Foto</th><th>Producto</th><th>Cantidad</th><th>Comentarios</th><th>Estado</th><th>Acciones</th></thead>
         <tbody id="body-edicion">
         {% for producto in edicion %}
-        <tr><td id="img-{{producto.id}}"></td><td>{{ producto.producto.producto.nombre }}</td><td>{{ producto.cantidad }}</td><td><a class="btn btn-xs btn-default" data-toggle="modal" data-target="#Comentarios" onclick=verComentario('{{ producto.id }}') >Ver</a></td><td id="estado-{{ producto.id }}">Pendiente</td><td><a id="btn-producto-{{producto.id}}" class="btn btn-xs btn-default" onclick=estadoListo('{{ producto.id }}') >Cambiar estado a Listo</a></td></tr>
+        <tr><td id="img-{{producto.id}}"></td><td>{{ producto.producto.producto.nombre }}</td><td>{{ producto.cantidad }}</td><td><a class="btn btn-xs btn-default" data-toggle="modal" data-target="#Comentarios" onclick=verComentario('{{ producto.id }}') >Ver</a></td><td id="estado-{{ producto.id }}">Pendiente</td><td><a id="btn-producto-{{producto.id}}" class="btn btn-xs btn-default" onclick=estadoListo('{{ producto.id }}') >Cambiar estado a Listo</a><a id="btn-vale-{{ producto.id }}" class="btn btn-xs btn-default" onclick=estadoValeFoto('{{ producto.id }}') >Cambiar estado a Vale por foto</a></td></tr>
         {% endfor %}
         {% for editado in editados %}
-        <tr><td id="img-{{editado.id}}"></td><td>{{ editado.producto.producto.nombre }}</td><td>{{ editado.cantidad }}</td><td><a class="btn btn-xs btn-default" data-toggle="modal" data-target="#Comentarios" onclick=verComentario('{{ editado.id }}') >Ver</a></td><td id="estado-{{ editado.id }}">Listo</td><td><a id="btn-producto-{{editado.id}}" class="btn btn-xs btn-default" onclick=estadoListo('{{ producto.id }}') >Cambiar estado a Pendiente</a></td></tr>
+        <tr><td id="img-{{editado.id}}"></td><td>{{ editado.producto.producto.nombre }}</td><td>{{ editado.cantidad }}</td><td><a class="btn btn-xs btn-default" data-toggle="modal" data-target="#Comentarios" onclick=verComentario('{{ editado.id }}') >Ver</a></td><td id="estado-{{ editado.id }}">Listo</td><td><a id="btn-producto-{{editado.id}}" class="btn btn-xs btn-default" onclick=estadoEdicion('{{ editado.id }}') >Cambiar estado a Pendiente</a><a id="btn-vale-{{ editado.id }}" class="btn btn-xs btn-default" onclick=estadoValeFoto('{{ editado.id }}') style="display: none;" >Cambiar estado a Vale por foto</a></td></tr>
         {% endfor %}
         </tbody>
     </table>
@@ -89,32 +89,48 @@ function verComentario(iden){
 
 function estadoListo(iden){
 
-    if(confirm("Una vez que el estado pase a Listo, no podras revertirlo.\n¿Estas seguro que esta foto ya esta editada?")){
-
+    if(confirm("¿Estas seguro que esta foto ya esta editada?")){
         $.ajax({
-
-            url:'/cambiar_estado_producto_edicion->editado/',
-            data:{'iden':iden},
+            url:'/cambiar_estado_producto_edicion/',
+            data:{'iden':iden, 'estado': "Editado"},
             type:'get'
 
         }).done(function(data){
-
-            if(data.estado == "Editado"){
-
-                $('#estado-'+iden).html('Listo');
-                $('#btn-producto-'+iden).html('Cambiar estado a Pendiente');
-
-            }else{
-
-                $('#estado-'+iden).html('Pendiente');
-                $('#btn-producto-'+iden).html('Cambiar estado a Listo');
-
-            }
-
+            $('#estado-'+iden).html('Listo');
+            $('#btn-producto-'+iden).html('Cambiar estado a Pendiente');
+            $('#btn-producto-'+iden).attr('onclick', 'estadoEdicion('+iden+')');
+            $('#btn-vale-'+iden).hide(500);
         });
-
     }
+}
 
+function estadoValeFoto(iden){
+    if(confirm("¿Estas seguro que desea cambiar estado a Vale por foto?")){
+        $.ajax({
+            url:'/cambiar_estado_producto_edicion/',
+            data:{'iden':iden, 'estado': "Vale por foto"},
+            type:'get'
+        }).done(function(data){
+            $('#estado-'+iden).html('Listo');
+            $('#btn-producto-'+iden).html('Cambiar estado a Pendiente');
+            $('#btn-producto-'+iden).attr('onclick', 'estadoEdicion('+iden+')');
+            $('#btn-vale-'+iden).hide(500);
+        });
+    }
+}
+function estadoEdicion(iden){
+    if(confirm("¿Estas seguro que desea cambiar estado a Edición?")){
+        $.ajax({
+            url:'/cambiar_estado_producto_edicion/',
+            data:{'iden':iden, 'estado': "Edicion"},
+            type:'get'
+        }).done(function(data){
+            $('#estado-'+iden).html('Pendiente');
+            $('#btn-producto-'+iden).html('Cambiar estado a Listo');
+            $('#btn-producto-'+iden).attr('onclick', 'estadoListo('+iden+')');
+            $('#btn-vale-'+iden).show(500);
+        });
+    }
 }
 
 </script>
