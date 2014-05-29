@@ -148,6 +148,11 @@ def listar_notificaciones_macroclientes(request):
     notificaciones = Notificacion.objects.filter(cliente = None).exclude(macro_cliente=None)
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
+def listar_notificaciones_clientes(request):
+    notificaciones = Notificacion.objects.filter(macro_cliente = None).exclude(cliente=None)
+    return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
+
+
 def ver_notificacion(request, id_notificacion):
     noti = Notificacion.objects.get(id = id_notificacion)
     noti.fue_revisado = True
