@@ -1,6 +1,16 @@
 from django.db import models
 from clientes.models import *
 from evento.models import *
+from django.contrib.auth.models import User
+
+
+class Items(models.Model):
+    item = models.CharField(max_length=100)
+    cantidad = models.IntegerField()
+
+class ItemsPrestado(models.Model):
+    usuario = models.ForeignKey(User)
+    item = models.ForeignKey(Items)
 
 class FormaDePago(models.Model):
     nombre = models.CharField(max_length=100)

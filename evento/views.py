@@ -22,6 +22,7 @@ from modulo_movil.models import *
 from datetime import *
 from django.core.mail import send_mail
 import datetime
+from productos.forms import NuevoItemForm
 
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
@@ -835,3 +836,36 @@ def ver_tipo_evento(request, tipo_id):
     tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
+
+def nuevo_item(request):
+    if request.method == 'POST':
+        formulario = NuevoItemForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/listar_items/1')
+    else:
+        formulario = NuevoItemForm()
+    return render_to_response('evento/nuevo_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def editar_item(request, id_item):
+    item = Items.objects.get(id=id_item)
+    if request.method == 'POST':
+        formulario = NuevoItemForm(request.POST)
+        if formulario.is_valid():
+            form = formulario.save(commit=False)
+            item.item = form.item
+            item.cantidad = form.cantidad
+            item.save()
+            return HttpResponseRedirect('/listar_items/2')
+    else:
+        formulario = NuevoItemForm(instance=item)
+    return render_to_response('evento/editar_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def eliminar_items(request, id_item):
+    item = Items.objects.get(id=id_item)
+    item.delete()
+    return HttpResponseRedirect('/listar_items/3')
+
+def listar_items(request, creado):
+    items = Items.objects.all()
+    return render_to_response('evento/listar_items.html', {'items': items}, context_instance=RequestContext(request))

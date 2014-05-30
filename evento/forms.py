@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django.db import models
 from evento.models import *
 from clientes.models  import *
+from productos.models import Items, ItemsPrestado
 from django import forms
 
 class EventoForm(forms.ModelForm):
@@ -28,3 +29,6 @@ class CorreoForm(forms.Form):
     funcion = forms.CharField(max_length=12, widget=forms.TextInput(attrs={'type': 'hidden', 'id':'funcion'}))
     staff = forms.CharField(max_length=12, widget=forms.TextInput(attrs={'type': 'hidden', 'id':'staff'}))
 
+class NuevoItemForm(forms.Form):
+    class Meta:
+        model = Items
