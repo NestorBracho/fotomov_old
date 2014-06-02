@@ -22,7 +22,6 @@ from modulo_movil.models import *
 from datetime import *
 from django.core.mail import send_mail
 import datetime
-from productos.forms import NuevoItemForm
 
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
