@@ -84,6 +84,7 @@ ul {
                 <div class="row">
                     <div class="col-md-6">
                         <select class="form-control" id="modal-producto">
+                            <option value="0">-----------</option>
                         {% for producto in productos %}
                             <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
                         {% endfor %}
@@ -272,19 +273,33 @@ function numero(e) {
 
 function agregarModal(iden){
 
-    document.getElementById('cantidad'+iden).value = $("#modal-spinner").val();
-    document.getElementById('comentario'+iden).value = $("#modal-comentarios").val();
-    document.getElementById('producto'+iden).value = $("#modal-producto").val();
+    if($("#modal-producto").val()=='0'){
 
-    ajax_guardar(iden, "{{ dir_actual.pedido.id }}");
+        alert("Debe seleccionar algún producto");
 
-    $("#modal-header").fadeIn();
+    }else if($("#modal-spinner").val()==0){
 
-    setTimeout(function(){
+        alert("La cantidad del producto no puede ser 0");
 
-        $("#modal-header").fadeOut();
+    }else{
+        document.getElementById('cantidad'+iden).value = $("#modal-spinner").val();
+        document.getElementById('comentario'+iden).value = $("#modal-comentarios").val();
+        document.getElementById('producto'+iden).value = $("#modal-producto").val();
 
-    },1500);
+        ajax_guardar(iden, "{{ dir_actual.pedido.id }}");
+
+        $("#modal-producto").val('0');
+        $("#modal-spinner").val(0);
+        $("#modal-comentarios").val("");
+
+        $("#modal-header").fadeIn();
+
+        setTimeout(function(){
+
+            $("#modal-header").fadeOut();
+
+        },1500);
+    }
 
 }
 </script>

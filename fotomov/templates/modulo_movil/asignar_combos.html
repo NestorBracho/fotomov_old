@@ -1,29 +1,15 @@
 {% extends "venta.html" %}
 {% block seccion-contenido %}
 <div class="row">
+    <div class="col-md-12"><div style="margin-bottom: 15px;" class="col-md-12"><a class="btn btn-warning pull-right" onclick="comenzardenuevo()">Comenzar de nuevo</a></div></div>
     <div class="col-md-12">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Productos</div>
-                <div class="panel-body">
-                    <table class="table table-responsive">
-                    {% for producto in productos %}
-                        <tr id="{{ producto.0.1 }}" name="{{ producto.0.0 }}" class="tr-productos">
-                            <td><a class="btn btn-block btn-default" onclick="SeleccionarProducto('{{ producto.0.1 }}','{{ producto.0.0 }}')">{{ producto.0.0 }}</a></td><td id="cantidad-{{ producto.0.1 }}" name="{{ producto.0.1 }}" class="productos">{{ producto.1 }}</td>
-                        </tr>
-                    {% endfor %}
-                    </table>
-                </div>
-            </div>
-
-        </div>
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">Combos disponibles</div>
                 <div class="panel-body">
                 {% for combo in combos %}
                     <a class="btn btn-default btn-block comboboton" onclick="seleccionarCombo('{{combo.id}}','{{ combo.producto.nombre }}','{{ combo.precio }}')" id ="combo{{combo.id}}"><div>
-                        <b>{{ combo.producto.nombre }} {{ combo.precio }}</b><br>
+                        <b>{{ combo.producto.nombre }} - {{ combo.precio }} Bs.</b><br>
                         <ul class="list-unstyled">
                         {% for productoCombo in productoCombos%}
                             {% if productoCombo.combo == combo %}
@@ -38,9 +24,28 @@
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
+                <div class="panel-heading">Productos</div>
+                <div class="panel-body">
+                    <table class="table table-responsive">
+                    {% for producto in productos %}
+                        <tr id="{{ producto.0.1 }}" name="{{ producto.0.0 }}-{{ producto.0.2 }}" class="tr-productos">
+                            <td><a class="btn btn-block btn-default" onclick="SeleccionarProducto('{{ producto.0.1 }}','{{ producto.0.0 }}','{{ producto.0.2 }}')">{{ producto.0.0 }} - {{ producto.0.2 }} Bs.</a></td><td id="cantidad-{{ producto.0.1 }}" name="{{ producto.0.1 }}" class="productos">{{ producto.1 }}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
                 <div class="panel-heading">Pedido final</div>
                 <div class="panel-body pedidofinal">
 
+                </div>
+                <div style='border-top: 1px solid #dedede;' class="panel-body">
+                    <span class="pull-right">
+                        Subtotal: <b><span id="total">0</span></b> Bs.
+                    </span>
                 </div>
                 <div class="panel-footer"><a id="boton-confirm" onclick="generarPedido('{{ dir_actual }}','{{ evento }}','{{ funcion }}')" class="btn btn-block btn-info">Generar pedido</a></div>
             </div>
@@ -92,7 +97,7 @@ function seleccionarCombo(combo, nombre, precio){
 
         if($("#pf"+combo).html()==null){
             if(!f2){
-                $(this).append('<div class="pf" id="pf'+combo+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4">'+precio+'</div><div id="cantidadCombo'+combo+'" class="col-md-4">1</div></div>');
+                $(this).append('<div class="pf" id="pf'+combo+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4">'+precio+' Bs.</div><div id="cantidadCombo'+combo+'" class="col-md-4">1</div></div>');
                 $("#pf"+combo).fadeIn();
             }
         }else{
@@ -109,6 +114,7 @@ function seleccionarCombo(combo, nombre, precio){
 
     }
 
+    sumartotal(precio);
     purgaCombos();
 
 }
@@ -146,7 +152,7 @@ function purgaCombos(){
 
 }
 
-function SeleccionarProducto(iden, nombre){
+function SeleccionarProducto(iden, nombre, precio){
 
 
 
@@ -156,7 +162,7 @@ function SeleccionarProducto(iden, nombre){
 
             if($("#cantidad-"+iden).html()!='0'){
 
-                $(this).append('<div id="pfp'+iden+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4"></div><div id="cantidadpfp'+iden+'" class="col-md-4">1</div></div>');
+                $(this).append('<div id="pfp'+iden+'" style="display: none;"><div class="col-md-4">'+nombre+'</div><div class="col-md-4">'+precio+' Bs.</div><div id="cantidadpfp'+iden+'" class="col-md-4">1</div></div>');
                 $("#cantidad-"+iden).html(parseInt($("#cantidad-"+iden).html())-1);
                 $("#pfp"+iden).fadeIn();
 
@@ -177,6 +183,7 @@ function SeleccionarProducto(iden, nombre){
 
     }
 
+    sumartotal(precio);
     purgaCombos();
 
 }
@@ -187,7 +194,9 @@ function generarPedido(id_pedido, evento, funcion){
 
         while(parseInt($("#cantidad-"+$(this).attr("id")).html())!=0){
 
-            SeleccionarProducto($(this).attr("id"), $(this).attr("name"));
+            var aux = $(this).attr("name").split("-");
+
+            SeleccionarProducto($(this).attr("id"), aux[0], aux[1]);
 
         };
 
@@ -197,6 +206,12 @@ function generarPedido(id_pedido, evento, funcion){
     $("#boton-confirm").removeClass("btn-info");
     $("#boton-confirm").addClass("btn-primary");
     $("#boton-confirm").attr("onclick", "confirmarPedido('"+id_pedido+"','"+evento+"','"+funcion+"')");
+
+}
+
+function sumartotal(valor){
+
+    $("#total").html(parseFloat($("#total").html())+parseFloat(valor));
 
 }
 
@@ -233,6 +248,12 @@ function confirmarPedido(id_pedido, evento, funcion){
     });
 
     document.location.href = "/generar_ticket/"+evento+"/"+funcion;
+}
+
+function comenzardenuevo(){
+
+    location.reload();
+
 }
 
 </script>

@@ -933,9 +933,9 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         index = False
 
         try:
-            index = tempProd.index([producto.producto, producto.producto.id])
+            index = tempProd.index([producto.producto, producto.producto.id, producto.producto.precio])
         except:
-            tempProd.append([producto.producto, producto.producto.id])
+            tempProd.append([producto.producto, producto.producto.id, producto.producto.precio])
             tempCant.append(producto.cantidad)
         else:
             tempCant[index] = int(tempCant[index])+int(producto.cantidad)
@@ -949,7 +949,7 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         for prodCombo in productosCombo:
 
             try:
-                index = tempProd.index([prodCombo.producto, prodCombo.producto.id])
+                index = tempProd.index([prodCombo.producto, prodCombo.producto.id, producto.producto.precio])
             except:
                 esAplicable = False
                 break

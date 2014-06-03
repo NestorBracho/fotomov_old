@@ -21,6 +21,7 @@ from tareas.models import *
 from modulo_movil.models import *
 from datetime import *
 from django.core.mail import send_mail
+from django.contrib import messages
 import datetime
 
 def nuevo_evento(request):
@@ -300,13 +301,65 @@ def casilla_administrativa(request, id_evento):
                 else:
                     aux.append([staff, bloque.bloque])
         lista.append([usuario, aux])
+    #-------------------------------------------------------Ganancias
+    gananciasTotales = []
+    ordenesCompras = []
+    aux = []
+    ProductosCombo = []
+    combos = []
+    ventas = 0
+    combosProductoEvento = ProductoEvento.objects.filter(evento = evento, es_combo=True)
+    for comboProductoEvento in combosProductoEvento:
+        temp = ProductoEventoPedido.objects.filter(producto = comboProductoEvento).exclude(estado = "Creado")
+        for tem in temp:
+            combos.append(tem)
+
+    for combo in combos:
+        auxProductosCombo = ProductoeventoCombo.objects.filter(combo=combo.producto)
+        for auxProductoCombo in auxProductosCombo:
+            flag = False
+            for ProductoCombo in ProductosCombo:
+                if auxProductoCombo.producto.producto == ProductoCombo[0]:
+                    ProductoCombo[1] = ProductoCombo[1] + (auxProductoCombo.cantidad * combo.cantidad)
+                    flag = True
+            if flag == False:
+                ProductosCombo.append([auxProductoCombo.producto.producto, auxProductoCombo.cantidad * combo.cantidad])
+
+    productosEvento = ProductoEvento.objects.filter(evento = evento)
+    for productoEvento in productosEvento:
+        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento).exclude(estado = "Creado"))
+    for au in aux:
+        for a in au:
+            ordenesCompras.append(a)
+    for ordenCompra in ordenesCompras:
+        for productoEvento in productosEvento:
+            if ordenCompra.producto == productoEvento:
+                flag = False
+                for gananciaTotales in gananciasTotales:
+                    if productoEvento.producto == gananciaTotales[0]:
+                        gananciaTotales[1] = gananciaTotales[1] + ordenCompra.cantidad
+                        flag = True
+                if flag == False:
+                    gananciasTotales.append([productoEvento.producto, ordenCompra.cantidad, ordenCompra.producto.precio])
+
+    for gananciaTotales in gananciasTotales:
+        for ProductoCombo in ProductosCombo:
+            if gananciaTotales[0] == ProductoCombo[0]:
+                if gananciaTotales[1] - ProductoCombo[1] >= 0:
+                    gananciaTotales[1] = gananciaTotales[1] - ProductoCombo[1]
+                else:
+                    gananciaTotales[1] = 0
+
+    for gananciaTotales in gananciasTotales:
+        ventas = ventas + (gananciaTotales[1]*gananciaTotales[2])
+
     #-------------------------------------------------------productos
     productosTotales = []
     ordenesCompras = []
     aux = []
-    productosEvento = ProductoEvento.objects.filter(evento = evento)
+    productosEvento = ProductoEvento.objects.filter(evento = evento, es_combo = False)
     for productoEvento in productosEvento:
-        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento))
+        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento).exclude(estado = "Creado"))
     for au in aux:
         for a in au:
             ordenesCompras.append(a)
@@ -321,6 +374,25 @@ def casilla_administrativa(request, id_evento):
                         flag = True
                 if flag == False:
                     productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad])
+    #---------combos
+    temp = ProductoEvento.objects.filter(evento = evento, es_combo = True)
+    auxCombos = []
+    cCombos = []
+    combos=[]
+    for tem in temp:
+        auxCombos.append(ProductoEventoPedido.objects.filter(producto = tem))
+    for auxCombo in auxCombos:
+        for auCombo in auxCombo:
+            cCombos.append(auCombo)
+    for cCombo in cCombos:
+        flag = False
+        for combo in combos:
+            if combo[0] == cCombo.producto.producto:
+                combo[1] = combo[1] + cCombo.cantidad
+                flag = True
+        if flag == False:
+            combos.append([cCombo.producto.producto, cCombo.cantidad])
+
     #-------------------------------------------------------fijos
     gasto = GastoEvento.objects.filter(evento=evento, tipo=1)
     fijos = []
@@ -375,8 +447,7 @@ def casilla_administrativa(request, id_evento):
     else:
         adicionales = [0, 0, 0]
     porcent = evento.porcentaje_institucion
-    print evento.porcentaje_institucion
-    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'fijos': fijos, 'productos': productosTotales, 'envios': envios, 'porcentaje': porcent, 'adicionales': adicionales}, context_instance=RequestContext(request))
+    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'fijos': fijos, 'productos': productosTotales, 'envios': envios, 'porcentaje': porcent, 'adicionales': adicionales, 'ventas': ventas, 'combos': combos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):
@@ -758,6 +829,8 @@ def crear_combos(request, evento_id):
                 cant = aux[1]
                 ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
             return HttpResponseRedirect('/listar_combos/'+evento_id+'/')
+        else:
+            messages.add_message(request, messages.ERROR, 'Debe llenar todos los campos', extra_tags='danger')
     return render_to_response('evento/crear_combos.html', {'iden': evento_id, 'productos': productos}, context_instance=RequestContext(request))
 
 def listar_combos(request, evento_id):

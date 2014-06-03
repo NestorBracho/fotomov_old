@@ -70,7 +70,7 @@ class Pedido(models.Model):
     envio = models.IntegerField(default=0)
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
-    estado = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100, default='Creado')
     factura = models.BooleanField(default=False)
 
 class PedidoPago(models.Model):
