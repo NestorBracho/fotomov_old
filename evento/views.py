@@ -105,7 +105,7 @@ def nuevo_evento(request):
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
 def agregar_staff(request, id_evento):
-    bloques = Bloque.objects.all()
+    bloques = Bloque.objects.all().order_by("nombre")
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     tipos_staff = Privilegios.objects.filter(valor=6)
@@ -156,11 +156,11 @@ def sede_ajax(request):
     return HttpResponse(data, mimetype='application/json')
 
 def listar_evento(request, creado):
-    eventos = Evento.objects.all()
+    eventos = Evento.objects.all().exclude(id=1)
     return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'creado': creado}, context_instance = RequestContext(request))
 
 def locacion_ajax(request):
-    locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion'])
+    locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion']).exclude(id=1)
     if len(locaciones)>0:
         i=0
         locs=[]
@@ -182,9 +182,7 @@ def agregar_productos(request,id_evento):
     for producto in productos:
         if ProductoEvento.objects.filter(evento=evento, producto=producto):
             producto_existente = ProductoEvento.objects.get(evento=evento, producto=producto)
-            print producto_existente.precio
             tupla=(producto,1, producto_existente.precio, producto_existente.precio_produccion)
-            print tupla[2]
         else:
             tupla = (producto,0,0)
         lista.append(tupla)
@@ -205,8 +203,10 @@ def agregar_productos(request,id_evento):
                 producto_evento.save()
             except:
                 producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
-        return HttpResponseRedirect('/listar_evento/2')
-    print lista
+        if "combos" in request.POST:
+            return HttpResponseRedirect('/listar_combos/'+id_evento+'/')
+        else:
+            return HttpResponseRedirect('/listar_evento/2')
     return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento}, context_instance=RequestContext(request))
 
 def casilla_administrativa(request, id_evento):
@@ -554,7 +554,7 @@ def convocar_usuario_a_evento(request):
     return HttpResponse(data, mimetype='application/json')
 
 def nuevo_tipo_de_evento(request, editado):
-    tipo_eventos = Tipos_Eventos.objects.all()
+    tipo_eventos = Tipos_Eventos.objects.all().exclude(id=1)
     staff = Privilegios.objects.filter(valor__lt = 6)
     prelaciones = []
     if editado == '0':

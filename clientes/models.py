@@ -5,7 +5,7 @@ from direcciones.models import *
 class MacroCliente(models.Model):
     submarca = models.ForeignKey(SubMarca)
     nombre = models.CharField(max_length=100, verbose_name="Nombre Institucion")
-    telefono = models.CharField(max_length=11)
+    telefono = models.CharField(max_length=40)
     rif = models.CharField(max_length=10, unique=True)
     direccion_fiscal = models.TextField(max_length=500)
     descripcion = models.TextField(max_length=1000, blank=True, null=True)

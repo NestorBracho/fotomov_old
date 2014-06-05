@@ -161,6 +161,6 @@ urlpatterns = patterns('',
     url(r'^estadisticas_clientes/$', 'estadisticas.views.estadisticas_clientes'),
     url(r'^estadisticas_staff/$', 'estadisticas.views.estadisticas_staff'),
     url(r'^estadisticas_graficos/$', 'estadisticas.views.estadisticas_graficos'),
-            
+    url(r'^crear_pedidos_indoor/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<next>[\w|\W]+)/urlseparador/(?P<actual>\w+)/$', 'modulo_movil.views.crear_pedidos_indoor'),
     url(r'^ver_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.ver_tipo_evento'),
 )

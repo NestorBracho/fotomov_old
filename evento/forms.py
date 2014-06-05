@@ -6,7 +6,8 @@ from productos.models import Items, ItemsPrestado
 from django import forms
 
 class EventoForm(forms.ModelForm):
-    macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all())
+    macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all().exclude(id=1))
+    tipo = forms.ModelChoiceField(queryset=Tipos_Eventos.objects.all().exclude(id=1))
     class Meta:
         model = Evento
         exclude = ['locacion', 'encargado', 'sede']

@@ -104,9 +104,24 @@ window.onload = function(){
 }
 
 $('#id_macrocliente').on('change',ajax_encargado);
- $('#id_macrocliente').on('change',ajax_sede);
+$('#id_macrocliente').on('change',ajax_sede);
 
 $("#dialog").dialog("option", "hide");
+
+function validaracentos(iden){
+
+    var nombre = $("#"+iden).val()
+
+    if(nombre.length<0){
+        return true;
+    }else{
+
+        alert(nombre);
+
+        return false;
+    }
+
+}
 
 function aucomloc(id_input){
 
@@ -288,6 +303,7 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
     var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
     var temp = main.split('.');
     if(document.getElementById(inputid).value!=''){
+        //validaracentos(inputid);
         tempNombre += 1;
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;

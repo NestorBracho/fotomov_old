@@ -11,6 +11,7 @@ from django.core import serializers
 from productos.models import *
 from productos.forms import *
 from reportlab.pdfgen import canvas
+from django.contrib import messages
 import datetime
 
 def nuevo_producto(request):
@@ -18,7 +19,11 @@ def nuevo_producto(request):
         formulario = ProductoForm(request.POST)
         if formulario.is_valid():
             producto = formulario.save()
-            return HttpResponseRedirect('/listar_producto/1')
+            if "agregar" in request.POST:
+                return HttpResponseRedirect('/listar_producto/1')
+            else:
+                messages.add_message(request, messages.SUCCESS, 'El producto se ha agregado exitosamente.', extra_tags='success')
+                return HttpResponseRedirect('/nuevo_producto/')
     else:
         formulario = ProductoForm()
     return render_to_response('productos/nuevo_producto.html', {'formulario': formulario}, context_instance=RequestContext(request))

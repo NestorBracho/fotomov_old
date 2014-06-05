@@ -55,7 +55,7 @@ def nuevo_macrocliente(request):
     return render_to_response('clientes/nuevo_macrocliente.html', {'formularioM': formularioM, 'formularioR': formularioR, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
 def listar_macroclientes(request, creado):
-    macroclientes = MacroCliente.objects.all()
+    macroclientes = MacroCliente.objects.all().exclude(id=1)
     return render_to_response('clientes/listar_macroclientes.html', {'macroclientes': macroclientes, 'creado': creado}, context_instance = RequestContext(request))
 
 def editar_macrocliente(request, id_macrocliente):
