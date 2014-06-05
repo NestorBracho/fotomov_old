@@ -293,8 +293,11 @@ window.onload = function(){
 
 
 $(document).ready(function(){
+    // Objeto JSON con los tipos de envio, sus precios y si es requerido dir de envio
     var $tiposenvio = {{ tipos_envio|safe }};
 
+    // Funcion cuando se cambia el tipo de envio.
+    // Si es necesaria una dirección, se muestra el campo.
     $( '#id_envio' ).on('change', function(event){
         var i = $(this).val();
         if ($tiposenvio[i].req_dir == true){
@@ -401,6 +404,8 @@ $(".cant-combo").change(function() {
     }
 });
 
+// Si se cambia un producto, se verifica que se pueda cambiar y se actualiza el
+// diccionario de cantidades. Si no se puede cambiar, se revierte al anterior.
 $(".prod").change(function() {
     cantidad_productos = {};
     var prod = $(this);
@@ -430,6 +435,7 @@ $(".prod").change(function() {
     actualizar_total();
 });
 
+// Funcion para calcular el vuelto y cuanto falta por pagar.
 $(document).on("change", ".monto_pago", function(){
     var suma = 0;
     $('.monto_pago').each(function(){
@@ -459,10 +465,15 @@ $("#descuento_input").change(function() {
 });
 
 function actualizar_total(){
+    // "Diccionario" de cada producto con su costo
     costo_productos = {};
+    // "Diccionario" de cada producto con su cantidad
     cantidad_productos = {};
+    // "Diccionario" de cuantos items para cada producto son parte de un combo
     prod_combos = {};
     costo_combos = 0;
+
+    // Para cada producto se guarda el costo y la cantidad en el diccionario respectivo.
     $('.producto').each(function(){
         var id = $(this).attr('id').split("-");
         id = id[1];
@@ -478,6 +489,7 @@ function actualizar_total(){
             cantidad_productos[nombre] = cantidad;
         }
     });
+    // Se buscan cuantos productos son parte de combos
     $('.prod-combo').each(function(){
         if ($(this).html() in prod_combos){
             prod_combos[$(this).html()] += (parseInt($(this).prev().html()) * parseInt($(this).parents('tbody').find('.cant-combo').val()));
@@ -487,6 +499,7 @@ function actualizar_total(){
     });
 
     var total = 0;
+    // Se calcula el total de los productos restandole la cantidad que pertenecen a un combo
     $.each(costo_productos, function(key, value){
         if (key in prod_combos){
             total += (cantidad_productos[key] - prod_combos[key]) * value;
@@ -495,6 +508,8 @@ function actualizar_total(){
         }
     });
 
+    // Se suman costo de los combos, se le suma el iva, costo de envío y se imprime
+    // el total en el campo respectivo.
     $('.cant-combo').each(function(){
         costo_combos += parseInt($(this).val()) * parseInt($(this).parent().siblings('.precio-combo').html());
     });
@@ -649,6 +664,8 @@ function costo_envio(){
 function generarPedido(){
     var monto = 0;
     var pass = true;
+
+    // Se revisa si la suma de los montos de pago son igual al total del pedido
     $('.formset_pago').each(function(){
         var select = $(this).find('select :selected');
         if (select.html() != "---------"){
@@ -662,10 +679,13 @@ function generarPedido(){
         alert('La suma de los montos no coinciden con el total del pedido.')
         pass = false;
     }
+
     if ($('#dir_envio').is(":visible") && $('#id_direccion_entrega').val() == '') {
         alert('La dirección de entrega no puede estár vacía');
         pass = false;
     }
+
+    // Si es factura personal, se duplican los datos del cliente a los datos fiscales
     if(!($('.datos_juridicos').is(":visible"))){
         $('#id_id_fiscal').val($('#id_cedula_cliente').val());
         $('#id_tlf_fiscal').val($('#id_telefono_cliente').val());
