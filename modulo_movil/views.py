@@ -30,6 +30,7 @@ import shutil
 # from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
+from django.utils import simplejson
 from unicodedata import normalize
 
 def ingresar(request):
@@ -670,11 +671,24 @@ def generar_lote(request):
 
 def generar_pedido(request, pedido, cedula, id_evento):
     pagosForms = formset_factory(PedidoPagoForm)
-    tipos_pago = FormaDePago.objects.all()
     pedido_actual = Pedido.objects.get(id=pedido)
+    tipos_pago = FormaDePago.objects.all()
     peps = ProductoEventoPedido.objects.filter(num_pedido = pedido_actual.num_pedido)
     combos = []
     productos = []
+
+    # Construir json de tipos de pago
+    tipos_envio = {}
+    for tipo_envio in TipoEnvio.objects.all() :
+        tipos_envio[ tipo_envio.id ] = {
+            'precio'  : str(tipo_envio.precio),
+            'tipo'    : tipo_envio.tipo,
+            'id'      : tipo_envio.id,
+            'req_dir' : tipo_envio.req_dir,
+        }
+
+    tipos_envio = json.dumps(tipos_envio)
+
     # Se busca cuales de los productos del pedido son combos
     for pep in peps:
         if pep.producto.es_combo:
@@ -712,7 +726,8 @@ def generar_pedido(request, pedido, cedula, id_evento):
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
                                                                    'tipos_pago': tipos_pago, 'pagosForms': formulario_pagos,
-                                                                   'mensaje': mensaje, 'en_venta': en_venta, 'iva': iva},
+                                                                   'mensaje': mensaje, 'en_venta': en_venta, 'iva': iva,
+                                                                   'tipos_envio': tipos_envio},
                               context_instance=RequestContext(request))
             print len(formulario_pagos)
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
@@ -776,7 +791,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
                                                                    'pedido_actual': pedido_actual,
                                                                    'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
-                                                                   'en_venta': en_venta, 'iva': iva},
+                                                                   'en_venta': en_venta, 'iva': iva, 'tipos_envio': tipos_envio},
                               context_instance=RequestContext(request))
 
 # def ingresar_ticket(request):

@@ -14,13 +14,7 @@ class PedidoForm(forms.ModelForm):
                  'lote', 'estado', 'factura']
 
 class PedidoCajaForm(forms.ModelForm):
-    ENVIO_CHOICES = (
-        (0, 'Sin Envio'),
-        (1, 'Regional'),
-        (2, 'Nacional'),
-        (3, 'Internacional'),
-    )
-    envio = forms.ChoiceField(choices=ENVIO_CHOICES)
+    envio = forms.ChoiceField(choices=TipoEnvio.objects.all().values_list('id', 'tipo'))
     class Meta:
         model = Pedido
         exclude=['cliente', 'fecha', 'num_pedido', 'fecha_entrega', 'total','codigo', 'envio', 'fue_pagado',

@@ -1,5 +1,6 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
+{% load widget_tweaks %}
 {% block titulo %}
 Generar pedido
 {% endblock %}
@@ -7,46 +8,48 @@ Generar pedido
 <form id="generar_pedido" method="POST">{% csrf_token %}
     <div class="col-xs-12 col-md-6">
         {% if cliente == None %}
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group">
-                <label class="control-label" for="id_nombres_cliente">Nombres</label>
-                <input type="text" id="id_nombres_cliente" name="nombres_cliente" class="form-control">
+        <div class="datos_cliente">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="id_nombres_cliente">Nombres</label>
+                    <input type="text" id="id_nombres_cliente" name="nombres_cliente" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group">
-                <label class="control-label" for="id_apellidos_cliente">Apellidos</label>
-                <input type="text" id="id_apellidos_cliente" name="apellidos_cliente" class="form-control">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="id_apellidos_cliente">Apellidos</label>
+                    <input type="text" id="id_apellidos_cliente" name="apellidos_cliente" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group ">
-                <label class="control-label" for="id_cedula_cliente">Número de cedula del cliente</label>
-                <input type="text" id="id_cedula_cliente" name="cedula_cliente" class="form-control">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group ">
+                    <label class="control-label" for="id_cedula_cliente">Número de cedula del cliente</label>
+                    <input type="text" id="id_cedula_cliente" name="cedula_cliente" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group ">
-                <label class="control-label" for="id_rif_cliente">R.I.F. del cliente</label>
-                <input type="text" id="id_rif_cliente" name="rif_cliente" class="form-control">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group ">
+                    <label class="control-label" for="id_rif_cliente">R.I.F. del cliente</label>
+                    <input type="text" id="id_rif_cliente" name="rif_cliente" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group">
-                <label class="control-label" for="id_telefono_cliente">Número telefono del cliente</label>
-                <input type="text" id="id_telefono_cliente" name="telefono_cliente" class="form-control">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="id_telefono_cliente">Número telefono del cliente</label>
+                    <input type="text" id="id_telefono_cliente" maxlength="11" name="telefono_cliente" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group">
-                <label class="control-label" for="id_mail_cliente">Email del cliente</label>
-                <input type="text" id="id_mail_cliente" name="mail_cliente" class="form-control">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="id_mail_cliente">Email del cliente</label>
+                    <input type="text" id="id_mail_cliente" name="mail_cliente" class="form-control">
+                </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="form-group">
-                <label class="control-label" for="id_direccion_fiscal_cliente">Direccion fiscal del cliente</label>
-                <input type="text" id="id_direccion_fiscal_cliente" name="direccion_fiscal_cliente" class="form-control">
+            <div class="col-xs-12 col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="id_direccion_fiscal_cliente">Direccion fiscal del cliente</label>
+                    <textarea id="id_direccion_fiscal_cliente" name="direccion_fiscal_cliente" class="form-control" ></textarea>
+                </div>
             </div>
         </div>
         {% else %}
@@ -59,26 +62,45 @@ Generar pedido
         </div>
         {% endif %}
         <div class="col-xs-12 col-md-12">
-            {{ formulario.id_fiscal | bootstrap}}
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="checkbox_direccion">Factura personal<br>
+                </label>
+            </div>
         </div>
-        <div class="col-xs-12 col-md-12">
-            {{ formulario.tlf_fiscal | bootstrap}}
+        <div class="datos_juridicos">
+            <div class="col-xs-12 col-md-12">
+                {{ formulario.id_fiscal | bootstrap}}
+            </div>
+            <div class="col-xs-12 col-md-12">
+                {{ formulario.tlf_fiscal | bootstrap}}
+            </div>
+            <div class="col-xs-12 col-md-12">
+                {{ formulario.razon_social | bootstrap}}
+            </div>
+            <div class="col-xs-12 col-md-12">
+                {{ formulario.direccion_fiscal | bootstrap}}
+            </div>
         </div>
-        <div class="col-xs-12 col-md-12">
-            {{ formulario.razon_social | bootstrap}}
-        </div>
-        <div class="col-xs-12 col-md-12">
-            {{ formulario.direccion_fiscal | bootstrap}}
-        </div>
-        <div class="col-xs-12 col-md-12">
-            {{ formulario.envio | bootstrap }}
-        </div>
-        <div id="dir_envio" class="col-xs-12 col-md-12">
-            <label class="control-label  " for="id_direccion_entrega">Direccion entrega</label>
-                <div class=" ">
-                    <textarea class=" form-control" cols="40" id="id_direccion_entrega" name="direccion_entrega" rows="10">{{ pedido_actual.direccion_entrega }}</textarea>
-                </div>
-        </div>
+            <table class="table">
+                <thead><th class="col-xs-9 col-md-9">Tipo de envio</th><th class="col-xs-3 col-md-3">Precio</th></thead>
+                <tr>
+                    <td>
+                        <div>
+                            {{ formulario.envio |add_class:"form-control" }}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="costo_envio">0.0</span>
+                    </td>
+                </tr>
+            </table>
+            <div id="dir_envio" class="col-xs-12 col-md-12" style="display: none;">
+                <label class="control-label  " for="id_direccion_entrega">Direccion entrega</label>
+                    <div class=" ">
+                        <textarea class=" form-control" cols="40" id="id_direccion_entrega" name="direccion_entrega" rows="10">{{ pedido_actual.direccion_entrega }}</textarea>
+                    </div>
+            </div>
         <div class="col-xs-12 text-right">
                 <input type='button' onclick="generarPedido()" class="btn btn-default btn-primary" value='Generar'/>
             <div class="col-md-6 hidden-xs hidden-sm"></div>
@@ -130,11 +152,13 @@ Generar pedido
     </div>
     <div class="col-xs-12 col-md-6">
         <table class="table">
-            <thead><th>Sub Total</th><th>IVA</th><th>Total</th></thead>
+            <thead><th>Sub Total</th><th>Descuento</th><th>IVA</th><th>Total</th><th>Faltan</th></thead>
             <tr>
-                <td><input class="form-control" type="text" name="total_input" id="total_input" onkeypress="return numero_float(event)" value=""></td>
+                <td name="total_input" id="total_input"></td>
+                <td><input class="form-control" type="text" name="descuento_input" id="descuento_input" value="0.0"></td>
                 <td id="iva">{{ iva.valor }}</td>
                 <td id="total"></td>
+                <td id="faltan"></td>
             </tr>
         </table>
     </div>
@@ -151,7 +175,23 @@ Generar pedido
     <div id="formsets">
         {{ pagosForms.management_form }}
         {% for form in pagosForms %}
-            {{ form | bootstrap }}
+            <div class="formset_pago">
+            {{ form.tipo_pago | bootstrap }}
+            {{ form.referencia | bootstrap }}
+            <div class="row">
+                <div class="col-md-12 monto">
+                    {{ form.monto|add_class:"monto_pago"|attr:"value:0.0"|bootstrap }}
+                </div>
+                <div class="col-md-4 vuelto" style="display: none;">
+                    <div class="form-group">
+                        <label class="control-label">Vuelto</label>
+                        <div class=" ">
+                            <input class="form-control monto_vuelto" type="text" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
         {% endfor %}
 
     </div>
@@ -216,9 +256,6 @@ var cantidad_productos = {};
 var prod_combos = {};
 var costo_combos = 0;
 window.onload = function(){
-    $('.precio-combo').each(function(){
-        alert($(this).html());
-    });
     var subtotal, total = 0, url_aux;
 
     {% if cliente == None %}
@@ -248,15 +285,28 @@ window.onload = function(){
     {% endfor %}
 
 
-    if (document.getElementById("id_envio").value == 0){
-        $("#dir_envio").hide();
-    }
+
     $('#id_form-TOTAL_FORMS').val(1);
 
 
 }
 
+
 $(document).ready(function(){
+    var $tiposenvio = {{ tipos_envio|safe }};
+
+    $( '#id_envio' ).on('change', function(event){
+        var i = $(this).val();
+        if ($tiposenvio[i].req_dir == true){
+            $('#dir_envio').show(200);
+        } else {
+            $('#dir_envio').hide(200);
+            $('#id_direccion_entrega').val('');
+        }
+        $('.costo_envio').html(parseFloat($tiposenvio[i].precio));
+        actualizar_total();
+    })
+
     var options = [
         {
           label: '---------',
@@ -278,17 +328,9 @@ $(document).ready(function(){
         agregarFormset(options);
     });
 
-  $("#id_envio").change(function(){
-      if (document.getElementById("id_envio").value == 0){
-          $("#dir_envio").hide();
-      }else{
-          $("#dir_envio").show();
-      }
-
-  });
 
   $("#id_form-0-tipo_pago").change(function(){
-        verificar()
+        verificar("0")
   });
 
   $("#id_tipo_pago").change(function(){
@@ -309,6 +351,7 @@ $(document).ready(function(){
         $(this).data("previous-value", $(this).val());
     });
     actualizar_total();
+    $('.monto_pago').val($('#total').html());
 });
 
 $(".cant-prod").change(function() {
@@ -329,6 +372,11 @@ $(".cant-prod").change(function() {
             actualizar_total();
         }
     }
+});
+
+$('#checkbox_direccion').change(function(){
+    var elem = $('.datos_juridicos');
+    elem.toggle(500);
 });
 
 $(".cant-combo").change(function() {
@@ -382,14 +430,31 @@ $(".prod").change(function() {
     actualizar_total();
 });
 
+$(document).on("change", ".monto_pago", function(){
+    var suma = 0;
+    $('.monto_pago').each(function(){
+        suma += parseFloat($(this).val());
+    });
+    var elem = $(this).parents('.row').find('.monto_vuelto');
+    elem.val((suma - parseFloat($('#total').html())).toFixed(2));
 
-$("#total_input").change(function() {
-    if ($(this).val() < 0) {
+    var total = parseFloat($('#total').html());
+    $('#faltan').html((total-suma).toFixed(2));
+});
+
+$("#descuento_input").change(function() {
+    if ($(this).val() < 0 || $(this).val() > parseFloat($('#total_input').html())) {
         $(this).val(0);
     } else {
         var iva = $('#iva').html().split('%');
+        var total = ((parseFloat($('#total_input').html()) - parseFloat($(this).val()))*(parseFloat('1.'+iva))).toFixed(2)
         iva = iva[0];
-        $('#total').html(($('#total_input').val()*(parseFloat('1.'+iva))).toFixed(2));
+        $('#total').html(total);
+        var pagos = 0;
+        $('.monto_pago').each(function(){
+            pagos += parseFloat($(this).val());
+        });
+        $('#faltan').html((total-pagos).toFixed(2));
     }
 });
 
@@ -433,14 +498,21 @@ function actualizar_total(){
     $('.cant-combo').each(function(){
         costo_combos += parseInt($(this).val()) * parseInt($(this).parent().siblings('.precio-combo').html());
     });
-    $('#total_input').val(total+costo_combos);
+    total = total + costo_combos + parseFloat($('.costo_envio').html());
+    $('#total_input').html(total);
     var iva = $('#iva').html().split('%');
     iva = iva[0];
-    $('#total').html(($('#total_input').val()*(parseFloat('1.'+iva))).toFixed(2));
-
+    total -= $('#descuento_input').val();
+    total = (total * (parseFloat('1.'+iva))).toFixed(2);
+    $('#total').html(total);
+    var pagos = 0;
+    $('.monto_pago').each(function(){
+        pagos += parseFloat($(this).val());
+    });
+    $('#faltan').html((total-pagos).toFixed(2));
 }
 
-function verificar(){
+function verificar(idElem){
     var options = [
         {% for tipo_pago in tipos_pago %}
             {% if tipo_pago.descuento == False %}
@@ -449,22 +521,53 @@ function verificar(){
         {% endfor %}
     ]
     var flag = "True";
+    var efectivo = false;
     var total = parseInt($('#id_form-TOTAL_FORMS').val(),10);
     var i = 0;
 
     while (i<total){
-        var paid = document.getElementById('id_form-'+i+'-tipo_pago').value;
+        var elem = $('#id_form-'+i+'-tipo_pago :selected');
+        var paid = elem.val();
         $.each(options, function(index, option){
            if (option == paid){
                flag="False";
            }
         });
+        if (elem.html() == "Efectivo"){
+            if (efectivo == true){
+                alert('No pueden haber dos pagos en efectivo.');
+                $('#id_form-'+idElem+'-tipo_pago').val('');
+                var elem_monto = $('#id_form-'+idElem+'-monto').parents('div.monto');
+                elem_monto.next().hide();
+                elem_monto.attr('class', 'col-md-12 monto');
+            } else {
+                var elem_monto = $('#id_form-'+i+'-monto').parents('div.monto');
+                elem_monto.attr('class', 'col-md-8 monto');
+                elem_monto.next().show(500);
+            }
+            efectivo = true;
+        } else {
+            var elem_monto = $('#id_form-'+i+'-monto').parents('div.monto');
+            elem_monto.next().hide();
+            elem_monto.attr('class', 'col-md-12 monto');
+        }
         i++;
     }
     if (flag == "False"){
-        document.getElementById('total_input').readOnly = true;
+        $('.cant-combo').each(function(){
+            $(this).data("previous-value", $(this).val());
+            $(this).val(0);
+        });
+        actualizar_total();
+        $('#tabla-combos').hide(500);
+        document.getElementById('descuento_input').readOnly = true;
     }else{
-        document.getElementById('total_input').readOnly = false;
+        document.getElementById('descuento_input').readOnly = false;
+        $('#tabla-combos').show(500);
+        $('.cant-combo').each(function(){
+            $(this).val($(this).data("previous-value"));
+        });
+        actualizar_total();
     }
     {% comment %}for (var i = 0, len = options.length, text = ""; i < len; i++) {
         text += cars[i] + "<br>";
@@ -539,9 +642,40 @@ function abrirFoto(url){
 
 }
 
-function generarPedido(){
+function costo_envio(){
 
-    document.getElementById('generar_pedido').submit();
+}
+
+function generarPedido(){
+    var monto = 0;
+    var pass = true;
+    $('.formset_pago').each(function(){
+        var select = $(this).find('select :selected');
+        if (select.html() != "---------"){
+            var id = $(this).find('select').attr('id');
+            id = id.split('-');
+            id = id[1];
+            monto += parseFloat($('#id_form-'+id+'-monto').val());
+        }
+    });
+    if (monto != parseFloat($('#total').html())) {
+        alert('La suma de los montos no coinciden con el total del pedido.')
+        pass = false;
+    }
+    if ($('#dir_envio').is(":visible") && $('#id_direccion_entrega').val() == '') {
+        alert('La dirección de entrega no puede estár vacía');
+        pass = false;
+    }
+    if(!($('.datos_juridicos').is(":visible"))){
+        $('#id_id_fiscal').val($('#id_cedula_cliente').val());
+        $('#id_tlf_fiscal').val($('#id_telefono_cliente').val());
+        $('#id_razon_social').val(($('#id_nombres_cliente').val()).concat($('#id_apellidos_cliente').val()));
+        $('#id_direccion_fiscal').val($('#id_direccion_fiscal_cliente').val());
+    }
+
+    if (pass == true) {
+        document.getElementById('generar_pedido').submit();
+    }
 }
 
 function agregar_tipo_pago(){

@@ -73,3 +73,9 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
 
+
+class TipoEnvio(models.Model):
+    tipo = models.CharField(max_length="30")
+    precio = models.DecimalField(decimal_places=2, max_digits=10)
+    req_dir = models.BooleanField()
+
