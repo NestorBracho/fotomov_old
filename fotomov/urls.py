@@ -152,6 +152,7 @@ urlpatterns = patterns('',
     url(r'^editar_combo/(?P<combo_id>\d+)/$', 'evento.views.editar_combo'),
     url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
     url(r'^nuevo_item/$', 'evento.views.nuevo_item'),
+    url(r'^crear_pedidos_indoor/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<next>[\w|\W]+)/urlseparador/(?P<actual>\w+)/$', 'modulo_movil.views.crear_pedidos_indoor'),
 
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),
@@ -161,6 +162,5 @@ urlpatterns = patterns('',
     url(r'^estadisticas_clientes/$', 'estadisticas.views.estadisticas_clientes'),
     url(r'^estadisticas_staff/$', 'estadisticas.views.estadisticas_staff'),
     url(r'^estadisticas_graficos/$', 'estadisticas.views.estadisticas_graficos'),
-    url(r'^crear_pedidos_indoor/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<next>[\w|\W]+)/urlseparador/(?P<actual>\w+)/$', 'modulo_movil.views.crear_pedidos_indoor'),
     url(r'^ver_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.ver_tipo_evento'),
 )
