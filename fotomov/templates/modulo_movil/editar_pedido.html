@@ -1,0 +1,148 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Pedido
+{% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block subtitulo %}
+{% endblock %}
+{% block seccion-contenido%}
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 10px">
+        <a href="/ver_pedido/{{ pedido.id }}" class="btn btn-default"><i class="fa fa-chevron-left"></i> Pedido</a>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-12">
+                <h4><a class="pull-left" href="/ver_cliente/{{ pedido.cliente.id }}">{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</a></h4>
+                <a onclick="eliminarPedido('{{ pedido.id }}')" class="btn btn-xs btn-danger pull-right">Eliminar este pedido</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form method="post" action="">{% csrf_token %}
+            <div class="col-md-6">
+                {{ form.fecha_entrega | bootstrap }}
+                {{ form.direccion_fiscal | bootstrap }}
+                {{ form.razon_social | bootstrap }}
+                {{ form.envio | bootstrap }}
+                {{ form.fue_pagado | bootstrap }}
+            </div>
+            <div class="col-md-6">
+                {{ form.id_fiscal | bootstrap }}
+                {{ form.direccion_entrega | bootstrap }}
+                {{ form.tlf_fiscal | bootstrap }}
+                {{ form.estado | bootstrap }}
+                {{ form.factura | bootstrap }}
+            </div>
+            <input class="btn btn-primary" type="submit" value="Actualizar"/>
+        </form>
+    </div>
+</div>
+
+
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table id="content" class="table ">
+        <thead>
+            <th>producto</th>
+            <th>Foto</th>
+            <th>Estado</th>
+            <th>Cantidad</th>
+            <th>Monto sin I.V.A.</th>
+            <th>SubTotal</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody id="body-pedidos">
+        {% for producto in productos %}
+        <tr id='tr-{{ producto.id }}'>
+            <td>{{ producto.producto.producto.nombre }}</td>
+            <td>{% if producto.ruta == None%}N/A{% else %}<a data-toggle="modal" data-target="#FotoPedido" onclick="verFotoProducto('{{producto.ruta}}','{{MEDIA_URL}}')" class="btn btn-xs btn-default">Ver foto</a>{% endif %}</td>
+            <td>{{ producto.estado }}</td><td>{{ producto.cantidad }}</td>
+            <td>{{ producto.producto.precio }}</td>
+            <td id="montosiniva-{{producto.id}}"></td>
+            <td><a onclick="eliminarProducto('tr-{{ producto.id }}')" class="btn btn-xs btn-danger">Eliminar</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="FotoPedido" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+
+    var subt, Total = 0;
+
+    {% for producto in productos %}
+
+        subt = parseFloat('{{producto.producto.precio}}') * parseFloat('{{producto.cantidad}}')
+        $('#montosiniva-{{producto.id}}').html(subt);
+
+    {% endfor %}
+
+    $('#id_fecha_entrega').datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
+
+}
+
+function verFotoProducto(url, url2){
+
+    url = url.split('/fotomov_imagenes/');
+    url = url[1];
+
+    $('#modal-body').html('<img src="'+url2+url+'"></img>');
+
+}
+
+function eliminarProducto(tr){
+
+    var iden = tr.split('-');
+    iden = iden[1];
+
+    if(confirm("¿Esta seguro que desea eliminar este producto?")){
+
+        $.ajax({
+
+            url:'/eliminar_productoeventopedido_en_generarpedido/',
+            data:{'iden': iden},
+            type:'GET'
+
+        }).done(function(data){
+
+            $("#"+tr).fadeOut();
+            window.setTimeout(function(){document.getElementById(tr).parentNode.removeChild(document.getElementById(tr))},3000);
+
+        });
+
+    }
+
+}
+
+function eliminarPedido(iden){
+
+    if(confirm("¿Seguro que desea eliminar este pedido?")){
+
+        window.location.href = "/eliminar_pedido/"+iden+"/";
+
+    }
+
+}
+
+</script>
+{% endblock %}

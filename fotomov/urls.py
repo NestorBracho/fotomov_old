@@ -153,6 +153,8 @@ urlpatterns = patterns('',
     url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
     url(r'^nuevo_item/$', 'evento.views.nuevo_item'),
     url(r'^crear_pedidos_indoor/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<next>[\w|\W]+)/urlseparador/(?P<actual>\w+)/$', 'modulo_movil.views.crear_pedidos_indoor'),
+    url(r'^editar_pedido/(?P<pedido_id>\d+)/$', 'modulo_movil.views.editar_pedido'),
+    url(r'^eliminar_pedido/(?P<pedido>\d+)/$', 'modulo_movil.views.eliminar_pedido'),
 
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),

@@ -31,6 +31,8 @@ from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 from unicodedata import normalize
+from modulo_movil.forms import *
+
 
 def ingresar(request):
     if request.method=='POST':
@@ -951,7 +953,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 for pep in peps:
                     pep.estado = 'Pagado'
                     pep.save()
-            imprimir_ticket(pedido_nuevo)
+            try:
+                imprimir_ticket(pedido_nuevo)
+            except:
+                print "impresora desconectada"
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
 
@@ -1132,3 +1137,21 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         for a in au:
             productoCombos.append(a)
     return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles, 'productoCombos': productoCombos, 'dir_actual': info.pedido.id, 'evento': id_evento, 'funcion': id_funcion}, context_instance=RequestContext(request))
+
+def editar_pedido(request, pedido_id):
+    pedido = Pedido.objects.get(id=pedido_id)
+    productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+    if request.method == 'POST':
+        form = PedidoReducidoForm(request.POST, instance = pedido)
+        if form.is_valid():
+            pedido = form.save()
+            pedido.save()
+            return HttpResponseRedirect('/ver_pedido/'+pedido_id+'/')
+    else :
+        form = PedidoReducidoForm(instance = pedido)
+    return render_to_response('modulo_movil/editar_pedido.html', {'pedido': pedido, 'form': form, 'productos': productos}, context_instance=RequestContext(request))
+
+def eliminar_pedido(request, pedido):
+    pedido = Pedido.objects.get(id = pedido)
+    pedido.delete()
+    return HttpResponseRedirect('/listar_pedidos/')

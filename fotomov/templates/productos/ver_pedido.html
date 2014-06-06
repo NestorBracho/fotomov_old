@@ -6,9 +6,19 @@ Pedido
 {% block subtitulo %}
 {% endblock %}
 {% block seccion-contenido%}
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 10px">
+        <a href="/listar_pedidos/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Pedidos</a>
+    </div>
+</div>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4><a href="/ver_cliente/{{ pedido.cliente.id }}">{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</a></h4>
+        <div class="row">
+            <div class="col-md-12">
+                <h4><a class="pull-left" href="/ver_cliente/{{ pedido.cliente.id }}">{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</a></h4>
+                <a href="/editar_pedido/{{ pedido.id }}/" class="btn btn-xs btn-success pull-right">Editar</a>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
         <div class="row">

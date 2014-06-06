@@ -55,6 +55,35 @@ class ProductoEventoPedido(models.Model):
 
 
 class Pedido(models.Model):
+    CREADO = 'Creado'
+    PAGADO = 'Pagado'
+    EDICION = 'Edicion'
+    ENIMPRESION = 'En impresion'
+    IMPRESO = 'Impreso'
+    LISTO = 'Listo'
+
+    SINENVIO = 'Sin envio'
+    REGIONAL = 'Regional'
+    NACIONAL = 'Nacional'
+    INTERNACIONAL = 'Internacional'
+
+    ESTADOS = (
+        (CREADO, CREADO),
+        (PAGADO, PAGADO),
+        (EDICION, EDICION),
+        (ENIMPRESION, ENIMPRESION),
+        (IMPRESO, IMPRESO),
+        (LISTO, LISTO),
+
+    )
+
+    ENVIOS = (
+        (0, SINENVIO),
+        (1, REGIONAL),
+        (2, NACIONAL),
+        (3, INTERNACIONAL),
+    )
+
     evento = models.ForeignKey(Evento)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
@@ -67,10 +96,10 @@ class Pedido(models.Model):
     total = models.FloatField(null=True, blank=True)
     codigo = models.CharField(max_length=100, null=True, blank=True)
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
-    envio = models.IntegerField(default=0)
+    envio = models.IntegerField(default=0, choices=ENVIOS)
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
-    estado = models.CharField(max_length=100, default='Creado')
+    estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
 
 class PedidoPago(models.Model):
