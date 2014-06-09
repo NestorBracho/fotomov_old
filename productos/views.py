@@ -275,3 +275,35 @@ def descargar_factura(request, id_factura):
     pedido.factura=True
     pedido.save()
     return response
+
+def editar_productoeventopedido_en_generarpedido(request):
+    #'iden': iden, 'cantidad': cantidad, 'precio': precio, 'estado': estado
+    pedido = ProductoEventoPedido.objects.get(id = request.GET['iden'])
+    if request.GET['task'] == '1':#cargar
+        data = json.dumps({'comentario': pedido.comentario})
+        return HttpResponse(data, mimetype='application/json')
+    elif request.GET['task'] == '2':#modificar
+        macropedido = Pedido.objects.get(num_pedido = pedido.num_pedido)
+        todosLosPedidos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        pedido.cantidad = request.GET['cantidad']
+        pedido.estado = request.GET['estado']
+        pedido.comentario = request.GET['comentario']
+        pedido.save()
+        total = 0
+        for LosPedidos in todosLosPedidos:
+            total = total + (LosPedidos.cantidad*LosPedidos.producto.precio)
+        macropedido.total = total
+        macropedido.save()
+        data = json.dumps({'total': macropedido.total})
+        return HttpResponse(data, mimetype='application/json')
+    elif request.GET['task'] == '3':#Eliminar
+        macropedido = Pedido.objects.get(num_pedido = pedido.num_pedido)
+        todosLosPedidos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        pedido.delete()
+        total = 0
+        for LosPedidos in todosLosPedidos:
+            total = total + (LosPedidos.cantidad*LosPedidos.producto.precio)
+        macropedido.total = total
+        macropedido.save()
+    data = json.dumps({'estado': 'hola'})
+    return HttpResponse(data, mimetype='application/json')
