@@ -23,11 +23,13 @@ class Producto(models.Model):
         return self.nombre
 
 class ProductoEvento(models.Model):
-    evento = models.ForeignKey(Evento)
-    producto = models.ForeignKey(Producto)
     precio = models.FloatField()
     precio_produccion = models.FloatField()
     es_combo = models.BooleanField(default=False)
+
+    #Claves foraneas
+    evento = models.ForeignKey(Evento)
+    producto = models.ForeignKey(Producto)
     def __unicode__(self):
         return self.producto.nombre
 
@@ -38,14 +40,13 @@ class ProductoEventoPedido(models.Model):
     cantidad = models.IntegerField()
     ruta = models.CharField(max_length=10000)
     num_pedido = models.IntegerField()
-    producto = models.ForeignKey(ProductoEvento)
     estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)
 
-
+    #Claves foraneas
+    producto = models.ForeignKey(ProductoEvento)
 
 class Pedido(models.Model):
-    cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
     num_pedido= models.IntegerField()
     fecha_entrega = models.DateField(null=True, blank=True)
@@ -58,17 +59,24 @@ class Pedido(models.Model):
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
     envio = models.IntegerField(default=0)
     fue_pagado = models.BooleanField(default=False)
-    lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100)
     factura = models.BooleanField(default=False)
 
+    #Claves foraneas
+    cliente = models.ForeignKey(Cliente, null=True, blank=True)
+    lote = models.ForeignKey(Lote, null=True, blank=True)
+
 class PedidoPago(models.Model):
     num_pedido = models.IntegerField()
-    tipo_pago = models.ForeignKey(FormaDePago)
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)
 
+    #Claves foraneas
+    tipo_pago = models.ForeignKey(FormaDePago)
+
 class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEvento y Combos
+    cantidad = models.IntegerField()
+
+    #Claves foraneas
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
-    cantidad = models.IntegerField()

@@ -156,7 +156,8 @@ urlpatterns = patterns('',
     url(r'^estadisticas_eventos/(?P<id_macro>\d+)/$', 'estadisticas.views.estadisticas_eventos'),
     url(r'^estadisticas_clientes/$', 'estadisticas.views.estadisticas_clientes'),
     url(r'^estadisticas_staff/$', 'estadisticas.views.estadisticas_staff'),
-    url(r'^estadisticas_graficos/$', 'estadisticas.views.estadisticas_graficos'),
+    url(r'^estadisticas_graficos_macro/$', 'estadisticas.views.estadisticas_graficos_macro'),
+    url(r'^estadisticas_graficos_marca/$', 'estadisticas.views.estadisticas_graficos_marca'),
     
     #Urls de combos y vainas
     url(r'^crear_combos/(?P<evento_id>\d+)/$', 'evento.views.crear_combos'),

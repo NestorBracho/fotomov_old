@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django.db import models
 from estadisticas.models import *
+from marca.models import *
 from staff.models import *
 from django import forms
 import datetime
@@ -42,19 +43,34 @@ class StaffForm(forms.Form):
 
 	privilegios = forms.ChoiceField(choices=choices, required=False)
 
-# Formulario para generar graficos
-class GraficoForm(forms.Form):
-	choicesM = (('','- magnitud -'), ('ingreso','Ingreso'),('egreso','Egreso'),
-	('ganancia','Ganancia'),('cantidad','Cantidad'),)
+# Formulario para generar graficos de macroclientes
+class GraficoMacroclienteForm(forms.Form):
+	choices = (('','- magnitud -'), ('ingresos','Ingresos'),('egresos','Egresos'),
+	('ganancias','Ganancias'),)
 
-	choicesC = (('','- categoria -'), ('marca','Marca'),('submarca','Submarca'),
-	('macro','Macroclientes'),)
-	
-	choicesR = (('','- registro -'), ('0',''))
+	macroclientes = MacroCliente.objects.all()
 
-	magnitud = forms.ChoiceField(choices=choicesM, required=False)
+	choicesM = []
+	choicesM.append(('','- macrocliente -'))
+	for macro in macroclientes:
+		choicesM.append((macro.id, macro.nombre))
 
-	categoria = forms.ChoiceField(choices=choicesC, required=False, widget=forms.Select(attrs={'disabled':'true'}))
+	magnitud = forms.ChoiceField(choices=choices, required=False)
 
-	registro = forms.ChoiceField(choices=choicesR, required=False, widget=forms.Select(attrs={'disabled':'true'}))
+	macrocliente = forms.ChoiceField(choices=choicesM, required=False)
 
+# Formilario para generar graficos de marcas
+class GraficoMarcaForm(forms.Form):
+	choices = (('','- magnitud -'), ('ingresos','Ingresos'),('egresos','Egresos'),
+	('ganancias','Ganancias'),)
+
+	marcas = Marca.objects.all()
+
+	choicesM = []
+	choicesM.append(('','- marca -'))
+	for marca in marcas:
+		choicesM.append((marca.id, marca.nombre))
+
+	magnitud = forms.ChoiceField(choices=choices, required=False)
+
+	marca = forms.ChoiceField(choices=choicesM, required=False)

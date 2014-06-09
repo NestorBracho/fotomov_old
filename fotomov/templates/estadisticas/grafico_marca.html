@@ -1,7 +1,7 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
 {% block titulo %}
-       Gr&aacute;fico Macrocliente
+       Gr&aacute;fico Marca
 {% endblock %}
 {% block seccion-contenido %}
 	<div class="row">
@@ -9,7 +9,7 @@
 			{% csrf_token %}
 
 			{{graficoForm.magnitud | bootstrap}}
-			{{graficoForm.macrocliente | bootstrap}}
+			{{graficoForm.marca | bootstrap}}
 
 			<input type="submit" name="submit-grafico" id="submit-grafico" value="Generar Grafico" class="btn btn-primary">
 		</form>
