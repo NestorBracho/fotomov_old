@@ -481,8 +481,13 @@ def grafico_macro(magnitud, id_macro):
 	#Verificacion del caso para ingresos
 	if magnitud == 'ingresos':
 
-		#Extraccion de datos de los eventos y funciones	
-		eventos = Evento.objects.filter(macrocliente=macro)
+		#Extraccion de datos de los eventos y funciones
+		try:
+			eventos = Evento.objects.filter(macrocliente=macro)
+		except:
+			error = ''
+
+		print eventos
 		for evento in eventos:
 
 			#Meses de cada magnitud

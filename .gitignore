@@ -1,3 +1,4 @@
 *.pyc
 *.pyo
 fotomov/settings.py
+fotomov/static/fixtures/

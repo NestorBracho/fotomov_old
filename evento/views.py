@@ -227,19 +227,13 @@ def agregar_productos(request,id_evento):
                 producto_evento.proveedor = proveedor
                 producto_evento.save()
             except:
-<<<<<<< HEAD
-                producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
-        return HttpResponseRedirect('/listar_evento/2')
-    print lista
-    return render_to_response('evento/agregar_productos.html', {'productos': lista}, context_instance=RequestContext(request))
-=======
+
                 producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, proveedor=proveedor, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         if "combos" in request.POST:
             return HttpResponseRedirect('/listar_combos/'+id_evento+'/')
         else:
             return HttpResponseRedirect('/listar_evento/2')
     return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento, 'proveedores': proveedores}, context_instance=RequestContext(request))
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c
 
 def casilla_administrativa(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
@@ -585,44 +579,6 @@ def convocar_usuario_a_evento(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
-<<<<<<< HEAD
-def nuevo_tipo_de_evento(request, creado):
-    tipo_eventos = Tipos_Eventos.objects.all()
-    staff = Privilegios.objects.filter(valor__lt = 6)
-    prelaciones = []
-    if(request.method == 'POST'):
-        formulario = TiposEventoForm(request.POST)
-        if(formulario.is_valid()):
-            tipoE = formulario.save()
-            tareas = int(request.POST['tareas'])
-            for tarea in range(1, tareas+1):
-                nom = request.POST['nom-'+str(tarea)]
-                desc = request.POST['desc-'+str(tarea)]
-                staffneed = request.POST['select-staff-'+str(tarea)]
-                dias = request.POST['dias-'+str(tarea)]
-                aod = request.POST['aod-'+str(tarea)]
-                prel = request.POST['prel-'+str(tarea)]
-                if aod == 'False':
-                    dias = int(dias)*(-1)
-                print staffneed
-                TTE = TareaTipoEvento.objects.create(asignado = Privilegios.objects.get(id = staffneed), nombre = nom, tarea = desc, tipo_evento = tipoE, dias = dias, id_aux = str(tarea))
-                if prel != '0':
-                    aux = str(tarea)+"-"+request.POST['prel-'+str(tarea)]
-                    prelaciones.append(aux)
-            for prelacion in prelaciones:
-                aux = prelacion.split('-')
-                tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
-                tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
-                PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tipoE)
-            for tarea in range(1, tareas+1):
-                TareaAux = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = str(tarea))
-                TareaAux.id_aux = None
-                TareaAux.save()
-            return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
-    else:
-        formulario = TiposEventoForm()
-    return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos':tipo_eventos, 'staff':staff, 'creado':creado}, context_instance=RequestContext(request))
-=======
 def nuevo_tipo_de_evento(request, editado):
     tipo_eventos = Tipos_Eventos.objects.all().exclude(id=1)
     staff = Privilegios.objects.filter(valor__lt = 6)
@@ -691,7 +647,6 @@ def nuevo_tipo_de_evento(request, editado):
             formulario = TiposEventoForm(initial={"nombre": tEvento.nombre})
         return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado, 'tipoEvento': tEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
     return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado}, context_instance=RequestContext(request))
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c
 
 def nueva_pauta(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
@@ -1015,12 +970,9 @@ def eliminar_items(request, id_item):
 
 def listar_items(request, creado):
     items = Items.objects.all()
-<<<<<<< HEAD
-    return render_to_response('evento/listar_items.html', {'items': items}, context_instance=RequestContext(request))
-=======
+
     return render_to_response('evento/listar_items.html', {'items': items, 'creado': creado}, context_instance=RequestContext(request))
 
 def asignar_item_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     return render_to_response('evento/asignar_item_staff.html', {'evento': evento}, context_instance=RequestContext(request))
->>>>>>> 345b9847b0bcf7fe2401a9f1ca266f8ba7d64830
