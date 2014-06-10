@@ -168,6 +168,7 @@ urlpatterns = patterns('',
     url(r'^editar_item/(?P<id_item>\d+)/$', 'evento.views.editar_item'),
     url(r'^asignar_item_staff/(?P<id_evento>\d+)/$', 'evento.views.asignar_item_staff'),
     url(r'^traer_cliente_evento_ajax', 'clientes.views.traer_cliente_evento'),
+    url(r'^enviar_correo_convocados/$', 'evento.views.enviar_correo_convocados'),
 
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),

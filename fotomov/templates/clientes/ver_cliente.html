@@ -68,20 +68,19 @@
 	<div class="panel-heading">
         <h4>Eventos</h4>
     </div>
+	<div class="panel-body">
     {%for evento in eventos%}
-	    <div class="panel-body">
-	        <div class="row">
-			    <div class="col-xs-12 col-md-5">
-			   		{{evento.nombre}}
-			    </div>
-			    <div class="col-xs-12 col-md-7">
-			    	{{evento.descripcion}}
-			    </div>
-		    </div>
-		    </div>
-	    </div>
+
+	    <div class="row">
+		    <div class="col-xs-12 col-md-5">
+			    {{evento.nombre}}
+			</div>
+			<div class="col-xs-12 col-md-7">
+			    {{evento.descripcion}}
+			</div>
+		</div>
 	{%endfor%}
-</div>
+    </div>
 </div>
     <div class="row">
         <button class="btn btn-default">Agregar Pedido</button>

@@ -16,6 +16,9 @@ class Items(models.Model):
 class ItemsPrestado(models.Model):
     usuario = models.ForeignKey(User)
     item = models.ForeignKey(Items)
+    devuelto = models.BooleanField(default=False)
+    estado = models.CharField(max_length=200)
+    evento = models.ForeignKey(Evento)
 
 class FormaDePago(models.Model):
     nombre = models.CharField(max_length=100)

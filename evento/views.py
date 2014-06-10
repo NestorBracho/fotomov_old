@@ -30,18 +30,13 @@ def nuevo_evento(request):
     direcciones = obtener_direcciones()
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
-        print "antes del valid"
         if formulario.is_valid():
-            print "despues del valid"
             tipo_cliente = request.POST.get('seleccionar_tipo')
-            print tipo_cliente
             dias = request.POST.getlist('dias')
-            print "cantidad de dias"
-            if 0 == len(dias):
+            if len(dias) <= 0:
                 mensaje_dias = 1
                 return render_to_response('evento/nuevo_evento.html', {'formulario': formulario,
-                                                                       'gastos': gastos_predeterminados,
-                                                                       'direcciones': direcciones, 'mensaje_dia': mensaje_dias}, context_instance = RequestContext(request))
+                                                                       'gastos': gastos_predeterminados, 'direcciones': direcciones, 'mensaje_dias': mensaje_dias}, context_instance = RequestContext(request))
             entrega_final = formulario.cleaned_data['fecha_entrega']
             #print fecha_entrega
             #entrega_split = str(fecha_entrega).split('-')
@@ -976,3 +971,22 @@ def listar_items(request, creado):
 def asignar_item_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     return render_to_response('evento/asignar_item_staff.html', {'evento': evento}, context_instance=RequestContext(request))
+
+def enviar_correo_convocados(request):
+    evento=Evento.objects.get(id = request.GET['evento'])
+    funciones = Funcion.objects.filter(evento = evento)
+    aux=[]
+    usuarios=[]
+    for funcion in funciones:
+        aux.append(AsistenciaStaffFuncion.objects.filter(funcion= funcion, fue_convocado=True))
+    for au in aux:
+        for a in au:
+            usuarios.append(a.usuario)
+    correos = []
+    for usuario in usuarios:
+        correos.append(usuario.email)
+    mensaje = request.GET['mail']
+    if mensaje != '':
+        send_mail('[FotoMov] Convocatoria de staff para evento.', mensaje, '', correos, fail_silently=False)
+    data = json.dumps({'nombre': ''})
+    return HttpResponse(data, mimetype='application/json')
