@@ -7,6 +7,16 @@
 Crear combo
 {% endblock %}
 {% block seccion-contenido %}
+{% if messages %}
+    {% for message in messages %}
+        <div id="mensaje" class="alert alert-{{ message.tags }}">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+          </button>
+          {{ message | safe }}
+        </div>
+      {% endfor %}
+{% endif %}
 <div class="col-md-12" style="margin-bottom: 10px"><div class="pull-left"><a href="/listar_combos/{{ iden }}/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Combos</a></div></div>
 <form method="POST" id="combos" action="" enctype="multipart/form-data" >{% csrf_token %}
     <div class="col-md-12">
@@ -34,7 +44,7 @@ Crear combo
             <div class="form-group">
                 <label class="control-label " for="id_costo_del_combo">
 
-                    Costo del combo (Bs.)
+                    Precio del combo (Bs.)
 
                 </label>
                 <div class=" ">
@@ -52,6 +62,7 @@ Crear combo
                         <th>Selec.</th>
                         <th>Producto</th>
                         <th>Costo (Bs.)</th>
+                        <th>Precio (Bs.)</th>
                         <th>Cantidad</th>
                     </thead>
                     {% for producto in productos %}
@@ -59,6 +70,7 @@ Crear combo
                             <td><input id="{{ producto.id }}-check" class="form-control check" type="checkbox" value="{{ producto.id }}" name="seleccionados"> </td>
                             <td>{{ producto.producto.nombre }}</td>
                             <td><span id="{{ producto.id }}-precio" class="costo">{{ producto.precio_produccion }}</span></td>
+                            <td><span class="costo">{{ producto.precio }}</span></td>
                             <td><input id="{{ producto.id }}-cantidad" type="text" onkeypress="return numero(event)" value="1" name="{{ producto.id }}-cantidad" class="spinner form-control" style="width: 50px"></td>
                         </tr>
                     {% empty %}
@@ -74,6 +86,19 @@ Crear combo
 </form>
 {% endblock %}
 {% block js %}
+
+{% if messages %}
+<script type="text/javascript">
+
+    setTimeout(function(){
+
+        $("#mensaje").fadeOut();
+
+    },15000);
+
+</script>
+{% endif %}
+
 <script type="text/javascript">
 
 $(".spinner").spinner({min: 1, stop: function(event, ui){
@@ -114,6 +139,12 @@ $(".check").change(function(){
     }else{
 
         $("#id_costo_del_combo").val(parseFloat($("#id_costo_del_combo").val())-parseFloat((parseFloat($("#"+iden+"-precio").html())*$("#"+iden+"-cantidad").val())));
+
+        if($("#id_costo_del_combo").val() < 0){
+
+            $("#id_costo_del_combo").val(0);
+
+        }
 
     }
 

@@ -2,6 +2,7 @@ from django.db import models
 from evento.models import Funcion
 from django.contrib.auth.models import User
 from productos.models import *
+from evento.models import Evento
 
 class direccionFuncion(models.Model):
     funcion = models.ForeignKey(Funcion)
@@ -27,6 +28,7 @@ class cliente_aux(models.Model):
         return self.nombres+" "+self.apellidos
 
 class pedido_aux(models.Model):
+    evento =  models.ForeignKey(Evento)
     cliente = models.ForeignKey(cliente_aux, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
     num_pedido= models.IntegerField()

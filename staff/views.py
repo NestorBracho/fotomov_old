@@ -59,9 +59,9 @@ def ingresar(request):
 		login(request, acceso)
 		return HttpResponseRedirect('/escritorio')
 	    else:
-		return render_to_response('noactivo.html', context_instance=RequestContext(request))
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 	  else:
-	    return render_to_response('nousuario.html', context_instance=RequestContext(request))
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
     else:
 	formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))

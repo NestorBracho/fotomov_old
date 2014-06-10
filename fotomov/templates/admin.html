@@ -54,54 +54,11 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i> Mensajes <i class="fa fa-caret-down"></i>
+                <li>
+                    <a  href="/crear_notificacion/0"">
+                        <i class="fa fa-microphone fa-fw"></i>Nueva Conversacion <i class="fa fa-plus fa-fw"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>Cristina Yepez</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Termina mi página...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>Cristina Yepez</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>Pedro Perez</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Todos los mensajes</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
+
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
@@ -272,16 +229,32 @@
                                 <a href="/listar_macroclientes/0"><i class="fa fa-list-ul fa-fw"></i>Lista de Macroclientes</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-microphone fa-fw"></i> Registrar conversaci&oacute;n</a>
+                                <a href="/crear_notificacion/2"><i class="fa fa-microphone fa-fw"></i> Registrar conversaci&oacute;n</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-folder-open fa-fw"></i> Historial de conversaci&oacute;n</a>
+                                <a href="/listar_notificaciones_macroclientes"><i class="fa fa-folder-open fa-fw"></i> Historial de conversaci&oacute;n</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
                     <li id="menu-clientes" >
-                        <a href="/listar_clientes/"><i class="fa fa-male fa-fw"></i> Clientes</a>
+                        <a href="#"><i class="fa fa-male fa-fw"></i> Clientes<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/nuevo_cliente/"><i class="fa fa-plus fa-fw"></i>Nuevo Cliente</a>
+                            </li>
+                            <li>
+                                <a href="/listar_clientes/0"><i class="fa fa-list-ul fa-fw"></i>Lista de clientes</a>
+                            </li>
+                            <li>
+                                <a href="/crear_notificacion/1"><i class="fa fa-microphone fa-fw"></i> Registrar conversaci&oacute;n</a>
+                            </li>
+                            <li>
+                                <a href="/listar_notificaciones_clientes"><i class="fa fa-folder-open fa-fw"></i> Historial de conversaci&oacute;n</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+
                     </li>
                     <li id="menu-eventos" >
                         <a href="#"><i class="fa fa-camera fa-fw"></i> Eventos<span class="fa arrow"></span></a>
@@ -370,7 +343,10 @@
                                 <a href="/listar_pedidos_pendientes">Pedidos pendientes</a>
                             </li>
                             <li>
-                                <a href="#">Pagos Pendientes</a>
+                                <a href="/listar_pedidos_sin_pagar">Pagos Pendientes</a>
+                            </li>
+                            <li>
+                                <a href="/crear_pedidos_indoor/1/1/NoneNext/urlseparador/NoneValue/">Crear pedido</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -383,6 +359,9 @@
                     <li id="menu-productos" >
                         <a href="#"><i class="fa fa-tags"></i> Productos<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/agregar_productos/1">Venta general</a>
+                            </li>
                             <li>
                                 <a href="/listar_producto/0">Listar Productos</a>
                             </li>

@@ -2,10 +2,12 @@ from django.forms import ModelForm
 from django.db import models
 from evento.models import *
 from clientes.models  import *
+from productos.models import Items, ItemsPrestado
 from django import forms
 
 class EventoForm(forms.ModelForm):
-    macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all())
+    macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all().exclude(id=1))
+    tipo = forms.ModelChoiceField(queryset=Tipos_Eventos.objects.all().exclude(id=1))
     class Meta:
         model = Evento
         exclude = ['locacion', 'encargado', 'sede']
@@ -28,3 +30,6 @@ class CorreoForm(forms.Form):
     funcion = forms.CharField(max_length=12, widget=forms.TextInput(attrs={'type': 'hidden', 'id':'funcion'}))
     staff = forms.CharField(max_length=12, widget=forms.TextInput(attrs={'type': 'hidden', 'id':'staff'}))
 
+class NuevoItemForm(forms.Form):
+    class Meta:
+        model = Items

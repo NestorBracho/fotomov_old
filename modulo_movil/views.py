@@ -27,9 +27,12 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-# from escpos import *
+from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
+from unicodedata import normalize
+from modulo_movil.forms import *
+
 
 def ingresar(request):
     if request.method=='POST':
@@ -41,7 +44,7 @@ def ingresar(request):
 	  if acceso is not None:
 	    if acceso.is_active:
 		login(request, acceso)
-		return HttpResponseRedirect('/seleccionar_evento_caja')
+		return HttpResponseRedirect('/seleccionar_evento')
 	    else:
 		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 	  else:
@@ -69,7 +72,24 @@ def ingresar_vendedor(request):
 	formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
-
+def ingresar_caja(request):
+    if request.method=='POST':
+	formulario = AuthenticationForm(request.POST)
+	if formulario.is_valid:
+	  usuario = request.POST['username']
+	  clave = request.POST['password']
+	  acceso = authenticate(username = usuario, password = clave)
+	  if acceso is not None:
+	    if acceso.is_active:
+		login(request, acceso)
+		return HttpResponseRedirect('/seleccionar_evento_caja')
+	    else:
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+	  else:
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    else:
+	formulario = AuthenticationForm()
+    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 def configurar_db(request):
     return render_to_response('modulo_movil/configurar_db.html', {}, context_instance=RequestContext(request))
@@ -133,7 +153,7 @@ def actualizar_datos():
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             pass
         else:
-            Pedido.objects.create(cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
+            Pedido.objects.create(evento=pedido.evento, cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
                               envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado)
@@ -187,7 +207,7 @@ def importar_csv_evento(request):
                                 pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
                                                                id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
                                                                razon_social=row[7], total=row[8], direccion_entrega=row[9],
-                                                               envio=row[10], fue_pagado=row[11], estado=row[13])
+                                                               envio=row[10], fue_pagado=row[11], estado=row[13], evento=Evento.objects.get(id=row[14]))
                             except:
                                 pass
                             if row[0] == '!-endpedido-!':
@@ -346,7 +366,7 @@ def exportar_csv_evento(request):
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
                         pedido.total, pedido.direccion_entrega, pedido.envio,
-                        pedido.fue_pagado, pedido.lote, pedido.estado])
+                        pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id])
 
     writer.writerow(['!-endpedido-!'])
 
@@ -379,7 +399,6 @@ def selecccionar_direccion(request):
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
     try:
-        print "voyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
         call_command('syncdb', interactive = False)
     except:
         pass
@@ -396,6 +415,8 @@ def selecccionar_direccion(request):
 def seleccionar_evento(request):
     direcciones = Direccion.objects.all()
     eventos = []
+    if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
         funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
         if funciones_hoy:
@@ -426,7 +447,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
-            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido, evento=Evento.objects.get(id=id_evento)))
         lista_agregados = []
         productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
         for agregado in productos_pedidos:
@@ -490,7 +511,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
-                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
     except:
         print "exept************************************************************************************"
         next = "NoneNext"
@@ -505,7 +526,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
-            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido))
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido, evento=Evento.objects.get(id=id_evento)))
         lista_agregados = []
         productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
         for agregado in productos_pedidos:
@@ -573,7 +594,170 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
-                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion}, context_instance=RequestContext(request))
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def crear_pedidos_indoor(request, id_evento, id_funcion, next, actual):
+    try:
+        evento = Evento.objects.get(id=id_evento)
+        funcion_aux = Funcion.objects.get(id=id_funcion)
+        int_dia = date_to_int(funcion_aux.dia)
+        if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user)
+        else:
+            timestamp = obtener_timestamp()
+            numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
+            int_numero_pedido = int(numero_pedido)
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido, evento=Evento.objects.get(id=id_evento)))
+        lista_agregados = []
+        productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
+        for agregado in productos_pedidos:
+            lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
+        funciones = Funcion.objects.filter(evento=evento)
+        separado = request.path.split('urlseparador')
+        year = str(date.today().year)
+        if actual == "NoneValue":
+            print "NoneValue"
+            current = dir_actual.directorio
+        elif actual == "ir":
+            split_auxiliar = next.split(" ")
+            print len(split_auxiliar)
+            if len(split_auxiliar) > 1:
+                print "entre"
+                #i=0
+                #concatenar = ""
+                #while i < len(split_auxiliar) - 1:
+                #    concatenar = concatenar + split_auxiliar[i] + "\"
+                #    i = i + 1
+                #next = concatenar
+                print "el nuevo next es =" + next
+            auxiliar = dir_actual.directorio
+            dir_actual.directorio = auxiliar + next + "/"
+            current = dir_actual.directorio
+        elif actual == "back":
+            auxiliar = dir_actual.directorio.split("/")
+            i = 0
+            print "antes del while"
+            concatenar = ""
+            while i < len(auxiliar) - 2:
+                if i == 0:
+                    concatenar = concatenar + auxiliar[i]
+                else:
+                    concatenar = concatenar + "/" + auxiliar[i]
+                print auxiliar[i]
+                i= i + 1
+            dir_actual.directorio = concatenar + "/"
+
+            current = dir_actual.directorio
+        else:
+            print "estoy en el else"
+            current = settings.MEDIA_ROOT + "/eventos/" + year + "" + separado[1]
+            print "sali del else"
+        print "aqui va el current"
+        print current
+        short_current = current.split("fotomov_imagenes")[1]
+        print "aqui va el short"
+        print short_current
+        lista_imagenes = []
+        imagenes = [ f for f in listdir(current) if isfile(join(current,f)) ]
+        for imagen in imagenes:
+            dividir_url = imagen.split("fotomov_imagenes")
+        directorios = [ f for f in listdir(current) if isdir(join(current,f)) ]
+        print imagenes
+        print directorios
+        if request.method == 'POST':
+            pass
+        productos = ProductoEvento.objects.filter(evento=evento, es_combo=False)
+        dir_actual.save()
+        return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
+                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados,
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
+    except:
+        print "exept************************************************************************************"
+        next = "NoneNext"
+        actual = "NoneValue"
+        evento = Evento.objects.get(id=id_evento)
+        funcion_aux = Funcion.objects.get(id=id_funcion)
+        int_dia = date_to_int(funcion_aux.dia)
+        #print directorio_actual.objects.filter(usuario = request.user)
+        if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user)
+        else:
+            timestamp = obtener_timestamp()
+            numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
+            int_numero_pedido = int(numero_pedido)
+            dir_actual = directorio_actual.objects.create(usuario=request.user, directorio = settings.MEDIA_ROOT + "/eventos/", pedido=Pedido.objects.create(num_pedido=int_numero_pedido, evento=Evento.objects.get(id=id_evento)))
+        lista_agregados = []
+        productos_pedidos = ProductoEventoPedido.objects.filter(num_pedido=dir_actual.pedido.num_pedido)
+        for agregado in productos_pedidos:
+            lista_agregados.append((agregado, agregado.ruta.split('/')[-1]))
+        funciones = Funcion.objects.filter(evento=evento)
+        generar_rutas(id_evento)
+        print "aqui"
+        print dir_actual.directorio
+        separado = request.path.split('urlseparador')
+        print separado
+        year = str(date.today().year)
+        if actual == "NoneValue":
+            print "NoneValue"
+            current = dir_actual.directorio
+        elif actual == "ir":
+            split_auxiliar = next.split(" ")
+            print len(split_auxiliar)
+            if len(split_auxiliar) > 1:
+                print "entre"
+                #i=0
+                #concatenar = ""
+                #while i < len(split_auxiliar) - 1:
+                #    concatenar = concatenar + split_auxiliar[i] + "\"
+                #    i = i + 1
+                #next = concatenar
+                print "el nuevo next es =" + next
+            auxiliar = dir_actual.directorio
+            dir_actual.directorio = auxiliar + next + "/"
+
+            current = dir_actual.directorio
+        elif actual == "back":
+            auxiliar = dir_actual.directorio.split("/")
+            i = 0
+            print "antes del while"
+            concatenar = ""
+            while i < len(auxiliar) - 2:
+                if i == 0:
+                    concatenar = concatenar + auxiliar[i]
+                else:
+                    concatenar = concatenar + "/" + auxiliar[i]
+                print auxiliar[i]
+                i= i + 1
+            dir_actual.directorio = concatenar + "/"
+            dir_actual.save()
+            current = dir_actual.directorio
+        else:
+            print "estoy en el else"
+            current = settings.MEDIA_ROOT + "/eventos/" + year + "" + separado[1]
+            print "sali del else"
+        print "aqui va el current"
+        print current
+        short_current = current.split("fotomov_imagenes")[1]
+        print "aqui va el short"
+        print short_current
+        lista_imagenes = []
+        imagenes = [ f for f in listdir(current) if isfile(join(current,f)) ]
+        for imagen in imagenes:
+            dividir_url = imagen.split("fotomov_imagenes")
+        directorios = [ f for f in listdir(current) if isdir(join(current,f)) ]
+        print imagenes
+        print directorios
+        if request.method == 'POST':
+            pass
+        productos = ProductoEvento.objects.filter(evento=evento, es_combo=False)
+        dir_actual.save()
+        return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
+                                                                  'short_current': short_current, 'productos_pedidos': lista_agregados,
+                                                                  'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
+
+
+
 
 def generar_rutas(id_evento):
     lista = []
@@ -649,23 +833,23 @@ def generar_lote(request):
                 if pedido.lote == None:
                     pedido.lote = lote
                     pedido.save()
-                productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-                for producto in productos:
-                    if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                        os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                    for i in range(producto.cantidad):
-                        auxr = producto.ruta.split('/')
-                        auxr = auxr[(len(auxr)-1)]
-                        auxr = auxr.split('.')
-                        auxr = auxr[0]
-                        try:
-                            shutil.copy(producto.ruta, ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-                        except:
-                            pass
-                pep.estado = "Edicion"
-                pep.save()
-            pedido.estado = "Edicion"
-            pedido.save()
+            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+            for producto in productos:
+                if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                    os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
+                for i in range(producto.cantidad):
+                    auxr = producto.ruta.split('/')
+                    auxr = auxr[(len(auxr)-1)]
+                    auxr = auxr.split('.')
+                    auxr = auxr[0]
+                    try:
+                        shutil.copy(normalize('NFKD', producto.ruta).encode('ascii', 'ignore') + ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+                    except:
+                        pass
+            pep.estado = "Edicion"
+            pep.save()
+        pedido.estado = "Edicion"
+        pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
 def generar_pedido(request, pedido, cedula, id_evento):
@@ -707,6 +891,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
             if formulario_pagos.is_valid():
                 pass
             else:
+
                 mensaje = {"error":1,"text": "Todos los campos del metodo de pago deben estar llenos"}
                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
@@ -718,7 +903,10 @@ def generar_pedido(request, pedido, cedula, id_evento):
             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
             pagado = True
             for form in formulario_pagos:
-                tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                try:
+                    tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
+                except:
+                    continue
                 if not tipo_pago.pagado:
                     pagado = False
                 monto = form.cleaned_data['monto']
@@ -765,9 +953,13 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 for pep in peps:
                     pep.estado = 'Pagado'
                     pep.save()
-            #imprimir_ticket(pedido_nuevo)
+            try:
+                imprimir_ticket(pedido_nuevo)
+            except:
+                print "impresora desconectada"
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
+
         formulario = PedidoCajaForm(instance=pedido_actual)
     return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
@@ -869,6 +1061,7 @@ def eliminar_productoeventopedido_en_generarpedido(request):
 
 @login_required(login_url='/')
 def generar_ticket(request, id_evento, id_funcion):
+    evento = Evento.objects.get(id=id_evento)
     info = directorio_actual.objects.get(usuario= request.user)
     funcion_aux = Funcion.objects.get(id=id_funcion)
     int_dia = date_to_int(funcion_aux.dia)
@@ -882,7 +1075,7 @@ def generar_ticket(request, id_evento, id_funcion):
             timestamp = obtener_timestamp()
             numero_pedido = str(id_evento) + str(funcion_aux.direccion.id) + int_dia + str(timestamp)
             int_numero_pedido = int(numero_pedido)
-            new = Pedido.objects.create(num_pedido=int_numero_pedido)
+            new = Pedido.objects.create(num_pedido=int_numero_pedido, evento=evento)
             new.save()
             info.pedido = new
             info.save()
@@ -908,9 +1101,9 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         index = False
 
         try:
-            index = tempProd.index([producto.producto, producto.producto.id])
+            index = tempProd.index([producto.producto, producto.producto.id, producto.producto.precio])
         except:
-            tempProd.append([producto.producto, producto.producto.id])
+            tempProd.append([producto.producto, producto.producto.id, producto.producto.precio])
             tempCant.append(producto.cantidad)
         else:
             tempCant[index] = int(tempCant[index])+int(producto.cantidad)
@@ -924,7 +1117,7 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         for prodCombo in productosCombo:
 
             try:
-                index = tempProd.index([prodCombo.producto, prodCombo.producto.id])
+                index = tempProd.index([prodCombo.producto, prodCombo.producto.id, producto.producto.precio])
             except:
                 esAplicable = False
                 break
@@ -944,3 +1137,21 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
         for a in au:
             productoCombos.append(a)
     return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles, 'productoCombos': productoCombos, 'dir_actual': info.pedido.id, 'evento': id_evento, 'funcion': id_funcion}, context_instance=RequestContext(request))
+
+def editar_pedido(request, pedido_id):
+    pedido = Pedido.objects.get(id=pedido_id)
+    productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+    if request.method == 'POST':
+        form = PedidoReducidoForm(request.POST, instance = pedido)
+        if form.is_valid():
+            pedido = form.save()
+            pedido.save()
+            return HttpResponseRedirect('/ver_pedido/'+pedido_id+'/')
+    else :
+        form = PedidoReducidoForm(instance = pedido)
+    return render_to_response('modulo_movil/editar_pedido.html', {'pedido': pedido, 'form': form, 'productos': productos}, context_instance=RequestContext(request))
+
+def eliminar_pedido(request, pedido):
+    pedido = Pedido.objects.get(id = pedido)
+    pedido.delete()
+    return HttpResponseRedirect('/listar_pedidos/')

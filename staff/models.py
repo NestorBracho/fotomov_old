@@ -50,13 +50,6 @@ class TipoStaff(models.Model):
     def __unicode__(self):
         return self.nombre
 
-class Notificacion(models.Model):
-    categoria = models.TextField()
-    mensaje = models.TextField()
-    fecha_creado = models.DateField(auto_now=True)
-    hora = models.DateTimeField(auto_now=True)
-    realizado = models.BooleanField()
-    fecha_asignacion = models.DateField()
 
 class StaffPorFuncion(models.Model):
     tipo = models.ForeignKey(Privilegios)

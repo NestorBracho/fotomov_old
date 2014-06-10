@@ -463,9 +463,8 @@ function deleteAlert(id, row){
 }
 
 $("#addressModal").on("shown.bs.modal",function(){
-        google.maps.event.trigger(map,'resize');
-
-    })
+        google.maps.event.trigger(map, 'resize')
+})
 
 
 </script>

@@ -5,12 +5,21 @@ Lista de notificaciones
 {% endblock %}
 {% block seccion-contenido%}
 <table class="table  table-hover" id="content">
-    <thead><th>Nuevo</th><th>Notificación</th><th>fecha</th><th></th></thead>
+    <thead>
+        <th>Nuevo</th>
+        <th>Asociado a:</th>
+        <th>Notificacion</th>
+        <th>fecha</th>
+        <th>Tipo</th>
+        <th></th>
+    </thead>
     {% for notificacion in notificaciones %}
-    <tr {% if notificacion.fue_revisado == False %} class= "alert-info"{% endif %} id="{{notificacion.id}}">
+    <tr {% if notificacion.fue_revisado == False %}{% if notificacion.tipo == "N/A" %} class= "alert-info"{% elif notificacion.tipo == "Queja" %} class="alert-danger" {% else %}class="alert-success"{% endif %}{% endif %} id="{{notificacion.id}}">
         <td onclick="verNoti({{notificacion.id}})" id="{{notificacion.id}}-leido">{% if notificacion.fue_revisado %}<span hidden="true">2</span>{% else %}<i class="fa fa-circle"></i></span><span hidden="true">1</span>{% endif %}</td>
-        <td onclick="verNoti({{notificacion.id}})">{% if notificacion.macro_cliente != None %}{{notificacion.macro_cliente}}{% elif notificacion.cliente != None%}{{notificacion.cliente}}{% else %}Sin cliente asociado{% endif %}</td>
+        <td onclick="verNoti({{notificacion.id}})">{% if notificacion.macro_cliente != None %}{{notificacion.macro_cliente.nombre}}{% elif notificacion.cliente != None%}{{notificacion.cliente}}{% else %}Sin cliente asociado{% endif %}</td>
+        <td>{{ notificacion.notificacion | truncatechars:15 }}</td>
         <td onclick="verNoti({{notificacion.id}})">{{notificacion.creado_fecha}}</td>
+        <td>{{ notificacion.tipo }}</td>
         <td id="{{notificacion.id}}-botones">{% if notificacion.fue_revisado %}<a onclick="eliminarNoti({{notificacion.id}})" class="btn btn-xs btn-danger">Eliminar</a>{% else %}<a onclick="marcarL({{notificacion.id}})" class="btn btn-xs btn-info">Marcar leido</a>{% endif %}</td>
     </tr>
     {% endfor %}

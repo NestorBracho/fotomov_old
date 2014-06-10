@@ -11,6 +11,7 @@ from django.core import serializers
 from productos.models import *
 from productos.forms import *
 from reportlab.pdfgen import canvas
+from django.contrib import messages
 import datetime
 
 def nuevo_producto(request):
@@ -18,7 +19,11 @@ def nuevo_producto(request):
         formulario = ProductoForm(request.POST)
         if formulario.is_valid():
             producto = formulario.save()
-            return HttpResponseRedirect('/listar_producto/1')
+            if "agregar" in request.POST:
+                return HttpResponseRedirect('/listar_producto/1')
+            else:
+                messages.add_message(request, messages.SUCCESS, 'El producto se ha agregado exitosamente.', extra_tags='success')
+                return HttpResponseRedirect('/nuevo_producto/')
     else:
         formulario = ProductoForm()
     return render_to_response('productos/nuevo_producto.html', {'formulario': formulario}, context_instance=RequestContext(request))
@@ -71,22 +76,23 @@ def edicion_lotes(request):
     return render_to_response('productos/edicion_lotes.html', {'edicion': pedidos, 'listos': listos}, context_instance=RequestContext(request))
 
 def edicion_productos(request, pedido):
-    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido = Pedido.objects.get(id = pedido).num_pedido, estado = 'Edicion')
-    pedidos_editados = ProductoEventoPedido.objects.filter(num_pedido = Pedido.objects.get(id = pedido).num_pedido, estado = 'Editado')
-    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id = pedido)}, context_instance=RequestContext(request))
+    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Edicion')
+    pedidos_editados = ProductoEventoPedido.objects.filter(Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Editado') | Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Vale por foto'))
+    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id=pedido)}, context_instance=RequestContext(request))
 
-def cambiar_estado_producto_edicion_a_editado(request):
+
+def cambiar_estado_producto_edicion(request):
     producto = ProductoEventoPedido.objects.get(id = request.GET['iden'])
     pedido = Pedido.objects.get(num_pedido=producto.num_pedido)
     if producto.estado == 'Edicion':
-        producto.estado = 'Editado'
+        producto.estado = request.GET['estado']
         producto.save()
         tProductos = ProductoEventoPedido.objects.filter(num_pedido = producto.num_pedido)
         parcial = 0
         total = 0
         for tProducto in tProductos:
             total = total + 1
-            if tProducto.estado == 'Editado':
+            if tProducto.estado == 'Editado' or tProducto.estado == 'Vale por foto':
                 parcial = parcial + 1
         if parcial == total:
 
@@ -105,7 +111,7 @@ def cambiar_estado_producto_edicion_a_editado(request):
         tProductos = aux2
         for tProducto in tProductos:
             total = total + 1
-            if tProducto.estado == 'Editado':
+            if tProducto.estado == 'Editado' or tProducto.estado == 'Vale por foto':
                 parcial = parcial + 1
         if parcial == total:
             pedido.lote.estado = "Editado"
@@ -213,6 +219,10 @@ def listar_pedidos_pendientes(request):
     pedidos = Pedido.objects.filter(fue_pagado = False)
     return render_to_response('productos/listar_pedidos_pendiente.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
 
+def listar_pedidos_sin_pagar(request):
+    pedidos = Pedido.objects.filter(fue_pagado=False)
+    return render_to_response('productos/listar_pedidos_sin_pagar.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+
 def listar_facturas_pendientes(request):
     pedidos=Pedido.objects.filter(fue_pagado=True, factura=False)
     return render_to_response('productos/listar_facturas_pendientes.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
@@ -265,3 +275,69 @@ def descargar_factura(request, id_factura):
     pedido.factura=True
     pedido.save()
     return response
+
+def editar_productoeventopedido_en_generarpedido(request):
+    #'iden': iden, 'cantidad': cantidad, 'precio': precio, 'estado': estado
+    pedido = ProductoEventoPedido.objects.get(id = request.GET['iden'])
+    if request.GET['task'] == '1':#cargar
+        data = json.dumps({'comentario': pedido.comentario})
+        return HttpResponse(data, mimetype='application/json')
+    elif request.GET['task'] == '2':#modificar
+        macropedido = Pedido.objects.get(num_pedido = pedido.num_pedido)
+        todosLosPedidos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        pedido.cantidad = request.GET['cantidad']
+        pedido.estado = request.GET['estado']
+        pedido.comentario = request.GET['comentario']
+        pedido.save()
+        total = 0
+        for LosPedidos in todosLosPedidos:
+            total = total + (LosPedidos.cantidad*LosPedidos.producto.precio)
+        macropedido.total = total
+        macropedido.save()
+        data = json.dumps({'total': macropedido.total})
+        return HttpResponse(data, mimetype='application/json')
+    elif request.GET['task'] == '3':#Eliminar
+        macropedido = Pedido.objects.get(num_pedido = pedido.num_pedido)
+        todosLosPedidos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        pedido.delete()
+        total = 0
+        for LosPedidos in todosLosPedidos:
+            total = total + (LosPedidos.cantidad*LosPedidos.producto.precio)
+        macropedido.total = total
+        macropedido.save()
+    data = json.dumps({'estado': 'hola'})
+    return HttpResponse(data, mimetype='application/json')
+
+def crear_proveedor(request):
+    if request.method == 'POST':
+        formulario = ProveedorForm(request.POST)
+        if formulario.is_valid():
+            producto = formulario.save()
+            return HttpResponseRedirect('/listar_proveedores/')
+    else:
+        formulario = ProveedorForm()
+    return render_to_response('productos/crear_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render_to_response('productos/listar_proveedores.html', {'proveedores': proveedores}, context_instance=RequestContext(request))
+
+def ver_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    return render_to_response('productos/ver_proveedor.html', {'proveedor': proveedor}, context_instance=RequestContext(request))
+
+def eliminar_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    proveedor.delete()
+    return HttpResponseRedirect('/listar_proveedores/')
+
+def editar_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    if request.method == 'POST':
+        formulario = ProveedorForm(request.POST, instance = proveedor)
+        if formulario.is_valid():
+            producto = formulario.save()
+            return HttpResponseRedirect('/listar_proveedores/')
+    else:
+        formulario = ProveedorForm(instance = proveedor)
+    return render_to_response('productos/editar_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))
