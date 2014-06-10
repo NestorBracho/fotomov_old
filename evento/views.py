@@ -578,8 +578,8 @@ def nuevo_tipo_de_evento(request, editado):
                         prelaciones.append(aux)
                 for prelacion in prelaciones:
                     aux = prelacion.split('-')
-                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
-                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
+                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
+                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
                     PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tipoE)
                 return HttpResponseRedirect('/nuevo_tipo_de_evento/0/')
         else:
@@ -613,8 +613,8 @@ def nuevo_tipo_de_evento(request, editado):
                         prelaciones.append(aux)
                 for prelacion in prelaciones:
                     aux = prelacion.split('-')
-                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[1])
-                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[0])
+                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[1])
+                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[0])
                     PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tEvento)
                 return HttpResponseRedirect('/nuevo_tipo_de_evento/0/')
         else:
