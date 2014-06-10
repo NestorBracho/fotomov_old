@@ -31,7 +31,7 @@ def nuevo_evento(request):
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-
+            tipo_cliente = request.POST.get('seleccionar_tipo')
             dias = request.POST.getlist('dias')
             entrega_final = formulario.cleaned_data['fecha_entrega']
             #print fecha_entrega
