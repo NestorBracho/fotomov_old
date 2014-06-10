@@ -12,7 +12,6 @@ class MacroCliente(models.Model):
     def __unicode__(self):
         return '%s %s' % (self.submarca, self.nombre)  
 
-
 class Encargado(models.Model):
     nombre = models.CharField(max_length=200)
     cedula = models.CharField(max_length=8, blank=True, null=True)

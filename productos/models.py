@@ -38,12 +38,8 @@ class Producto(models.Model):
         return self.nombre
 
 class ProductoEvento(models.Model):
-<<<<<<< HEAD
-=======
-    proveedor = models.ForeignKey(Proveedor)
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c
     precio = models.FloatField()
     precio_produccion = models.FloatField()
     es_combo = models.BooleanField(default=False)
@@ -68,8 +64,7 @@ class ProductoEventoPedido(models.Model):
     producto = models.ForeignKey(ProductoEvento)
 
 class Pedido(models.Model):
-<<<<<<< HEAD
-=======
+
     CREADO = 'Creado'
     PAGADO = 'Pagado'
     EDICION = 'Edicion'
@@ -101,7 +96,6 @@ class Pedido(models.Model):
 
     evento = models.ForeignKey(Evento)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c
     fecha = models.DateField(auto_now=True)
     num_pedido= models.IntegerField()
     fecha_entrega = models.DateField(null=True, blank=True)
@@ -114,12 +108,9 @@ class Pedido(models.Model):
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
     envio = models.IntegerField(default=0, choices=ENVIOS)
     fue_pagado = models.BooleanField(default=False)
-<<<<<<< HEAD
     estado = models.CharField(max_length=100)
-=======
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c
     factura = models.BooleanField(default=False)
 
     #Claves foraneas
@@ -135,14 +126,12 @@ class PedidoPago(models.Model):
     tipo_pago = models.ForeignKey(FormaDePago)
 
 class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEvento y Combos
-<<<<<<< HEAD
+
     cantidad = models.IntegerField()
 
     #Claves foraneas
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
-=======
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c

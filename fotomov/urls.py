@@ -170,7 +170,6 @@ urlpatterns = patterns('',
     url(r'^estadisticas_eventos/(?P<id_macro>\d+)/$', 'estadisticas.views.estadisticas_eventos'),
     url(r'^estadisticas_clientes/$', 'estadisticas.views.estadisticas_clientes'),
     url(r'^estadisticas_staff/$', 'estadisticas.views.estadisticas_staff'),
-<<<<<<< HEAD
     url(r'^estadisticas_graficos_macro/$', 'estadisticas.views.estadisticas_graficos_macro'),
     url(r'^estadisticas_graficos_marca/$', 'estadisticas.views.estadisticas_graficos_marca'),
     
@@ -183,9 +182,7 @@ urlpatterns = patterns('',
     url(r'^editar_combo/(?P<combo_id>\d+)/$', 'evento.views.editar_combo'),
     url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
 
-=======
     url(r'^estadisticas_graficos/$', 'estadisticas.views.estadisticas_graficos'),
->>>>>>> 21cfe1a15151bb66d8616fedac5c64d09bcf860c
     url(r'^ver_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.ver_tipo_evento'),
 
 )
