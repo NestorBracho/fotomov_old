@@ -40,3 +40,7 @@ class PedidoPagoForm(forms.Form):
     tipo_pago = forms.ChoiceField(choices=CHOICES)
     referencia = forms.CharField()
     monto = forms.FloatField(widget=forms.TextInput(attrs={'onkeypress':'return numero_float(event)'}))
+
+class ProveedorForm(forms.ModelForm):
+    class Meta:
+        model = Proveedor

@@ -156,6 +156,11 @@ urlpatterns = patterns('',
     url(r'^editar_pedido/(?P<pedido_id>\d+)/$', 'modulo_movil.views.editar_pedido'),
     url(r'^eliminar_pedido/(?P<pedido>\d+)/$', 'modulo_movil.views.eliminar_pedido'),
     url(r'^editar_productoeventopedido_en_generarpedido/$', 'productos.views.editar_productoeventopedido_en_generarpedido'),
+    url(r'^crear_proveedor/$', 'productos.views.crear_proveedor'),
+    url(r'^listar_proveedores/$', 'productos.views.listar_proveedores'),
+    url(r'^ver_proveedor/(?P<id_proveedor>\d+)/$', 'productos.views.ver_proveedor'),
+    url(r'^eliminar_proveedor/(?P<id_proveedor>\d+)/$', 'productos.views.eliminar_proveedor'),
+    url(r'^editar_proveedor/(?P<id_proveedor>\d+)/$', 'productos.views.editar_proveedor'),
 
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),

@@ -307,3 +307,37 @@ def editar_productoeventopedido_en_generarpedido(request):
         macropedido.save()
     data = json.dumps({'estado': 'hola'})
     return HttpResponse(data, mimetype='application/json')
+
+def crear_proveedor(request):
+    if request.method == 'POST':
+        formulario = ProveedorForm(request.POST)
+        if formulario.is_valid():
+            producto = formulario.save()
+            return HttpResponseRedirect('/listar_proveedores/')
+    else:
+        formulario = ProveedorForm()
+    return render_to_response('productos/crear_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render_to_response('productos/listar_proveedores.html', {'proveedores': proveedores}, context_instance=RequestContext(request))
+
+def ver_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    return render_to_response('productos/ver_proveedor.html', {'proveedor': proveedor}, context_instance=RequestContext(request))
+
+def eliminar_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    proveedor.delete()
+    return HttpResponseRedirect('/listar_proveedores/')
+
+def editar_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    if request.method == 'POST':
+        formulario = ProveedorForm(request.POST, instance = proveedor)
+        if formulario.is_valid():
+            producto = formulario.save()
+            return HttpResponseRedirect('/listar_proveedores/')
+    else:
+        formulario = ProveedorForm(instance = proveedor)
+    return render_to_response('productos/editar_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))

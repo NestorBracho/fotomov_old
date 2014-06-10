@@ -4,6 +4,11 @@ from evento.models import *
 from django.contrib.auth.models import User
 
 
+
+class Proveedor(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=500, null=True, blank=True)
+
 class Items(models.Model):
     item = models.CharField(max_length=100)
     cantidad = models.IntegerField()
@@ -33,6 +38,7 @@ class Producto(models.Model):
         return self.nombre
 
 class ProductoEvento(models.Model):
+    proveedor = models.ForeignKey(Proveedor)
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
@@ -112,4 +118,3 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
-

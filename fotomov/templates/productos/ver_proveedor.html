@@ -1,0 +1,18 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Crear proveedor
+{% endblock %}
+{% block seccion-contenido%}
+<div class="row">
+    <div style="margin-bottom: 15px;" class="col-md-12">
+        <a href="/listar_proveedores/" class="btn btn-default"><i class="fa fa-chevron-left"></i>  Listar proveedores</a>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">{{ proveedor.nombre }}</div>
+    <div class="panel-body">
+        <p>{{ proveedor.descripcion }}</p>
+    </div>
+</div>
+{% endblock %}
