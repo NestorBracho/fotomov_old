@@ -14,23 +14,54 @@ Nuevo Evento
             <h4>Datos del evento</h4>
         </div>
         <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="">Evento de cliente</label>
+                    <input type="radio" id="seleccionar_cliente" name="seleccionar_tipo" value="c" onclick="tipo_cliente()">
+                </div>
+                <div class="col-sm-6">
+                    <label for="seleccionar_macrocliente">Evento de macrocliente</label>
+                    <input type="radio" id="seleccionar_macrocliente" name="seleccionar_tipo" value="m" onclick="tipo_cliente()"/>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
             <div class="col-sm-3">
                 {{ formulario.nombre | bootstrap }}
             </div>
-            <div class="col-sm-3">
-                {{ formulario.macrocliente | bootstrap }}
+            <div id="es_cliente" class="col-sm-9">
+                <div class="col-sm-4">
+                    <label>Cliente</label>
+                    <input id="id_cliente" class="form-control auc-usu" name="cliente">
+                </div>
+                <div class="col-sm-4">
+                    {{ formulario.marcas | bootstrap }}
+                </div>
+                <div class="col-sm-4">
+                    <label>Submarca</label>
+                    <select id="id_submarca" class="form-control" name="submarca">
+                        <option>---------</option>
+                    </select>
+                </div>
+
             </div>
-            <div class="col-sm-3">
-                <label>Sede</label>
-                <select id="id_sede" class="form-control" name="sede">
-                    <option>---------</option>
-                </select>
-            </div>
-            <div class="col-sm-3">
-                <label>Encargado</label>
-                <select id="id_encargado" class="form-control" name="encargado">
-                    <option>---------</option>
-                </select>
+            <div id="es_macrocliente">
+                <div class="col-sm-3">
+                    {{ formulario.macrocliente | bootstrap }}
+                </div>
+                <div class="col-sm-3">
+                    <label>Sede</label>
+                    <select id="id_sede" class="form-control" name="sede">
+                        <option>---------</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label>Encargado</label>
+                    <select id="id_encargado" class="form-control" name="encargado">
+                        <option>---------</option>
+                    </select>
+                </div>
             </div>
             <div class="col-sm-12">
                 {{ formulario.descripcion | bootstrap }}
@@ -51,6 +82,13 @@ Nuevo Evento
     </div>
 </form>
 <div>
+    {% if mensaje_dia %}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
+        Debe haber por lo menos un dia con lugar y funcion!
+    </div>
+
+{% endif %}
     <h4>Días</h4>
     <div>
         <div id="id_dias" name=0></div>
@@ -87,6 +125,8 @@ Nuevo Evento
 // From: http://www.w3schools.com/htmldom/met_table_insertrow.asp
 
 window.onload = function(){
+    $('#es_cliente').hide();
+    document.getElementById('seleccionar_macrocliente').checked = 'true';
     $('#id_fecha_entrega').datepicker({ dateFormat: "yy-mm-dd", minDate: 0 });
     $('#id_input_fecha').datepicker({ dateFormat: "dd-mm-yy", minDate: 0 });
     $('#id_porcentaje_institucion').spinner({ min: 0 });
@@ -100,11 +140,53 @@ window.onload = function(){
         ajax_encargado();
         ajax_sede();
     }
+    if(document.getElementById("id_marcas").value<1){
+        document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+        document.getElementById("id_submarca").disabled = true;
+    }else{
+        ajax_submarca();
+
+    }
+    $(".auc-usu").each(function(){
+        $(this).autocomplete({
+            source: function(request, response){
+                $.get(
+                    '/traer_cliente_evento_ajax/',
+                    {
+                        usu: request.term
+                    },
+                    function(data){
+                        response(data);
+                    }
+                );
+            },
+            focus: function( event, ui ) {
+                $( this ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( this ).val( ui.item.label + "-" + ui.item.desc);
+                $( "[name='f-"+$(this).attr("name")+"']").each(function(){
+                    $(this).attr( "name", $(this).attr('name')+"-"+ui.item.value )
+                });
+
+                return false;
+            }
+        })
+        .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
+                .appendTo( ul );
+        };
+
+    });
 
 }
 
 $('#id_macrocliente').on('change',ajax_encargado);
 $('#id_macrocliente').on('change',ajax_sede);
+ $('#id_macrocliente').on('change',ajax_sede);
+ $('#id_marcas').on('change',ajax_submarca);
 
 $("#dialog").dialog("option", "hide");
 
@@ -149,6 +231,54 @@ function aucomloc(id_input){
 
     });
 }
+
+function tipo_cliente(){
+
+    if (document.getElementById('seleccionar_cliente').checked){
+        $('#es_cliente').show();
+        $('#es_macrocliente').hide();
+    }else{
+
+        $('#es_cliente').hide();
+        $('#es_macrocliente').show();
+    }
+}
+
+function ajax_submarca(){
+
+    var select_marca = $('#id_marcas').val();
+
+    if(select_marca>0){
+        $.ajax({
+
+            beforeSend:function(){
+                document.getElementById('id_submarca').innerHTML = '<option>Cargando...</option>';
+            },
+            data:{'id':select_marca},
+            url:'/submarca_ajax/',
+            type:'get',
+            error:function(a,error,otro){
+                document.getElementById("id_submarca").innerHTML = "<option>"+otro+"</option>";
+            }
+
+        }).done(function(data){
+
+            document.getElementById("id_submarca").disabled = false;
+            document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+            for(var i=0;i<data.length;i++){
+                document.getElementById('id_submarca').innerHTML = document.getElementById('id_submarca').innerHTML+'<option value='+data[i].pk+'>'+data[i].fields.nombre+'</option>';
+            }
+
+        });
+    }else{
+
+        document.getElementById("id_submarca").innerHTML = "<option>---------</option>";
+        document.getElementById("id_submarca").disabled = true;
+
+    }
+
+}
+
 
 function ajax_encargado(){
 
@@ -303,7 +433,6 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
     var tempNombre = parseInt(document.getElementById(main).getAttribute('name'));
     var temp = main.split('.');
     if(document.getElementById(inputid).value!=''){
-        //validaracentos(inputid);
         tempNombre += 1;
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;

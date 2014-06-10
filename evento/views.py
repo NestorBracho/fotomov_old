@@ -16,6 +16,7 @@ from staff.models import *
 from productos.models import *
 from clientes.models import *
 from direcciones.models import *
+from marca.views import Marca, SubMarca
 from direcciones.views import *
 from tareas.models import *
 from modulo_movil.models import *
@@ -37,34 +38,48 @@ def nuevo_evento(request):
             #entrega_split = str(fecha_entrega).split('-')
             #print entrega_split
             #entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
-            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
-            sede = Sede.objects.get(id=request.POST.get('sede'))
-            evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
-                                           porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
-                                           fecha_entrega=entrega_final)
+            print "tipo de cliente para el evento"
+            print request.POST.get('seleccionar_tipo')
+            if tipo_cliente == 'm':
+                encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+                sede = Sede.objects.get(id=request.POST.get('sede'))
+                evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                               porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
+                                               sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
+                                               fecha_entrega=entrega_final, submarca=formulario.cleaned_data['macrocliente'].submarca)
+            else:
+                cliente = str(request.POST.get('cliente')).split('-')
+                print cliente
+                print cliente[1]
+                cliente_evento = Cliente.objects.get(cedula=cliente[1])
+                evento = Evento.objects.create(cliente= cliente_evento, nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                               porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'],
+                                               tipo=formulario.cleaned_data['tipo'], fecha_entrega=entrega_final, submarca=formulario.cleaned_data['submarca'])
             print dias
-            for dia in dias:
-                dia_split = dia.split('-')
-                dia_id = dia_split[0]
-                locaciones = request.POST.getlist("locacion" + "-" + dia_id)
-                for locacion in locaciones:
-                    locacion_split = locacion.split('-')
-                    locacion_id = locacion_split[0]
-                    locacion_valor = locacion_split[1]
-                    locacion_save = Direccion.objects.get(nombre=locacion_valor)
-                    funciones = request.POST.getlist("funcion" + "-" + locacion_id)
-                    for funcion in funciones:
-                        funcion_split = funcion.split('-')
-                        funcion_id = funcion_split[0]
-                        funcion_valor = funcion_split[1]
-                        dia_final = dia_split[3] + "-" + dia_split[2] + "-" + dia_split[1]
-                        calcular_entrega = datetime.datetime(int(dia_split[3]), int(dia_split[2]), int(dia_split[1])) + datetime.timedelta(days=15)
-                        entrega_split = str(calcular_entrega.date()).split('-')
-                        entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
-                        funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
-                        funcion_save.save()
-                        directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.evento.sede.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
+            if len(dias) > 0:
+                for dia in dias:
+                    dia_split = dia.split('-')
+                    dia_id = dia_split[0]
+                    locaciones = request.POST.getlist("locacion" + "-" + dia_id)
+                    for locacion in locaciones:
+                        locacion_split = locacion.split('-')
+                        locacion_id = locacion_split[0]
+                        locacion_valor = locacion_split[1]
+                        locacion_save = Direccion.objects.get(nombre=locacion_valor)
+                        funciones = request.POST.getlist("funcion" + "-" + locacion_id)
+                        for funcion in funciones:
+                            funcion_split = funcion.split('-')
+                            funcion_id = funcion_split[0]
+                            funcion_valor = funcion_split[1]
+                            dia_final = dia_split[3] + "-" + dia_split[2] + "-" + dia_split[1]
+                            calcular_entrega = datetime.datetime(int(dia_split[3]), int(dia_split[2]), int(dia_split[1])) + datetime.timedelta(days=15)
+                            entrega_split = str(calcular_entrega.date()).split('-')
+                            entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
+                            funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
+                            funcion_save.save()
+                            if tipo_cliente == 'm':
+                                directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.evento.sede.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
+
             #Empieza a crear las tareas del evento
             tareas = TareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
             fechas = Funcion.objects.filter(evento=evento).order_by('dia')
@@ -147,6 +162,12 @@ def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
     contacto = Encargado.objects.filter(macrocliente=macroC)
     data = serializers.serialize('json', contacto, fields =('nombre'))
+    return HttpResponse(data, mimetype='application/json')
+
+def submarca_ajax(request):
+    marca = Marca.objects.get(id=request.GET['id'])
+    submarca = SubMarca.objects.filter(marca=marca)
+    data = serializers.serialize('json', submarca, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 
 def sede_ajax(request):
@@ -723,8 +744,12 @@ def editar_evento(request, iden):
             evento.save()
             return HttpResponseRedirect('/listar_evento/2/')
     else:
-        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
-                                         'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
+        if evento.macrocliente != None:
+            formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                             'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
+        else:
+            formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                             'marcas': evento.submarca.marca, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
 
 def editar_funcion(request):
@@ -935,7 +960,7 @@ def editar_item(request, id_item):
             return HttpResponseRedirect('/listar_items/2')
     else:
         formulario = NuevoItemForm(instance=item)
-    return render_to_response('evento/editar_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
+    return render_to_response('evento/nuevo_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
 def eliminar_items(request, id_item):
     item = Items.objects.get(id=id_item)
@@ -944,7 +969,11 @@ def eliminar_items(request, id_item):
 
 def listar_items(request, creado):
     items = Items.objects.all()
-    return render_to_response('evento/listar_items.html', {'items': items}, context_instance=RequestContext(request))
+    return render_to_response('evento/listar_items.html', {'items': items, 'creado': creado}, context_instance=RequestContext(request))
+
+def asignar_item_staff(request, id_evento):
+    evento = Evento.objects.get(id=id_evento)
+    return render_to_response('evento/asignar_item_staff.html', {'evento': evento}, context_instance=RequestContext(request))
 
 def enviar_correo_convocados(request):
     evento=Evento.objects.get(id = request.GET['evento'])

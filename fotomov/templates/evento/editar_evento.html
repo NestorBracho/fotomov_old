@@ -17,6 +17,7 @@ Editar evento: {{ evento.nombre }}
             <div class="col-sm-3">
                 {{ formulario.nombre | bootstrap }}
             </div>
+            {% if evento.cliente == None %}
             <div class="col-sm-3">
                 {{ formulario.macrocliente | bootstrap }}
             </div>
@@ -32,6 +33,24 @@ Editar evento: {{ evento.nombre }}
                     <option>---------</option>
                 </select>
             </div>
+            {% else %}
+            <div id="es_cliente" class="col-sm-9">
+                <div class="col-sm-4">
+                    <label>Cliente</label>
+                    <input id="id_cliente" class="form-control auc-usu" value="{{ evento.cliente.nombres }} {{ evento.cliente.apellidos }}-{{ evento.cliente.cedula }}" name="cliente">
+                </div>
+                <div class="col-sm-4">
+                    {{ formulario.marcas | bootstrap }}
+                </div>
+                <div class="col-sm-4">
+                    <label>Submarca</label>
+                    <select id="id_submarca" class="form-control" name="submarca">
+                        <option>---------</option>
+                    </select>
+                </div>
+
+            </div>
+            {% endif %}
             <div class="col-sm-12">
                 {{ formulario.descripcion | bootstrap }}
             </div>

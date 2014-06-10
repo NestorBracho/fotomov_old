@@ -35,7 +35,8 @@
 		</div>
     </div>
 </div>
-<div class="panel panel-default">
+<div class="row">
+<div class="panel panel-default col-md-6">
 	<div class="panel-heading">
         <h4>Pedidos</h4>
     </div>
@@ -62,6 +63,25 @@
 		    </div>
 	    </div>
 	{%endfor%}
+</div>
+<div class="panel panel-default col-md-6">
+	<div class="panel-heading">
+        <h4>Eventos</h4>
+    </div>
+    {%for evento in eventos%}
+	    <div class="panel-body">
+	        <div class="row">
+			    <div class="col-xs-12 col-md-5">
+			   		{{evento.nombre}}
+			    </div>
+			    <div class="col-xs-12 col-md-7">
+			    	{{evento.descripcion}}
+			    </div>
+		    </div>
+		    </div>
+	    </div>
+	{%endfor%}
+</div>
 </div>
     <div class="row">
         <button class="btn btn-default">Agregar Pedido</button>
