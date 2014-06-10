@@ -33,6 +33,10 @@ def nuevo_evento(request):
         if formulario.is_valid():
             tipo_cliente = request.POST.get('seleccionar_tipo')
             dias = request.POST.getlist('dias')
+            if len(dias) <= 0:
+                mensaje_dias = 1
+                return render_to_response('evento/nuevo_evento.html', {'formulario': formulario,
+                                                                       'gastos': gastos_predeterminados, 'direcciones': direcciones, 'mensaje_dias': mensaje_dias}, context_instance = RequestContext(request))
             entrega_final = formulario.cleaned_data['fecha_entrega']
             #print fecha_entrega
             #entrega_split = str(fecha_entrega).split('-')

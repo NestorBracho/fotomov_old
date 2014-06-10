@@ -12,7 +12,7 @@ class EventoForm(forms.ModelForm):
     tipo = forms.ModelChoiceField(queryset=Tipos_Eventos.objects.all().exclude(id=1))
     class Meta:
         model = Evento
-        exclude = ['locacion', 'encargado', 'sede', 'cliente']
+        exclude = ['locacion', 'encargado', 'sede', 'cliente', 'submarca']
 
 class TiposEventoForm(forms.ModelForm):
     class Meta:

@@ -36,7 +36,7 @@ Lista de eventos
             <td>{% if marcrocliente == None %}
                     <a href="/ver_cliente/{{ evento.cliente.id }}">{{ evento.cliente.nombres }} {{ evento.cliente.apellidos }}</a>
                 {% else %}
-                    <a href="/ver_macrocliente/{{ evento.macrocliente.id }}">{{ evento.macrocliente }}</a>
+                    <a href="/ver_macrocliente/{{ evento.macrocliente.id }}">{{ evento.macrocliente.nombre }}</a>
                 {% endif %}
             </td>
             <td>{{ evento.nombre }}</td>
