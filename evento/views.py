@@ -945,3 +945,22 @@ def eliminar_items(request, id_item):
 def listar_items(request, creado):
     items = Items.objects.all()
     return render_to_response('evento/listar_items.html', {'items': items}, context_instance=RequestContext(request))
+
+def enviar_correo_convocados(request):
+    evento=Evento.objects.get(id = request.GET['evento'])
+    funciones = Funcion.objects.filter(evento = evento)
+    aux=[]
+    usuarios=[]
+    for funcion in funciones:
+        aux.append(AsistenciaStaffFuncion.objects.filter(funcion= funcion, fue_convocado=True))
+    for au in aux:
+        for a in au:
+            usuarios.append(a.usuario)
+    correos = []
+    for usuario in usuarios:
+        correos.append(usuario.email)
+    mensaje = request.GET['mail']
+    if mensaje != '':
+        send_mail('[FotoMov] Convocatoria de staff para evento.', mensaje, '', correos, fail_silently=False)
+    data = json.dumps({'nombre': ''})
+    return HttpResponse(data, mimetype='application/json')

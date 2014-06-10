@@ -161,6 +161,7 @@ urlpatterns = patterns('',
     url(r'^ver_proveedor/(?P<id_proveedor>\d+)/$', 'productos.views.ver_proveedor'),
     url(r'^eliminar_proveedor/(?P<id_proveedor>\d+)/$', 'productos.views.eliminar_proveedor'),
     url(r'^editar_proveedor/(?P<id_proveedor>\d+)/$', 'productos.views.editar_proveedor'),
+    url(r'^enviar_correo_convocados/$', 'evento.views.enviar_correo_convocados'),
 
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),
