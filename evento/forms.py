@@ -8,7 +8,7 @@ from marca.models import Marca
 
 class EventoForm(forms.ModelForm):
     marcas = forms.ModelChoiceField(queryset=Marca.objects.all(), required=False)
-    macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all().exclude(id=1))
+    macrocliente = forms.ModelChoiceField(queryset=MacroCliente.objects.all().exclude(id=1), required=False)
     tipo = forms.ModelChoiceField(queryset=Tipos_Eventos.objects.all().exclude(id=1))
     class Meta:
         model = Evento
