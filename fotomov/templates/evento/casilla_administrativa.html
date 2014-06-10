@@ -35,7 +35,7 @@ Administración de envento
                         <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
                     {% endfor %}
                     <p></p>
-                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span class="stotal" id="total-honorarios">0</span></b> Bs.</div>
+                    <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;"><span class="pull-right">Sub-total: <b><span class="stotal" id="total-honorarios">0</span></b> Bs.</span></div>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@ Administración de envento
                     {% endfor %}
                 </div>
                 <p></p>
-                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span class="stotal" id="total-fijos">0</span></b> Bs.</div>
+                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;"><span class="pull-right">Sub-total: <b><span class="stotal" id="total-fijos">0</span></b> Bs.</span></div>
             </div>
         </div>
     </div>
@@ -75,7 +75,21 @@ Administración de envento
                 </div>
                 <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                 {% for producto in productos %}
-                    <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-6"><span class="productos" name="{{ producto.0.id }}">{{ producto.2 }}</span></div>
+                    <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-3"><span class="productos" name="{{ producto.0.id }}">{{ producto.2 }}</span></div><div class="col-md-3"><span>{{ producto.3 }}</span></div>
+                {% empty %}
+                    <div class="col-md-12"><b>Sin ventas</b></div>
+                {% endfor %}
+                </div>
+                <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
+                <p></p>
+                <div class="col-md-6">
+                    <div class="col-md-12"><b>Combos</b></div>
+                </div>
+                <div class="col-sm-6" style="border-left: 1px solid #dedede;">
+                {% for combo in combos %}
+                    <div class="col-md-3">{{ combo.0 }}</div><div class="col-sm-3">x{{ combo.1 }}</div><div class="col-md-6"><span>-</span></div>
+                {% empty %}
+                    <div class="col-md-12"><b>Sin ventas</b></div>
                 {% endfor %}
                 </div>
                 <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
@@ -94,7 +108,7 @@ Administración de envento
                     {% endfor %}
                 </div>
                 <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span class="stotal" id="total-variables">0</span></b> Bs.</div>
+                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;"><span class="pull-right">Sub-total: <b><span class="stotal" id="total-variables">0</span></b> Bs.</span></div>
             </div>
         </div>
     </div>
@@ -107,7 +121,7 @@ Administración de envento
             <div id="body-adicional">
                 <div class="col-sm-6">
                     <div class="col-sm-12"><b>Porcentaje de macrocliente</b></div>
-                    <div class="col-sm-12"><span id="total-porcentaje">0</span> Bs.</div>
+                    <div class="col-sm-12"><span name="{{ ventas }}" id="total-porcentaje">0</span> Bs.</div>
                 </div>
                 <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                     <div class="col-md-6 pull-right"><input name="p-Porcent" id="porcentajeM" class="porcent form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text"></div>
@@ -135,7 +149,7 @@ Administración de envento
                     <div class="col-md-6"></div><div class="col-md-6"> <input name="Flyers" class="adicionales form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ adicionales.2 }}"> </div>
                 </div>
                 <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>
-                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;">Sub-total: <b><span id="total-adicionales">0</span></b> Bs.</div>
+                <div class="col-sm-6 pull-right" style="border-left: 1px solid #dedede;"><span class="pull-right">Sub-total: <b><span id="total-adicionales">0</span></b> Bs.</span></div>
             </div>
         </div>
     </div>
@@ -230,9 +244,7 @@ window.onload = function(){
                                 var aux=0;
                                 $(this).spinner({stop: function(event, ui){
                                                 $("#total-porcentaje").html("0");
-                                                $('.stotal').each(function(){
-                                                                aux = aux + parseFloat($(this).html())
-                                                                });
+                                                aux = parseFloat($("#total-porcentaje").attr("name"));
                                                 $("#total-porcentaje").html((aux*(parseFloat($(this).val())/100)).toFixed(2));
                                                 aux = 0;
                                                 $("#total-adicionales").html("0");
@@ -300,7 +312,6 @@ window.onload = function(){
 
     $('.stotal').each(function(){
 
-                            $('#total-porcentaje').html((parseFloat($('#total-porcentaje').html())+(parseFloat($(this).html())*parseFloat($('#porcentajeM').val())/100)).toFixed(2));
                             $("#total-evento").html((parseFloat($('#total-evento').html())+(parseFloat($(this).html()))).toFixed(2));
 
                             });
@@ -315,6 +326,7 @@ window.onload = function(){
                                 $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($(this).val()));
                             });
 
+    $("#total-porcentaje").html((parseFloat($("#porcentajeM").val())/100 * parseFloat($("#total-porcentaje").attr("name"))).toFixed(2));
     $("#total-adicionales").html(parseFloat($("#total-adicionales").html())+parseFloat($("#total-porcentaje").html()))
     $("#total-evento-adicionales").html((parseFloat($('#total-evento').html())+parseFloat($("#total-adicionales").html())).toFixed(2));
 
@@ -363,8 +375,6 @@ function macroC(){
     $('.stotal').each(function(){
                     aux = aux + parseFloat($(this).html())
                     });
-
-    $("#total-porcentaje").html((aux*(parseFloat($('#porcentajeM').val())/100)).toFixed(2));
 
     $("#total-adicionales").html("0");
 

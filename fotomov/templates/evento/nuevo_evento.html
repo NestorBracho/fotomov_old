@@ -184,10 +184,26 @@ window.onload = function(){
 }
 
 $('#id_macrocliente').on('change',ajax_encargado);
+$('#id_macrocliente').on('change',ajax_sede);
  $('#id_macrocliente').on('change',ajax_sede);
  $('#id_marcas').on('change',ajax_submarca);
 
 $("#dialog").dialog("option", "hide");
+
+function validaracentos(iden){
+
+    var nombre = $("#"+iden).val()
+
+    if(nombre.length<0){
+        return true;
+    }else{
+
+        alert(nombre);
+
+        return false;
+    }
+
+}
 
 function aucomloc(id_input){
 

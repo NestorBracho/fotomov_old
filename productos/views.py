@@ -11,6 +11,7 @@ from django.core import serializers
 from productos.models import *
 from productos.forms import *
 from reportlab.pdfgen import canvas
+from django.contrib import messages
 import datetime
 
 def nuevo_producto(request):
@@ -18,7 +19,11 @@ def nuevo_producto(request):
         formulario = ProductoForm(request.POST)
         if formulario.is_valid():
             producto = formulario.save()
-            return HttpResponseRedirect('/listar_producto/1')
+            if "agregar" in request.POST:
+                return HttpResponseRedirect('/listar_producto/1')
+            else:
+                messages.add_message(request, messages.SUCCESS, 'El producto se ha agregado exitosamente.', extra_tags='success')
+                return HttpResponseRedirect('/nuevo_producto/')
     else:
         formulario = ProductoForm()
     return render_to_response('productos/nuevo_producto.html', {'formulario': formulario}, context_instance=RequestContext(request))
@@ -270,3 +275,69 @@ def descargar_factura(request, id_factura):
     pedido.factura=True
     pedido.save()
     return response
+
+def editar_productoeventopedido_en_generarpedido(request):
+    #'iden': iden, 'cantidad': cantidad, 'precio': precio, 'estado': estado
+    pedido = ProductoEventoPedido.objects.get(id = request.GET['iden'])
+    if request.GET['task'] == '1':#cargar
+        data = json.dumps({'comentario': pedido.comentario})
+        return HttpResponse(data, mimetype='application/json')
+    elif request.GET['task'] == '2':#modificar
+        macropedido = Pedido.objects.get(num_pedido = pedido.num_pedido)
+        todosLosPedidos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        pedido.cantidad = request.GET['cantidad']
+        pedido.estado = request.GET['estado']
+        pedido.comentario = request.GET['comentario']
+        pedido.save()
+        total = 0
+        for LosPedidos in todosLosPedidos:
+            total = total + (LosPedidos.cantidad*LosPedidos.producto.precio)
+        macropedido.total = total
+        macropedido.save()
+        data = json.dumps({'total': macropedido.total})
+        return HttpResponse(data, mimetype='application/json')
+    elif request.GET['task'] == '3':#Eliminar
+        macropedido = Pedido.objects.get(num_pedido = pedido.num_pedido)
+        todosLosPedidos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
+        pedido.delete()
+        total = 0
+        for LosPedidos in todosLosPedidos:
+            total = total + (LosPedidos.cantidad*LosPedidos.producto.precio)
+        macropedido.total = total
+        macropedido.save()
+    data = json.dumps({'estado': 'hola'})
+    return HttpResponse(data, mimetype='application/json')
+
+def crear_proveedor(request):
+    if request.method == 'POST':
+        formulario = ProveedorForm(request.POST)
+        if formulario.is_valid():
+            producto = formulario.save()
+            return HttpResponseRedirect('/listar_proveedores/')
+    else:
+        formulario = ProveedorForm()
+    return render_to_response('productos/crear_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+def listar_proveedores(request):
+    proveedores = Proveedor.objects.all()
+    return render_to_response('productos/listar_proveedores.html', {'proveedores': proveedores}, context_instance=RequestContext(request))
+
+def ver_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    return render_to_response('productos/ver_proveedor.html', {'proveedor': proveedor}, context_instance=RequestContext(request))
+
+def eliminar_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    proveedor.delete()
+    return HttpResponseRedirect('/listar_proveedores/')
+
+def editar_proveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id = id_proveedor)
+    if request.method == 'POST':
+        formulario = ProveedorForm(request.POST, instance = proveedor)
+        if formulario.is_valid():
+            producto = formulario.save()
+            return HttpResponseRedirect('/listar_proveedores/')
+    else:
+        formulario = ProveedorForm(instance = proveedor)
+    return render_to_response('productos/editar_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))

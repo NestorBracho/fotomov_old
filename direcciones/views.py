@@ -10,7 +10,7 @@ from django.core import serializers
 from direcciones.models import *
 
 def nueva_direccion(request):
-    direcciones = Direccion.objects.all()
+    direcciones = Direccion.objects.all().exclude(id=1)
     if request.method == 'POST':
         latlng = request.POST.get('latlng').split(',')
         descripcion = request.POST.get('descripcion')
@@ -29,7 +29,6 @@ def nueva_direccion(request):
     return render_to_response('staff/nueva_direccion.html', {'direcciones': direcciones}, context_instance= RequestContext(request))
 
 def guardar_direccion_ajax(request):
-    print "entre en la funcion"
     nombre = request.GET.get('nombre')
     direccion = request.GET.get('direccion')
     latlng = request.GET.get('latlng').split(',')
@@ -44,7 +43,7 @@ def guardar_direccion_ajax(request):
     return HttpResponse(data,mimetype='aplication/json')
 
 def libreta_incluida(request, id_input):
-    direcciones = Direccion.objects.all()
+    direcciones = Direccion.objects.all().exclude(id=1)
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         latlng = request.POST.get('latlng').split(',')
@@ -62,10 +61,12 @@ def libreta_incluida(request, id_input):
     return render_to_response('staff/incluir_libreta.html', {'direcciones': direcciones, 'id_input': id_input}, context_instance= RequestContext(request))
 
 def obtener_direcciones():
-    direcciones = Direccion.objects.all()
+    direcciones = Direccion.objects.all().exclude(id=1)
     return direcciones
 
 def eliminar_direccion(request):
-    direccion = Direccion.objects.get(id=request.GET.get('id')).delete()
+    direccion = Direccion.objects.get(id=request.GET.get('id'))
+    if direccion.id != 1:
+        direccion.delete()
     data = json.dumps({'status': 1})
     return HttpResponse(data,mimetype='aplication/json')

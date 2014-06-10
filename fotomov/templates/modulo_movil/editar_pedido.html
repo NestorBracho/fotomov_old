@@ -1,0 +1,282 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Pedido
+{% endblock %}
+{% block css %}
+<link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block subtitulo %}
+{% endblock %}
+{% block seccion-contenido%}
+<div class="row">
+    <div class="col-md-12" style="margin-bottom: 10px">
+        <a href="/ver_pedido/{{ pedido.id }}" class="btn btn-default"><i class="fa fa-chevron-left"></i> Pedido</a>
+        <a class="btn btn-warning pull-right" href="/crear_pedidos_indoor/1/1/NoneNext/urlseparador/NoneValue/"><i class="fa fa-plus"></i> Crear pedido</a>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-12">
+                <h4><a class="pull-left" href="/ver_cliente/{{ pedido.cliente.id }}">{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos}}</a></h4>
+                <a onclick="eliminarPedido('{{ pedido.id }}')" class="btn btn-xs btn-danger pull-right">Eliminar este pedido</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form method="post" action="">{% csrf_token %}
+            <div class="col-md-6">
+                {{ form.fecha_entrega | bootstrap }}
+                {{ form.direccion_fiscal | bootstrap }}
+                {{ form.razon_social | bootstrap }}
+                {{ form.envio | bootstrap }}
+                {{ form.fue_pagado | bootstrap }}
+            </div>
+            <div class="col-md-6">
+                {{ form.id_fiscal | bootstrap }}
+                {{ form.direccion_entrega | bootstrap }}
+                {{ form.tlf_fiscal | bootstrap }}
+                {{ form.estado | bootstrap }}
+                {{ form.factura | bootstrap }}
+            </div>
+            <input class="btn btn-primary pull-right" type="submit" value="Actualizar"/>
+        </form>
+    </div>
+</div>
+
+
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table id="content" class="table ">
+        <thead>
+            <th>Producto</th>
+            <th>Foto</th>
+            <th>Estado</th>
+            <th>Cantidad</th>
+            <th>Monto sin I.V.A.</th>
+            <th>SubTotal</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody id="body-pedidos">
+        {% for producto in productos %}
+        <tr id='tr-{{ producto.id }}'>
+            <td>{{ producto.producto.producto.nombre }}</td>
+            <td>{% if producto.ruta == None%}N/A{% else %}<a data-toggle="modal" data-target="#FotoPedido" onclick="verFotoProducto('{{producto.ruta}}','{{MEDIA_URL}}')" class="btn btn-xs btn-default">Ver foto</a>{% endif %}</td>
+            <td id='estado-{{ producto.id }}'>{{ producto.estado }}</td>
+            <td id='cantidad-{{ producto.id }}'>{{ producto.cantidad }}</td>
+            <td id='precio-{{ producto.id }}'>{{ producto.producto.precio }}</td>
+            <td id="montosiniva-{{producto.id}}"></td>
+            <td>
+                <a onclick="eliminarProducto('tr-{{ producto.id }}')" class="btn btn-xs btn-danger">Eliminar</a>
+                <a data-toggle="modal" data-target="#editarPedido" onclick="abrirEditar('{{ producto.id }}', '{{ producto.producto.producto.nombre }}', '{{ producto.estado }}', '{{ producto.cantidad }}', '{{ producto.producto.precio }}')" class="btn btn-xs btn-success">Editar</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="FotoPedido" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editarPedido" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img">
+        <div class="modal-content">
+            <div class="modal-header" id="header-editar">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_editar_estado">Fue pagado:</label>
+                            <select id="id_editar_estado" class="form-control">
+                                <option value="Creado">Creado</option>
+                                <option value="Pagado">Pagado</option>
+                                <option value="Edicion">Edición</option>
+                                <option value="Editado">Editado</option>
+                                <option value="En impresion">impresión</option>
+                                <option value="Impreso">Impreso</option>
+                                <option value="Listo">Listo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_editar_cantidad">Cantidad</label>
+                            <input id="id_editar_cantidad" onkeypress="return numero(event)" type="text" class="form-control spinner" placeholder="Cantidad"/>
+                        </div>
+                        <input id="id_editar_iden" type="hidden" value=""/>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="id_editar_comentario">Comentarios:</label>
+                            <textarea id="id_editar_comentario" class="form-control" placeholder="Comentarios"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="footer-editar">
+                <a onclick="guardarEditar()" class="btn btn-primary pull-right">Guardar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+window.onload = function(){
+
+    var subt, Total = 0;
+
+    {% for producto in productos %}
+
+        subt = parseFloat('{{producto.producto.precio}}') * parseFloat('{{producto.cantidad}}')
+        $('#montosiniva-{{producto.id}}').html(subt);
+
+    {% endfor %}
+
+    $('#id_fecha_entrega').datepicker({ dateFormat: "dd/mm/yy", minDate: 0 });
+
+    $(".spinner").spinner({min:1});
+
+}
+
+function verFotoProducto(url, url2){
+
+    url = url.split('/fotomov_imagenes/');
+    url = url[1];
+
+    $('#modal-body').html('<img src="'+url2+url+'"></img>');
+
+}
+
+function eliminarProducto(tr){
+
+    var iden = tr.split('-');
+    iden = iden[1];
+
+    if(confirm("¿Esta seguro que desea eliminar este producto?")){
+
+        $.ajax({
+
+            url:'/editar_productoeventopedido_en_generarpedido/',
+            data:{'task': '3', 'iden': iden, 'cantidad': '', 'estado': '', 'comentario': ''},
+            type:'GET'
+
+        }).done(function(data){
+
+            $("#"+tr).fadeOut();
+            window.setTimeout(function(){document.getElementById(tr).parentNode.removeChild(document.getElementById(tr))},3000);
+
+        });
+
+    }
+
+}
+
+function eliminarPedido(iden){
+
+    if(confirm("¿Seguro que desea eliminar este pedido?")){
+
+        window.location.href = "/eliminar_pedido/"+iden+"/";
+
+    }
+
+}
+
+function abrirEditar(iden, nombre, estado, cantidad, precio){
+
+    $("#header-editar").html('<h4><b>'+nombre+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></b></h4>');
+
+    var prec = precio.split(",");
+    precio = prec[0]+'.'+prec[1];
+
+    $("#id_editar_iden").val(iden);
+    $("#id_editar_cantidad").val(cantidad);
+    $("#id_editar_estado").val(estado);
+    $("#id_editar_comentario").val();
+
+    $.ajax({
+
+        url:'/editar_productoeventopedido_en_generarpedido/',
+        data:{'task': '1', 'iden': iden, 'cantidad': cantidad, 'estado': estado, 'comentario': ''},
+        type:'GET',
+        error:function(){
+
+            $("#id_editar_comentario").val('No se pudieron recuperar los comentarios por un error de comunicacion con el servidor');
+
+        }
+
+    }).done(function(data){
+
+        $("#id_editar_comentario").val(data.comentario);
+
+    });
+
+
+}
+
+function guardarEditar(){
+
+    var iden = $("#id_editar_iden").val();
+    var cantidad = $("#id_editar_cantidad").val();
+    var estado = $("#id_editar_estado").val();
+    var comentario = $("#id_editar_comentario").val();
+
+    $.ajax({
+
+        url:'/editar_productoeventopedido_en_generarpedido/',
+        data:{'task': '2', 'iden': iden, 'cantidad': cantidad, 'estado': estado, 'comentario': comentario},
+        type:'GET'
+
+    }).done(function(data){
+
+        var aux = $("#precio-"+iden).html();
+        aux = aux.split(",");
+
+        if(aux.length >1){
+
+            aux = aux[0]+'.'+aux[1]
+
+        }else{
+
+            aux = $("#precio-"+iden).html();
+
+        }
+
+        $("#estado-"+iden).html(estado);
+        $("#cantidad-"+iden).html(cantidad);
+        $("#montosiniva-"+iden).html(parseFloat(cantidad)*parseFloat(aux));
+        $('#editarPedido').modal('hide');
+
+    });
+
+}
+
+function numero(e) {
+
+    var codigo;
+
+    codigo = (document.all) ? e.keyCode : e.which;
+
+    if (codigo > 31 && (codigo < 48 || codigo > 57) && codigo != 46 ) {
+
+        return false;
+
+    }
+
+    return true;
+}
+
+</script>
+{% endblock %}
