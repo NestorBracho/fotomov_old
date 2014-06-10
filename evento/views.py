@@ -58,7 +58,7 @@ def nuevo_evento(request):
                 cliente_evento = Cliente.objects.get(cedula=cliente[1])
                 evento = Evento.objects.create(cliente= cliente_evento, nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
                                                porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'],
-                                               tipo=formulario.cleaned_data['tipo'], fecha_entrega=entrega_final, submarca=formulario.cleaned_data['submarca'])
+                                               tipo=formulario.cleaned_data['tipo'], fecha_entrega=entrega_final, submarca=SubMarca.objects.get(id=request.POST.get('submarca')))
             print dias
             if len(dias) > 0:
                 for dia in dias:
@@ -735,16 +735,22 @@ def editar_evento(request, iden):
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
-            sede = Sede.objects.get(id=request.POST.get('sede'))
+            if evento.macrocliente != None:
+                encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+                sede = Sede.objects.get(id=request.POST.get('sede'))
+                evento.encargado = encargado
+                evento.sede = sede
+                evento.macrocliente = formulario.cleaned_data['macrocliente']
+                evento.submarca = evento.macrocliente.submarca
+            else:
+                evento.cliente = Cliente.objects.get(cedula=request.POST.get('cliente').split('-')[1])
+                print request.POST.get('submarca')
+                evento.submarca = SubMarca.objects.get(id=request.POST.get('submarca'))
             evento.nombre = formulario.cleaned_data['nombre']
             evento.descripcion = formulario.cleaned_data['descripcion']
             evento.porcentaje_institucion = formulario.cleaned_data['porcentaje_institucion']
-            evento.encargado = encargado
             evento.fecha_entrega = formulario.cleaned_data['fecha_entrega']
-            evento.sede = sede
             evento.tipo = formulario.cleaned_data['tipo']
-            evento.macrocliente = formulario.cleaned_data['macrocliente']
             evento.save()
             return HttpResponseRedirect('/listar_evento/2/')
     else:
@@ -773,17 +779,19 @@ def editar_funcion(request):
         funcion.save()
         try:
             direccionFuncion.objects.get(funcion=funcion).delete()
-            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+            if funcion.evento.macrocliente != None:
+                directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
         except:
-            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+            if funcion.evento.macrocliente != None:
+                directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
         #directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='2':#agregar
         evento = Evento.objects.get(id = request.GET['evento'])
         dia_split = request.GET['dia'].split('/')
         dia_final = dia_split[2] + "-" + dia_split[0] + "-" + dia_split[1]
-        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = dia_final, horas = request.GET['horas'], entrega_fotos = '', direccion = evento.sede.direccion)
-
-        directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = dia_final, horas = request.GET['horas'], entrega_fotos = '', direccion = Direccion.objects.get(id=1))
+        if funcion.evento.macrocliente != None:
+            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='3':#borrar
         funcion = Funcion.objects.get(id = request.GET['iden'])
         direccionFuncion.objects.get(funcion=funcion).delete()
