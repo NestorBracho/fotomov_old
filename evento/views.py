@@ -178,13 +178,14 @@ def listar_pedidos_sede(request, id_sede):
 def agregar_productos(request,id_evento):
     productos = Producto.objects.filter(es_combo=False)
     evento = Evento.objects.get(id=id_evento)
+    proveedores = Proveedor.objects.all()
     lista = []
     for producto in productos:
         if ProductoEvento.objects.filter(evento=evento, producto=producto):
             producto_existente = ProductoEvento.objects.get(evento=evento, producto=producto)
-            tupla=(producto,1, producto_existente.precio, producto_existente.precio_produccion)
+            tupla=(producto, 1, producto_existente.precio, producto_existente.precio_produccion, producto_existente.proveedor)
         else:
-            tupla = (producto,0,0)
+            tupla = (producto, 0, 0)
         lista.append(tupla)
 
     if request.method == 'POST':
@@ -195,19 +196,22 @@ def agregar_productos(request,id_evento):
         for seleccionado in seleccionados:
             precio = request.POST.get(seleccionado+'precio')
             costo = request.POST.get(seleccionado+'costo')
+            proveedor = request.POST.get(seleccionado+'proveedor')
+            proveedor = Proveedor.objects.get(id = proveedor)
             producto = Producto.objects.get(id=seleccionado)
             try:
                 producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
                 producto_evento.precio= float(precio.replace(',','.'))
                 producto_evento.costo = float(costo.replace(',','.'))
+                producto_evento.proveedor = proveedor
                 producto_evento.save()
             except:
-                producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
+                producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, proveedor=proveedor, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         if "combos" in request.POST:
             return HttpResponseRedirect('/listar_combos/'+id_evento+'/')
         else:
             return HttpResponseRedirect('/listar_evento/2')
-    return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento}, context_instance=RequestContext(request))
+    return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento, 'proveedores': proveedores}, context_instance=RequestContext(request))
 
 def casilla_administrativa(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
@@ -373,7 +377,7 @@ def casilla_administrativa(request, id_evento):
                         productosTotal[2] = productosTotal[2] + productoEvento.precio_produccion*ordenCompra.cantidad
                         flag = True
                 if flag == False:
-                    productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad])
+                    productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad, ordenCompra.producto.proveedor.nombre])
     #---------combos
     temp = ProductoEvento.objects.filter(evento = evento, es_combo = True)
     auxCombos = []

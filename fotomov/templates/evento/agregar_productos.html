@@ -16,6 +16,7 @@ Agregar productos
                 <thead>
                     <th>Seleccionar</th>
                     <th>Producto</th>
+                    <th>Proveedor</th>
                     <th>Precio</th>
                     <th>Costo</th>
                 </thead>
@@ -23,6 +24,13 @@ Agregar productos
                     <tr>
                         <td><input type="checkbox" value="{{ producto.0.id }}" name="seleccionados" {% if producto.1 %} checked {% endif %}> </td>
                         <td>{{ producto.0.nombre }}</td>
+                        <td>
+                            <select class="form-control" name="{{ producto.0.id }}proveedor">
+                                {% for proveedor in proveedores%}
+                                <option value="{{ proveedor.id }}" {% if producto.4 == proveedor %} selected {% endif %}>{{ proveedor.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
                         <td><input type="text" onkeypress="return numero(event)" value="{{ producto.2 }}" name="{{ producto.0.id }}precio"></td>
                         <td><input type="text" onkeypress="return numero(event)" value="{{ producto.3 }}" name="{{ producto.0.id }}costo"></td>
                     </tr>

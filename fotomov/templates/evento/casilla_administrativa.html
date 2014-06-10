@@ -75,7 +75,7 @@ Administración de envento
                 </div>
                 <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                 {% for producto in productos %}
-                    <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-6"><span class="productos" name="{{ producto.0.id }}">{{ producto.2 }}</span></div>
+                    <div class="col-md-3">{{ producto.0.nombre }}</div><div class="col-sm-3">x{{ producto.1 }}</div><div class="col-md-3"><span class="productos" name="{{ producto.0.id }}">{{ producto.2 }}</span></div><div class="col-md-3"><span>{{ producto.3 }}</span></div>
                 {% empty %}
                     <div class="col-md-12"><b>Sin ventas</b></div>
                 {% endfor %}
