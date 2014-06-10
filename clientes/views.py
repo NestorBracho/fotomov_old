@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.utils import simplejson
 from clientes.forms import *
 from clientes.models import *
 from productos.forms import *
@@ -198,7 +199,7 @@ def nuevo_cliente(request):
         formulario = ClienteForm(request.POST)
         if formulario.is_valid():
             cliente = formulario.save()
-            return HttpResponseRedirect('/listar_cliente')
+            return HttpResponseRedirect('/listar_clientes/1')
     else:
         formulario = ClienteForm()
     return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
@@ -211,7 +212,8 @@ def ver_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     clienteF = ClienteForm()
     pedidos = Pedido.objects.filter(cliente=id_cliente)
-    return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos, 'clienteForm':clienteF}, context_instance=RequestContext(request))
+    eventos = Evento.objects.filter(cliente=cliente)
+    return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos, 'clienteForm':clienteF, 'eventos': eventos}, context_instance=RequestContext(request))
 
 
 def editar_cliente(request, id_cliente):
@@ -250,3 +252,44 @@ def listar_eventos_macrocliente(request, id_macrocliente):
     macrocliente = MacroCliente.objects.get(id=id_macrocliente)
     eventos = Evento.objects.filter(macrocliente__id=id_macrocliente)
     return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'macrocliente': macrocliente}, context_instance = RequestContext(request))
+
+def traer_cliente_evento(request):
+    usuarioN = Cliente.objects.filter(nombres__contains = request.GET['usu'])
+    usuarioA = Cliente.objects.filter(apellidos__contains = request.GET['usu'])
+    usuarioC = Cliente.objects.filter(cedula__contains = request.GET['usu'])
+
+    aux = []
+
+    for usuario in usuarioN:
+        flag = False
+        for au in aux:
+            if au == usuario:
+                flag = True
+        if flag == False:
+            aux.append(usuario)
+
+    for usuario in usuarioA:
+        flag = False
+        for au in aux:
+            if au == usuario:
+                flag = True
+        if flag == False:
+            aux.append(usuario)
+
+    for usuario in usuarioC:
+        flag = False
+        for au in aux:
+            if au == usuario:
+                flag = True
+        if flag == False:
+            aux.append(usuario)
+
+    usuarioN = aux
+    resp = []
+
+    for usuario in usuarioN:
+        resp.append({"value": usuario.id, "label": usuario.nombres+" "+usuario.apellidos, "desc": usuario.cedula})
+
+    print resp
+
+    return HttpResponse(simplejson.dumps(resp), mimetype='application/json')

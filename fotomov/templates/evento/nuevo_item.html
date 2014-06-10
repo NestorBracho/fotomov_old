@@ -1,0 +1,20 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block titulo %}
+    Nuevo Item
+{% endblock %}
+{% block seccion-contenido %}
+    <form method='POST' id='nuevoEvento' action='' enctype='multipart/form-data'>{% csrf_token %}
+            <div class="col-sm-6">
+                {{ formulario.item | bootstrap }}
+            </div>
+            <div class="col-sm-6">
+                {{ formulario.cantidad | bootstrap }}
+            </div>
+            <div class="col-xs-12 col-md-6">
+
+                <input type='submit' class="btn btn-default btn-primary" value='Ingresar'/>
+            </div>
+</form>
+
+{% endblock %}
