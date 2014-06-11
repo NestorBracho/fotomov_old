@@ -25,6 +25,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 import datetime
 
+@login_required(login_url='/')
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
     direcciones = obtener_direcciones()
@@ -123,6 +124,7 @@ def nuevo_evento(request):
         formulario = EventoForm()
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def agregar_staff(request, id_evento):
     bloques = Bloque.objects.all().order_by("nombre")
     evento = Evento.objects.get(id=id_evento)
@@ -162,6 +164,7 @@ def agregar_staff(request, id_evento):
     print lista
     return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento, 'bloques':bloques}, context_instance= RequestContext(request))
 
+
 def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
     contacto = Encargado.objects.filter(macrocliente=macroC)
@@ -180,6 +183,7 @@ def sede_ajax(request):
     data = serializers.serialize('json', contacto, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def listar_evento(request, creado):
     eventos = Evento.objects.all().exclude(id=1)
     return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'creado': creado}, context_instance = RequestContext(request))
@@ -200,6 +204,7 @@ def locacion_ajax(request):
 def listar_pedidos_sede(request, id_sede):
     return True
 
+@login_required(login_url='/')
 def agregar_productos(request,id_evento):
     productos = Producto.objects.filter(es_combo=False)
     evento = Evento.objects.get(id=id_evento)
@@ -238,6 +243,7 @@ def agregar_productos(request,id_evento):
             return HttpResponseRedirect('/listar_evento/2')
     return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento, 'proveedores': proveedores}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def casilla_administrativa(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
     funciones = Funcion.objects.filter(evento = evento)
@@ -509,6 +515,7 @@ def marcar_asistencia(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def usuario_por_evento(request, id_evento):
     correoForm = CorreoForm()
     even = Evento.objects.get(id = id_evento)
@@ -582,6 +589,7 @@ def convocar_usuario_a_evento(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def nuevo_tipo_de_evento(request, editado):
     tipo_eventos = Tipos_Eventos.objects.all().exclude(id=1)
     staff = Privilegios.objects.filter(valor__lt = 6)
@@ -651,6 +659,7 @@ def nuevo_tipo_de_evento(request, editado):
         return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado, 'tipoEvento': tEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
     return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def nueva_pauta(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     if request.method == 'POST':
@@ -665,11 +674,13 @@ def nueva_pauta(request, id_evento):
         formulario = PautaForm()
     return render_to_response('evento/nueva_pauta.html', {'formulario': formulario, 'evento': evento}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_pautas(request, id_evento, creado):
     evento = Evento.objects.get(id=id_evento)
     pautas = Pautas.objects.filter(evento=evento)
     return render_to_response('evento/listar_pautas.html', {'pautas': pautas, 'evento': evento, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     if request.method == 'POST':
@@ -683,16 +694,19 @@ def editar_pauta(request, id_pauta):
         formulario = PautaForm(initial={'nombre': pauta.nombre, 'pauta': pauta.pauta})
     return render_to_response('evento/nueva_pauta.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     id_evento = pauta.evento.id
     pauta.delete()
     return HttpResponseRedirect("/listar_pautas/" + str(id_evento) + "/3")
 
+@login_required(login_url='/')
 def ver_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     return render_to_response('evento/ver_pauta.html', {'pauta': pauta}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def crear_bloque(request):
     if request.method == 'POST':
         formulario = BloqueForm(request.POST)
@@ -703,6 +717,7 @@ def crear_bloque(request):
         formulario = BloqueForm()
     return render_to_response('evento/crear_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_bloques(request, id_bloque):
     if id_bloque != '0':
         bloque = Bloque.objects.filter(id = id_bloque)
@@ -712,6 +727,7 @@ def listar_bloques(request, id_bloque):
     bloques = Bloque.objects.all()
     return render_to_response('evento/listar_bloques.html', {'bloques': bloques}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_bloque(request, id_bloque):
     bloque = Bloque.objects.get(id = id_bloque)
     if request.method == 'POST':
@@ -727,6 +743,7 @@ def editar_bloque(request, id_bloque):
         formulario = BloqueForm(initial = {'nombre':bloque.nombre, 'honorarios':bloque.honorarios, 'unico':bloque.unico})
     return render_to_response('evento/editar_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_evento(request, iden):
     evento = Evento.objects.get(id = iden)
     funciones = Funcion.objects.filter(evento = evento)
@@ -761,6 +778,7 @@ def editar_evento(request, iden):
             formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
                                              'marcas': evento.submarca.marca, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
+
 
 def editar_funcion(request):
     print "entre"
@@ -850,6 +868,7 @@ def traer_usuario_gasto_evento_ajax(request):
 
     return HttpResponse(simplejson.dumps(resp), mimetype='application/json')
 
+@login_required(login_url='/')
 def crear_combos(request, evento_id):
     productos = ProductoEvento.objects.filter(evento = Evento.objects.get(id = evento_id), es_combo=False)
     if request.method == 'POST':
@@ -874,16 +893,19 @@ def crear_combos(request, evento_id):
             messages.add_message(request, messages.ERROR, 'Debe llenar todos los campos', extra_tags='danger')
     return render_to_response('evento/crear_combos.html', {'iden': evento_id, 'productos': productos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_combos(request, evento_id):
     combos = ProductoEvento.objects.filter(evento=Evento.objects.get(id=evento_id), es_combo = True)
     return render_to_response('evento/listar_combos.html', {'iden': evento_id, 'combos': combos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def ver_combo(request, combo_id):
     combo = ProductoEvento.objects.get(id = combo_id)
     productos = ProductoeventoCombo.objects.filter(combo = combo)
     iden = combo.evento.id
     return render_to_response('evento/ver_combo.html', {'iden': iden, 'combo': combo, 'productos': productos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_combo(request, combo_id):
     combo = ProductoEvento.objects.get(id = combo_id)
     productos = ProductoeventoCombo.objects.filter(combo = combo)
@@ -893,6 +915,7 @@ def eliminar_combo(request, combo_id):
     combo.delete()
     return HttpResponseRedirect('/listar_combos/'+str(iden)+'/')
 
+@login_required(login_url='/')
 def editar_combo(request, combo_id):
     combo = ProductoEvento.objects.get(id = combo_id)
     iden = combo.evento.id
@@ -933,6 +956,7 @@ def editar_combo(request, combo_id):
             return HttpResponseRedirect('/listar_combos/'+str(combo.evento.id)+'/')
     return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos, 'productosC': productosCombos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_tipo_evento(request, tipo_id):
     tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
     tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
@@ -944,12 +968,14 @@ def eliminar_tipo_evento(request, tipo_id):
     tipoEvento.delete()
     return HttpResponseRedirect("/nuevo_tipo_de_evento/0/")
 
+@login_required(login_url='/')
 def ver_tipo_evento(request, tipo_id):
     tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
     tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def nuevo_item(request):
     if request.method == 'POST':
         formulario = NuevoItemForm(request.POST)
@@ -960,6 +986,7 @@ def nuevo_item(request):
         formulario = NuevoItemForm()
     return render_to_response('evento/nuevo_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_item(request, id_item):
     item = Items.objects.get(id=id_item)
     if request.method == 'POST':
@@ -974,18 +1001,22 @@ def editar_item(request, id_item):
         formulario = NuevoItemForm(instance=item)
     return render_to_response('evento/nuevo_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_items(request, id_item):
     item = Items.objects.get(id=id_item)
     item.delete()
     return HttpResponseRedirect('/listar_items/3')
 
+@login_required(login_url='/')
 def listar_items(request, creado):
     items = Items.objects.all()
     return render_to_response('evento/listar_items.html', {'items': items, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def asignar_item_staff(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     return render_to_response('evento/asignar_item_staff.html', {'evento': evento}, context_instance=RequestContext(request))
+
 
 def enviar_correo_convocados(request):
     evento=Evento.objects.get(id = request.GET['evento'])
@@ -1006,6 +1037,7 @@ def enviar_correo_convocados(request):
     data = json.dumps({'nombre': ''})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def listar_items_presatdos(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
     items = ItemsPrestado.objects.filter(evento = evento).order_by('-devuelto')
@@ -1019,12 +1051,14 @@ def devolver_item_ajax(request):
     data = json.dumps({'nombre': ''})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def eliminar_prestamo(request, id_prestamo):
     item = ItemsPrestado.objects.get(id = id_prestamo)
     evento = item.evento
     item.delete()
     return HttpResponseRedirect('/listar_items_presatdos/'+str(evento.id)+'/')
 
+@login_required(login_url='/')
 def prestar_item(request, id_evento):
     items = Items.objects.all()
     return render_to_response('evento/prestar_item.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))

@@ -20,6 +20,7 @@ from direcciones.models import *
 from direcciones.views import *
 import datetime
 
+@login_required(login_url='/')
 def nuevo_macrocliente(request):
     direcciones = obtener_direcciones()
     if request.method == 'POST':
@@ -55,10 +56,12 @@ def nuevo_macrocliente(request):
         formularioR = MacroClienteContactoForm()
     return render_to_response('clientes/nuevo_macrocliente.html', {'formularioM': formularioM, 'formularioR': formularioR, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def listar_macroclientes(request, creado):
     macroclientes = MacroCliente.objects.all().exclude(id=1)
     return render_to_response('clientes/listar_macroclientes.html', {'macroclientes': macroclientes, 'creado': creado}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def editar_macrocliente(request, id_macrocliente):
     direccionesL = obtener_direcciones()
     if MacroCliente.objects.filter(id = id_macrocliente):
@@ -99,6 +102,7 @@ def editar_macrocliente(request, id_macrocliente):
         formulario = MacroClienteForm(initial={'marca': macrocliente.submarca.marca, 'nombre': macrocliente.nombre, 'telefono': macrocliente.telefono, 'rif': macrocliente.rif, 'direccion_fiscal': macrocliente.direccion_fiscal, 'descripcion': macrocliente.descripcion})
     return render_to_response('clientes/editar_macrocliente.html', {'submarcas': submarcas, 'formulario': formulario, 'dirs': dirs, 'macrocliente': macrocliente, 'direcciones': direccionesL}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def ver_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id = id_macrocliente):
         macrocliente = MacroCliente.objects.get(id = id_macrocliente)
@@ -114,6 +118,7 @@ def ver_macrocliente(request, id_macrocliente):
         return HttpResponseRedirect('/listar_macroclientes/0')
     return render_to_response('clientes/ver_macrocliente.html', {'macrocliente': macrocliente, 'tienedir': tienedir, 'primeraDir': primeraDir, 'sedes': sedes}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id=id_macrocliente):
         MacroCliente.objects.get(id=id_macrocliente).delete()
@@ -122,6 +127,7 @@ def eliminar_macrocliente(request, id_macrocliente):
         return HttpResponseRedirect('/listar_macroclientes/4')
     return HttpResponseRedirect('/listar_macroclientes/3')
 
+@login_required(login_url='/')
 def listar_contactos_macrocliente(request, id_macrocliente, creado):
     if MacroCliente.objects.filter(id=id_macrocliente):
         macrocliente = MacroCliente.objects.get(id=id_macrocliente)
@@ -130,6 +136,7 @@ def listar_contactos_macrocliente(request, id_macrocliente, creado):
         return HttpResponseRedirect('/listar_macroclientes/4')
     return render_to_response('clientes/listar_contactos_macrocliente.html', {'contactos': contactos, 'macrocliente': macrocliente, 'creado': creado}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def nuevo_contacto_macrocliente(request, id_macrocliente):
     if MacroCliente.objects.filter(id=id_macrocliente):
         macrocliente = MacroCliente.objects.get(id=id_macrocliente)
@@ -152,6 +159,7 @@ def nuevo_contacto_macrocliente(request, id_macrocliente):
         formulario = MacroClienteContactoForm()
     return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario, 'nuevo': True}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def editar_contacto_macrocliente(request, id_contacto):
     if Encargado.objects.filter(id=id_contacto):
         contacto = Encargado.objects.get(id=id_contacto)
@@ -175,6 +183,7 @@ def editar_contacto_macrocliente(request, id_contacto):
         formulario = MacroClienteContactoForm(initial={'nombreContacto': contacto.nombre, 'cedula': contacto.cedula, 'telefono': contacto.telefono, 'email': contacto.email, 'descripcion_contacto': contacto.descripcion})
     return render_to_response('clientes/nuevo_contacto_macrocliente.html', {'formulario': formulario, 'nuevo': False}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_contacto_macrocliente(request, id_contacto):
     if Encargado.objects.filter(id=id_contacto):
         encargado = Encargado.objects.get(id=id_contacto)
@@ -184,9 +193,11 @@ def eliminar_contacto_macrocliente(request, id_contacto):
         return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/4')
     return HttpResponseRedirect('/listar_contactos_macrocliente/' + str(macrocliente.id) + '/3')
 
+@login_required(login_url='/')
 def ver_contacto_macrocliente(request, id_contacto):
     contacto = Encargado.objects.get(id=id_contacto)
     return render_to_response('clientes/ver_contacto_macrocliente.html', {'contacto': contacto}, context_instance = RequestContext(request))
+
 
 def nuevo_macrocliente_ajax(request):
     marca = Marca.objects.get(id = request.GET['id'])
@@ -194,6 +205,7 @@ def nuevo_macrocliente_ajax(request):
     data = serializers.serialize('json', submarcas, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def nuevo_cliente(request):
     if request.method == 'POST':
         formulario = ClienteForm(request.POST)
@@ -204,10 +216,12 @@ def nuevo_cliente(request):
         formulario = ClienteForm()
     return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_clientes(request, creado):
     clientes = Cliente.objects.filter()
     return render_to_response('clientes/listar_cliente.html', {'clientes': clientes, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def ver_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     clienteF = ClienteForm()
@@ -215,7 +229,7 @@ def ver_cliente(request, id_cliente):
     eventos = Evento.objects.filter(cliente=cliente)
     return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos, 'clienteForm':clienteF, 'eventos': eventos}, context_instance=RequestContext(request))
 
-
+@login_required(login_url='/')
 def editar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     if request.method == 'POST':
@@ -236,6 +250,7 @@ def editar_cliente(request, id_cliente):
                                  'direccion_fiscal': cliente.direccion_fiscal, 'rif': cliente.rif, 'cedula': cliente.cedula})
     return render_to_response('clientes/nuevo_cliente.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente).delete()
     return HttpResponseRedirect('/listar_clientes')
@@ -248,10 +263,12 @@ def agregar_sede_macrocliente_ajax(request):
     data = json.dumps({'status': dirc})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def listar_eventos_macrocliente(request, id_macrocliente):
     macrocliente = MacroCliente.objects.get(id=id_macrocliente)
     eventos = Evento.objects.filter(macrocliente__id=id_macrocliente)
     return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'macrocliente': macrocliente}, context_instance = RequestContext(request))
+
 
 def traer_cliente_evento(request):
     usuarioN = Cliente.objects.filter(nombres__contains = request.GET['usu'])
