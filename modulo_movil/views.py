@@ -405,6 +405,7 @@ def selecccionar_direccion(request):
     if request.method == 'POST':
         directorio = request.POST.get('directorio')
         settings.MEDIA_ROOT = directorio
+        settings.MEDIA_URL = '/media/'
         print settings.MEDIA_ROOT
         return HttpResponseRedirect('/modulo_movil_configurar_db')
     else:
