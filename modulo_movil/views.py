@@ -427,8 +427,10 @@ def seleccionar_evento(request):
     if directorio_actual.objects.filter(usuario = request.user):
             dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
-        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__macrocliente = None)
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__macrocliente = None).exclude(evento__id=1)
         if funciones_hoy:
+            for prueba in funciones_hoy:
+                print prueba.evento.id
             eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento.html', {'eventos': eventos}, context_instance=RequestContext(request))
 
@@ -437,8 +439,10 @@ def seleccionar_evento(request):
 def seleccionar_evento_caja(request):
     direcciones = Direccion.objects.all()
     eventos = []
+    if directorio_actual.objects.filter(usuario = request.user):
+            dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
-        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__macrocliente = None).exclude(evento__id=1)
         if funciones_hoy:
             eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento_caja.html', {'eventos': eventos}, context_instance=RequestContext(request))
@@ -600,6 +604,8 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
         if request.method == 'POST':
             pass
         productos = ProductoEvento.objects.filter(evento=evento, es_combo=False)
+        print "que pasa ahora?"
+        print productos
         dir_actual.save()
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
@@ -867,6 +873,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
     pagosForms = formset_factory(PedidoPagoForm)
     pedido_actual = Pedido.objects.get(id=pedido)
     tipos_pago = FormaDePago.objects.all()
+    print tipos_pago
     peps = ProductoEventoPedido.objects.filter(num_pedido = pedido_actual.num_pedido)
     combos = []
     productos = []
@@ -882,7 +889,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
         }
 
     tipos_envio = json.dumps(tipos_envio)
-
+    print tipos_envio
     # Se busca cuales de los productos del pedido son combos
     for pep in peps:
         if pep.producto.es_combo:
