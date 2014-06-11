@@ -59,9 +59,9 @@ Generar pedido
         {% else %}
         <div class="col-xs-12 col-md-12 table-responsive">
             <table class="table ">
-                <thead><th colspan="2">{{ cliente.nombres }} {{ cliente.apellidos }} - {{ cliente.cedula }}</th></thead>
-                <tr><td>Email: {{ cliente.email }}</td><td>Telefono: {{ cliente.telefono }}</td></tr>
-                <tr><td>Direccion: {{ cliente.direccion_fiscal }}</td><td>Rif: {{ cliente.rif }}</td></tr>
+                <thead><th id="id_nombres_cliente" colspan="2">{{ cliente.nombres }} {{ cliente.apellidos }}</th><th colspan="2" id="id_cedula_cliente">{{ cliente.cedula }}</th></thead>
+                <tr><td>Email:</td><td id="id_mail_cliente">{{ cliente.email }}</td><td>Telefono:</td><td id="id_telefono_cliente" value="{{ cliente.telefono }}">{{ cliente.telefono }}</td></tr>
+                <tr><td>Direccion:</td><td id="id_direccion_fiscal_cliente">{{ cliente.direccion_fiscal }}</td><td>Rif:</td><td id="id_rif_cliente" >{{ cliente.rif }}</td></tr>
             </table>
         </div>
         {% endif %}
@@ -360,7 +360,7 @@ $(document).ready(function(){
     $(".prod").each(function(){
         $(this).data("previous-value", $(this).val());
     });
-    actualizar_total();
+    verificar("0");
     $('.monto_pago').val($('#total').html());
 });
 
@@ -676,7 +676,7 @@ function generarPedido(){
     $('.formset_pago').each(function(){
         var select = $(this).find('select :selected');
         if (select.html() != "---------"){
-            if (select.html() != "Efectivo"){
+            if (select.html() == "Efectivo"){
                 efectivo = true;
             }
             var id = $(this).find('select').attr('id');
@@ -701,12 +701,18 @@ function generarPedido(){
 
     // Si es factura personal, se duplican los datos del cliente a los datos fiscales
     if(!($('.datos_juridicos').is(":visible"))){
-        $('#id_id_fiscal').val($('#id_cedula_cliente').val());
-        $('#id_tlf_fiscal').val($('#id_telefono_cliente').val());
-        $('#id_razon_social').val(($('#id_nombres_cliente').val()).concat($('#id_apellidos_cliente').val()));
-        $('#id_direccion_fiscal').val($('#id_direccion_fiscal_cliente').val());
+        if($('#id_cedula_cliente').val() === ''){
+            $('#id_id_fiscal').val($('#id_cedula_cliente').html());
+            $('#id_tlf_fiscal').val($('#id_telefono_cliente').html());
+            $('#id_razon_social').val($('#id_nombres_cliente').html());
+            $('#id_direccion_fiscal').val($('#id_direccion_fiscal_cliente').html());
+        } else {
+            $('#id_id_fiscal').val($('#id_cedula_cliente').val());
+            $('#id_tlf_fiscal').val($('#id_telefono_cliente').val());
+            $('#id_razon_social').val(($('#id_nombres_cliente').val()).concat($('#id_apellidos_cliente').val()));
+            $('#id_direccion_fiscal').val($('#id_direccion_fiscal_cliente').val());
+        }
     }
-
     if (pass == true) {
         document.getElementById('generar_pedido').submit();
     }
