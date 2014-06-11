@@ -158,10 +158,10 @@ Generar pedido
         <table class="table">
             <thead><th>Sub Total</th><th>Descuento</th><th>IVA</th><th>Total</th><th>Faltan</th></thead>
             <tr>
-                <td name="total_input" id="total_input"></td>
+                <td><input class="form-control" type="text" name="total_input" id="total_input"></td>
                 <td><input class="form-control" type="text" name="descuento_input" id="descuento_input" value="0.0"></td>
                 <td id="iva">{{ iva.valor }}</td>
-                <td id="total"></td>
+                <td id="total"><input type="hidden"</td>
                 <td id="faltan"></td>
             </tr>
         </table>
@@ -456,11 +456,11 @@ $(document).on("change", ".monto_pago", function(){
 });
 
 $("#descuento_input").change(function() {
-    if ($(this).val() < 0 || $(this).val() > parseFloat($('#total_input').html())) {
+    if ($(this).val() < 0 || $(this).val() > parseFloat($('#total_input').val())) {
         $(this).val(0);
     } else {
         var iva = $('#iva').html().split('%');
-        var total = ((parseFloat($('#total_input').html()) - parseFloat($(this).val()))*(parseFloat('1.'+iva))).toFixed(2)
+        var total = ((parseFloat($('#total_input').val()) - parseFloat($(this).val()))*(parseFloat('1.'+iva))).toFixed(2)
         iva = iva[0];
         $('#total').html(total);
         var pagos = 0;
@@ -521,7 +521,7 @@ function actualizar_total(){
         costo_combos += parseInt($(this).val()) * parseInt($(this).parent().siblings('.precio-combo').html());
     });
     total = total + costo_combos + parseFloat($('.costo_envio').html());
-    $('#total_input').html(total);
+    $('#total_input').val(total);
     var iva = $('#iva').html().split('%');
     iva = iva[0];
     total -= $('#descuento_input').val();

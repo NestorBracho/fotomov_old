@@ -316,16 +316,22 @@ def imprimir_ticket(pedido, id_evento):
     productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
     pagos = PedidoPago.objects.filter(num_pedido=pedido.num_pedido)
     evento = Evento.objects.get(id=id_evento)
+    iva = Configuracion.objects.get(nombre="iva")
     #evento = productos[0].producto.evento.nombre
     impresora = printer.Usb(0x1cb0,0x0003)
-    impresora.text("\nRecibo Fotomov\n")
-    impresora.text(evento+"\n")
-    impresora.text("num: " + str(pedido.num_pedido) + "\n")
+    impresora.text("\nRECIBO FOTOMOV\n")
+    impresora.text("#: " + str(pedido.num_pedido) + "\n")
+    impresora.text(evento.nombre+"\n")
+    impresora.text("Fecha: " + str(date.today()) + "\n\n")
     impresora.text("Productos:\n")
     for producto in productos:
-        texto = str(producto.cantidad) + " x " + str(producto.producto.producto.nombre) + "\n"
+        texto = str(producto.cantidad) + " x " + str(producto.producto.producto.nombre) + " = " + str(producto.producto.precio) + "\n"
         impresora.text(texto)
     impresora.text("\n")
+    subtotal = str(pedido.total/float("1." + str(iva.valor)))
+    impresora.text("Subtotal: " + str('%.2f'%(float(subtotal))) + "\n")
+    impresora.text("Impuesto: " + str(pedido.total*float("0." + str(iva.valor))) + "\n")
+    impresora.text("Total: " +str(pedido.total)+"\n")
     for pago in pagos:
         texto = pago.tipo_pago.nombre + " " + str(pago.monto) + " Bs.\n"
         impresora.text(texto)
@@ -333,12 +339,12 @@ def imprimir_ticket(pedido, id_evento):
     if pedido.envio != 0:
         impresora.text("direccion de entrega:\n")
         impresora.text(pedido.direccion_entrega+"\n\n")
-    impresora.text("Contacto:\n")
-    impresora.text("tlf: 0212-1111111\n")
-    impresora.text("twitter: @Fotomov\n")
-    impresora.text("Instagram: @fotomov\n")
+    impresora.text("Contacto Fotomov:\n")
+    impresora.text("tlf: 0212-7518390\n")
+    impresora.text("tlf: 0424-2863221\n")
+
+    impresora.text("Instagram/Facebook = fotomov\n")
     impresora.text("www.fotomov.com\n")
-    impresora.text("www.facebook.com/Fotomov\n")
     #impresora.text("5 x Foto10x10\n")
     #impresora.text("2 x Taza\n")
     impresora.cut()
@@ -977,6 +983,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
             #fecha_entrega = dia + datetime.timedelta(days = 15)
             pedido_nuevo = Pedido.objects.filter(id=pedido)
             print request.POST.get('direccion_entrega')
+            print request.POST.get('total_input')
             pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = Evento.objects.get(id=id_evento).fecha_entrega,
                                 id_fiscal = formulario.cleaned_data['id_fiscal'], direccion_fiscal = formulario.cleaned_data['direccion_fiscal'],
                                 tlf_fiscal = formulario.cleaned_data['tlf_fiscal'], razon_social = formulario.cleaned_data['razon_social'],
