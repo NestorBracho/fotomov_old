@@ -1029,8 +1029,6 @@ def enviar_correo_convocados(request):
         send_mail('[FotoMov] Convocatoria de staff para evento.', mensaje, '', correos, fail_silently=False)
     data = json.dumps({'nombre': ''})
     return HttpResponse(data, mimetype='application/json')
-<<<<<<< HEAD
-=======
 
 @login_required(login_url='/')
 def listar_items_presatdos(request, id_evento):
@@ -1057,5 +1055,3 @@ def eliminar_prestamo(request, id_prestamo):
 def prestar_item(request, id_evento):
     items = Items.objects.all()
     return render_to_response('evento/prestar_item.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
-
->>>>>>> f8a709bc7d62ba87f190523adcee3efe29e3d9de

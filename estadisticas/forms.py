@@ -48,10 +48,12 @@ class GraficoMacroclienteForm(forms.Form):
 	choices = (('','- magnitud -'), ('ingresos','Ingresos'),('egresos','Egresos'),
 	('ganancias','Ganancias'),)
 
+	macroclientes = []
 	macroclientes = MacroCliente.objects.all()
 
 	choicesM = []
 	choicesM.append(('','- macrocliente -'))
+	print macroclientes
 	for macro in macroclientes:
 		choicesM.append((macro.id, macro.nombre))
 
@@ -64,6 +66,7 @@ class GraficoMarcaForm(forms.Form):
 	choices = (('','- magnitud -'), ('ingresos','Ingresos'),('egresos','Egresos'),
 	('ganancias','Ganancias'),)
 
+	marcas = []
 	marcas = Marca.objects.all()
 
 	choicesM = []

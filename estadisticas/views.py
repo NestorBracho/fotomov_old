@@ -17,7 +17,6 @@ import json
 def estadisticas_marcas(request):
 
 	mesesF = MesesForm()
-	aniosF = AnosForm()
 
 	#Query para las marcas
 	marcas = Marca.objects.all()
@@ -37,7 +36,8 @@ def estadisticas_marcas(request):
 		ano = ''
 		mes_anterior = ''
 		fecha_actual = ''
-		marcas_total = []
+		producto_evento = []
+		pedidos = []
 
 		#Informacion de las submarcas
 		try:
@@ -61,10 +61,6 @@ def estadisticas_marcas(request):
 					if mesesF.is_valid():
 						mes = mesesF.cleaned_data['mes']
 
-					aniosF = AnosForm(request.POST)
-					if aniosF.is_valid():
-						ano = aniosF.cleaned_data['ano']
-
 				#Caso en el que se coloco un mes en el filtro
 				if len(mes) > 0:
 					fecha_actual = datetime.datetime.now()
@@ -86,6 +82,7 @@ def estadisticas_marcas(request):
 
 					#Informacion de los productos de cada evento
 					for producto in producto_evento:
+
 						productos_evento_pedido = ProductoEventoPedido.objects.filter(producto=producto)
 
 						#Informacion de los productos pedidos en cada evento
@@ -107,8 +104,7 @@ def estadisticas_marcas(request):
 
 			marcas_total.append((marca.id, marca.nombre, len(submarcas), len(macros), eventos_total, total_evento, egresos_evento, total_evento-egresos_evento))
 
-
-	ctx = {'marcas':marcas_total, 'MesesForm': mesesF, 'AnosForm':aniosF}
+	ctx = {'marcas':marcas_total, 'MesesForm': mesesF}
 	return render_to_response('estadisticas/marcas.html', ctx, context_instance = RequestContext(request))
 
 #Vista de las estadisticas de las submarcas de una marca
@@ -406,7 +402,6 @@ def estadisticas_staff(request):
 
 			#Informacion de pagos de eventos al usuario staff
 			pagos_eventos = GastoEvento.objects.filter(usuario=evento.usuario)
-			print pagos_eventos
 
 			for pago in pagos_eventos:
 
@@ -423,12 +418,8 @@ def estadisticas_staff(request):
 
 
 #Vista de los graficos
-<<<<<<< HEAD
-def estadisticas_graficos_macro(request):
-=======
 @login_required(login_url='/')
-def estadisticas_graficos(request):
->>>>>>> f8a709bc7d62ba87f190523adcee3efe29e3d9de
+def estadisticas_grafico_macro(request):
 
 	flag = False
 	data = []
@@ -457,7 +448,7 @@ def estadisticas_graficos(request):
 	ctx = {'graficoForm' : graficoForm, 'marcas':marcas, 'submarcas':submarcas,
 		'macroclientes':macros,'flag':flag,'data': data,'magnitud': magnitud,}
 
-	return render_to_response('estadisticas/graficos.html', ctx, context_instance = RequestContext(request))
+	return render_to_response('estadisticas/grafico_macro.html', ctx, context_instance = RequestContext(request))
 
 #Vista para manejar la informacion del grafico de macroclientes
 def grafico_macro(magnitud, id_macro):
@@ -467,6 +458,7 @@ def grafico_macro(magnitud, id_macro):
 	ingresos = 0
 	ganancias = 0
 	total_evento = 0
+	data = []
 	macro = []
 	eventos = []
 	ingresos = []
@@ -478,11 +470,12 @@ def grafico_macro(magnitud, id_macro):
 	egresos_funcion = []
 	ingresos_funcion = []
 	ganancias_funcion = []
-	data = []
-	meses = (('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), 
+	meses = (
+		('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), 
 		('4', 'Abril'), ('5', 'Mayo'), ('6', 'Junio'), 
 		('7', 'Julio'), ('8', 'Agosto'), ('9', 'Septiembre'), 
-		('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'),)
+		('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'),
+	)
 
 	#Extraccion de los datos del macrocliente elegido
 	try:
@@ -499,11 +492,12 @@ def grafico_macro(magnitud, id_macro):
 		except:
 			error = ''
 
-		print eventos
-		for evento in eventos:
+		#Cada mes en el que se encuentra la magnitud especifica
+		for mes in meses:
 
-			#Meses de cada magnitud
-			for mes in meses:
+			#Cada evento en el que se encuentran las funciones
+			for evento in eventos:
+
 				ingresos = 0
 				funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
 
@@ -534,19 +528,25 @@ def grafico_macro(magnitud, id_macro):
 				else:
 					meses_ingresos.append((mes[1], ingresos))
 
-			#Objeto Json que se retornara
-			for item in meses_ingresos:
-				data.append({'y':item[0], magnitud:str(item[1])})
+		#Objeto Json que se retornara
+		for item in meses_ingresos:
+			data.append({'y':item[0], magnitud:str(item[1])})
 
 	#Verificacion del caso para egresos
 	elif magnitud == 'egresos':
 
-		#Extraccion de datos de los eventos y funciones	
-		eventos = Evento.objects.filter(macrocliente=macro)
-		for evento in eventos:
+		#Extraccion de datos de los eventos y funciones
+		try:	
+			eventos = Evento.objects.filter(macrocliente=macro)
+		except:
+			error = ''
 
-			#Meses de cada magnitud
-			for mes in meses:
+		#Meses de cada magnitud
+		for mes in meses:
+
+			#Cada evento en el que se encuentran las funciones
+			for evento in eventos:
+
 				egresos = 0
 				funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
 
@@ -560,27 +560,32 @@ def grafico_macro(magnitud, id_macro):
 						error = 'Este evento no tiene egresos asociados'
 
 					#Verificacion de que encontro un egreso
-					if egresos_funcion != None:
+					if egresos_funcion != []:
 						egresos += egresos_funcion.monto
 
 				if egresos != 0:
 					meses_egresos.append((mes[1], egresos))
 				else:
 					meses_egresos.append((mes[1], egresos))
-		
-			#Objeto Json que se retornara
-			for item in meses_egresos:
-				data.append({'y':item[0], magnitud:str(item[1])})
+			
+		#Objeto Json que se retornara
+		for item in meses_egresos:
+			data.append({'y':item[0], magnitud:str(item[1])})
 
 	#Verificacion del caso para ganancias
 	elif magnitud == 'ganancias':
 
-		#Extraccion de datos de los eventos y funciones	
-		eventos = Evento.objects.filter(macrocliente=macro)
-		for evento in eventos:
+		#Extraccion de datos de los eventos y funciones
+		try:
+			eventos = Evento.objects.filter(macrocliente=macro)
+		except:
+			error = ''
 
-			#Meses de cada magnitud
-			for mes in meses:
+		#Meses de cada magnitud
+		for mes in meses:
+
+			for evento in eventos:
+
 				egresos = 0
 				ingresos = 0
 				funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
@@ -613,7 +618,7 @@ def grafico_macro(magnitud, id_macro):
 						error = 'Este evento no tiene egresos asociados'
 
 					#Verificacion de que encontro un egreso
-					if egresos_funcion != None:
+					if egresos_funcion != []:
 						egresos += egresos_funcion.monto
 
 				#Verificacion de que existe ingreso en el mes especifico
@@ -623,15 +628,15 @@ def grafico_macro(magnitud, id_macro):
 				else:
 					meses_ganancias.append((mes[1], ingresos-egresos))
 
-			#Objeto Json que se retornara
-			for item in meses_ganancias:
-				data.append({'y':item[0], magnitud:str(item[1])})
+		#Objeto Json que se retornara
+		for item in meses_ganancias:
+			data.append({'y':item[0], magnitud:str(item[1])})
 
 	#Objeto json a devolver para el grafico
 	return json.dumps(data)
 
 #Vista de los graficos
-def estadisticas_graficos_marca(request):
+def estadisticas_grafico_marca(request):
 
 	flag = False
 	data = []
@@ -698,6 +703,7 @@ def grafico_marca(magnitud, id_marca):
 		#Meses de cada magnitud
 		for mes in meses:
 
+			ingresos = 0
 			#Utilizacion de cada submarca de la marca
 			for submarca in submarcas:
 
@@ -713,7 +719,6 @@ def grafico_marca(magnitud, id_marca):
 					eventos = Evento.objects.filter(macrocliente=macro)
 					for evento in eventos:
 						
-						ingresos = 0
 						funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
 
 						#Extraccion de los ingresos de cada funcion de cada evento
@@ -737,8 +742,8 @@ def grafico_marca(magnitud, id_marca):
 									for pedido in pedidos:
 										ingresos += pedido.total
 
-					#Verificacion de que existe ingreso en el mes especifico
-					meses_ingresos.append((mes[1], ingresos))
+			#Verificacion de que existe ingreso en el mes especifico
+			meses_ingresos.append((mes[1], ingresos))
 
 		#Objeto Json que se retornara
 		for item in meses_ingresos:
@@ -750,6 +755,7 @@ def grafico_marca(magnitud, id_marca):
 		#Meses de cada magnitud
 		for mes in meses:
 
+			egresos = 0
 			#Utilizacion de cada submarca de la marca
 			for submarca in submarcas:
 
@@ -765,7 +771,6 @@ def grafico_marca(magnitud, id_marca):
 					eventos = Evento.objects.filter(macrocliente=macro)
 					for evento in eventos:
 
-						egresos = 0
 						funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
 
 						#Extraccion de los egresos de cada funcion de cada evento
@@ -777,14 +782,16 @@ def grafico_marca(magnitud, id_marca):
 							except:
 								error = 'Este evento no tiene egresos asociados'
 
+							print egresos_funcion
+
 							#Verificacion de que encontro un egreso
-							if egresos_funcion != None:
+							if egresos_funcion != []:
 								egresos += egresos_funcion.monto
 
-						if egresos != 0:
-							meses_egresos.append((mes[1], egresos))
-						else:
-							meses_egresos.append((mes[1], egresos))
+			if egresos != 0:
+				meses_egresos.append((mes[1], egresos))
+			else:
+				meses_egresos.append((mes[1], egresos))
 				
 		#Objeto Json que se retornara
 		for item in meses_egresos:
@@ -795,6 +802,9 @@ def grafico_marca(magnitud, id_marca):
 
 		#Meses de cada magnitud
 		for mes in meses:
+
+			egresos = 0
+			ingresos = 0
 
 			#Utilizacion de cada submarca de la marca
 			for submarca in submarcas:
@@ -811,8 +821,6 @@ def grafico_marca(magnitud, id_marca):
 					eventos = Evento.objects.filter(macrocliente=macro)
 					for evento in eventos:
 
-						egresos = 0
-						ingresos = 0
 						funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
 
 						#Extraccion de los ingresos de cada funcion de cada evento
@@ -843,15 +851,15 @@ def grafico_marca(magnitud, id_marca):
 								error = 'Este evento no tiene egresos asociados'
 
 							#Verificacion de que encontro un egreso
-							if egresos_funcion != None:
+							if egresos_funcion != []:
 								egresos += egresos_funcion.monto
 
-						#Verificacion de que existe ingreso en el mes especifico
-						if ingresos != 0 or egresos != 0:
+			#Verificacion de que existe ingreso en el mes especifico
+			if ingresos != 0 or egresos != 0:
 
-							meses_ganancias.append((mes[1], ingresos-egresos))
-						else:
-							meses_ganancias.append((mes[1], ingresos-egresos))
+				meses_ganancias.append((mes[1], ingresos-egresos))
+			else:
+				meses_ganancias.append((mes[1], ingresos-egresos))
 
 		#Objeto Json que se retornara
 		for item in meses_ganancias:
