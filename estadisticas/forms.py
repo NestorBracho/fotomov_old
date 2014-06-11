@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django.db import models
 from estadisticas.models import *
+from marca.models import *
 from staff.models import *
 from django import forms
 import datetime
@@ -42,25 +43,37 @@ class StaffForm(forms.Form):
 
 	privilegios = forms.ChoiceField(choices=choices, required=False)
 
-#Formulario de magnitudes de busqueda del grafico de estadisticas
-class MagnitudForm(forms.Form):
+# Formulario para generar graficos de macroclientes
+class GraficoMacroclienteForm(forms.Form):
+	choices = (('','- magnitud -'), ('ingresos','Ingresos'),('egresos','Egresos'),
+	('ganancias','Ganancias'),)
 
-	choices = (('','- magnitud -'), ('ingreso','Ingreso'),('egreso','Egreso'),
-	('ganancia','Ganancia'),('cantidad','Cantidad'),)
+	macroclientes = []
+	macroclientes = MacroCliente.objects.all()
+
+	choicesM = []
+	choicesM.append(('','- macrocliente -'))
+	print macroclientes
+	for macro in macroclientes:
+		choicesM.append((macro.id, macro.nombre))
 
 	magnitud = forms.ChoiceField(choices=choices, required=False)
 
-#Formulario de categorias de busqueda del grafico de estadisticas
-class CategoriasForm(forms.Form):
+	macrocliente = forms.ChoiceField(choices=choicesM, required=False)
 
-	choices = (('','- categoria -'), ('marca','Marca'),('submarca','Submarca'),
-	('macro','Macroclientes'),)
+# Formilario para generar graficos de marcas
+class GraficoMarcaForm(forms.Form):
+	choices = (('','- magnitud -'), ('ingresos','Ingresos'),('egresos','Egresos'),
+	('ganancias','Ganancias'),)
 
-	categoria = forms.ChoiceField(choices=choices, required=False, widget=forms.Select(attrs={'disabled':'true'}))
+	marcas = []
+	marcas = Marca.objects.all()
 
-#Formulario de registros de busqueda del grafico de estadisticas
-class RegistroForm(forms.Form):
+	choicesM = []
+	choicesM.append(('','- marca -'))
+	for marca in marcas:
+		choicesM.append((marca.id, marca.nombre))
 
-	choices = (('','- registro -'), ('0',''))
+	magnitud = forms.ChoiceField(choices=choices, required=False)
 
-	registro = forms.ChoiceField(choices=choices, required=False, widget=forms.Select(attrs={'disabled':'true'}))
+	marca = forms.ChoiceField(choices=choicesM, required=False)

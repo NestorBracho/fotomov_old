@@ -1,0 +1,62 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+       Gr&aacute;fico Marca
+{% endblock %}
+{% block seccion-contenido %}
+	<div class="row">
+		<form class="col-lg-6 col-md-4 col-sm-6" action="" method="POST" enctype="multipart/form-data" id="grafico-form">
+			{% csrf_token %}
+
+			{{graficoForm.magnitud | bootstrap}}
+			{{graficoForm.marca | bootstrap}}
+
+			<input type="submit" name="submit-grafico" id="submit-grafico" value="Generar Grafico" class="btn btn-primary">
+		</form>
+	</div>
+	<br>
+	{%if data != None%}
+		{%if flag%}
+		<div class="row" id="grafico_barras" style= "display:block">
+		{%else%}
+		<div class="row" id="grafico_barras" style= "display:none">
+		{%endif%}
+			<div class="col-lg-12 col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+				        <div id="morris-bar-chart"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{%endif%}
+{% endblock %}
+{% block js %}
+
+<!--Codigo del grafico -->
+<script type="text/javascript">
+	Morris.Bar({
+	element: 'morris-bar-chart',
+	data: {{ data|safe }},
+	xkey: 'y',
+	barColors:['#65b020'],
+	ykeys: ['{{ magnitud|safe }}'],
+	labels: ['Magnitud'],
+	gridTextSize:14,
+	});
+</script>
+
+<!--Codigo de campos bloqueados y divs bloqueados -->
+<script type="text/javascript">
+
+	/*Funcion que oculta el grafico inicialmente*/
+	$( document ).ready(function(){
+
+		/*Funcion que hace submit al formulario para generar el grafico_barras*/
+		$( '#submit-grafico' ).click(function(){
+			$( '#grafico-form' ).submit();
+		});
+
+	});
+</script>
+{% endblock js %}

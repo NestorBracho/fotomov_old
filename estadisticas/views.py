@@ -10,13 +10,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
 import datetime
+import json
 
 #Vista de las estadisticas de las marcas
 @login_required(login_url='/')
 def estadisticas_marcas(request):
 
 	mesesF = MesesForm()
-	aniosF = AnosForm()
 
 	#Query para las marcas
 	marcas = Marca.objects.all()
@@ -36,7 +36,8 @@ def estadisticas_marcas(request):
 		ano = ''
 		mes_anterior = ''
 		fecha_actual = ''
-		marcas_total = []
+		producto_evento = []
+		pedidos = []
 
 		#Informacion de las submarcas
 		try:
@@ -60,10 +61,6 @@ def estadisticas_marcas(request):
 					if mesesF.is_valid():
 						mes = mesesF.cleaned_data['mes']
 
-					aniosF = AnosForm(request.POST)
-					if aniosF.is_valid():
-						ano = aniosF.cleaned_data['ano']
-
 				#Caso en el que se coloco un mes en el filtro
 				if len(mes) > 0:
 					fecha_actual = datetime.datetime.now()
@@ -85,6 +82,7 @@ def estadisticas_marcas(request):
 
 					#Informacion de los productos de cada evento
 					for producto in producto_evento:
+
 						productos_evento_pedido = ProductoEventoPedido.objects.filter(producto=producto)
 
 						#Informacion de los productos pedidos en cada evento
@@ -106,8 +104,7 @@ def estadisticas_marcas(request):
 
 			marcas_total.append((marca.id, marca.nombre, len(submarcas), len(macros), eventos_total, total_evento, egresos_evento, total_evento-egresos_evento))
 
-
-	ctx = {'marcas':marcas_total, 'MesesForm': mesesF, 'AnosForm':aniosF}
+	ctx = {'marcas':marcas_total, 'MesesForm': mesesF}
 	return render_to_response('estadisticas/marcas.html', ctx, context_instance = RequestContext(request))
 
 #Vista de las estadisticas de las submarcas de una marca
@@ -248,7 +245,7 @@ def estadisticas_macros(request, id_submarca):
 
 					#Informacion de los pedidos de cada evento
 					for pedido in pedidos:
-						total_evento = total_evento + pedido.total
+						total_evento += pedido.total
 	
 			#Informacion de los gastos o egresos de cada evento
 			try:
@@ -257,7 +254,7 @@ def estadisticas_macros(request, id_submarca):
 				error = 'Este evento no tiene gastos asociados'
 			
 			for gasto in gastos_evento:
-				egresos_evento = egresos_evento + gasto.monto
+				egresos_evento += gasto.monto
 
 		macros_total.append((macro.id, macro.nombre, eventos_total, total_evento, egresos_evento, total_evento-egresos_evento))
 
@@ -309,7 +306,7 @@ def estadisticas_eventos(request, id_macro):
 
 				#Informacion de los pedidos de cada evento
 				for pedido in pedidos:
-					total_evento = total_evento + pedido.total
+					total_evento += pedido.total
 
 		#Informacion de los gastos o egresos de cada evento
 		try:
@@ -318,7 +315,7 @@ def estadisticas_eventos(request, id_macro):
 			error = 'Este evento no tiene gastos asociados'
 		
 		for gasto in gastos_evento:
-			egresos_evento = egresos_evento + gasto.monto
+			egresos_evento += gasto.monto
 
 		eventos_total.append((evento.id, evento.nombre, total_evento, egresos_evento, total_evento-egresos_evento))
 
@@ -405,7 +402,6 @@ def estadisticas_staff(request):
 
 			#Informacion de pagos de eventos al usuario staff
 			pagos_eventos = GastoEvento.objects.filter(usuario=evento.usuario)
-			print pagos_eventos
 
 			for pago in pagos_eventos:
 
@@ -423,21 +419,449 @@ def estadisticas_staff(request):
 
 #Vista de los graficos
 @login_required(login_url='/')
-def estadisticas_graficos(request):
+def estadisticas_grafico_macro(request):
 
-	#Formularios y variables declaradas
-	magnitudF = MagnitudForm()
-	categoriasF = CategoriasForm()
-	registroF = RegistroForm()
+	flag = False
+	data = []
+	magnitud = ''
+	graficoForm = GraficoMacroclienteForm()
 
 	#Estadisticas de gastos e ingresos
 	marcas = Marca.objects.all()
 	submarcas = SubMarca.objects.all()
 	macros = MacroCliente.objects.all()
 
+	#Verificacion que se hizo un post en la pagina
+	if request.method == 'POST':
 
-	
-	ctx = {'MagnitudForm':magnitudF, 'CategoriasForm':categoriasF,
-	'RegistroForm':registroF, 'marcas':marcas, 'submarcas':submarcas,
-	'macroclientes':macros}
-	return render_to_response('estadisticas/graficos.html', ctx, context_instance = RequestContext(request))
+		graficoForm = GraficoMacroclienteForm(request.POST)
+
+		if graficoForm.is_valid() :
+			magnitud = graficoForm.cleaned_data['magnitud']
+			macrocliente = graficoForm.cleaned_data['macrocliente']
+
+			#Verificacion de que cada campo o puede estar en blanco o en la opcion inicial
+			if magnitud != '' and macrocliente != '':
+				flag = True
+				data = grafico_macro(magnitud, macrocliente)
+
+	ctx = {'graficoForm' : graficoForm, 'marcas':marcas, 'submarcas':submarcas,
+		'macroclientes':macros,'flag':flag,'data': data,'magnitud': magnitud,}
+
+	return render_to_response('estadisticas/grafico_macro.html', ctx, context_instance = RequestContext(request))
+
+#Vista para manejar la informacion del grafico de macroclientes
+def grafico_macro(magnitud, id_macro):
+
+	i = 0
+	egresos = 0
+	ingresos = 0
+	ganancias = 0
+	total_evento = 0
+	data = []
+	macro = []
+	eventos = []
+	ingresos = []
+	funciones = []	
+	meses_egresos = []
+	meses_ingresos = []
+	meses_ganancias = []
+	producto_evento = []
+	egresos_funcion = []
+	ingresos_funcion = []
+	ganancias_funcion = []
+	meses = (
+		('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), 
+		('4', 'Abril'), ('5', 'Mayo'), ('6', 'Junio'), 
+		('7', 'Julio'), ('8', 'Agosto'), ('9', 'Septiembre'), 
+		('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'),
+	)
+
+	#Extraccion de los datos del macrocliente elegido
+	try:
+		macro = MacroCliente.objects.get(id=id_macro);
+	except:
+		error = ''
+
+	#Verificacion del caso para ingresos
+	if magnitud == 'ingresos':
+
+		#Extraccion de datos de los eventos y funciones
+		try:
+			eventos = Evento.objects.filter(macrocliente=macro)
+		except:
+			error = ''
+
+		#Cada mes en el que se encuentra la magnitud especifica
+		for mes in meses:
+
+			#Cada evento en el que se encuentran las funciones
+			for evento in eventos:
+
+				ingresos = 0
+				funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
+
+				#Extraccion de los ingresos de cada funcion de cada evento
+				for funcion in funciones:
+
+					#Informacion de los pedidos del evento
+					try:
+						producto_evento = ProductoEvento.objects.filter(evento=funcion.evento)
+					except:
+						error = ''
+					
+					#Informacion de los productos de cada evento
+					for producto in producto_evento:
+						productos_evento_pedido = ProductoEventoPedido.objects.filter(producto=producto)
+
+						#Informacion de los productos pedidos en cada evento
+						for producto_pedido in productos_evento_pedido:
+							pedidos = Pedido.objects.filter(num_pedido=producto_pedido.num_pedido)
+							
+							#Informacion de los pedidos de cada evento
+							for pedido in pedidos:
+								ingresos += pedido.total
+
+				#Verificacion de que existe ingreso en el mes especifico
+				if ingresos != 0:
+					meses_ingresos.append((mes[1], ingresos))
+				else:
+					meses_ingresos.append((mes[1], ingresos))
+
+		#Objeto Json que se retornara
+		for item in meses_ingresos:
+			data.append({'y':item[0], magnitud:str(item[1])})
+
+	#Verificacion del caso para egresos
+	elif magnitud == 'egresos':
+
+		#Extraccion de datos de los eventos y funciones
+		try:	
+			eventos = Evento.objects.filter(macrocliente=macro)
+		except:
+			error = ''
+
+		#Meses de cada magnitud
+		for mes in meses:
+
+			#Cada evento en el que se encuentran las funciones
+			for evento in eventos:
+
+				egresos = 0
+				funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
+
+				#Extraccion de los egresos de cada funcion de cada evento
+				for funcion in funciones:
+
+					#Informacion de los gastos o egresos de cada evento
+					try:
+						egresos_funcion = GastoEvento.objects.get(evento=funcion.evento, fue_pagado=True)
+					except:
+						error = 'Este evento no tiene egresos asociados'
+
+					#Verificacion de que encontro un egreso
+					if egresos_funcion != []:
+						egresos += egresos_funcion.monto
+
+				if egresos != 0:
+					meses_egresos.append((mes[1], egresos))
+				else:
+					meses_egresos.append((mes[1], egresos))
+			
+		#Objeto Json que se retornara
+		for item in meses_egresos:
+			data.append({'y':item[0], magnitud:str(item[1])})
+
+	#Verificacion del caso para ganancias
+	elif magnitud == 'ganancias':
+
+		#Extraccion de datos de los eventos y funciones
+		try:
+			eventos = Evento.objects.filter(macrocliente=macro)
+		except:
+			error = ''
+
+		#Meses de cada magnitud
+		for mes in meses:
+
+			for evento in eventos:
+
+				egresos = 0
+				ingresos = 0
+				funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
+
+				#Extraccion de los ingresos de cada funcion de cada evento
+				for funcion in funciones:
+
+					#Informacion de los pedidos del evento
+					try:
+						producto_evento = ProductoEvento.objects.filter(evento=funcion.evento)
+					except:
+						error = ''
+					
+					#Informacion de los productos de cada evento
+					for producto in producto_evento:
+						productos_evento_pedido = ProductoEventoPedido.objects.filter(producto=producto)
+
+						#Informacion de los productos pedidos en cada evento
+						for producto_pedido in productos_evento_pedido:
+							pedidos = Pedido.objects.filter(num_pedido=producto_pedido.num_pedido)
+							
+							#Informacion de los pedidos de cada evento
+							for pedido in pedidos:
+								ingresos += pedido.total
+
+					#Informacion de los gastos o egresos de cada evento
+					try:
+						egresos_funcion = GastoEvento.objects.get(evento=funcion.evento, fue_pagado=True)
+					except:
+						error = 'Este evento no tiene egresos asociados'
+
+					#Verificacion de que encontro un egreso
+					if egresos_funcion != []:
+						egresos += egresos_funcion.monto
+
+				#Verificacion de que existe ingreso en el mes especifico
+				if ingresos != 0 or egresos != 0:
+
+					meses_ganancias.append((mes[1], ingresos-egresos))
+				else:
+					meses_ganancias.append((mes[1], ingresos-egresos))
+
+		#Objeto Json que se retornara
+		for item in meses_ganancias:
+			data.append({'y':item[0], magnitud:str(item[1])})
+
+	#Objeto json a devolver para el grafico
+	return json.dumps(data)
+
+#Vista de los graficos
+def estadisticas_grafico_marca(request):
+
+	flag = False
+	data = []
+	magnitud = ''
+	graficoForm = GraficoMarcaForm()
+
+	#Estadisticas de gastos e ingresos
+	marcas = Marca.objects.all()
+
+	#Verificacion que se hizo un post en la pagina
+	if request.method == 'POST':
+
+		graficoForm = GraficoMarcaForm(request.POST)
+
+		if graficoForm.is_valid() :
+			magnitud = graficoForm.cleaned_data['magnitud']
+			marca = graficoForm.cleaned_data['marca']
+
+			#Verificacion de que cada campo o puede estar en blanco o en la opcion inicial
+			if magnitud != '' and marca != '':
+				flag = True
+				data = grafico_marca(magnitud, marca)
+
+	ctx = {'graficoForm' : graficoForm, 'marcas':marcas, 'flag':flag,
+		'data': data,'magnitud': magnitud,}
+
+	return render_to_response('estadisticas/grafico_marca.html', ctx, context_instance = RequestContext(request))
+
+#Vista para manejar la informacion del grafico de marcas
+def grafico_marca(magnitud, id_marca):
+
+	i = 0
+	egresos = 0
+	ingresos = 0
+	ganancias = 0
+	total_evento = 0
+	macro = []
+	eventos = []
+	ingresos = []
+	submarcas = []
+	funciones = []
+	meses_egresos = []
+	meses_ingresos = []
+	meses_ganancias = []
+	producto_evento = []
+	egresos_funcion = []
+	ingresos_funcion = []
+	ganancias_funcion = []
+	data = []
+	meses = (('1', 'Enero'), ('2', 'Febrero'), ('3', 'Marzo'), 
+		('4', 'Abril'), ('5', 'Mayo'), ('6', 'Junio'), 
+		('7', 'Julio'), ('8', 'Agosto'), ('9', 'Septiembre'), 
+		('10', 'Octubre'), ('11', 'Noviembre'), ('12', 'Diciembre'),)
+
+	#Extraccion de las submarcas de una marca
+	try:
+		submarcas = SubMarca.objects.filter(marca=id_marca)
+	except:
+		error = ''
+
+	#Verificacion del caso para ingresos
+	if magnitud == 'ingresos':
+
+		#Meses de cada magnitud
+		for mes in meses:
+
+			ingresos = 0
+			#Utilizacion de cada submarca de la marca
+			for submarca in submarcas:
+
+				try:
+					macros = MacroCliente.objects.filter(submarca=submarca);
+				except:
+					error = ''
+
+				#Utilizacion de cada macricliente de la submarca
+				for macro in macros:
+
+					#Extraccion de datos de los eventos y funciones	
+					eventos = Evento.objects.filter(macrocliente=macro)
+					for evento in eventos:
+						
+						funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
+
+						#Extraccion de los ingresos de cada funcion de cada evento
+						for funcion in funciones:
+
+							#Informacion de los pedidos del evento
+							try:
+								producto_evento = ProductoEvento.objects.filter(evento=funcion.evento)
+							except:
+								error = ''
+							
+							#Informacion de los productos de cada evento
+							for producto in producto_evento:
+								productos_evento_pedido = ProductoEventoPedido.objects.filter(producto=producto)
+
+								#Informacion de los productos pedidos en cada evento
+								for producto_pedido in productos_evento_pedido:
+									pedidos = Pedido.objects.filter(num_pedido=producto_pedido.num_pedido)
+									
+									#Informacion de los pedidos de cada evento
+									for pedido in pedidos:
+										ingresos += pedido.total
+
+			#Verificacion de que existe ingreso en el mes especifico
+			meses_ingresos.append((mes[1], ingresos))
+
+		#Objeto Json que se retornara
+		for item in meses_ingresos:
+			data.append({'y':item[0], magnitud:str(item[1])})
+
+	#Verificacion del caso para egresos
+	elif magnitud == 'egresos':
+
+		#Meses de cada magnitud
+		for mes in meses:
+
+			egresos = 0
+			#Utilizacion de cada submarca de la marca
+			for submarca in submarcas:
+
+				try:
+					macros = MacroCliente.objects.filter(submarca=submarca);
+				except:
+					error = ''
+
+				#Utilizacion de cada macricliente de la submarca
+				for macro in macros:
+
+					#Extraccion de datos de los eventos y funciones	
+					eventos = Evento.objects.filter(macrocliente=macro)
+					for evento in eventos:
+
+						funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
+
+						#Extraccion de los egresos de cada funcion de cada evento
+						for funcion in funciones:
+
+							#Informacion de los gastos o egresos de cada evento
+							try:
+								egresos_funcion = GastoEvento.objects.get(funcion=funcion, fue_pagado=True)
+							except:
+								error = 'Este evento no tiene egresos asociados'
+
+							#Verificacion de que encontro un egreso
+							if egresos_funcion != []:
+								egresos += egresos_funcion.monto
+
+			if egresos != 0:
+				meses_egresos.append((mes[1], egresos))
+			else:
+				meses_egresos.append((mes[1], egresos))
+				
+		#Objeto Json que se retornara
+		for item in meses_egresos:
+			data.append({'y':item[0], magnitud:str(item[1])})
+
+	#Verificacion del caso para ganancias
+	elif magnitud == 'ganancias':
+
+		#Meses de cada magnitud
+		for mes in meses:
+
+			egresos = 0
+			ingresos = 0
+
+			#Utilizacion de cada submarca de la marca
+			for submarca in submarcas:
+
+				try:
+					macros = MacroCliente.objects.filter(submarca=submarca);
+				except:
+					error = ''
+
+				#Utilizacion de cada macricliente de la submarca
+				for macro in macros:
+
+					#Extraccion de datos de los eventos y funciones	
+					eventos = Evento.objects.filter(macrocliente=macro)
+					for evento in eventos:
+
+						funciones = Funcion.objects.filter(evento=evento, dia__month=mes[0]).order_by('dia')
+
+						#Extraccion de los ingresos de cada funcion de cada evento
+						for funcion in funciones:
+
+							#Informacion de los pedidos del evento
+							try:
+								producto_evento = ProductoEvento.objects.filter(evento=funcion.evento)
+							except:
+								error = ''
+							
+							#Informacion de los productos de cada evento
+							for producto in producto_evento:
+								productos_evento_pedido = ProductoEventoPedido.objects.filter(producto=producto)
+
+								#Informacion de los productos pedidos en cada evento
+								for producto_pedido in productos_evento_pedido:
+									pedidos = Pedido.objects.filter(num_pedido=producto_pedido.num_pedido)
+									
+									#Informacion de los pedidos de cada evento
+									for pedido in pedidos:
+										ingresos += pedido.total
+
+							#Informacion de los gastos o egresos de cada evento
+							try:
+								egresos_funcion = GastoEvento.objects.get(funcion=funcion, fue_pagado=True)
+							except:
+								error = 'Este evento no tiene egresos asociados'
+
+							#Verificacion de que encontro un egreso
+							if egresos_funcion != []:
+								egresos += egresos_funcion.monto
+
+			#Verificacion de que existe ingreso en el mes especifico
+			if ingresos != 0 or egresos != 0:
+
+				meses_ganancias.append((mes[1], ingresos-egresos))
+			else:
+				meses_ganancias.append((mes[1], ingresos-egresos))
+
+		#Objeto Json que se retornara
+		for item in meses_ganancias:
+			data.append({'y':item[0], magnitud:str(item[1])})
+
+	#Objeto json a devolver para el grafico
+	return json.dumps(data)

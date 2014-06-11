@@ -42,12 +42,16 @@ class Producto(models.Model):
         return self.nombre
 
 class ProductoEvento(models.Model):
-    proveedor = models.ForeignKey(Proveedor)
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
     precio_produccion = models.FloatField()
     es_combo = models.BooleanField(default=False)
+
+    #Claves foraneas
+    evento = models.ForeignKey(Evento)
+    producto = models.ForeignKey(Producto)
+    proveedor = models.ForeignKey(Proveedor)
     def __unicode__(self):
         return self.producto.nombre
 
@@ -58,12 +62,17 @@ class ProductoEventoPedido(models.Model):
     cantidad = models.IntegerField()
     ruta = models.CharField(max_length=10000)
     num_pedido = models.IntegerField()
-    producto = models.ForeignKey(ProductoEvento)
     estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)
 
+<<<<<<< HEAD
+    #Claves foraneas
+    producto = models.ForeignKey(ProductoEvento)
+=======
+>>>>>>> 31d20e504e564f79eadf3d4549da7fc46ab430ed
 
 class Pedido(models.Model):
+
     CREADO = 'Creado'
     PAGADO = 'Pagado'
     EDICION = 'Edicion'
@@ -107,18 +116,31 @@ class Pedido(models.Model):
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
     envio = models.IntegerField(default=0, choices=ENVIOS)
     fue_pagado = models.BooleanField(default=False)
+    estado = models.CharField(max_length=100)
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
     descuento = models.DecimalField(decimal_places=2, max_digits=10, default=0)
 
+    #Claves foraneas
+    cliente = models.ForeignKey(Cliente, null=True, blank=True)
+    lote = models.ForeignKey(Lote, null=True, blank=True)
+
 class PedidoPago(models.Model):
     num_pedido = models.IntegerField()
-    tipo_pago = models.ForeignKey(FormaDePago)
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)
 
+    #Claves foraneas
+    tipo_pago = models.ForeignKey(FormaDePago)
+
 class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEvento y Combos
+
+    cantidad = models.IntegerField()
+
+    #Claves foraneas
+    producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
+    combo = models.ForeignKey(ProductoEvento, related_name='combo')
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()

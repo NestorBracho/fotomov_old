@@ -145,6 +145,7 @@ urlpatterns = patterns('',
     url(r'^editar_evento/(?P<iden>\d+)/$', 'evento.views.editar_evento'),
     url(r'^editar_funcion/$', 'evento.views.editar_funcion'),
     url(r'^traer_usuario_gasto_evento_ajax/$', 'evento.views.traer_usuario_gasto_evento_ajax'),
+
     url(r'^crear_combos/(?P<evento_id>\d+)/$', 'evento.views.crear_combos'),
     url(r'^listar_combos/(?P<evento_id>\d+)/$', 'evento.views.listar_combos'),
     url(r'^ver_combo/(?P<combo_id>\d+)/$', 'evento.views.ver_combo'),
@@ -184,6 +185,17 @@ urlpatterns = patterns('',
     url(r'^estadisticas_eventos/(?P<id_macro>\d+)/$', 'estadisticas.views.estadisticas_eventos'),
     url(r'^estadisticas_clientes/$', 'estadisticas.views.estadisticas_clientes'),
     url(r'^estadisticas_staff/$', 'estadisticas.views.estadisticas_staff'),
-    url(r'^estadisticas_graficos/$', 'estadisticas.views.estadisticas_graficos'),
+    url(r'^estadisticas_grafico_macro/$', 'estadisticas.views.estadisticas_grafico_macro'),
+    url(r'^estadisticas_grafico_marca/$', 'estadisticas.views.estadisticas_grafico_marca'),
+    
+    #Urls de combos y vainas
+    url(r'^crear_combos/(?P<evento_id>\d+)/$', 'evento.views.crear_combos'),
+    url(r'^listar_combos/(?P<evento_id>\d+)/$', 'evento.views.listar_combos'),
+    url(r'^ver_combo/(?P<combo_id>\d+)/$', 'evento.views.ver_combo'),
+    url(r'^eliminar_combo/(?P<combo_id>\d+)/$', 'evento.views.eliminar_combo'),
+    url(r'^eliminar_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.eliminar_tipo_evento'),
+    url(r'^editar_combo/(?P<combo_id>\d+)/$', 'evento.views.editar_combo'),
+    url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
     url(r'^ver_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.ver_tipo_evento'),
+
 )

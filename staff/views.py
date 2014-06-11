@@ -112,7 +112,6 @@ def escritorio(request):
     mis_tareas = Tarea.objects.filter(asignado=usuario.privilegio,lista='False',activa=True)
     #tareas = Tarea.objects.filter(activa=True)[15:]
     tareas = Tarea.objects.filter(activa=True)
-    print tareas
     return render_to_response('escritorio.html', {'mis_tareas': mis_tareas, 'tareas': tareas}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

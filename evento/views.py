@@ -148,18 +148,9 @@ def agregar_staff(request, id_evento):
             for staff in tipos_staff:
                 print str(funcion.id) + "-" + str(staff.id)
                 print request.POST.get(str(funcion.id) + "-" + str(staff.id))
-                cantidad = int(request.POST.get(str(funcion.id) + "-" + str(staff.id)))
-                actualizado = StaffPorFuncion.objects.get(tipo=staff, funcion=funcion)
-                actualizado.cantidad=cantidad
-                try:
-                    bloque = Bloque.objects.get(id = request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id)))
-                    print bloque
-                    actualizado.bloque=bloque
-                except:
-                    pass
-                actualizado.save()
-                #agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad, bloque = bloque)
-                #agregar.save()
+                cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
+                agregar = StaffPorFuncion.objects.create(tipo=staff, funcion=funcion, cantidad=cantidad, bloque = Bloque.objects.get(id = request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id))))
+                agregar.save()
         return HttpResponseRedirect("/listar_evento/2")
     print lista
     return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento, 'bloques':bloques}, context_instance= RequestContext(request))
@@ -206,7 +197,7 @@ def listar_pedidos_sede(request, id_sede):
 
 @login_required(login_url='/')
 def agregar_productos(request,id_evento):
-    productos = Producto.objects.filter(es_combo=False)
+    productos = Producto.objects.all()
     evento = Evento.objects.get(id=id_evento)
     proveedores = Proveedor.objects.all()
     lista = []
@@ -236,6 +227,7 @@ def agregar_productos(request,id_evento):
                 producto_evento.proveedor = proveedor
                 producto_evento.save()
             except:
+
                 producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, proveedor=proveedor, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
         if "combos" in request.POST:
             return HttpResponseRedirect('/listar_combos/'+id_evento+'/')
@@ -434,7 +426,7 @@ def casilla_administrativa(request, id_evento):
     if len(gasto)>0:
         for gato in gasto:
             if gato.usuario !=None :
-                fijos.append([gato.nombre, gato.monto, gato.usuario.nombre+" "+gato.usuario.apellido])
+                fijos.append([gato.nombre, gato.monto, gato.usuario.nombre+" "+gato.usuario.nombre])
             else:
                 fijos.append([gato.nombre, gato.monto, ""])
     else:
@@ -489,7 +481,7 @@ def calendario_de_eventos(request):
     now = datetime.datetime.now()
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
-    funciones = StaffPorFuncion.objects.filter(funcion__dia__gte=now.date(), tipo=usuario.privilegio, cantidad__gt = 0).order_by('-funcion__dia').distinct()
+    funciones = StaffPorFuncion.objects.filter(funcion__dia__gt=now.date(), tipo=usuario.privilegio, cantidad__gt = 0).order_by('-funcion__dia').distinct()
     aux_fun = []
     for funcion in funciones:
         aux_fun.append(funcion.funcion)
@@ -1010,6 +1002,7 @@ def eliminar_items(request, id_item):
 @login_required(login_url='/')
 def listar_items(request, creado):
     items = Items.objects.all()
+
     return render_to_response('evento/listar_items.html', {'items': items, 'creado': creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -1062,4 +1055,3 @@ def eliminar_prestamo(request, id_prestamo):
 def prestar_item(request, id_evento):
     items = Items.objects.all()
     return render_to_response('evento/prestar_item.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
-

@@ -27,13 +27,12 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
+# from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 from django.utils import simplejson
 from unicodedata import normalize
 from modulo_movil.forms import *
-
 
 def ingresar(request):
     if request.method=='POST':
