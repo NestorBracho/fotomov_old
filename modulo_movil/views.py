@@ -418,7 +418,7 @@ def seleccionar_evento(request):
     if directorio_actual.objects.filter(usuario = request.user):
             dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
-        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion)
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__macrocliente = None)
         if funciones_hoy:
             eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento.html', {'eventos': eventos}, context_instance=RequestContext(request))
