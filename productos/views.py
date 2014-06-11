@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.forms.models import modelform_factory
 from productos.models import *
 from productos.forms import *
 from reportlab.pdfgen import canvas
@@ -362,3 +363,14 @@ def editar_proveedor(request, id_proveedor):
     else:
         formulario = ProveedorForm(instance = proveedor)
     return render_to_response('productos/editar_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+
+@login_required(login_url='/')
+def listar_envios(request):
+    if request.method == 'POST':
+        ped = Pedido.objects.get(num_pedido=request.POST["num_pedido"])
+        EnvioPedido.objects.create(pedido=ped, tracking=request.POST["tracking"], proveedor=request.POST["proveedor"])
+    temp = TipoEnvio.objects.filter(req_dir=True).values_list('id', flat=True)
+    pedidos = Pedido.objects.filter(envio__in=temp)
+    envios = EnvioPedido.objects.filter(pedido__in=pedidos.values_list('id', flat=True))
+    return render_to_response('productos/listar_envios.html', {'envios': envios, 'pedidos': pedidos}, context_instance = RequestContext(request))

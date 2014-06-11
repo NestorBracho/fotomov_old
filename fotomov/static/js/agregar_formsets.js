@@ -44,7 +44,9 @@ function agregarFormset(select_options) {
         {% endfor %}
    ]*/
     var total = parseInt($('#id_form-TOTAL_FORMS').val(), 10);
-   var $div = $('<div/>');
+   var $div = $('<div/>', {
+       class: "formset_pago"
+   });
    $('<label/>', {
        class: "control-label",
        text: "Tipo Pago"
@@ -54,7 +56,7 @@ function agregarFormset(select_options) {
         id: 'id_form-'+total+'-tipo_pago',
         name: 'form-'+total+'-tipo_pago',
         class: 'form-control',
-        onchange: 'verificar()',
+        onchange: 'verificar("'+total+'")',
        style: 'asdas'
    });
 
@@ -76,16 +78,55 @@ function agregarFormset(select_options) {
         type: 'text',
         class: 'form-control'
     }).appendTo($div);
-   $('<label/>', {
+
+    // Fila de monto y vuelto para pagos en efectivo
+    var row = $('<div/>',{
+       class: "row"
+    });
+    // Columna de monto
+    row.appendTo($div);
+    var monto = $('<div/>',{
+       class: "col-md-12 monto"
+    });
+    monto.appendTo(row);
+    // Columna de vuelto
+    var vuelto = $('<div/>',{
+       class: "col-md-4 vuelto",
+       style: "display: none;"
+    });
+    vuelto.appendTo(row);
+
+    // Div contenedor para label y campo del monto
+    var formgroup_monto = $('<div/>',{
+       class: "form-group"
+    });
+    formgroup_monto.appendTo(monto);
+    $('<label/>', {
        class: "control-label",
        text: "Monto"
-   }).appendTo($div)
+    }).appendTo(formgroup_monto)
     $('<input/>', {
         id: 'id_form-'+total+'-monto',
         name: 'form-'+total+'-monto',
         type: 'text',
-        class: 'form-control'
-    }).appendTo($div);
+        class: 'form-control monto_pago',
+        value: '0.0'
+    }).appendTo(formgroup_monto);
+
+    // Div contenedor para label y campo del vuelto
+    var formgroup_vuelto = $('<div/>',{
+       class: "form-group"
+    });
+    formgroup_vuelto.appendTo(vuelto);
+    $('<label/>', {
+       class: "control-label",
+       text: "Vuelto"
+    }).appendTo(formgroup_vuelto)
+    $('<input/>', {
+        readonly : '',
+        type: 'text',
+        class: 'form-control monto_vuelto'
+    }).appendTo(formgroup_vuelto);
     $('#formsets').append($div);
     $('#id_form-TOTAL_FORMS').val(total+1);
 }

@@ -1,0 +1,68 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Lista envios
+{% endblock %}
+{% block tabla %}
+<table class="table table-striped  table-hover" id="content">
+    <thead>
+        <th>Cliente</th>
+        <th>Num Pedido</th>
+        <th>Dirección</th>
+        <th>Tracking</th>
+        <th>Proveedor</th>
+        <th>Fecha envío</th>
+    </thead>
+    {% for pedido in pedidos %}
+        <tr class="pedido">
+            <td>{{ pedido.cliente }}</td>
+            <td class="num_pedido">{{ pedido.num_pedido }}</td>
+            <td>{{ pedido.direccion_entrega }}</td>
+            {% if pedido.pedido_enviado %}
+                <td>{{ pedido.pedido_enviado.tracking }}</td>
+                <td>{{ pedido.pedido_enviado.proveedor }}</td>
+                <td>{{ pedido.pedido_enviado.fecha_envio }}</td>
+            {% else %}
+                <td></td>
+                <td></td>
+                <td><button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs agregar" >Agregar envio</button></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="ModalForm" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="form" role="form" action="." method="post">
+        {% csrf_token %}
+        <input type="hidden" id="num_pedido" name="num_pedido" value="">
+        <div class="form-group">
+            <label class="control-label  " for="id_tracking">Tracking</label>
+            <div class=" ">
+                <input class=" form-control" id="id_tracking" maxlength="50" name="tracking" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label  " for="id_proveedor">Proveedor</label>
+            <div class=" ">
+                <input class=" form-control" id="id_proveedor" maxlength="30" name="proveedor" type="text">
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+$('.agregar').click(function(){
+    $('#num_pedido').val($(this).parents('.pedido').children('.num_pedido').html());
+})
+</script>
+{% endblock %}

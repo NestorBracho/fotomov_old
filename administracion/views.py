@@ -6,6 +6,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.forms.models import modelform_factory
 from datetime import *
 from django.core import serializers
 from administracion.forms import *
@@ -127,3 +129,25 @@ def pagar(request):
     else:
         formulario = PagoForm()
     return render_to_response('administracion/pagar.html', {'formulario': formulario}, context_instance = RequestContext(request))
+
+
+def tipo_envio(request):
+    form = modelform_factory(TipoEnvio)
+    envios = TipoEnvio.objects.all()
+    if request.method == 'POST':
+        try:
+            envio = TipoEnvio.objects.get(tipo=request.POST["tipo"])
+            formulario = form(request.POST, instance=envio)
+        except:
+            formulario = form(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+        else:
+            return render_to_response('administracion/tipo_envio.html', {'envios': envios, 'form': formulario}, context_instance = RequestContext(request))
+    return render_to_response('administracion/tipo_envio.html', {'envios': envios, 'form': form}, context_instance = RequestContext(request))
+
+
+def eliminar_tipo_envio(request, id_envio):
+    envio = TipoEnvio.objects.get(id=id_envio)
+    envio.delete()
+    return HttpResponseRedirect(reverse('tipo_envio'))

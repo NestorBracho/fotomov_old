@@ -12,7 +12,7 @@
         <a href="/listar_evento/0/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Listar eventos</a>
     </div>
     <div class="pull-right">
-        <a href="/crear_combos/{{ iden }}/" class="btn btn-info">Inventario/Prestar</a>
+        <a href="/listar_items_prestados/{{ evento }}/" class="btn btn-info">Inventario/Prestar</a>
     </div>
 </div>
 <table class="table table-striped  table-hover" id="content">
@@ -27,7 +27,7 @@
             <td>{{ item.item }}</td>
             <td>{{ item.cantidad}}</td>
             <td>
-                <a onclick="setModal('{{ item.item.item }}', '{{ item.usuario.nombre}} {{ item.usuario.apellido}}', '{{ item.id }}')" data-toggle="modal" data-target="#prestar" class="btn btn-xs btn-default">Prestar</a>
+                <a data-toggle="modal" data-target="#prestar" class="btn btn-xs btn-default">Prestar</a>
             </td>
         </tr>
     {% endfor %}
@@ -47,7 +47,7 @@
             </div>
             <div class="modal-footer text-center" id="modal-footer">
                 <input type="hidden" id="id_usuario"/>
-                <a onclick="devolverItem()" data-dismiss="modal" aria-hidden="true" class="btn btn-primary pull-right">Marcar como devuelto</a>
+                <a onclick="devolverItem()" data-dismiss="modal" aria-hidden="true" class="btn btn-primary pull-right">Prestar</a>
             </div>
         </div>
     </div>
@@ -67,16 +67,7 @@
                     response(data);
                 }
             );
-        },
-        focus: function( event, ui ) {
-            $( this ).val( ui.item.label );
-            return false;
-        },
-        select: function( event, ui ) {
-            $( this ).val( ui.item.label );
-            $( "#id_usuario").val( ui.item.value );
 
-            return false;
         }
     })
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {

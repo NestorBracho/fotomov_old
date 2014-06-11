@@ -65,8 +65,11 @@ class ProductoEventoPedido(models.Model):
     estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)
 
+<<<<<<< HEAD
     #Claves foraneas
     producto = models.ForeignKey(ProductoEvento)
+=======
+>>>>>>> 31d20e504e564f79eadf3d4549da7fc46ab430ed
 
 class Pedido(models.Model):
 
@@ -117,6 +120,7 @@ class Pedido(models.Model):
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
+    descuento = models.DecimalField(decimal_places=2, max_digits=10, default=0)
 
     #Claves foraneas
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
@@ -140,3 +144,16 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
+
+
+class TipoEnvio(models.Model):
+    tipo = models.CharField(max_length=30)
+    precio = models.DecimalField(decimal_places=2, max_digits=10)
+    req_dir = models.BooleanField()
+
+
+class EnvioPedido(models.Model):
+    pedido = models.OneToOneField(Pedido, related_name="pedido_enviado")
+    tracking = models.CharField(max_length=50)
+    fecha_envio = models.DateField(auto_now_add=True)
+    proveedor = models.CharField(max_length=30)

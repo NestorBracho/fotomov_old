@@ -778,11 +778,9 @@ def grafico_marca(magnitud, id_marca):
 
 							#Informacion de los gastos o egresos de cada evento
 							try:
-								egresos_funcion = GastoEvento.objects.get(evento=funcion.evento, fue_pagado=True)
+								egresos_funcion = GastoEvento.objects.get(funcion=funcion, fue_pagado=True)
 							except:
 								error = 'Este evento no tiene egresos asociados'
-
-							print egresos_funcion
 
 							#Verificacion de que encontro un egreso
 							if egresos_funcion != []:
@@ -846,7 +844,7 @@ def grafico_marca(magnitud, id_marca):
 
 							#Informacion de los gastos o egresos de cada evento
 							try:
-								egresos_funcion = GastoEvento.objects.get(evento=funcion.evento, fue_pagado=True)
+								egresos_funcion = GastoEvento.objects.get(funcion=funcion, fue_pagado=True)
 							except:
 								error = 'Este evento no tiene egresos asociados'
 
