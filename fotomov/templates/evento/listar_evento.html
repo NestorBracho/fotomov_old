@@ -40,12 +40,14 @@ Lista de eventos
                 {% endif %}
             </td>
             <td>{{ evento.nombre }}</td>
-            <td><a href="/agregar_staff/{{ evento.id }}" class="btn btn-default btn-xs" >Staff</a>
-            <a href="/agregar_productos/{{ evento.id }}" class="btn btn-default btn-xs" >Productos</a>
-            <a href="/casilla_administrativa/{{ evento.id }}" class="btn btn-default btn-xs" >Administracion</a>
-            <a href="/listar_pautas/{{ evento.id }}/0" class="btn btn-default btn-xs" >Pautas</a>
-            <a href="/usuario_por_evento/{{ evento.id }}" class="btn btn-default btn-xs" >Convocar Staff</a>
-            <a href="/editar_evento/{{ evento.id }}" class="btn btn-success btn-xs" >Editar</a>
+            <td>
+                <a href="/agregar_staff/{{ evento.id }}" class="btn btn-default btn-xs" >Staff</a>
+                <a href="/agregar_productos/{{ evento.id }}" class="btn btn-default btn-xs" >Productos</a>
+                <a href="/casilla_administrativa/{{ evento.id }}" class="btn btn-default btn-xs" >Administracion</a>
+                <a href="/listar_pautas/{{ evento.id }}/0" class="btn btn-default btn-xs" >Pautas</a>
+                <a href="/usuario_por_evento/{{ evento.id }}" class="btn btn-default btn-xs" >Convocar Staff</a>
+                <a href="/listar_items_presatdos/{{ evento.id }}" class="btn btn-default btn-xs" >Prestar items</a>
+                <a href="/editar_evento/{{ evento.id }}" class="btn btn-success btn-xs" >Editar</a>
             </td>
         </tr>
     {% endfor %}

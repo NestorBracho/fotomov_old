@@ -1,6 +1,7 @@
 from django.db import models
 from clientes.models import *
 from evento.models import *
+from staff.models import *
 from django.contrib.auth.models import User
 
 
@@ -14,10 +15,10 @@ class Items(models.Model):
     cantidad = models.IntegerField()
 
 class ItemsPrestado(models.Model):
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(Usuario)
     item = models.ForeignKey(Items)
     devuelto = models.BooleanField(default=False)
-    estado = models.CharField(max_length=200)
+    estado = models.CharField(max_length=200, null=True, blank=True)
     evento = models.ForeignKey(Evento)
 
 class FormaDePago(models.Model):

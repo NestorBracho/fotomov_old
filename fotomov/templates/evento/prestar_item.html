@@ -1,0 +1,89 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block css %}
+<link href="{{ STATIC_URL }}/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
+{% block titulo %}
+        Items prestados
+{% endblock %}
+{% block tabla %}
+<div class="col-md-12" style="margin-bottom: 10px">
+    <div class="pull-left">
+        <a href="/listar_evento/0/" class="btn btn-default"><i class="fa fa-chevron-left"></i> Listar eventos</a>
+    </div>
+    <div class="pull-right">
+        <a href="/crear_combos/{{ iden }}/" class="btn btn-info">Inventario/Prestar</a>
+    </div>
+</div>
+<table class="table table-striped  table-hover" id="content">
+    <thead>
+        <th>Item</th>
+        <th>Cantidad</th>
+        <th>Acciones</th>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr>
+            <td>{{ item.item }}</td>
+            <td>{{ item.cantidad}}</td>
+            <td>
+                <a onclick="setModal('{{ item.item.item }}', '{{ item.usuario.nombre}} {{ item.usuario.apellido}}', '{{ item.id }}')" data-toggle="modal" data-target="#prestar" class="btn btn-xs btn-default">Prestar</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="modal fade" id="prestar" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>A quien se lo vas a prestar</h4>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+                <input type="text" class="form-control" placeholder="A quien se lo vas a prestar..."
+                       id="usuario_input"/>
+            </div>
+            <div class="modal-footer text-center" id="modal-footer">
+                <input type="hidden" id="id_usuario"/>
+                <a onclick="devolverItem()" data-dismiss="modal" aria-hidden="true" class="btn btn-primary pull-right">Marcar como devuelto</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+    $('#usuario_input').autocomplete({
+        source: function(request, response){
+            $.get(
+                '/traer_usuario_gasto_evento_ajax/',
+                {
+                    usu: request.term
+                },
+                function(data){
+                    response(data);
+                }
+            );
+        },
+        focus: function( event, ui ) {
+            $( this ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( this ).val( ui.item.label );
+            $( "#id_usuario").val( ui.item.value );
+
+            return false;
+        }
+    })
+    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
+            .appendTo( ul );
+    };
+
+</script>
+{% endblock %}
