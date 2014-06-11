@@ -168,6 +168,7 @@ def actualizar_datos():
 
     return HttpResponseRedirect('/escritorio')
 
+@login_required(login_url='/')
 def importar_csv_evento(request):
     if request.method == 'POST':
         cliente_aux.objects.all().delete()
@@ -238,6 +239,7 @@ def importar_csv_evento(request):
         formulario = ArchivoForm()
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def exportar_csv_central(request):
     #direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
     #direccion.save()
@@ -250,11 +252,13 @@ def exportar_csv_central(request):
     output.close()
     return HttpResponseRedirect('/configuracion/1')
 
+@login_required(login_url='/')
 def importar_csv_central(request):
     call_command('flush', interactive= False)
     call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
     return HttpResponseRedirect('/iniciar_sesion')
 
+@login_required(login_url='/')
 def exportar_csv_central2(request):
     clientes = Cliente.objects.all()
     date = datetime.datetime.now()
@@ -337,6 +341,7 @@ def imprimir_ticket(pedido):
     #impresora.text("2 x Taza\n")
     impresora.cut()
 
+@login_required(login_url='/')
 def exportar_csv_evento(request):
     response = HttpResponse(content_type='text/csv')
     fecha = datetime.datetime.now()
@@ -381,6 +386,7 @@ def exportar_csv_evento(request):
 
     return response
 
+@login_required(login_url='/')
 def configuracion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
@@ -394,6 +400,7 @@ def configuracion(request, creado):
         directorio = settings.MEDIA_ROOT
     return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def selecccionar_direccion(request):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
@@ -807,6 +814,7 @@ def eliminar_ProductoEventoPedido(request, id, id_funcion):
     url = "/crear_pedidos/" + str(evento.id) + "/" + str(funcion.direccion.id) + "/NoneNext/urlseparador/NoneValue/"
     return HttpResponseRedirect(url)
 
+@login_required(login_url='/')
 def generar_lote(request):
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
     print pedidos
@@ -853,6 +861,7 @@ def generar_lote(request):
         pedido.save()
     return HttpResponseRedirect('/escritorio/')
 
+@login_required(login_url='/')
 def generar_pedido(request, pedido, cedula, id_evento):
     pagosForms = formset_factory(PedidoPagoForm)
     tipos_pago = FormaDePago.objects.all()
@@ -1045,6 +1054,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
 #                                                                    'en_venta': en_venta, 'iva': iva},
 #                                                                     context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def ingresar_ticket(request, id_evento):
     if request.method == 'POST':
         formulario = IngresarTicketForm(request.POST)
@@ -1053,6 +1063,7 @@ def ingresar_ticket(request, id_evento):
     else:
         formulario = IngresarTicketForm()
     return render_to_response('modulo_movil/ingresar_ticket.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
 
 def eliminar_productoeventopedido_en_generarpedido(request):
     pep = ProductoEventoPedido.objects.get(id = request.GET['iden'])
@@ -1139,6 +1150,7 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
             productoCombos.append(a)
     return render_to_response('modulo_movil/asignar_combos.html', {'productos': productos, 'combos': combosPosibles, 'productoCombos': productoCombos, 'dir_actual': info.pedido.id, 'evento': id_evento, 'funcion': id_funcion}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_pedido(request, pedido_id):
     pedido = Pedido.objects.get(id=pedido_id)
     productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
@@ -1152,6 +1164,7 @@ def editar_pedido(request, pedido_id):
         form = PedidoReducidoForm(instance = pedido)
     return render_to_response('modulo_movil/editar_pedido.html', {'pedido': pedido, 'form': form, 'productos': productos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_pedido(request, pedido):
     pedido = Pedido.objects.get(id = pedido)
     pedido.delete()
