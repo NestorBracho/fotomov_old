@@ -364,6 +364,8 @@ def editar_proveedor(request, id_proveedor):
         formulario = ProveedorForm(instance = proveedor)
     return render_to_response('productos/editar_proveedor.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+
+@login_required(login_url='/')
 def listar_envios(request):
     if request.method == 'POST':
         ped = Pedido.objects.get(num_pedido=request.POST["num_pedido"])

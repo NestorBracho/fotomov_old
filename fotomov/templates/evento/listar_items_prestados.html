@@ -28,7 +28,7 @@
             <td>{{ item.usuario.nombre}} {{ item.usuario.apellido}}</td>
             <td id="estado-{{ item.id }}">{{ item.estado|truncatechars:30 }}</td>
             <td>
-                <a onclick="setModal('{{ item.item.item }}', '{{ item.usuario.nombre}} {{ item.usuario.apellido}}', '{{ item.id }}')" data-toggle="modal" data-target="#estado" class="btn btn-xs btn-default" href="">Devolvio</a>
+                <a onclick="setModal('{{ item.item.item }}', '{{ item.usuario.nombre}} {{ item.usuario.apellido}}', '{{ item.id }}')" data-toggle="modal" data-target="#estado" class="btn btn-xs btn-default" href="">Marcar como devuelto</a>
                 <a onclick="eliminarItem('{{ item.id }}')" class="btn btn-xs btn-danger">Eliminar</a>
             </td>
         </tr>

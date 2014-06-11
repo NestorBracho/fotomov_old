@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
+# from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 from django.utils import simplejson
@@ -1000,81 +1000,6 @@ def generar_pedido(request, pedido, cedula, id_evento):
                                                                    'en_venta': en_venta, 'iva': iva, 'tipos_envio': tipos_envio},
                               context_instance=RequestContext(request))
 
-# def ingresar_ticket(request):
-#         formulario = PedidoCajaForm(request.POST)
-#         formulario_pagos = pagosForms(request.POST)
-#         if formulario.is_valid():
-#             if formulario_pagos.is_valid():
-#                 pass
-#             else:
-#                 mensaje = {"error":1,"text": "Todos los campos del metodo de pago deben estar llenos"}
-#                 return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
-#                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
-#                                                                    'pedido_actual': pedido_actual,
-#                                                                    'tipos_pago': tipos_pago, 'pagosForms': formulario_pagos,
-#                                                                    'mensaje': mensaje, 'en_venta': en_venta, 'iva': iva},
-#                               context_instance=RequestContext(request))
-#             print len(formulario_pagos)
-#             pedidos_pagos = PedidoPago.objects.filter(num_pedido=pedido_actual.num_pedido).delete()
-#             pagado = True
-#             for form in formulario_pagos:
-#                 tipo_pago = FormaDePago.objects.get(id=form.cleaned_data['tipo_pago'])
-#                 if not tipo_pago.pagado:
-#                     pagado = False
-#                 monto = form.cleaned_data['monto']
-#                 nuevo_pago = PedidoPago.objects.create(num_pedido=pedido_actual.num_pedido, tipo_pago=tipo_pago,
-#                                                monto=float(monto), referencia = form.cleaned_data['referencia'])
-#
-#             dia = date.today()
-#             #aux = str(datetime.datetime.today())
-#             #aux = aux.split(' ')
-#             cod = ''
-#             #for au in aux:
-#             #    cod = cod + au
-#             #aux = cod.split('-')
-#             #cod = ''
-#             #for au in aux:
-#             #    cod = cod + au
-#             #aux = cod.split(':')
-#             #cod = ''
-#             #for au in aux:
-#             #    cod = cod + au
-#             #aux = cod.split('.')
-#             #cod = ''
-#             #for au in aux:
-#             #    cod = cod + au
-#             aux = []
-#             fechas_entrega = Funcion.objects.filter(evento = peps[0].producto.evento)
-#             for fecha_entrega in fechas_entrega:
-#                 aux.append(fecha_entrega.dia)
-#             for i in range(len(aux)):
-#                 if i != len(aux)-1:
-#                     if aux[i+1] > aux[i]:
-#                         dia = aux[i+1]
-#             fecha_entrega = dia + datetime.timedelta(days = 15)
-#             pedido_nuevo = Pedido.objects.filter(id=pedido)
-#             print request.POST.get('direccion_entrega')
-#             pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega,
-#                                 id_fiscal = formulario.cleaned_data['id_fiscal'], direccion_fiscal = formulario.cleaned_data['direccion_fiscal'],
-#                                 tlf_fiscal = formulario.cleaned_data['tlf_fiscal'], razon_social = formulario.cleaned_data['razon_social'],
-#                                 total = request.POST.get('total_input'),
-#                                 direccion_entrega = request.POST.get('direccion_entrega'),
-#                                 fue_pagado = pagado, envio= formulario.cleaned_data['envio'])
-#             pedido_nuevo = pedido_nuevo[0]
-#             if pedido_nuevo.fue_pagado == True:
-#                 for pep in peps:
-#                     pep.estado = 'Pagado'
-#                     pep.save()
-#             #imprimir_ticket(pedido_nuevo)
-#             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
-#         else:
-#             formulario = PedidoCajaForm(instance=pedido_actual)
-#         return render_to_response('modulo_movil/generar_pedido.html', {'formulario': formulario, 'cliente': cliente,
-#                                                                    'productos': productos, 'combos': combos, 'ced': cedula,
-#                                                                    'pedido_actual': pedido_actual,
-#                                                                    'tipos_pago': tipos_pago, 'pagosForms': pagosForms,
-#                                                                    'en_venta': en_venta, 'iva': iva},
-#                                                                     context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def ingresar_ticket(request, id_evento):

@@ -1038,10 +1038,10 @@ def enviar_correo_convocados(request):
     return HttpResponse(data, mimetype='application/json')
 
 @login_required(login_url='/')
-def listar_items_presatdos(request, id_evento):
+def listar_items_prestados(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
     items = ItemsPrestado.objects.filter(evento = evento).order_by('-devuelto')
-    return render_to_response('evento/listar_items_presatdos.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
+    return render_to_response('evento/listar_items_prestados.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
 
 def devolver_item_ajax(request):
     item = ItemsPrestado.objects.get(id=request.GET['iden'])

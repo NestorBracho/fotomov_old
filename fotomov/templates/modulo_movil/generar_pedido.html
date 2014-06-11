@@ -299,7 +299,10 @@ window.onload = function(){
 $(document).ready(function(){
     // Objeto JSON con los tipos de envio, sus precios y si es requerido dir de envio
     var $tiposenvio = {{ tipos_envio|safe }};
-
+    for(var env in $tiposenvio){
+        $('.costo_envio').html($tiposenvio[env].precio);
+        break;
+    }
     // Funcion cuando se cambia el tipo de envio.
     // Si es necesaria una dirección, se muestra el campo.
     $( '#id_envio' ).on('change', function(event){

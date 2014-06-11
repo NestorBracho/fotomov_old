@@ -31,6 +31,7 @@ class PedidoPagoForm(forms.Form):
     for tipo in tipos:
         tupla = ((tipo.id, tipo.nombre),)
         CHOICES = CHOICES + tupla
+    print(CHOICES)
     tipo_pago = forms.ChoiceField(choices=CHOICES)
     referencia = forms.CharField()
     monto = forms.FloatField(widget=forms.TextInput(attrs={'onkeypress':'return numero_float(event)'}))
