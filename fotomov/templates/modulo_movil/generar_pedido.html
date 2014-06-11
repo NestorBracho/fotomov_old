@@ -1,6 +1,10 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
 {% load widget_tweaks %}
+{% block css %}
+<link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+<style type="text/css" xmlns="http://www.w3.org/1999/html"></style>
+{% endblock %}
 {% block titulo %}
 Generar pedido
 {% endblock %}
@@ -664,18 +668,25 @@ function costo_envio(){
 function generarPedido(){
     var monto = 0;
     var pass = true;
-
+    var efectivo = false;
     // Se revisa si la suma de los montos de pago son igual al total del pedido
     $('.formset_pago').each(function(){
         var select = $(this).find('select :selected');
         if (select.html() != "---------"){
+            if (select.html() != "Efectivo"){
+                efectivo = true;
+            }
             var id = $(this).find('select').attr('id');
             id = id.split('-');
             id = id[1];
             monto += parseFloat($('#id_form-'+id+'-monto').val());
         }
     });
-    if (monto != parseFloat($('#total').html())) {
+    var total = parseFloat($('#total').html());
+    if (monto != total && !efectivo) {
+        alert('La suma de los montos no coinciden con el total del pedido.')
+        pass = false;
+    } else if (monto < total && efectivo){
         alert('La suma de los montos no coinciden con el total del pedido.')
         pass = false;
     }
@@ -698,8 +709,39 @@ function generarPedido(){
     }
 }
 
-function agregar_tipo_pago(){
+$("#id_mail_cliente").on('keyup',aucomemail);
 
+function aucomemail(){
+
+  var dominios, dom;
+
+  $(function(){
+
+    dominios = [
+        document.getElementById("id_mail_cliente").value+"@gmail.com",
+        document.getElementById("id_mail_cliente").value+"@hotmail.com",
+        document.getElementById("id_mail_cliente").value+"@yahoo.com",
+        document.getElementById("id_mail_cliente").value+"@turpialdev.com"
+    ];
+
+    $("#id_mail_cliente").autocomplete({
+        source: dominios
+    });
+
+    if(document.getElementById("id_mail_cliente").value.indexOf("@") != -1){
+        if(document.getElementById("id_mail_cliente").value.indexOf("@")+1==document.getElementById("id_mail_cliente").value.length){
+            dom = [
+                      document.getElementById("id_mail_cliente").value+"gmail.com",
+                      document.getElementById("id_mail_cliente").value+"hotmail.com",
+                      document.getElementById("id_mail_cliente").value+"yahoo.com",
+                      document.getElementById("id_mail_cliente").value+"turpialdev.com"
+            ];
+        }
+        $('#id_mail_cliente').autocomplete({
+           source: dom
+        });
+      }
+  });
 }
 
 </script>

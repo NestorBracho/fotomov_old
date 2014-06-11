@@ -1,0 +1,65 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Tipos de envio
+{% endblock %}
+{% block tabla %}
+<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary">Agregar tipo de envio</button>
+<table class="table table-striped  table-hover" id="content">
+    <thead>
+        <th>Tipo</th>
+        <th>Precio</th>
+        <th>Req. dirección</th>
+        <th>Acciones</th>
+    </thead>
+    {% for envio in envios %}
+        <tr class="envio">
+            <td class="tipo">{{ envio.tipo }}</td>
+            <td class="precio">{{ envio.precio }}</td>
+            <td class="req_dir">{% if envio.req_dir %} Si {% else %} No {% endif %}</td>
+            <td><a href="/eliminar_tipo_envio/{{ envio.id }}" class="btn btn-default btn-xs" >Eliminar</a>
+            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs editar" >Editar</button>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="ModalForm" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="form" role="form" enctype="multipart/form-data" action="." method="post">
+        {% csrf_token %}
+        {{ form|bootstrap }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    $('.editar').click(function(){
+        var positivo = "Si";
+        var padre = $(this).parents('.envio');
+        $('#id_tipo').val(padre.children('.tipo').html());
+        $('#id_precio').val(padre.children('.precio').html());
+
+
+
+        var matchString = 'si';
+        var req = padre.children('.req_dir').html()
+
+        if (req.toLowerCase().indexOf(matchString) != -1){
+            $('#id_req_dir').prop('checked', true);
+        } else {
+            $('#id_req_dir').prop('checked', false);
+        }
+    });
+</script>
+
+{% endblock %}

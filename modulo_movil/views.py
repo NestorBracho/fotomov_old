@@ -970,7 +970,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
             pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = fecha_entrega,
                                 id_fiscal = formulario.cleaned_data['id_fiscal'], direccion_fiscal = formulario.cleaned_data['direccion_fiscal'],
                                 tlf_fiscal = formulario.cleaned_data['tlf_fiscal'], razon_social = formulario.cleaned_data['razon_social'],
-                                total = request.POST.get('total_input'),
+                                total = request.POST.get('total_input'), descuento = request.POST.get('descuento_input'),
                                 direccion_entrega = request.POST.get('direccion_entrega'),
                                 fue_pagado = pagado, envio= formulario.cleaned_data['envio'])
             pedido_nuevo = pedido_nuevo[0]

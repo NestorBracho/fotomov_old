@@ -173,6 +173,10 @@ urlpatterns = patterns('',
     url(r'^devolver_item_ajax/$', 'evento.views.devolver_item_ajax'),
     url(r'^eliminar_prestamo/(?P<id_prestamo>\d+)/$', 'evento.views.eliminar_prestamo'),
 
+    #URLs de envios
+    url(r'^tipo_envio/$', 'administracion.views.tipo_envio', name='tipo_envio'),
+    url(r'^eliminar_tipo_envio/(?P<id_envio>\d+)/$', 'administracion.views.eliminar_tipo_envio'),
+    url(r'^listar_envios/$', 'productos.views.listar_envios'),
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),
     url(r'^estadisticas_submarcas/(?P<id_marca>\d+)/$', 'estadisticas.views.estadisticas_submarcas'),

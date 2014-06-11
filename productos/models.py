@@ -63,7 +63,6 @@ class ProductoEventoPedido(models.Model):
     comentario = models.TextField(max_length=1000)
 
 
-
 class Pedido(models.Model):
     CREADO = 'Creado'
     PAGADO = 'Pagado'
@@ -111,6 +110,7 @@ class Pedido(models.Model):
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
+    descuento = models.DecimalField(decimal_places=2, max_digits=10, default=0)
 
 class PedidoPago(models.Model):
     num_pedido = models.IntegerField()
@@ -125,7 +125,13 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
 
 
 class TipoEnvio(models.Model):
-    tipo = models.CharField(max_length="30")
+    tipo = models.CharField(max_length=30)
     precio = models.DecimalField(decimal_places=2, max_digits=10)
     req_dir = models.BooleanField()
 
+
+class EnvioPedido(models.Model):
+    pedido = models.OneToOneField(Pedido, related_name="pedido_enviado")
+    tracking = models.CharField(max_length=50)
+    fecha_envio = models.DateField(auto_now_add=True)
+    proveedor = models.CharField(max_length=30)
