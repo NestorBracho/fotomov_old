@@ -15,6 +15,7 @@ from clientes.models import *
 from datetime import *
 import datetime
 
+@login_required(login_url='/')
 def crear_tarea(request):
     eventos = Evento.objects.all()
     error_fecha = 0
@@ -107,6 +108,7 @@ def modificar_estado_tarea(request):
     data = json.dumps({'status': tarea.lista})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def ver_tarea(request, id_tarea):
     hoy = date(datetime.datetime.today().year,datetime.datetime.today().month,datetime.datetime.today().day)
     tarea = Tarea.objects.get(id=id_tarea)
@@ -140,31 +142,36 @@ def crear_notificacion(request, creado):
         formulario = CrearNotificacionFrom()
     return render_to_response('tareas/crear_notificacion.html', {'formulario': formulario, 'usuario': user, 'clientes':clientes, 'macro_clientes':macro_clientes, 'flag': 'false', 'estado':creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_notificaciones(request):
     notificaciones = Notificacion.objects.all()
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_notificaciones_macroclientes(request):
     notificaciones = Notificacion.objects.filter(cliente = None).exclude(macro_cliente=None)
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_notificaciones_clientes(request):
     notificaciones = Notificacion.objects.filter(macro_cliente = None).exclude(cliente=None)
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
-
+@login_required(login_url='/')
 def ver_notificacion(request, id_notificacion):
     noti = Notificacion.objects.get(id = id_notificacion)
     noti.fue_revisado = True
     noti.save()
     return render_to_response('tareas/ver_notificacion.html', {'notificacion':noti}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_notificacion(request, id_notificacion):
     notificaciones = Notificacion.objects.all()
     noti = Notificacion.objects.get(id = id_notificacion)
     noti.delete()
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def notificacion_marcar_como_leida(request):
     noti = Notificacion.objects.get(id = request.GET['id'])
     noti.fue_revisado = True
@@ -172,7 +179,7 @@ def notificacion_marcar_como_leida(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
-
+@login_required(login_url='/')
 def notificacion_marcar_como_no_leida(request, id_notificacion):
     noti = Notificacion.objects.get(id = id_notificacion)
     noti.fue_revisado = False
@@ -180,6 +187,7 @@ def notificacion_marcar_como_no_leida(request, id_notificacion):
     notificaciones = Notificacion.objects.all()
     return render_to_response('tareas/listar_notificaciones.html', {'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def generar_recursividad(request):
     hoy = datetime.datetime.today()
     tareasHoy = Tarea.objects.filter(fecha = hoy, es_periodica = True)

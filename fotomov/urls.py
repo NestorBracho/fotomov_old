@@ -169,6 +169,10 @@ urlpatterns = patterns('',
     url(r'^asignar_item_staff/(?P<id_evento>\d+)/$', 'evento.views.asignar_item_staff'),
     url(r'^traer_cliente_evento_ajax', 'clientes.views.traer_cliente_evento'),
     url(r'^enviar_correo_convocados/$', 'evento.views.enviar_correo_convocados'),
+    url(r'^listar_items_presatdos/(?P<id_evento>\d+)/$', 'evento.views.listar_items_presatdos'),
+    url(r'^prestar_item/(?P<id_evento>\d+)/$', 'evento.views.prestar_item'),
+    url(r'^devolver_item_ajax/$', 'evento.views.devolver_item_ajax'),
+    url(r'^eliminar_prestamo/(?P<id_prestamo>\d+)/$', 'evento.views.eliminar_prestamo'),
 
     #Urls de las Estadisticas
     url(r'^estadisticas_marcas/$', 'estadisticas.views.estadisticas_marcas'),

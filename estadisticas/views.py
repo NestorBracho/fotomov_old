@@ -5,6 +5,7 @@ from marca.models import *
 from clientes.models import *
 from evento.models import *
 from administracion.models import *
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context, Template
@@ -12,6 +13,7 @@ import datetime
 import json
 
 #Vista de las estadisticas de las marcas
+@login_required(login_url='/')
 def estadisticas_marcas(request):
 
 	mesesF = MesesForm()
@@ -110,6 +112,7 @@ def estadisticas_marcas(request):
 	return render_to_response('estadisticas/marcas.html', ctx, context_instance = RequestContext(request))
 
 #Vista de las estadisticas de las submarcas de una marca
+@login_required(login_url='/')
 def estadisticas_submarcas(request, id_marca):
 
 	mesesF = MesesForm()
@@ -191,6 +194,7 @@ def estadisticas_submarcas(request, id_marca):
 	return render_to_response('estadisticas/submarcas.html', ctx, context_instance = RequestContext(request))
 
 #Vista de las estadisticas de los macroclientes asociados a una submarca
+@login_required(login_url='/')
 def estadisticas_macros(request, id_submarca):
 	
 	mesesF = MesesForm()
@@ -262,6 +266,7 @@ def estadisticas_macros(request, id_submarca):
 	return render_to_response('estadisticas/macroclientes.html', ctx, context_instance = RequestContext(request))
 
 #Vista de las estadisticas de los macroclientes asociados a una submarca
+@login_required(login_url='/')
 def estadisticas_eventos(request, id_macro):
 	
 	mes = ''
@@ -322,6 +327,7 @@ def estadisticas_eventos(request, id_macro):
 	return render_to_response('estadisticas/eventos.html', ctx, context_instance = RequestContext(request))
 
 #Vista de las estadisticas de los clientes
+@login_required(login_url='/')
 def estadisticas_clientes(request):
 
 	#Inicializacion de variables y demas
@@ -360,6 +366,7 @@ def estadisticas_clientes(request):
 
 
 #Vista de las estadisticas del staff
+@login_required(login_url='/')
 def estadisticas_staff(request):
 
 	#Inicializacion de variables y demas
@@ -416,7 +423,12 @@ def estadisticas_staff(request):
 
 
 #Vista de los graficos
+<<<<<<< HEAD
 def estadisticas_graficos_macro(request):
+=======
+@login_required(login_url='/')
+def estadisticas_graficos(request):
+>>>>>>> f8a709bc7d62ba87f190523adcee3efe29e3d9de
 
 	flag = False
 	data = []

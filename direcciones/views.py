@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from direcciones.models import *
 
+@login_required(login_url='/')
 def nueva_direccion(request):
     direcciones = Direccion.objects.all().exclude(id=1)
     if request.method == 'POST':
@@ -42,6 +43,7 @@ def guardar_direccion_ajax(request):
     print data
     return HttpResponse(data,mimetype='aplication/json')
 
+@login_required(login_url='/')
 def libreta_incluida(request, id_input):
     direcciones = Direccion.objects.all().exclude(id=1)
     if request.method == 'POST':
