@@ -1,0 +1,43 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Listar proveedores
+{% endblock %}
+{% block seccion-contenido%}
+<div class="col-xs-12 col-md-12 table-responsive">
+    <table id="content" class="table ">
+        <thead>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody id="body-pedidos">
+        {% for proveedor in proveedores %}
+        <tr>
+            <td><a href="/ver_proveedor/{{ proveedor.id }}/">{{ proveedor.nombre }}</a></td>
+            <td>{{ proveedor.descripcion|truncatechars:80  }}</td>
+            <td><a href="/editar_proveedor/{{ proveedor.id }}/" class="btn btn-xs btn-success">Editar</a> <a onclick="eliminarProveedor('{{ proveedor.id }}')" class="btn btn-xs btn-danger">Eliminar</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="col-md-12">
+    <a href="/crear_proveedor/" style="margin-top: 10px" class="btn btn-primary pull-right">Crear proveedor</a>
+</div>
+{% endblock %}
+{% block js%}
+<script type="text/javascript">
+
+function eliminarProveedor(iden){
+
+    if(confirm("¿Esta seguro que desa eliminar este proveedor?")){
+
+        document.location.href='/eliminar_proveedor/'+iden;
+
+    }
+
+}
+
+</script>
+{% endblock %}

@@ -16,54 +16,75 @@ from staff.models import *
 from productos.models import *
 from clientes.models import *
 from direcciones.models import *
+from marca.views import Marca, SubMarca
 from direcciones.views import *
 from tareas.models import *
 from modulo_movil.models import *
 from datetime import *
 from django.core.mail import send_mail
+from django.contrib import messages
 import datetime
 
+@login_required(login_url='/')
 def nuevo_evento(request):
     gastos_predeterminados = Gasto.objects.filter(predeterminado = True)
     direcciones = obtener_direcciones()
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-
+            tipo_cliente = request.POST.get('seleccionar_tipo')
             dias = request.POST.getlist('dias')
+            if len(dias) <= 0:
+                mensaje_dias = 1
+                return render_to_response('evento/nuevo_evento.html', {'formulario': formulario,
+                                                                       'gastos': gastos_predeterminados, 'direcciones': direcciones, 'mensaje_dias': mensaje_dias}, context_instance = RequestContext(request))
             entrega_final = formulario.cleaned_data['fecha_entrega']
             #print fecha_entrega
             #entrega_split = str(fecha_entrega).split('-')
             #print entrega_split
             #entrega_final = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
-            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
-            sede = Sede.objects.get(id=request.POST.get('sede'))
-            evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
-                                           porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
-                                           sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
-                                           fecha_entrega=entrega_final)
+            print "tipo de cliente para el evento"
+            print request.POST.get('seleccionar_tipo')
+            if tipo_cliente == 'm':
+                encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+                sede = Sede.objects.get(id=request.POST.get('sede'))
+                evento = Evento.objects.create(nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                               porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'], encargado=encargado,
+                                               sede=sede, tipo=formulario.cleaned_data['tipo'], macrocliente=formulario.cleaned_data['macrocliente'],
+                                               fecha_entrega=entrega_final, submarca=formulario.cleaned_data['macrocliente'].submarca)
+            else:
+                cliente = str(request.POST.get('cliente')).split('-')
+                print cliente
+                print cliente[1]
+                cliente_evento = Cliente.objects.get(cedula=cliente[1])
+                evento = Evento.objects.create(cliente= cliente_evento, nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
+                                               porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'],
+                                               tipo=formulario.cleaned_data['tipo'], fecha_entrega=entrega_final, submarca=SubMarca.objects.get(id=request.POST.get('submarca')))
             print dias
-            for dia in dias:
-                dia_split = dia.split('-')
-                dia_id = dia_split[0]
-                locaciones = request.POST.getlist("locacion" + "-" + dia_id)
-                for locacion in locaciones:
-                    locacion_split = locacion.split('-')
-                    locacion_id = locacion_split[0]
-                    locacion_valor = locacion_split[1]
-                    locacion_save = Direccion.objects.get(nombre=locacion_valor)
-                    funciones = request.POST.getlist("funcion" + "-" + locacion_id)
-                    for funcion in funciones:
-                        funcion_split = funcion.split('-')
-                        funcion_id = funcion_split[0]
-                        funcion_valor = funcion_split[1]
-                        dia_final = dia_split[3] + "-" + dia_split[2] + "-" + dia_split[1]
-                        calcular_entrega = datetime.datetime(int(dia_split[3]), int(dia_split[2]), int(dia_split[1])) + datetime.timedelta(days=15)
-                        entrega_split = str(calcular_entrega.date()).split('-')
-                        entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
-                        funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
-                        funcion_save.save()
-                        directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.evento.sede.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
+            if len(dias) > 0:
+                for dia in dias:
+                    dia_split = dia.split('-')
+                    dia_id = dia_split[0]
+                    locaciones = request.POST.getlist("locacion" + "-" + dia_id)
+                    for locacion in locaciones:
+                        locacion_split = locacion.split('-')
+                        locacion_id = locacion_split[0]
+                        locacion_valor = locacion_split[1]
+                        locacion_save = Direccion.objects.get(nombre=locacion_valor)
+                        funciones = request.POST.getlist("funcion" + "-" + locacion_id)
+                        for funcion in funciones:
+                            funcion_split = funcion.split('-')
+                            funcion_id = funcion_split[0]
+                            funcion_valor = funcion_split[1]
+                            dia_final = dia_split[3] + "-" + dia_split[2] + "-" + dia_split[1]
+                            calcular_entrega = datetime.datetime(int(dia_split[3]), int(dia_split[2]), int(dia_split[1])) + datetime.timedelta(days=15)
+                            entrega_split = str(calcular_entrega.date()).split('-')
+                            entrega = entrega_split[2] + "-" + entrega_split[1] + "-" + entrega_split[0]
+                            funcion_save = Funcion.objects.create(nombre=funcion_valor, evento=evento, dia=dia_final, horas=0, entrega_fotos=entrega, direccion=locacion_save)
+                            funcion_save.save()
+                            if tipo_cliente == 'm':
+                                directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.evento.sede.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
+
             #Empieza a crear las tareas del evento
             tareas = TareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
             fechas = Funcion.objects.filter(evento=evento).order_by('dia')
@@ -103,8 +124,9 @@ def nuevo_evento(request):
         formulario = EventoForm()
     return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance = RequestContext(request))
 
+@login_required(login_url='/')
 def agregar_staff(request, id_evento):
-    bloques = Bloque.objects.all()
+    bloques = Bloque.objects.all().order_by("nombre")
     evento = Evento.objects.get(id=id_evento)
     funciones = Funcion.objects.filter(evento=evento)
     tipos_staff = Privilegios.objects.filter(valor=6)
@@ -142,10 +164,17 @@ def agregar_staff(request, id_evento):
     print lista
     return render_to_response('evento/agregar_staff.html', {'funciones': lista, 'evento': evento, 'bloques':bloques}, context_instance= RequestContext(request))
 
+
 def encargado_ajax(request):
     macroC = MacroCliente.objects.get(id=request.GET['id'])
     contacto = Encargado.objects.filter(macrocliente=macroC)
     data = serializers.serialize('json', contacto, fields =('nombre'))
+    return HttpResponse(data, mimetype='application/json')
+
+def submarca_ajax(request):
+    marca = Marca.objects.get(id=request.GET['id'])
+    submarca = SubMarca.objects.filter(marca=marca)
+    data = serializers.serialize('json', submarca, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 
 def sede_ajax(request):
@@ -154,12 +183,13 @@ def sede_ajax(request):
     data = serializers.serialize('json', contacto, fields =('nombre'))
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def listar_evento(request, creado):
-    eventos = Evento.objects.all()
+    eventos = Evento.objects.all().exclude(id=1)
     return render_to_response('evento/listar_evento.html', {'eventos': eventos, 'creado': creado}, context_instance = RequestContext(request))
 
 def locacion_ajax(request):
-    locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion'])
+    locaciones = Direccion.objects.filter(nombre__contains=request.GET['locacion']).exclude(id=1)
     if len(locaciones)>0:
         i=0
         locs=[]
@@ -174,18 +204,18 @@ def locacion_ajax(request):
 def listar_pedidos_sede(request, id_sede):
     return True
 
+@login_required(login_url='/')
 def agregar_productos(request,id_evento):
     productos = Producto.objects.filter(es_combo=False)
     evento = Evento.objects.get(id=id_evento)
+    proveedores = Proveedor.objects.all()
     lista = []
     for producto in productos:
         if ProductoEvento.objects.filter(evento=evento, producto=producto):
             producto_existente = ProductoEvento.objects.get(evento=evento, producto=producto)
-            print producto_existente.precio
-            tupla=(producto,1, producto_existente.precio, producto_existente.precio_produccion)
-            print tupla[2]
+            tupla=(producto, 1, producto_existente.precio, producto_existente.precio_produccion, producto_existente.proveedor)
         else:
-            tupla = (producto,0,0)
+            tupla = (producto, 0, 0)
         lista.append(tupla)
 
     if request.method == 'POST':
@@ -196,18 +226,24 @@ def agregar_productos(request,id_evento):
         for seleccionado in seleccionados:
             precio = request.POST.get(seleccionado+'precio')
             costo = request.POST.get(seleccionado+'costo')
+            proveedor = request.POST.get(seleccionado+'proveedor')
+            proveedor = Proveedor.objects.get(id = proveedor)
             producto = Producto.objects.get(id=seleccionado)
             try:
                 producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
                 producto_evento.precio= float(precio.replace(',','.'))
                 producto_evento.costo = float(costo.replace(',','.'))
+                producto_evento.proveedor = proveedor
                 producto_evento.save()
             except:
-                producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
-        return HttpResponseRedirect('/listar_evento/2')
-    print lista
-    return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento}, context_instance=RequestContext(request))
+                producto_evento = ProductoEvento.objects.create(evento=evento, producto=producto, proveedor=proveedor, precio=float(precio.replace(',','.')), precio_produccion=float(costo.replace(',','.')))
+        if "combos" in request.POST:
+            return HttpResponseRedirect('/listar_combos/'+id_evento+'/')
+        else:
+            return HttpResponseRedirect('/listar_evento/2')
+    return render_to_response('evento/agregar_productos.html', {'productos': lista, 'iden': id_evento, 'proveedores': proveedores}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def casilla_administrativa(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
     funciones = Funcion.objects.filter(evento = evento)
@@ -300,13 +336,65 @@ def casilla_administrativa(request, id_evento):
                 else:
                     aux.append([staff, bloque.bloque])
         lista.append([usuario, aux])
+    #-------------------------------------------------------Ganancias
+    gananciasTotales = []
+    ordenesCompras = []
+    aux = []
+    ProductosCombo = []
+    combos = []
+    ventas = 0
+    combosProductoEvento = ProductoEvento.objects.filter(evento = evento, es_combo=True)
+    for comboProductoEvento in combosProductoEvento:
+        temp = ProductoEventoPedido.objects.filter(producto = comboProductoEvento).exclude(estado = "Creado")
+        for tem in temp:
+            combos.append(tem)
+
+    for combo in combos:
+        auxProductosCombo = ProductoeventoCombo.objects.filter(combo=combo.producto)
+        for auxProductoCombo in auxProductosCombo:
+            flag = False
+            for ProductoCombo in ProductosCombo:
+                if auxProductoCombo.producto.producto == ProductoCombo[0]:
+                    ProductoCombo[1] = ProductoCombo[1] + (auxProductoCombo.cantidad * combo.cantidad)
+                    flag = True
+            if flag == False:
+                ProductosCombo.append([auxProductoCombo.producto.producto, auxProductoCombo.cantidad * combo.cantidad])
+
+    productosEvento = ProductoEvento.objects.filter(evento = evento)
+    for productoEvento in productosEvento:
+        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento).exclude(estado = "Creado"))
+    for au in aux:
+        for a in au:
+            ordenesCompras.append(a)
+    for ordenCompra in ordenesCompras:
+        for productoEvento in productosEvento:
+            if ordenCompra.producto == productoEvento:
+                flag = False
+                for gananciaTotales in gananciasTotales:
+                    if productoEvento.producto == gananciaTotales[0]:
+                        gananciaTotales[1] = gananciaTotales[1] + ordenCompra.cantidad
+                        flag = True
+                if flag == False:
+                    gananciasTotales.append([productoEvento.producto, ordenCompra.cantidad, ordenCompra.producto.precio])
+
+    for gananciaTotales in gananciasTotales:
+        for ProductoCombo in ProductosCombo:
+            if gananciaTotales[0] == ProductoCombo[0]:
+                if gananciaTotales[1] - ProductoCombo[1] >= 0:
+                    gananciaTotales[1] = gananciaTotales[1] - ProductoCombo[1]
+                else:
+                    gananciaTotales[1] = 0
+
+    for gananciaTotales in gananciasTotales:
+        ventas = ventas + (gananciaTotales[1]*gananciaTotales[2])
+
     #-------------------------------------------------------productos
     productosTotales = []
     ordenesCompras = []
     aux = []
-    productosEvento = ProductoEvento.objects.filter(evento = evento)
+    productosEvento = ProductoEvento.objects.filter(evento = evento, es_combo = False)
     for productoEvento in productosEvento:
-        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento))
+        aux.append(ProductoEventoPedido.objects.filter(producto = productoEvento).exclude(estado = "Creado"))
     for au in aux:
         for a in au:
             ordenesCompras.append(a)
@@ -320,7 +408,26 @@ def casilla_administrativa(request, id_evento):
                         productosTotal[2] = productosTotal[2] + productoEvento.precio_produccion*ordenCompra.cantidad
                         flag = True
                 if flag == False:
-                    productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad])
+                    productosTotales.append([productoEvento.producto, ordenCompra.cantidad, productoEvento.precio_produccion*ordenCompra.cantidad, ordenCompra.producto.proveedor.nombre])
+    #---------combos
+    temp = ProductoEvento.objects.filter(evento = evento, es_combo = True)
+    auxCombos = []
+    cCombos = []
+    combos=[]
+    for tem in temp:
+        auxCombos.append(ProductoEventoPedido.objects.filter(producto = tem))
+    for auxCombo in auxCombos:
+        for auCombo in auxCombo:
+            cCombos.append(auCombo)
+    for cCombo in cCombos:
+        flag = False
+        for combo in combos:
+            if combo[0] == cCombo.producto.producto:
+                combo[1] = combo[1] + cCombo.cantidad
+                flag = True
+        if flag == False:
+            combos.append([cCombo.producto.producto, cCombo.cantidad])
+
     #-------------------------------------------------------fijos
     gasto = GastoEvento.objects.filter(evento=evento, tipo=1)
     fijos = []
@@ -375,8 +482,7 @@ def casilla_administrativa(request, id_evento):
     else:
         adicionales = [0, 0, 0]
     porcent = evento.porcentaje_institucion
-    print evento.porcentaje_institucion
-    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'fijos': fijos, 'productos': productosTotales, 'envios': envios, 'porcentaje': porcent, 'adicionales': adicionales}, context_instance=RequestContext(request))
+    return render_to_response('evento/casilla_administrativa.html', {'staffs': lista, 'fijos': fijos, 'productos': productosTotales, 'envios': envios, 'porcentaje': porcent, 'adicionales': adicionales, 'ventas': ventas, 'combos': combos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def calendario_de_eventos(request):
@@ -409,6 +515,7 @@ def marcar_asistencia(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def usuario_por_evento(request, id_evento):
     correoForm = CorreoForm()
     even = Evento.objects.get(id = id_evento)
@@ -482,8 +589,9 @@ def convocar_usuario_a_evento(request):
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
 
+@login_required(login_url='/')
 def nuevo_tipo_de_evento(request, editado):
-    tipo_eventos = Tipos_Eventos.objects.all()
+    tipo_eventos = Tipos_Eventos.objects.all().exclude(id=1)
     staff = Privilegios.objects.filter(valor__lt = 6)
     prelaciones = []
     if editado == '0':
@@ -507,8 +615,8 @@ def nuevo_tipo_de_evento(request, editado):
                         prelaciones.append(aux)
                 for prelacion in prelaciones:
                     aux = prelacion.split('-')
-                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
-                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
+                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[1])
+                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tipoE, id_aux = aux[0])
                     PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tipoE)
                 return HttpResponseRedirect('/nuevo_tipo_de_evento/0/')
         else:
@@ -542,8 +650,8 @@ def nuevo_tipo_de_evento(request, editado):
                         prelaciones.append(aux)
                 for prelacion in prelaciones:
                     aux = prelacion.split('-')
-                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[1])
-                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[0])
+                    tarea2 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[1])
+                    tarea1 = TareaTipoEvento.objects.get(tipo_evento = tEvento, id_aux = aux[0])
                     PrelaTareaTipoEvento.objects.create(es_prelada = tarea1, prela = tarea2, tipo_evento=tEvento)
                 return HttpResponseRedirect('/nuevo_tipo_de_evento/0/')
         else:
@@ -551,6 +659,7 @@ def nuevo_tipo_de_evento(request, editado):
         return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado, 'tipoEvento': tEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
     return render_to_response('evento/nuevo_tipo_de_evento.html', {'formulario': formulario, 'eventos': tipo_eventos, 'staff': staff, 'editado': editado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def nueva_pauta(request, id_evento):
     evento = Evento.objects.get(id=id_evento)
     if request.method == 'POST':
@@ -565,11 +674,13 @@ def nueva_pauta(request, id_evento):
         formulario = PautaForm()
     return render_to_response('evento/nueva_pauta.html', {'formulario': formulario, 'evento': evento}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_pautas(request, id_evento, creado):
     evento = Evento.objects.get(id=id_evento)
     pautas = Pautas.objects.filter(evento=evento)
     return render_to_response('evento/listar_pautas.html', {'pautas': pautas, 'evento': evento, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     if request.method == 'POST':
@@ -583,16 +694,19 @@ def editar_pauta(request, id_pauta):
         formulario = PautaForm(initial={'nombre': pauta.nombre, 'pauta': pauta.pauta})
     return render_to_response('evento/nueva_pauta.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     id_evento = pauta.evento.id
     pauta.delete()
     return HttpResponseRedirect("/listar_pautas/" + str(id_evento) + "/3")
 
+@login_required(login_url='/')
 def ver_pauta(request, id_pauta):
     pauta = Pautas.objects.get(id=id_pauta)
     return render_to_response('evento/ver_pauta.html', {'pauta': pauta}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def crear_bloque(request):
     if request.method == 'POST':
         formulario = BloqueForm(request.POST)
@@ -603,6 +717,7 @@ def crear_bloque(request):
         formulario = BloqueForm()
     return render_to_response('evento/crear_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_bloques(request, id_bloque):
     if id_bloque != '0':
         bloque = Bloque.objects.filter(id = id_bloque)
@@ -612,6 +727,7 @@ def listar_bloques(request, id_bloque):
     bloques = Bloque.objects.all()
     return render_to_response('evento/listar_bloques.html', {'bloques': bloques}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_bloque(request, id_bloque):
     bloque = Bloque.objects.get(id = id_bloque)
     if request.method == 'POST':
@@ -627,6 +743,7 @@ def editar_bloque(request, id_bloque):
         formulario = BloqueForm(initial = {'nombre':bloque.nombre, 'honorarios':bloque.honorarios, 'unico':bloque.unico})
     return render_to_response('evento/editar_bloque.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_evento(request, iden):
     evento = Evento.objects.get(id = iden)
     funciones = Funcion.objects.filter(evento = evento)
@@ -635,22 +752,33 @@ def editar_evento(request, iden):
     if request.method == 'POST':
         formulario = EventoForm(request.POST)
         if formulario.is_valid():
-            encargado = Encargado.objects.get(id=request.POST.get('encargado'))
-            sede = Sede.objects.get(id=request.POST.get('sede'))
+            if evento.macrocliente != None:
+                encargado = Encargado.objects.get(id=request.POST.get('encargado'))
+                sede = Sede.objects.get(id=request.POST.get('sede'))
+                evento.encargado = encargado
+                evento.sede = sede
+                evento.macrocliente = formulario.cleaned_data['macrocliente']
+                evento.submarca = evento.macrocliente.submarca
+            else:
+                evento.cliente = Cliente.objects.get(cedula=request.POST.get('cliente').split('-')[1])
+                print request.POST.get('submarca')
+                evento.submarca = SubMarca.objects.get(id=request.POST.get('submarca'))
             evento.nombre = formulario.cleaned_data['nombre']
             evento.descripcion = formulario.cleaned_data['descripcion']
             evento.porcentaje_institucion = formulario.cleaned_data['porcentaje_institucion']
-            evento.encargado = encargado
             evento.fecha_entrega = formulario.cleaned_data['fecha_entrega']
-            evento.sede = sede
             evento.tipo = formulario.cleaned_data['tipo']
-            evento.macrocliente = formulario.cleaned_data['macrocliente']
             evento.save()
             return HttpResponseRedirect('/listar_evento/2/')
     else:
-        formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
-                                         'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
+        if evento.macrocliente != None:
+            formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                             'macrocliente': evento.macrocliente, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
+        else:
+            formulario = EventoForm(initial={'nombre': evento.nombre, 'descripcion': evento.descripcion,
+                                             'marcas': evento.submarca.marca, 'tipo': evento.tipo, 'fecha_entrega':evento.fecha_entrega})
     return render_to_response('evento/editar_evento.html', {'evento': evento, 'funciones': funciones, 'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance=RequestContext(request))
+
 
 def editar_funcion(request):
     print "entre"
@@ -669,17 +797,19 @@ def editar_funcion(request):
         funcion.save()
         try:
             direccionFuncion.objects.get(funcion=funcion).delete()
-            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+            if funcion.evento.macrocliente != None:
+                directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
         except:
-            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+            if funcion.evento.macrocliente != None:
+                directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
         #directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='2':#agregar
         evento = Evento.objects.get(id = request.GET['evento'])
         dia_split = request.GET['dia'].split('/')
         dia_final = dia_split[2] + "-" + dia_split[0] + "-" + dia_split[1]
-        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = dia_final, horas = request.GET['horas'], entrega_fotos = '', direccion = evento.sede.direccion)
-
-        directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
+        funcion = Funcion.objects.create(nombre = request.GET['nomb'], evento = evento, dia = dia_final, horas = request.GET['horas'], entrega_fotos = '', direccion = Direccion.objects.get(id=1))
+        if funcion.evento.macrocliente != None:
+            directorio = direccionFuncion.objects.create(funcion=funcion, dir = funcion.evento.macrocliente.submarca.marca.nombre + "/" + funcion.evento.macrocliente.submarca.nombre + "/" + funcion.evento.macrocliente.nombre + "/" + funcion.evento.nombre + "/" + funcion.evento.sede.nombre + "/" + funcion.dia + "/" + funcion.direccion.nombre + "/" +funcion.nombre)
     elif request.GET['accion']=='3':#borrar
         funcion = Funcion.objects.get(id = request.GET['iden'])
         direccionFuncion.objects.get(funcion=funcion).delete()
@@ -738,6 +868,7 @@ def traer_usuario_gasto_evento_ajax(request):
 
     return HttpResponse(simplejson.dumps(resp), mimetype='application/json')
 
+@login_required(login_url='/')
 def crear_combos(request, evento_id):
     productos = ProductoEvento.objects.filter(evento = Evento.objects.get(id = evento_id), es_combo=False)
     if request.method == 'POST':
@@ -758,18 +889,23 @@ def crear_combos(request, evento_id):
                 cant = aux[1]
                 ProductoeventoCombo.objects.create(producto=ProductoEvento.objects.get(id=iden), combo=combo, cantidad=cant)
             return HttpResponseRedirect('/listar_combos/'+evento_id+'/')
+        else:
+            messages.add_message(request, messages.ERROR, 'Debe llenar todos los campos', extra_tags='danger')
     return render_to_response('evento/crear_combos.html', {'iden': evento_id, 'productos': productos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_combos(request, evento_id):
     combos = ProductoEvento.objects.filter(evento=Evento.objects.get(id=evento_id), es_combo = True)
     return render_to_response('evento/listar_combos.html', {'iden': evento_id, 'combos': combos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def ver_combo(request, combo_id):
     combo = ProductoEvento.objects.get(id = combo_id)
     productos = ProductoeventoCombo.objects.filter(combo = combo)
     iden = combo.evento.id
     return render_to_response('evento/ver_combo.html', {'iden': iden, 'combo': combo, 'productos': productos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_combo(request, combo_id):
     combo = ProductoEvento.objects.get(id = combo_id)
     productos = ProductoeventoCombo.objects.filter(combo = combo)
@@ -779,6 +915,7 @@ def eliminar_combo(request, combo_id):
     combo.delete()
     return HttpResponseRedirect('/listar_combos/'+str(iden)+'/')
 
+@login_required(login_url='/')
 def editar_combo(request, combo_id):
     combo = ProductoEvento.objects.get(id = combo_id)
     iden = combo.evento.id
@@ -819,6 +956,7 @@ def editar_combo(request, combo_id):
             return HttpResponseRedirect('/listar_combos/'+str(combo.evento.id)+'/')
     return render_to_response('evento/editar_combo.html', {'iden': iden, 'combo': combo, 'productos': productos, 'productosC': productosCombos}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_tipo_evento(request, tipo_id):
     tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
     tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
@@ -830,8 +968,98 @@ def eliminar_tipo_evento(request, tipo_id):
     tipoEvento.delete()
     return HttpResponseRedirect("/nuevo_tipo_de_evento/0/")
 
+@login_required(login_url='/')
 def ver_tipo_evento(request, tipo_id):
     tipoEvento = Tipos_Eventos.objects.get(id= tipo_id)
     tareas = TareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     Pprelaciones = PrelaTareaTipoEvento.objects.filter(tipo_evento = tipoEvento)
     return render_to_response('evento/ver_tipo_evento.html', {'tipoe': tipoEvento, 'tareas': tareas, 'prelaciones': Pprelaciones}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def nuevo_item(request):
+    if request.method == 'POST':
+        formulario = NuevoItemForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/listar_items/1')
+    else:
+        formulario = NuevoItemForm()
+    return render_to_response('evento/nuevo_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def editar_item(request, id_item):
+    item = Items.objects.get(id=id_item)
+    if request.method == 'POST':
+        formulario = NuevoItemForm(request.POST)
+        if formulario.is_valid():
+            form = formulario.save(commit=False)
+            item.item = form.item
+            item.cantidad = form.cantidad
+            item.save()
+            return HttpResponseRedirect('/listar_items/2')
+    else:
+        formulario = NuevoItemForm(instance=item)
+    return render_to_response('evento/nuevo_item.html', {'formulario': formulario}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def eliminar_items(request, id_item):
+    item = Items.objects.get(id=id_item)
+    item.delete()
+    return HttpResponseRedirect('/listar_items/3')
+
+@login_required(login_url='/')
+def listar_items(request, creado):
+    items = Items.objects.all()
+    return render_to_response('evento/listar_items.html', {'items': items, 'creado': creado}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def asignar_item_staff(request, id_evento):
+    evento = Evento.objects.get(id=id_evento)
+    return render_to_response('evento/asignar_item_staff.html', {'evento': evento}, context_instance=RequestContext(request))
+
+
+def enviar_correo_convocados(request):
+    evento=Evento.objects.get(id = request.GET['evento'])
+    funciones = Funcion.objects.filter(evento = evento)
+    aux=[]
+    usuarios=[]
+    for funcion in funciones:
+        aux.append(AsistenciaStaffFuncion.objects.filter(funcion= funcion, fue_convocado=True))
+    for au in aux:
+        for a in au:
+            usuarios.append(a.usuario)
+    correos = []
+    for usuario in usuarios:
+        correos.append(usuario.email)
+    mensaje = request.GET['mail']
+    if mensaje != '':
+        send_mail('[FotoMov] Convocatoria de staff para evento.', mensaje, '', correos, fail_silently=False)
+    data = json.dumps({'nombre': ''})
+    return HttpResponse(data, mimetype='application/json')
+
+@login_required(login_url='/')
+def listar_items_presatdos(request, id_evento):
+    evento = Evento.objects.get(id = id_evento)
+    items = ItemsPrestado.objects.filter(evento = evento).order_by('-devuelto')
+    return render_to_response('evento/listar_items_presatdos.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
+
+def devolver_item_ajax(request):
+    item = ItemsPrestado.objects.get(id=request.GET['iden'])
+    item.devuelto = True
+    item.estado = request.GET['estado']
+    item.save()
+    data = json.dumps({'nombre': ''})
+    return HttpResponse(data, mimetype='application/json')
+
+@login_required(login_url='/')
+def eliminar_prestamo(request, id_prestamo):
+    item = ItemsPrestado.objects.get(id = id_prestamo)
+    evento = item.evento
+    item.delete()
+    return HttpResponseRedirect('/listar_items_presatdos/'+str(evento.id)+'/')
+
+@login_required(login_url='/')
+def prestar_item(request, id_evento):
+    items = Items.objects.all()
+    return render_to_response('evento/prestar_item.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
+

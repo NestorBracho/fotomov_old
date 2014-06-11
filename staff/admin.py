@@ -7,6 +7,7 @@ from productos.models import *
 from tareas.models import *
 from administracion.models import *
 from modulo_movil.models import *
+from marca.models import *
 
 
 admin.site.register(Usuario)
@@ -50,4 +51,9 @@ admin.site.register(GastoEvento)
 admin.site.register(ProductoeventoCombo)
 admin.site.register(PedidoPago)
 admin.site.register(Configuracion)
+admin.site.register(Marca)
+admin.site.register(SubMarca)
+admin.site.register(Items)
+admin.site.register(ItemsPrestado)
+admin.site.register(Proveedor)
 admin.site.register(TipoEnvio)

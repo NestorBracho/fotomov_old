@@ -1,7 +1,8 @@
 from django.db import models
 from clientes.models import Encargado
 from direcciones.models import Direccion
-from clientes.models import Sede, MacroCliente
+from clientes.models import Sede, MacroCliente, Cliente
+from marca.models import SubMarca
 #encoding:utf-8
 class Tipos_Eventos(models.Model):
     nombre = models.CharField(max_length=200)
@@ -14,11 +15,13 @@ class Evento(models.Model):
     porcentaje_institucion = models.FloatField()
 
     #Claves foraneas
-    encargado = models.ForeignKey(Encargado)
-    sede = models.ForeignKey(Sede, null=True)
-    macrocliente = models.ForeignKey(MacroCliente)
+    cliente = models.ForeignKey(Cliente, null=True, blank=True)
+    encargado = models.ForeignKey(Encargado,null=True, blank=True)
+    sede = models.ForeignKey(Sede, null=True, blank=True)
+    macrocliente = models.ForeignKey(MacroCliente, blank=True, null=True)
     fecha_entrega = models.DateField()
     tipo = models.ForeignKey(Tipos_Eventos, verbose_name="Tipo de evento")
+    submarca = models.ForeignKey(SubMarca)
 
 class Funcion(models.Model):
     nombre = models.CharField(max_length=200)

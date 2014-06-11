@@ -5,7 +5,7 @@ from direcciones.models import *
 class MacroCliente(models.Model):
     submarca = models.ForeignKey(SubMarca)
     nombre = models.CharField(max_length=100, verbose_name="Nombre Institucion")
-    telefono = models.CharField(max_length=11)
+    telefono = models.CharField(max_length=40)
     rif = models.CharField(max_length=10, unique=True)
     direccion_fiscal = models.TextField(max_length=500)
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
@@ -29,7 +29,7 @@ class Cliente(models.Model):
     email = models.EmailField(verbose_name='correo electronico')
     direccion_fiscal = models.TextField(verbose_name='direccion fiscal', max_length=400)
     rif = models.CharField(max_length=10, null=True, blank=True)
-    cedula = models.CharField(max_length=8, null=True, blank=True)
+    cedula = models.CharField(max_length=8, unique=True)
     def __unicode__(self):
         return '%s %s %s' % ( self.nombres, self.apellidos, self.cedula)
 

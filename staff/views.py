@@ -59,9 +59,9 @@ def ingresar(request):
 		login(request, acceso)
 		return HttpResponseRedirect('/escritorio')
 	    else:
-		return render_to_response('noactivo.html', context_instance=RequestContext(request))
+		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 	  else:
-	    return render_to_response('nousuario.html', context_instance=RequestContext(request))
+	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
     else:
 	formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -115,6 +115,7 @@ def escritorio(request):
     print tareas
     return render_to_response('escritorio.html', {'mis_tareas': mis_tareas, 'tareas': tareas}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def configurar_staff(request, creado):
     staff = Privilegios.objects.filter(valor=6)
     if request.method == 'POST':
@@ -128,12 +129,14 @@ def configurar_staff(request, creado):
         formulario = PrivilegioFrom()
     return render_to_response('staff/configurar_staff.html', {'privilegios':staff,'formulario': formulario, 'creado': creado, 'staffs': staff}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_staff(request,id_borrar):
     eliminar = Privilegios.objects.get(id=id_borrar)
     if(eliminar.valor==6):
         eliminar.delete()
     return HttpResponseRedirect('/configurar_staff/0')
 
+@login_required(login_url='/')
 def modificar_staff(request,id_modificar):
     if(request.method=='POST'):
         modiStaff = PrivilegioFrom(request.POST)
@@ -211,6 +214,7 @@ def editar_perfil(request, creado):
         formulario4 = DatoDePagoForm(initial={'banco': perfil.datos_pago.banco, 'tipo_de_cuenta': perfil.datos_pago.tipo_de_cuenta, 'numero': perfil.datos_pago.numero})
     return render_to_response('staff/perfil.html', {'formulario': formulario, 'formulario2': formulario2, 'formulario3': formulario3, 'formulario4': formulario4, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def ver_perfil(request, id_staff):
     usuario = Usuario.objects.get(id=id_staff)
     return render_to_response('staff/ver_perfil.html', {'usuario': usuario}, context_instance=RequestContext(request))

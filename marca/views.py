@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from marca.forms import *
 from marca.models import *
 
+@login_required(login_url='/')
 def nueva_marca(request):
     if request.method == 'POST':
         formulario = MarcaForm(request.POST)
@@ -19,6 +20,7 @@ def nueva_marca(request):
         formulario = MarcaForm()
     return render_to_response('marca/nueva_marca.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_marca(request, id_marca):
     if Marca.objects.filter(id=id_marca):
         marca = Marca.objects.get(id=id_marca)
@@ -35,10 +37,12 @@ def editar_marca(request, id_marca):
         formulario = MarcaForm(initial={'nombre': marca.nombre})
     return render_to_response('marca/nueva_marca.html', {'formulario': formulario}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def listar_marcas(request, creado):
-    marcas = Marca.objects.all()
+    marcas = Marca.objects.all().exclude(id=1)
     return render_to_response('marca/listar_marcas.html', {'marcas': marcas, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def ver_marca(request, id_marca, creado):
     if Marca.objects.filter(id=id_marca):
         marca = Marca.objects.get(id=id_marca)
@@ -47,6 +51,7 @@ def ver_marca(request, id_marca, creado):
         return HttpResponseRedirect('/listar_marcas/0')
     return render_to_response('marca/ver_marca.html', {'marca': marca, 'submarcas': submarcas, 'creado': creado}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def nueva_submarca(request, id_marca):
     if Marca.objects.filter(id=id_marca):
         marca = Marca.objects.get(id=id_marca)
@@ -63,6 +68,7 @@ def nueva_submarca(request, id_marca):
         formulario = SubMarcaForm()
     return render_to_response('marca/nueva_submarca.html', {'formulario': formulario, 'marca': marca}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def editar_submarca(request, id_submarca):
     if SubMarca.objects.filter(id=id_submarca):
         submarca = SubMarca.objects.get(id=id_submarca)
@@ -82,6 +88,7 @@ def editar_submarca(request, id_submarca):
         formulario = EditarSubMarcaForm(initial = {'nombre': submarca.nombre, 'marca': submarca.marca})
     return render_to_response('marca/editar_submarca.html', {'formulario': formulario, 'submarca': submarca, 'marca': str(old)}, context_instance=RequestContext(request))
 
+@login_required(login_url='/')
 def eliminar_marca(request,id_marca):
     if Marca.objects.filter(id=id_marca):
         #Marca.objects.get(id=id_marca).delete()

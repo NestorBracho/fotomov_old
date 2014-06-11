@@ -1,6 +1,25 @@
 from django.db import models
 from clientes.models import *
 from evento.models import *
+from staff.models import *
+from django.contrib.auth.models import User
+
+
+
+class Proveedor(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=500, null=True, blank=True)
+
+class Items(models.Model):
+    item = models.CharField(max_length=100)
+    cantidad = models.IntegerField()
+
+class ItemsPrestado(models.Model):
+    usuario = models.ForeignKey(Usuario)
+    item = models.ForeignKey(Items)
+    devuelto = models.BooleanField(default=False)
+    estado = models.CharField(max_length=200, null=True, blank=True)
+    evento = models.ForeignKey(Evento)
 
 class FormaDePago(models.Model):
     nombre = models.CharField(max_length=100)
@@ -23,6 +42,7 @@ class Producto(models.Model):
         return self.nombre
 
 class ProductoEvento(models.Model):
+    proveedor = models.ForeignKey(Proveedor)
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
     precio = models.FloatField()
@@ -45,6 +65,36 @@ class ProductoEventoPedido(models.Model):
 
 
 class Pedido(models.Model):
+    CREADO = 'Creado'
+    PAGADO = 'Pagado'
+    EDICION = 'Edicion'
+    ENIMPRESION = 'En impresion'
+    IMPRESO = 'Impreso'
+    LISTO = 'Listo'
+
+    SINENVIO = 'Sin envio'
+    REGIONAL = 'Regional'
+    NACIONAL = 'Nacional'
+    INTERNACIONAL = 'Internacional'
+
+    ESTADOS = (
+        (CREADO, CREADO),
+        (PAGADO, PAGADO),
+        (EDICION, EDICION),
+        (ENIMPRESION, ENIMPRESION),
+        (IMPRESO, IMPRESO),
+        (LISTO, LISTO),
+
+    )
+
+    ENVIOS = (
+        (0, SINENVIO),
+        (1, REGIONAL),
+        (2, NACIONAL),
+        (3, INTERNACIONAL),
+    )
+
+    evento = models.ForeignKey(Evento)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
     num_pedido= models.IntegerField()
@@ -56,10 +106,10 @@ class Pedido(models.Model):
     total = models.FloatField(null=True, blank=True)
     codigo = models.CharField(max_length=100, null=True, blank=True)
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
-    envio = models.IntegerField(default=0)
+    envio = models.IntegerField(default=0, choices=ENVIOS)
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
-    estado = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
 
 class PedidoPago(models.Model):

@@ -35,7 +35,8 @@
 		</div>
     </div>
 </div>
-<div class="panel panel-default">
+<div class="row">
+<div class="panel panel-default col-md-6">
 	<div class="panel-heading">
         <h4>Pedidos</h4>
     </div>
@@ -46,7 +47,7 @@
 			   		Codigo: <a href="/ver_pedido/{{pedido.id}}/">{{pedido.num_pedido}}</a>
 			    </div>
 			    <div class="col-xs-12 col-md-6">
-			    	Fecha: {{pedido.fecha}}
+			    	Fecha de compra: {{pedido.fecha}}
 			    </div>
 		    </div>
 		    <div class="row">
@@ -54,11 +55,32 @@
 			    	Estado: {{pedido.estado}}
 			    </div>
 			    <div class="col-xs-12 col-md-6">
-			    	Entrega: {{pedido.fecha_entrega}}
+			    	Entrega de entrega: {{pedido.fecha_entrega}}
 			    </div>
+                <div class="col-xs-12 col-md-6">
+                    Estado de cobro: {% if pedido.fue_pagado %}<strong>Pagado</strong>{% else %}<strong>Sin pagar</strong>{% endif %}
+                </div>
 		    </div>
 	    </div>
 	{%endfor%}
+</div>
+<div class="panel panel-default col-md-6">
+	<div class="panel-heading">
+        <h4>Eventos</h4>
+    </div>
+	<div class="panel-body">
+    {%for evento in eventos%}
+
+	    <div class="row">
+		    <div class="col-xs-12 col-md-5">
+			    {{evento.nombre}}
+			</div>
+			<div class="col-xs-12 col-md-7">
+			    {{evento.descripcion}}
+			</div>
+		</div>
+	{%endfor%}
+    </div>
 </div>
     <div class="row">
         <button class="btn btn-default">Agregar Pedido</button>

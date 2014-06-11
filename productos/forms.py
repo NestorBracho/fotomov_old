@@ -18,7 +18,7 @@ class PedidoCajaForm(forms.ModelForm):
     class Meta:
         model = Pedido
         exclude=['cliente', 'fecha', 'num_pedido', 'fecha_entrega', 'total','codigo', 'envio', 'fue_pagado',
-                 'lote', 'estado', 'factura', 'direccion_entrega']
+                 'lote', 'estado', 'factura', 'direccion_entrega', 'evento']
     def __init__(self, *args, **kwargs):
         super(PedidoCajaForm, self).__init__(*args, **kwargs)
         for key in self.fields:
@@ -34,3 +34,7 @@ class PedidoPagoForm(forms.Form):
     tipo_pago = forms.ChoiceField(choices=CHOICES)
     referencia = forms.CharField()
     monto = forms.FloatField(widget=forms.TextInput(attrs={'onkeypress':'return numero_float(event)'}))
+
+class ProveedorForm(forms.ModelForm):
+    class Meta:
+        model = Proveedor
