@@ -64,12 +64,9 @@ class ProductoEventoPedido(models.Model):
     num_pedido = models.IntegerField()
     estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)
-
-<<<<<<< HEAD
     #Claves foraneas
     producto = models.ForeignKey(ProductoEvento)
-=======
->>>>>>> 31d20e504e564f79eadf3d4549da7fc46ab430ed
+
 
 class Pedido(models.Model):
 

@@ -11,12 +11,9 @@ Submarcas
         <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
         ¡Marca creada satisfactoriamente!
     </div>
-
 {% endif %}
 
-<div>
-    <div>
-        <div class="table-responsive">
+
             <table class="table table-striped  table-hover" id="content">
                 <thead>
                     <th>Submarca</th>
@@ -33,10 +30,15 @@ Submarcas
                     No existen submarcas asociadas a {{ marca.nombre }}
             {% endfor %}
             </table>
-        </div>
-        <div class="col-sm-12"><a href="/nueva_submarca/{{ marca.id }}" class="btn btn-block btn-primary">Crear Submarca</a></div>
 
-        <div class="col-sm-12"><a href="/editar_marca/{{ marca.id }}" class="btn btn-block btn-success">Editar</a></div>
+
+    <div class="row">
+
+        <div class="col-sm-2 pull-right">
+            <a href="/nueva_submarca/{{ marca.id }}" class="btn btn-block btn-primary">Crear Submarca</a>
+        </div>
+        <div class="col-sm-2 pull-right">
+            <a href="/editar_marca/{{ marca.id }}" class="btn btn-block btn-success">Editar</a>
+        </div>
     </div>
-</div>
 {% endblock %}
