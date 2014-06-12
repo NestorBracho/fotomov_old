@@ -173,6 +173,7 @@ urlpatterns = patterns('',
     url(r'^prestar_item/(?P<id_evento>\d+)/$', 'evento.views.prestar_item'),
     url(r'^devolver_item_ajax/$', 'evento.views.devolver_item_ajax'),
     url(r'^eliminar_prestamo/(?P<id_prestamo>\d+)/$', 'evento.views.eliminar_prestamo'),
+    url(r'^prestar_item_seleccionado/$', 'evento.views.prestar_item_seleccionado'),
 
     #URLs de envios
     url(r'^tipo_envio/$', 'administracion.views.tipo_envio', name='tipo_envio'),
