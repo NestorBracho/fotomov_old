@@ -1030,12 +1030,15 @@ def enviar_correo_convocados(request):
     data = json.dumps({'nombre': ''})
     return HttpResponse(data, mimetype='application/json')
 
+
 @login_required(login_url='/')
 def listar_items_prestados(request, id_evento):
     evento = Evento.objects.get(id = id_evento)
     items = ItemsPrestado.objects.filter(evento = evento).order_by('-devuelto')
     return render_to_response('evento/listar_items_prestados.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
 
+
+@login_required(login_url='/')
 def devolver_item_ajax(request):
     item = ItemsPrestado.objects.get(id=request.GET['iden'])
     item.devuelto = True
@@ -1044,12 +1047,26 @@ def devolver_item_ajax(request):
     data = json.dumps({'nombre': ''})
     return HttpResponse(data, mimetype='application/json')
 
+
+@login_required(login_url='/')
+def prestar_item_seleccionado(request):
+    item = Items.objects.get(id=request.GET['iden'])
+    nombres = request.GET['per']
+    nombres = nombres.split()
+    usuario = Usuario.objects.get(nombre=nombres[0], apellido=nombres[1])
+    evento = Evento.objects.get(id=request.GET['evento'])
+    ItemsPrestado.objects.create(item=item, usuario=usuario, evento=evento)
+    data = json.dumps({'nombre': ''})
+    return HttpResponse(data, mimetype='application/json')
+
+
 @login_required(login_url='/')
 def eliminar_prestamo(request, id_prestamo):
     item = ItemsPrestado.objects.get(id = id_prestamo)
     evento = item.evento
     item.delete()
     return HttpResponseRedirect('/listar_items_presatdos/'+str(evento.id)+'/')
+
 
 @login_required(login_url='/')
 def prestar_item(request, id_evento):

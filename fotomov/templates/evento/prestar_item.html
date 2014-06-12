@@ -23,11 +23,11 @@
     </thead>
     <tbody>
     {% for item in items %}
-        <tr>
+        <tr id="{{ item.id }}">
             <td>{{ item.item }}</td>
             <td>{{ item.cantidad}}</td>
             <td>
-                <a data-toggle="modal" data-target="#prestar" class="btn btn-xs btn-default">Prestar</a>
+                <a onclick="set_item({{ item.id }})" data-toggle="modal" data-target="#prestar" class="btn btn-xs btn-default">Prestar</a>
             </td>
         </tr>
     {% endfor %}
@@ -42,12 +42,12 @@
                 <h4>A quien se lo vas a prestar</h4>
             </div>
             <div class="modal-body text-center" id="modal-body">
-                <input type="text" class="form-control" placeholder="A quien se lo vas a prestar..."
+                <input type="text" class="form-control prestado" placeholder="A quien se lo vas a prestar..."
                        id="usuario_input"/>
             </div>
             <div class="modal-footer text-center" id="modal-footer">
                 <input type="hidden" id="id_usuario"/>
-                <a onclick="devolverItem()" data-dismiss="modal" aria-hidden="true" class="btn btn-primary pull-right">Prestar</a>
+                <a onclick="" data-dismiss="modal" aria-hidden="true" class="btn btn-primary pull-right button_prestar">Prestar</a>
             </div>
         </div>
     </div>
@@ -55,6 +55,22 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+
+    function set_item(idItem){
+        $('.button_prestar').attr('onclick', 'prestar_item('+idItem+')');
+    }
+
+    function prestar_item(idItem){
+        prestado = $('.prestado').val();
+        evento = {{ evento }};
+        $.ajax({
+            url:'/prestar_item_seleccionado/',
+            data:{'iden': idItem, 'per': prestado, 'evento': evento},
+            type:'GET'
+        }).done(function(data){
+            $("#"+idItem).fadeOut();
+        });
+    }
 
     $('#usuario_input').autocomplete({
         source: function(request, response){
@@ -67,7 +83,16 @@
                     response(data);
                 }
             );
+        },
+        focus: function( event, ui ) {
+            $( this ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( this ).val( ui.item.label );
+            $( "#id_usuario").val( ui.item.value );
 
+            return false;
         }
     })
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
