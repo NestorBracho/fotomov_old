@@ -84,7 +84,8 @@ def nuevo_evento(request):
                             funcion_save.save()
                             if tipo_cliente == 'm':
                                 directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.macrocliente.submarca.marca.nombre + "/" + funcion_save.evento.macrocliente.submarca.nombre + "/" + funcion_save.evento.macrocliente.nombre + "/" + funcion_save.evento.nombre + "/" + funcion_save.evento.sede.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
-
+                            else:
+                                directorio = direccionFuncion.objects.create(funcion=funcion_save, dir = funcion_save.evento.submarca.marca.nombre + "/" + funcion_save.evento.submarca.nombre + "/" + funcion_save.evento.cliente.nombres + funcion_save.evento.cliente.apellidos + "/" + funcion_save.evento.nombre + "/" + funcion_save.dia + "/" + funcion_save.direccion.nombre + "/" +funcion_save.nombre)
             #Empieza a crear las tareas del evento
             tareas = TareaTipoEvento.objects.filter(tipo_evento=evento.tipo)
             fechas = Funcion.objects.filter(evento=evento).order_by('dia')

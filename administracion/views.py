@@ -28,6 +28,7 @@ def nueva_forma_de_pago(request):
         if formulario.is_valid():
             forma_pago = FormaDePago.objects.create(nombre = formulario.cleaned_data['nombre'])
             forma_pago.save()
+            return HttpResponseRedirect('/nueva_forma_de_pago')
     else:
         formulario = FormaDePagoForm()
     return render_to_response('administracion/nueva_forma_de_pago.html', {'formulario': formulario, 'pagos': pagos}, context_instance = RequestContext(request))

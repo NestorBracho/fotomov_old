@@ -39,7 +39,7 @@ class GastoEvento(models.Model):
 
 class Pago(models.Model):
     pago = models.TextField(max_length=500)
-    monto = models.FloatField()
+    monto = models.FloatField(verbose_name="Monto Entregado")
     fecha_de_pago = models.DateField()
     banco = models.CharField(max_length=100)
     nro_de_comprobante = models.CharField(max_length=100)

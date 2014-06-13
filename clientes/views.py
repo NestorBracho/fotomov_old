@@ -16,6 +16,7 @@ from staff.models import Privilegios, StaffPorFuncion
 from marca.forms import *
 from marca.models import *
 from evento.models import *
+from tareas.models import Notificacion
 from direcciones.models import *
 from direcciones.views import *
 import datetime
@@ -198,7 +199,6 @@ def ver_contacto_macrocliente(request, id_contacto):
     contacto = Encargado.objects.get(id=id_contacto)
     return render_to_response('clientes/ver_contacto_macrocliente.html', {'contacto': contacto}, context_instance = RequestContext(request))
 
-
 def nuevo_macrocliente_ajax(request):
     marca = Marca.objects.get(id = request.GET['id'])
     submarcas = SubMarca.objects.filter(marca = marca)
@@ -227,7 +227,10 @@ def ver_cliente(request, id_cliente):
     clienteF = ClienteForm()
     pedidos = Pedido.objects.filter(cliente=id_cliente)
     eventos = Evento.objects.filter(cliente=cliente)
-    return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos, 'clienteForm':clienteF, 'eventos': eventos}, context_instance=RequestContext(request))
+    notificaciones = Notificacion.objects.filter(cliente=cliente)
+    return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos,
+                                                            'clienteForm':clienteF, 'eventos': eventos,
+                                                            'notificaciones': notificaciones}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def editar_cliente(request, id_cliente):

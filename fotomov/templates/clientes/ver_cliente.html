@@ -4,85 +4,141 @@
         Ver Cliente
 {% endblock %}
 {% block seccion-contenido %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Datos Generales</h4>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-		    <div class="col-xs-12 col-md-6">
-		    	Nombre: {{cliente.nombres}}
-		    </div>
-		    <div class="col-xs-12 col-md-6">
-		    	Apellido: {{cliente.apellidos}}
-		    </div>
-	    </div>
-        <div class="row">
-	    	<div class="col-xs-12 col-md-6">
-	    		Cedula: {{cliente.cedula}} {{cliente.rif}}
-	    	</div>
-		    <div class="col-xs-12 col-md-6">
-		    	Email: {{cliente.email}}
-		    </div>
-		</div>
-        <div class="row">
-	    	<div class="col-xs-12 col-md-6">
-	    		Telefono: {{cliente.telefono}}
-	    	</div>
-		    <div class="col-xs-12 col-md-6">
-		    	Direccion: {{cliente.direccion_fiscal}}
-			</div>
-		</div>
-    </div>
-</div>
 <div class="row">
-<div class="panel panel-default col-md-6">
-	<div class="panel-heading">
-        <h4>Pedidos</h4>
-    </div>
-    {%for pedido in pedidos%}
-	    <div class="panel-body">
-	        <div class="row">
-			    <div class="col-xs-12 col-md-6">
-			   		Codigo: <a href="/ver_pedido/{{pedido.id}}/">{{pedido.num_pedido}}</a>
-			    </div>
-			    <div class="col-xs-12 col-md-6">
-			    	Fecha de compra: {{pedido.fecha}}
-			    </div>
-		    </div>
-		    <div class="row">
-			    <div class="col-xs-12 col-md-6">
-			    	Estado: {{pedido.estado}}
-			    </div>
-			    <div class="col-xs-12 col-md-6">
-			    	Entrega de entrega: {{pedido.fecha_entrega}}
-			    </div>
-                <div class="col-xs-12 col-md-6">
-                    Estado de cobro: {% if pedido.fue_pagado %}<strong>Pagado</strong>{% else %}<strong>Sin pagar</strong>{% endif %}
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Datos Generales</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <strong>Nombre:</strong> {{cliente.nombres}}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <strong>Apellido:</strong> {{cliente.apellidos}}
+                    </div>
                 </div>
-		    </div>
-	    </div>
-	{%endfor%}
-</div>
-<div class="panel panel-default col-md-6">
-	<div class="panel-heading">
-        <h4>Eventos</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <strong>Cedula:</strong> {{cliente.cedula}} {{cliente.rif}}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <strong>Email:</strong> {{cliente.email}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <strong>Telefono:</strong> {{cliente.telefono}}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <strong>Direccion:</strong> {{cliente.direccion_fiscal}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-	<div class="panel-body">
-    {%for evento in eventos%}
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Conversaciones</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nuevo</th>
+                                        <th>Notificacion</th>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for notificacion in notificaciones %}
+                                        <tr onclick="verNoti({{notificacion.id}})" id="{{notificacion.id}}-leido" {% if notificacion.fue_revisado == False %}{% if notificacion.tipo == "N/A" %} class= "alert-info"{% elif notificacion.tipo == "Queja" %} class="alert-danger" {% else %}class="alert-success"{% endif %}{% endif %} id="{{notificacion.id}}">
+                                            <td >{% if notificacion.fue_revisado %}<span hidden="true">2</span>{% else %}<i class="fa fa-circle"></i></span><span hidden="true">1</span>{% endif %}</td>
+                                            <td>{{ notificacion.notificacion | truncatechars:15  }}</td>
+                                            <td>{{ notificacion.creado_fecha }}</td>
+                                            <td>{{ notificacion.tipo }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>                                  <!-- /.table-responsive -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	    <div class="row">
-		    <div class="col-xs-12 col-md-5">
-			    {{evento.nombre}}
-			</div>
-			<div class="col-xs-12 col-md-7">
-			    {{evento.descripcion}}
-			</div>
-		</div>
-	{%endfor%}
+</div>
+
+<div class="row">
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Pedidos <a class="btn btn-default pull-right" href="/crear_pedidos_indoor/1/1/NoneNext/urlseparador/NoneValue/">Agregar Pedido</a></h4>
+        </div>
+        {%for pedido in pedidos%}
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        Codigo: <a href="/ver_pedido/{{pedido.id}}/">{{pedido.num_pedido}}</a>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        Fecha de compra: {{pedido.fecha}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        Estado: {{pedido.estado}}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        Entrega de entrega: {{pedido.fecha_entrega}}
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        Estado de cobro: {% if pedido.fue_pagado %}<strong>Pagado</strong>{% else %}<strong>Sin pagar</strong>{% endif %}
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
     </div>
 </div>
-    <div class="row">
-        <button class="btn btn-default">Agregar Pedido</button>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Eventos</h4>
+        </div>
+        <div class="panel-body">
+        {%for evento in eventos%}
+
+            <div class="row">
+                <div class="col-xs-12 col-md-5">
+                    {{evento.nombre}}
+                </div>
+                <div class="col-xs-12 col-md-7">
+                    {{evento.descripcion}}
+                </div>
+            </div>
+        {%endfor%}
+        </div>
     </div>
+</div>
+
+    <div class="row">
+
+    </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    function verNoti(iden){
+
+    window.location = "/ver_notificacion/"+iden;
+
+}
+</script>
 {% endblock %}

@@ -66,7 +66,7 @@ Nuevo Evento
             <div class="col-sm-12">
                 {{ formulario.descripcion | bootstrap }}
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 {{ formulario.porcentaje_institucion | bootstrap }}
             </div>
             <div class="col-sm-3">
@@ -402,7 +402,7 @@ function AgregarLocacion(tablaid,inputid,main){//<-hacer el ajax aqui de validac
             temp[1] += 1;
             main = temp[0]+"."+tempNombre+"."+temp[2];
 
-            document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><p><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label><input type='button' class='btn btn-xs' onclick=EliminarLocacion('"+main+"') value='Eliminar'/></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id="+main+"tabla ></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('"+main+"tabla','"+main+"')> </div></div>";
+            document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><p><div class='col-sm-6'><label id="+main+" name=0>"+ajax_loc+"</label> <input type='button' class='btn btn-xs btn-danger' onclick=EliminarLocacion('"+main+"') value='Eliminar'/></div><div style='border-left: 1px solid #dedede;' class='col-sm-6' id="+main+"tabla ></div><div class='col-sm-12'  style='border-bottom: 1px solid #dedede;text-align: right'><input type='button' value='Agregar funcion' onclick=AgregarFuncion('"+main+"tabla','"+main+"')> </div></div>";
 
         }else{
 
@@ -436,7 +436,7 @@ function AgregarRegistroFuncion(tablaid,inputid,main){
         tempNombre += 1;
         document.getElementById(main).setAttribute('name',tempNombre);
         main = temp[0]+"."+temp[1]+"."+tempNombre;
-        document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+" name=0 >"+document.getElementById(inputid).value+"</label><input type='button' class='btn btn-xs' onclick=EliminarFuncion('"+main+"') value='Eliminar'/></br></div>";
+        document.getElementById(tablaid).innerHTML += "<div id='b"+main+"'><label id="+main+" name=0 >"+document.getElementById(inputid).value+"</label> <input type='button' class='btn btn-xs btn-danger' onclick=EliminarFuncion('"+main+"') value='Eliminar'/></br></div>";
     };
     $("#dialog").dialog( "close" );
 }

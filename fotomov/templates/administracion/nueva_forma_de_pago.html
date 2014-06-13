@@ -7,7 +7,15 @@ Nueva forma de pago
 <form method="POST" action="">{% csrf_token %}
     <div class="row">
         <div class="col-xs-12 col-sm-6">
-            {{ formulario.nombre | bootstrap }}
+            <div class="col-xs-12">
+                {{ formulario.nombre | bootstrap }}
+            </div>
+            <div class="col-xs-6">
+                {{ formulario.descuento | bootstrap }}
+            </div>
+            <div class="col-xs-6">
+                {{ formulario.pagado | bootstrap }}
+            </div>
             <input type="submit" class="btn btn-default btn-primary" value="Ingresar">
         </div>
         <div class="col-xs-12 col-md-6 table-responsive">

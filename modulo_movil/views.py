@@ -433,7 +433,7 @@ def seleccionar_evento(request):
     if directorio_actual.objects.filter(usuario = request.user):
             dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
-        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__macrocliente = None).exclude(evento__id=1)
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__id=1)
         if funciones_hoy:
             for prueba in funciones_hoy:
                 print prueba.evento.id
@@ -448,7 +448,7 @@ def seleccionar_evento_caja(request):
     if directorio_actual.objects.filter(usuario = request.user):
             dir_actual = directorio_actual.objects.get(usuario=request.user).delete()
     for direccion in direcciones:
-        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__macrocliente = None).exclude(evento__id=1)
+        funciones_hoy = Funcion.objects.filter(dia=date.today(), direccion = direccion).exclude(evento__id=1)
         if funciones_hoy:
             eventos.append(funciones_hoy[0])
     return render_to_response('modulo_movil/seleccionar_evento_caja.html', {'eventos': eventos}, context_instance=RequestContext(request))
@@ -884,7 +884,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
     combos = []
     productos = []
 
-    # Construir json de tipos de pago
+    # Construir json de tipos de pagodef generar_pedido
     tipos_envio = {}
     for tipo_envio in TipoEnvio.objects.all() :
         tipos_envio[ tipo_envio.id ] = {
