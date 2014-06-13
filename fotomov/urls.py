@@ -174,7 +174,7 @@ urlpatterns = patterns('',
     url(r'^devolver_item_ajax/$', 'evento.views.devolver_item_ajax'),
     url(r'^eliminar_prestamo/(?P<id_prestamo>\d+)/$', 'evento.views.eliminar_prestamo'),
     url(r'^prestar_item_seleccionado/$', 'evento.views.prestar_item_seleccionado'),
-
+    url(r'^eliminar_archivo_cliente/(?P<id_archivo>\d+)/$', 'staff.views.eliminar_archivo_cliente'),
     #URLs de envios
     url(r'^tipo_envio/$', 'administracion.views.tipo_envio', name='tipo_envio'),
     url(r'^eliminar_tipo_envio/(?P<id_envio>\d+)/$', 'administracion.views.eliminar_tipo_envio'),

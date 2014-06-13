@@ -228,9 +228,19 @@ def ver_cliente(request, id_cliente):
     pedidos = Pedido.objects.filter(cliente=id_cliente)
     eventos = Evento.objects.filter(cliente=cliente)
     notificaciones = Notificacion.objects.filter(cliente=cliente)
+    archivos = ArchivoAdjunto.objects.filter(cliente=cliente)
+    if request.method == 'POST':
+        formulario = ArchivoAdjuntoForm(request.POST, request.FILES)
+        if formulario.is_valid():
+            archivo = formulario.save(commit=False)
+            archivo.cliente = cliente
+            archivo.save()
+    else:
+        formulario = ArchivoAdjuntoForm()
     return render_to_response('clientes/ver_cliente.html', {'cliente': cliente, 'pedidos':pedidos,
                                                             'clienteForm':clienteF, 'eventos': eventos,
-                                                            'notificaciones': notificaciones}, context_instance=RequestContext(request))
+                                                            'notificaciones': notificaciones, 'formulario': formulario,
+                                                            'archivos': archivos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def editar_cliente(request, id_cliente):
@@ -313,3 +323,4 @@ def traer_cliente_evento(request):
     print resp
 
     return HttpResponse(simplejson.dumps(resp), mimetype='application/json')
+

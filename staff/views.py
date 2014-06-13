@@ -221,3 +221,9 @@ def ver_perfil(request, id_staff):
 def cerrar_sesion(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def eliminar_archivo_cliente(request, id_archivo):
+    archivo = ArchivoAdjunto.objects.get(id=id_archivo)
+    cliente = archivo.cliente
+    archivo.delete()
+    return HttpResponseRedirect('/ver_cliente/' + str(cliente.id))

@@ -3,6 +3,7 @@ from django.db import models
 from clientes.models import *
 from marca.models import *
 from django import forms
+from staff.models import ArchivoAdjunto
 
 class MacroClienteForm(forms.ModelForm):
     marca = forms.ModelChoiceField(queryset=Marca.objects.all().exclude(id=1))
@@ -20,3 +21,8 @@ class MacroClienteContactoForm(forms.Form):
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
+
+class ArchivoAdjuntoForm(forms.ModelForm):
+    class Meta:
+        model = ArchivoAdjunto
+        exclude = ['tipo_staff', 'cliente']

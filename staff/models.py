@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from evento.models import *
+from clientes.models import Cliente
 
 
 class Privilegios(models.Model):
@@ -63,3 +64,9 @@ class AsistenciaStaffFuncion(models.Model):
     asistencia = models.BooleanField(default = False)
     fue_convocado = models.BooleanField(default = False)
     email_enviado = models.BooleanField(default = False)
+
+class ArchivoAdjunto(models.Model):
+    nombre = models.CharField(max_length=200)
+    tipo_staff = models.ForeignKey(TipoStaff, null=True, blank=True)
+    cliente = models.ForeignKey(Cliente, null=True, blank=True)
+    archivo = models.FileField(upload_to='archivos')
