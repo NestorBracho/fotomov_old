@@ -131,7 +131,6 @@ def pagar(request):
         formulario = PagoForm()
     return render_to_response('administracion/pagar.html', {'formulario': formulario}, context_instance = RequestContext(request))
 
-
 def tipo_envio(request):
     form = modelform_factory(TipoEnvio)
     envios = TipoEnvio.objects.all()
@@ -146,7 +145,6 @@ def tipo_envio(request):
         else:
             return render_to_response('administracion/tipo_envio.html', {'envios': envios, 'form': formulario}, context_instance = RequestContext(request))
     return render_to_response('administracion/tipo_envio.html', {'envios': envios, 'form': form}, context_instance = RequestContext(request))
-
 
 def eliminar_tipo_envio(request, id_envio):
     envio = TipoEnvio.objects.get(id=id_envio)

@@ -118,7 +118,7 @@ class Pedido(models.Model):
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
     descuento = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-
+    comentario = models.CharField(max_length=300)
     #Claves foraneas
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     lote = models.ForeignKey(Lote, null=True, blank=True)
@@ -147,6 +147,7 @@ class TipoEnvio(models.Model):
     tipo = models.CharField(max_length=30)
     precio = models.DecimalField(decimal_places=2, max_digits=10)
     req_dir = models.BooleanField()
+    direccion = models.TextField(max_length=300)
 
 
 class EnvioPedido(models.Model):
