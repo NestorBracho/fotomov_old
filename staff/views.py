@@ -153,9 +153,13 @@ def modificar_staff(request,id_modificar):
 
 @login_required(login_url='/')
 def editar_perfil(request, creado):
+
+
     usuario = request.user
     print usuario
     perfil = Usuario.objects.get(usuario=usuario)
+    privilegio = perfil.privilegio
+    archivos = ArchivoAdjunto.objects.filter(tipo_staff=privilegio)
     if perfil.equipos == None:
         perfil.equipos = Equipos.objects.create()
         perfil.save()
@@ -211,7 +215,7 @@ def editar_perfil(request, creado):
                                            'iluminacion': perfil.equipos.iluminacion, 'otros': perfil.equipos.otros})
         formulario3 = ExperienciaForm(initial={'lightroom': perfil.experiencia.lightroom, 'photoshop': perfil.experiencia.photoshop, 'tipos': perfil.experiencia.tipos})
         formulario4 = DatoDePagoForm(initial={'banco': perfil.datos_pago.banco, 'tipo_de_cuenta': perfil.datos_pago.tipo_de_cuenta, 'numero': perfil.datos_pago.numero})
-    return render_to_response('staff/perfil.html', {'formulario': formulario, 'formulario2': formulario2, 'formulario3': formulario3, 'formulario4': formulario4, 'creado': creado}, context_instance=RequestContext(request))
+    return render_to_response('staff/perfil.html', {'archivos': archivos, 'formulario': formulario, 'formulario2': formulario2, 'formulario3': formulario3, 'formulario4': formulario4, 'creado': creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def ver_perfil(request, id_staff):
@@ -227,3 +231,23 @@ def eliminar_archivo_cliente(request, id_archivo):
     cliente = archivo.cliente
     archivo.delete()
     return HttpResponseRedirect('/ver_cliente/' + str(cliente.id))
+
+def archivos_staff(request,id_staff):
+    staff = Privilegios.objects.get(id=id_staff)
+    archivos = ArchivoAdjunto.objects.filter(tipo_staff = staff)
+    if request.method == 'POST':
+        formulario = ArchivoAdjuntoStaff(request.POST, request.FILES)
+        if formulario.is_valid():
+            form = formulario.save(commit=False)
+            form.tipo_staff = staff
+            form.save()
+            return HttpResponseRedirect('/archivos_staff/' + str(staff.id))
+    else:
+        formulario = ArchivoAdjuntoStaff()
+    return render_to_response('staff/archivos_staff.html', {'formulario': formulario, 'archivos': archivos, 'staff': staff}, context_instance=RequestContext(request))
+
+def eliminar_archivos_staff(request, id_archivo):
+    archivo = ArchivoAdjunto.objects.get(id=id_archivo)
+    staff = archivo.tipo_staff
+    archivo.delete()
+    return HttpResponseRedirect('/archivos_staff/' + str(staff.id))

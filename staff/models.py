@@ -67,6 +67,6 @@ class AsistenciaStaffFuncion(models.Model):
 
 class ArchivoAdjunto(models.Model):
     nombre = models.CharField(max_length=200)
-    tipo_staff = models.ForeignKey(TipoStaff, null=True, blank=True)
+    tipo_staff = models.ForeignKey(Privilegios, null=True, blank=True)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     archivo = models.FileField(upload_to='archivos')

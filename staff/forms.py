@@ -50,3 +50,8 @@ class RegisNotificacion(forms.Form):
 
 class PrivilegioFrom(forms.Form):
     nombre = forms.CharField(max_length=60)
+
+class ArchivoAdjuntoStaff(forms.ModelForm):
+    class Meta:
+        model = ArchivoAdjunto
+        exclude = ['cliente', 'tipo_staff']

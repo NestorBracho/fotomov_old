@@ -175,6 +175,8 @@ urlpatterns = patterns('',
     url(r'^eliminar_prestamo/(?P<id_prestamo>\d+)/$', 'evento.views.eliminar_prestamo'),
     url(r'^prestar_item_seleccionado/$', 'evento.views.prestar_item_seleccionado'),
     url(r'^eliminar_archivo_cliente/(?P<id_archivo>\d+)/$', 'staff.views.eliminar_archivo_cliente'),
+    url(r'^archivos_staff/(?P<id_staff>\d+)/$', 'staff.views.archivos_staff'),
+    url(r'^eliminar_archivo_staff/(?P<id_archivo>\d+)/$', 'staff.views.eliminar_archivos_staff'),
     #URLs de envios
     url(r'^tipo_envio/$', 'administracion.views.tipo_envio', name='tipo_envio'),
     url(r'^eliminar_tipo_envio/(?P<id_envio>\d+)/$', 'administracion.views.eliminar_tipo_envio'),
@@ -198,5 +200,6 @@ urlpatterns = patterns('',
     url(r'^editar_combo/(?P<combo_id>\d+)/$', 'evento.views.editar_combo'),
     url(r'^asignar_combos/(?P<id_evento>\d+)/(?P<id_funcion>\d+)/(?P<id_pedio>\d+)/$', 'modulo_movil.views.asignar_combos'),
     url(r'^ver_tipo_evento/(?P<tipo_id>\d+)/$', 'evento.views.ver_tipo_evento'),
+
 
 )

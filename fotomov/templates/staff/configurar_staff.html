@@ -78,7 +78,7 @@
                                     {% for privilegio in privilegios %}
                                         <tr class="gradeU">
                                             <td>{{ privilegio.nombre }}</td>
-                                            <td><a class="btn btn-xs btn-success" href="/modificar_staff/{{ privilegio.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{privilegio.id}})">Eliminar</button></td>
+                                            <td><a class="btn btn-xs" href="/archivos_staff/{{ privilegio.id }}">Archivos</a> <a class="btn btn-xs btn-success" href="/modificar_staff/{{ privilegio.id }}">Editar</a>  <button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{privilegio.id}})">Eliminar</button></td>
                                         </tr>
                                     {% endfor %}
 

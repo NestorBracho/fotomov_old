@@ -13,84 +13,114 @@
 
 {% endif %}
 <form id='form' method='POST' action=''>{% csrf_token %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Datos Generales</h4>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-			    <div class="col-xs-12 col-md-6">{{formulario.nombre|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario.apellido|bootstrap}}</div>
-		    </div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario.cedula|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario.email|bootstrap}}</div>
-    		</div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario.telefono_fijo|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario.telefono_celular|bootstrap}}</div>
-    		</div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario.telefono_otro|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario.twitter|bootstrap}}</div>
-		    </div>
-        </div>
-	</div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Equipos</h4>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-			    <div class="col-xs-12 col-md-6">{{formulario2.marca|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario2.flash|bootstrap}}</div>
-		    </div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario2.lente_1|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario2.lente_2|bootstrap}}</div>
-    		</div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario2.lente_3|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario2.memorias|bootstrap}}</div>
-    		</div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario2.iluminacion|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario2.otros|bootstrap}}</div>
-		    </div>
-        </div>
-	</div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Experiencia</h4>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-			    <div class="col-xs-12 col-md-6">{{formulario3.lightroom|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario3.photoshop|bootstrap}}</div>
-		    </div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario3.tipos|bootstrap}}</div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Datos Generales</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">{{formulario.nombre|bootstrap}}</div>
+                        <div class="col-xs-12 col-md-6">{{formulario.apellido|bootstrap}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">{{formulario.cedula|bootstrap}}</div>
+                        <div class="col-xs-12 col-md-6">{{formulario.email|bootstrap}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">{{formulario.telefono_fijo|bootstrap}}</div>
+                        <div class="col-xs-12 col-md-6">{{formulario.telefono_celular|bootstrap}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">{{formulario.telefono_otro|bootstrap}}</div>
+                        <div class="col-xs-12 col-md-6">{{formulario.twitter|bootstrap}}</div>
+                    </div>
+                </div>
             </div>
-	    </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Datos de pago</h4>
         </div>
-        <div class="panel-body">
-            <div class="row">
-			    <div class="col-xs-12 col-md-6">{{formulario4.banco|bootstrap}}</div>
-			    <div class="col-xs-12 col-md-6">{{formulario4.tipo_de_cuenta|bootstrap}}</div>
-		    </div>
-            <div class="row">
-		    	<div class="col-xs-12 col-md-6">{{formulario4.numero|bootstrap}}</div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Archivos descargables</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table-responsive table table-striped  table-hover">
+                    <tr>
+                        <th>Archivo</th>
+                    </tr>
+                    {% for archivo in archivos %}
+                        <tr>
+                            <td><a href="{{ MEDIA_URL }}{{ archivo.archivo }}">{{ archivo.nombre }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                </div>
             </div>
-	    </div>
+        </div>
     </div>
     <div class="row">
-	    <div class="col-xs-12 text-right">
-		    <input type='submit' value='Registrar' class="btn btn-default btn-primary" />
+        <div class="col-xs-12">
+
+
+                <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Equipos</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario2.marca|bootstrap}}</div>
+                    <div class="col-xs-12 col-md-6">{{formulario2.flash|bootstrap}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario2.lente_1|bootstrap}}</div>
+                    <div class="col-xs-12 col-md-6">{{formulario2.lente_2|bootstrap}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario2.lente_3|bootstrap}}</div>
+                    <div class="col-xs-12 col-md-6">{{formulario2.memorias|bootstrap}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario2.iluminacion|bootstrap}}</div>
+                    <div class="col-xs-12 col-md-6">{{formulario2.otros|bootstrap}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Experiencia</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario3.lightroom|bootstrap}}</div>
+                    <div class="col-xs-12 col-md-6">{{formulario3.photoshop|bootstrap}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario3.tipos|bootstrap}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Datos de pago</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario4.banco|bootstrap}}</div>
+                    <div class="col-xs-12 col-md-6">{{formulario4.tipo_de_cuenta|bootstrap}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">{{formulario4.numero|bootstrap}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                <input type='submit' value='Registrar' class="btn btn-default btn-primary" />
+            </div>
+        </div>
         </div>
     </div>
+
 </form>
 {% endblock %}

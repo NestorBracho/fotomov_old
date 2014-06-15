@@ -1,0 +1,43 @@
+{% extends 'admin.html' %}
+{% load bootstrap %}
+{% block titulo %}
+    Adjuntar Archivos para {{ staff.nombre }}
+{% endblock %}
+{% block seccion-contenido %}
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table-responsive table table-striped  table-hover">
+                <tr>
+                    <th>Archivo</th>
+                    <th>Acciones</th>
+                </tr>
+                {% for archivo in archivos %}
+                    <tr>
+                        <td><a href="{{ MEDIA_URL }}{{ archivo.archivo }}">{{ archivo.nombre }}</a></td>
+                        <td><button type="button" class="btn btn-xs btn-danger" onclick="deleteAlert({{archivo.id}})">Eliminar</button></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-6">
+            <form id='form' method='POST' action='' enctype="multipart/form-data">{% csrf_token %}
+	            <table><tr><td>{{formulario | bootstrap}}<hr /></td></tr></table>
+	            <p><input type='submit' value='Registrar' class="btn btn-primary" /></p>
+	        </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+
+
+    function deleteAlert(iden){
+
+
+        if(confirm('Seguro que desea eliminar este archivo?'))
+            window.location.assign("/eliminar_archivo_staff/"+iden);
+
+    }
+</script>
+
+{% endblock %}
