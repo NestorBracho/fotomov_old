@@ -997,7 +997,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                     pep.estado = 'Pagado'
                     pep.save()
             #try:
-            #imprimir_ticket(pedido_nuevo, id_evento)
+            imprimir_ticket(pedido_nuevo, id_evento)
             #except:
             #    print "impresora desconectada"
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
