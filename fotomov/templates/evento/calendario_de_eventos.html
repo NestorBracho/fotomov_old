@@ -1,28 +1,111 @@
 {% extends 'tabla.html' %}
 {% load bootstrap %}
+{% block css %}
+<!--http://w3widgets.com/responsive-calendar/-->
+<link href="{{ STATIC_URL }}css/fullcalendar.css" rel="stylesheet">
+{% endblock %}
 {% block titulo %}
 Lista de funciones
 {% endblock %}
 {% block tabla %}
-<table class="table table-striped table-hover" id="content">
-    <thead>
-        <th>funciones</th>
-        <th>Acciones</th>
-    </thead>
-    {% for funcion in funciones %}
-        <tr>
-            <td>{{ funcion.0.funcion.dia }}</td>
-            {% if funcion.1 == True %}
-            <td><a class='btn btn-success' id='{{ funcion.0.funcion.id }}' name='1' onclick=asistir(this.id,this.name) ><span class="fa fa-check-square-o"></span> Asistir</a></td>
-            {% else %}
-            <td><a class='btn btn-warning' id='{{ funcion.0.funcion.id }}' name='0' onclick=asistir(this.id,this.name) ><span class="fa fa-square-o"></span> Asistir</a></td>
-            {% endif %}
-        </tr>
-    {% endfor %}
-</table>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#lista" class="btn" data-toggle="tab">Lista</a></li>
+  <li><a href="#calendario" class="btn" data-toggle="tab">Calendario</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="lista">
+        <div class="col-md-12" style="margin-top: 10px">
+            <table class="table table-striped table-hover" id="content">
+                <thead>
+                    <th>funciones</th>
+                    <th>Acciones</th>
+                </thead>
+                {% for funcion in funciones %}
+                    <tr>
+                        <td>{{ funcion.0.funcion.dia }}</td>
+                        {% if funcion.1 == True %}
+                        <td><a class='btn btn-success' id='{{ funcion.0.funcion.id }}' name='1' onclick=asistir(this.id,this.name) ><span class="fa fa-check-square-o"></span> Asistir</a></td>
+                        {% else %}
+                        <td><a class='btn btn-warning' id='{{ funcion.0.funcion.id }}' name='0' onclick=asistir(this.id,this.name) ><span class="fa fa-square-o"></span> Asistir</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="tab-pane" id="calendario">
+        <div class="col-md-12">
+            <div id="calendar">
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}/js/moment.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}/js/fullcalendar.min.js"></script>
 <script type="text/javascript">
+
+    $("#calendar").fullCalendar({
+    events: function(start, end, timezone, callback){
+
+        var events = [];
+
+        {% for funcion in funciones %}
+            if('{{ funcion.1 }}'== 'True'){
+
+                events.push({
+                    id : '{{ funcion.0.funcion.id }}',
+                    title  : '{{ funcion.0.funcion.nombre }}',
+                    start  : '{{ funcion.0.funcion.dia|date:"c" }}',
+                    color : 'lightgreen',
+                    className: '1'
+                });
+
+            }else{
+
+                events.push({
+                    id : '{{ funcion.0.funcion.id }}',
+                    title  : '{{ funcion.0.funcion.nombre }}',
+                    start  : '{{ funcion.0.funcion.dia|date:"c" }}',
+                    color : 'orange',
+                    className: '0'
+                });
+
+            }
+        {% endfor %}
+
+        callback(events);
+
+    },
+    eventClick: function(calEvent, jsEvent, view) {
+
+        //alert('Event: ' + calEvent.title);
+        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+        //alert('View: ' + view.name);
+        //alert('Date: ' + calEvent.start);
+        //alert('Id: ' + calEvent.id);
+
+        // change the border color just for fun
+        //$(this).css('border-color', 'red');
+        if(calEvent.className == '0'){
+            if(confirm("Se esta postulando para asistir a esta función. ¿Esta de acuerdo?")){
+                asistir(calEvent.id, calEvent.className);
+                calEvent.color = "lightgreen";
+                calEvent.className = "1";
+                $('#calendar').fullCalendar('updateEvent', calEvent);
+            }
+        }else{
+            if(confirm("Esta retirando su postulación para esta función. ¿Esta de acuerdo?")){
+                asistir(calEvent.id, calEvent.className);
+                calEvent.color = "orange";
+                calEvent.className = "0";
+                $('#calendar').fullCalendar('updateEvent', calEvent);
+            }
+        }
+
+    }
+  });
 
 function asistir(iden, flag){
 
