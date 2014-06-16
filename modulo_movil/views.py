@@ -399,14 +399,21 @@ def configuracion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
+    tlf = ConfiguracionEmpresa.objects.get(nombre='tlf')
+    celular = ConfiguracionEmpresa.objects.get(nombre='celular')
+    iva = Configuracion.objects.get(nombre='iva')
+    pagina = ConfiguracionEmpresa.objects.get(nombre='pagina')
     if request.method == 'POST':
-        directorio = request.POST.get('directorio')
-        settings.MEDIA_ROOT = directorio
-        print settings.MEDIA_ROOT
-        return HttpResponseRedirect('/modulo_movil_configurar_db')
+        tlf.valor = request.POST.get('tlf')
+        celular.valor = request.POST.get('celular')
+        iva.valor = request.POST.get('iva')
+        pagina.valor = request.POST.get('pagina')
+        return HttpResponseRedirect('/escritorio')
     else:
         directorio = settings.MEDIA_ROOT
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio,
+                                                                           'creado': creado, 'iva': iva, 'pagina': pagina,
+                                                                           'tlf': tlf, 'celular': celular}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def selecccionar_direccion(request):
