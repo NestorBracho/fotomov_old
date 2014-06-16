@@ -144,7 +144,7 @@ def actualizar_datos():
             contenido = contenido + str(pedido.codigo)
             correo = EmailMessage(titulo, contenido, to=[cliente.email])
             try:
-                correo.send()
+                #correo.send()
                 mensaje = "The email was sent correctly"
             except:
                 mensaje= 'error sending the emal'
@@ -156,7 +156,7 @@ def actualizar_datos():
             Pedido.objects.create(evento=pedido.evento, cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
-                              envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado)
+                              envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado, comentario=pedido.comentario)
     for producto in productos:
         prodev= ProductoEvento.objects.get(id=producto.producto)
         ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
@@ -208,7 +208,8 @@ def importar_csv_evento(request):
                                 pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
                                                                id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
                                                                razon_social=row[7], total=row[8], direccion_entrega=row[9],
-                                                               envio=row[10], fue_pagado=row[11], estado=row[13], evento=Evento.objects.get(id=row[14]))
+                                                               envio=row[10], fue_pagado=row[11], estado=row[13], evento=Evento.objects.get(id=row[14]),
+                                                               comentario = row[15])
                             except:
                                 pass
                             if row[0] == '!-endpedido-!':
@@ -339,11 +340,11 @@ def imprimir_ticket(pedido, id_evento):
         impresora.text("direccion de entrega:\n")
         impresora.text(pedido.direccion_entrega+"\n\n")
     impresora.text("Contacto Fotomov:\n")
-    impresora.text("tlf: 0212-7518390\n")
-    impresora.text("tlf: 0424-2863221\n")
+    impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="tlf").valor +"\n")
+    impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="celular").valor + "\n")
 
     impresora.text("Instagram/Facebook = fotomov\n")
-    impresora.text("www.fotomov.com\n")
+    impresora.text(ConfiguracionEmpresa.objects.get(nombre="pagina").valor +"\n")
     #impresora.text("5 x Foto10x10\n")
     #impresora.text("2 x Taza\n")
     impresora.cut()
@@ -378,7 +379,7 @@ def exportar_csv_evento(request):
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
                         pedido.total, pedido.direccion_entrega, pedido.envio,
-                        pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id])
+                        pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id, pedido.comentario])
 
     writer.writerow(['!-endpedido-!'])
 
@@ -398,14 +399,21 @@ def configuracion(request, creado):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
+    tlf = ConfiguracionEmpresa.objects.get(nombre='tlf')
+    celular = ConfiguracionEmpresa.objects.get(nombre='celular')
+    iva = Configuracion.objects.get(nombre='iva')
+    pagina = ConfiguracionEmpresa.objects.get(nombre='pagina')
     if request.method == 'POST':
-        directorio = request.POST.get('directorio')
-        settings.MEDIA_ROOT = directorio
-        print settings.MEDIA_ROOT
-        return HttpResponseRedirect('/modulo_movil_configurar_db')
+        tlf.valor = request.POST.get('tlf')
+        celular.valor = request.POST.get('celular')
+        iva.valor = request.POST.get('iva')
+        pagina.valor = request.POST.get('pagina')
+        return HttpResponseRedirect('/escritorio')
     else:
         directorio = settings.MEDIA_ROOT
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio, 'creado': creado}, context_instance=RequestContext(request))
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio,
+                                                                           'creado': creado, 'iva': iva, 'pagina': pagina,
+                                                                           'tlf': tlf, 'celular': celular}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def selecccionar_direccion(request):
@@ -776,9 +784,6 @@ def crear_pedidos_indoor(request, id_evento, id_funcion, next, actual):
         return render_to_response('modulo_movil/crear_pedidos.html', {'productos': productos, 'imagenes': imagenes, 'directorios': directorios, 'current': current, 'evento': evento,
                                                                   'short_current': short_current, 'productos_pedidos': lista_agregados,
                                                                   'dir_actual': dir_actual, 'id_funcion': id_funcion, 'MEDIA_ROOT':settings.MEDIA_ROOT}, context_instance=RequestContext(request))
-
-
-
 
 def generar_rutas(id_evento):
     lista = []

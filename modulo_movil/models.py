@@ -43,6 +43,7 @@ class pedido_aux(models.Model):
     envio = models.IntegerField()
     fue_pagado = models.BooleanField(default=False)
     lote = models.ForeignKey(Lote, null=True, blank=True)
+    comentario = models.CharField(max_length=300, blank=True, null=True)
     estado = models.CharField(max_length=100)
 
 class ProductoEventoPedido_aux(models.Model):
@@ -63,3 +64,7 @@ class PedidoPago_aux(models.Model):
 class Configuracion(models.Model):
     nombre = models.CharField(max_length=30)
     valor = models.DecimalField(decimal_places=0, max_digits=5)
+
+class ConfiguracionEmpresa(models.Model):
+    nombre = models.CharField(max_length=100)
+    valor = models.CharField(max_length=300)

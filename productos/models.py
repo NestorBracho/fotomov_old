@@ -118,7 +118,7 @@ class Pedido(models.Model):
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
     descuento = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    comentario = models.CharField(max_length=300)
+    comentario = models.CharField(max_length=300, blank=True, null=True)
     #Claves foraneas
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     lote = models.ForeignKey(Lote, null=True, blank=True)
