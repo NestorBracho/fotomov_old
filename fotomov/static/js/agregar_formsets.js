@@ -103,7 +103,7 @@ function agregarFormset(select_options) {
     formgroup_monto.appendTo(monto);
     $('<label/>', {
        class: "control-label",
-       text: "Monto"
+       text: "Monto entregado"
     }).appendTo(formgroup_monto)
     $('<input/>', {
         id: 'id_form-'+total+'-monto',

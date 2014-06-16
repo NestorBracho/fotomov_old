@@ -907,6 +907,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
         combo.productos = ProductoeventoCombo.objects.filter(combo=combo.producto)
     iva = Configuracion.objects.get(nombre='iva')
     en_venta = ProductoEvento.objects.filter(evento__id=id_evento)
+    print ("hooola", id_evento, en_venta)
     cliente = Cliente.objects.filter(cedula = cedula)
     if len(cliente) > 0:
         cliente = cliente[0]
@@ -987,7 +988,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                                 id_fiscal = formulario.cleaned_data['id_fiscal'], direccion_fiscal = formulario.cleaned_data['direccion_fiscal'],
                                 tlf_fiscal = formulario.cleaned_data['tlf_fiscal'], razon_social = formulario.cleaned_data['razon_social'],
                                 total = request.POST.get('total_input'), descuento = request.POST.get('descuento_input'),
-                                direccion_entrega = request.POST.get('direccion_entrega'),
+                                direccion_entrega = request.POST.get('direccion_entrega'), comentario=formulario.cleaned_data['comentario'],
                                 fue_pagado = pagado, envio= formulario.cleaned_data['envio'])
             print "update de pedido"
             pedido_nuevo = pedido_nuevo[0]
@@ -996,7 +997,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                     pep.estado = 'Pagado'
                     pep.save()
             #try:
-            imprimir_ticket(pedido_nuevo, id_evento)
+            #imprimir_ticket(pedido_nuevo, id_evento)
             #except:
             #    print "impresora desconectada"
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)

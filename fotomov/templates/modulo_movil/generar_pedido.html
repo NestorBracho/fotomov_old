@@ -105,12 +105,14 @@ Generar pedido
                         <textarea class=" form-control" cols="40" id="id_direccion_entrega" name="direccion_entrega" rows="10">{{ pedido_actual.direccion_entrega }}</textarea>
                     </div>
             </div>
+            {{ formulario.comentario|bootstrap }}
         <div class="col-xs-12 text-right">
                 <input type='button' onclick="generarPedido()" class="btn btn-default btn-primary" value='Generar'/>
             <div class="col-md-6 hidden-xs hidden-sm"></div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-6 table-responsive">
+    <div class="col-xs-12 col-md-6">
+        <div class="table-responsive">
         <table class="table " id="tabla-productos">
             <thead><th>Cant.</th><th>Produc.</th><th>Precio Und.</th><th>Eliminar</th></thead>
             {% for producto in productos %}
@@ -153,8 +155,9 @@ Generar pedido
                 </tbody>
             {% endfor %}
         </table>
-    </div>
-    <div class="col-xs-12 col-md-6">
+        </div>
+
+
         <table class="table">
             <thead><th>Sub Total</th><th>Descuento</th><th>IVA</th><th>Total</th><th>Faltan</th></thead>
             <tr>
@@ -165,11 +168,11 @@ Generar pedido
                 <td id="faltan"></td>
             </tr>
         </table>
-    </div>
 
 
 
-    <div class="col-xs-12 col-md-6 table-responsive">
+
+
     {% if mensaje.error %}
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="True">&times;</button>
@@ -184,7 +187,12 @@ Generar pedido
             {{ form.referencia | bootstrap }}
             <div class="row">
                 <div class="col-md-12 monto">
-                    {{ form.monto|add_class:"monto_pago"|attr:"value:0.0"|bootstrap }}
+                    <div class="form-group">
+                        <label class="control-label" for="id_form-0-monto">Monto entregado</label>
+                        <div class=" ">
+                            <input class=" form-control monto_pago" id="id_form-0-monto" name="form-0-monto" onkeypress="return numero_float(event)" type="text" value="0.0">
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 vuelto" style="display: none;">
                     <div class="form-group">
@@ -199,9 +207,8 @@ Generar pedido
         {% endfor %}
 
     </div>
-    <div class="col-xs-12 col-md-6">
         <button type="button" id="agregar_pago" class="btn btn-default">Agregar otro pago</button>
-    </div>
+
 
         <!--  <table id="tipos_pagos" class="table ">
             <thead><th>Tipo</th><th>Monto</th><th>Referencia</th><th>Eliminar</th></thead>
