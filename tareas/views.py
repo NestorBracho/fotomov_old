@@ -97,6 +97,7 @@ def modificar_estado_tarea(request):
     tarea = Tarea.objects.get(id = request.GET['tarea'])
     if request.GET['estado'] == '2':
         tarea.lista = 'True'
+        tarea.fecha_realizacion = datetime.datetime.today()
     elif request.GET['estado'] == '1':
         tarea.lista = 'False'
     else:
