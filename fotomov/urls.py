@@ -177,6 +177,8 @@ urlpatterns = patterns('',
     url(r'^eliminar_archivo_cliente/(?P<id_archivo>\d+)/$', 'staff.views.eliminar_archivo_cliente'),
     url(r'^archivos_staff/(?P<id_staff>\d+)/$', 'staff.views.archivos_staff'),
     url(r'^eliminar_archivo_staff/(?P<id_archivo>\d+)/$', 'staff.views.eliminar_archivos_staff'),
+    url(r'^ver_corte/$', 'administracion.views.ver_corte'),
+    url(r'^marcar_pagado_en_corte_mensual_ajax/$', 'administracion.views.marcar_pagado_en_corte_mensual_ajax'),
     #URLs de envios
     url(r'^tipo_envio/$', 'administracion.views.tipo_envio', name='tipo_envio'),
     url(r'^eliminar_tipo_envio/(?P<id_envio>\d+)/$', 'administracion.views.eliminar_tipo_envio'),

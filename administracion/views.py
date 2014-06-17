@@ -150,3 +150,32 @@ def eliminar_tipo_envio(request, id_envio):
     envio = TipoEnvio.objects.get(id=id_envio)
     envio.delete()
     return HttpResponseRedirect(reverse('tipo_envio'))
+
+def ver_corte(request):
+    hoy = datetime.datetime.today()
+    final = date(hoy.year, hoy.month, 1)
+    if hoy.month-1 == 0:
+        inicio = date((hoy.year-1), 12, 1)
+    else:
+        inicio = date(hoy.year, (hoy.month-1), 1)
+    gasto = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False).exclude(usuario = None)
+
+    gasto_final = []
+
+    for gast in gasto:
+        flag = False
+        for gastos in gasto_final:
+            if gast.usuario == gastos.usuario:
+                gastos.monto = gastos.monto + gast.monto
+                flag = True
+        if flag == False:
+            gasto_final.append(GastoEvento(id = gast.id, nombre = gast.usuario.nombre, monto = gast.monto, fecha = gast.fecha, productos = gast.productos, usuario = gast.usuario, funcion = gast.funcion, evento = gast.evento))
+
+    return render_to_response('administracion/ver_corte.html', {'gastos': gasto_final}, context_instance = RequestContext(request))
+
+def marcar_pagado_en_corte_mensual_ajax(request):
+    pago = GastoEvento.objects.get(id = request.GET['iden'])
+    pago.fue_pagado = True
+    pago.save()
+    data = json.dumps({'status': "hola"})
+    return HttpResponse(data, mimetype='application/json')

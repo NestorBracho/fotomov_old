@@ -1,0 +1,49 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block titulo %}
+Corte de mes {{ prueba.monto }}
+{% endblock %}
+{% block seccion-contenido%}
+<table class="table table-striped table-hover" id="content">
+    <thead>
+        <th>Nombre</th>
+        <th>Se le debe...</th>
+        <th>Acciones</th>
+    </thead>
+    <tbody>
+    {% for gasto in gastos %}
+        <tr>
+            <td>{{gasto.usuario.nombre}} {{gasto.usuario.apellido}}</td>
+            <td>{{gasto.monto}}</td>
+            <td id="{{ gasto.id }}">
+                {% if gasto.fue_pagado == False %}
+                <a onclick="marcarPago('{{ gasto.id }}')" class="btn btn-xs btn-success">Marcar como pagado</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+function marcarPago(iden){
+
+
+    $.ajax({
+
+        url: '/marcar_pagado_en_corte_mensual_ajax',
+        type: 'GET',
+        data: {'iden': iden}
+
+    }).done(function(data){
+
+        $("#"+iden).html('<b>Pagado</b>');
+
+    });
+
+}
+
+</script>
+{% endblock %}
