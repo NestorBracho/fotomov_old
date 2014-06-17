@@ -15,6 +15,7 @@ class Tarea(models.Model):
     fecha = models.DateField()
     fecha_realizada = models.DateField(null=True, blank=True)
     fecha_activacion =  models.DateField(null=True, blank=True)
+    fecha_realizacion =  models.DateField(null=True, blank=True)
     activa = models.BooleanField(default=False)
     es_periodica = models.BooleanField(default=False)
     fue_hecha = models.BooleanField(default=False)
