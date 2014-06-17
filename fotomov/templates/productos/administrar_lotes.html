@@ -6,17 +6,75 @@ Lotes
 {% block seccion-contenido%}
 <div class="col-xs-12 col-md-12 table-responsive">
     <table id="content" class="table ">
-        <thead><th>Lote</th><th>Fecha</th><th>Estado</th></thead>
+        <thead>
+            <th>Lote</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </thead>
         <tbody>
         {% for lote in lotes %}
-            <tr><td><a href="/administrar_pedidos/{{ lote.id }}/">{{ lote.codigo }}</a></td><td>{{ lote.fecha }}</td><td>{{ lote.estado }}</td></tr>
+            <tr>
+                <td><a href="/administrar_pedidos/{{ lote.id }}/">{{ lote.codigo }}</a></td>
+                <td>{{ lote.fecha }}</td>
+                <td>{{ lote.estado }}</td>
+                <td><a data-toggle="modal" data-target="#mail" onclick="moverEstado('{{ lote.estado }}', '{{ lote.id }}')" class="btn btn-xs btn-default">Enviar informe de estado a los clientes</a></td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
+<div class="modal fade" id="mail" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Informe</h4>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea class="form-control" placeholder="Cuerpo del correo..." name="mail" id="id_mail" cols="10" rows="7"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center" id="modal-footer">
+                <span class="pull-left"><i class="pull-right" style="color: #aaaaaa">NOTA: Este mail será enviado a todos los clientes<br/>que poseen pedido en este lote.</i></span>
+                <a onclick="enviar_mail_de_estado()" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Enviar</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+
+function moverEstado(estado, lote){
+
+    $("#id_mail").val("A FotoMov le complace anunciarle que su pedido esta en este momento en estado de "+estado+".");
+    $("#modal-body").attr('name', lote);
+
+}
+
+function enviar_mail_de_estado(){
+
+    var mail = $("#id_mail").val();
+    var iden = $("#modal-body").attr('name');
+
+    $.ajax({
+
+        url: '/enviar_mail_de_estado/',
+        type: 'GET',
+        data: {'lote': iden, 'mensaje': mail}
+
+    }).done(function(data){
+
+        $("#id_mail").val('');
+        $("#modal-body").attr('name', '');
+
+    });
+
+}
 
 </script>
 {% endblock %}
