@@ -17,7 +17,7 @@ import datetime
 
 @login_required(login_url='/')
 def crear_tarea(request):
-    eventos = Evento.objects.all()
+    eventos = Evento.objects.all().exclude(id=1)
     error_fecha = 0
     if request.method == 'POST':
         formulario = TareaForm(request.POST)
@@ -97,14 +97,17 @@ def modificar_estado_tarea(request):
     tarea = Tarea.objects.get(id = request.GET['tarea'])
     if request.GET['estado'] == '2':
         tarea.lista = 'True'
-        tarea.fecha_realizacion = datetime.datetime.today()
+        tarea.fecha_realizada = datetime.datetime.today()
     elif request.GET['estado'] == '1':
         tarea.lista = 'False'
+        tarea.fecha_realizada = None
     else:
         if tarea.lista == 'None':
             tarea.lista = 'False'
+            tarea.fecha_realizada = None
         else:
             tarea.lista = 'None'
+            tarea.fecha_realizada = None
     tarea.save()
     data = json.dumps({'status': tarea.lista})
     return HttpResponse(data, mimetype='application/json')
