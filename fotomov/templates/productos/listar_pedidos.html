@@ -12,6 +12,7 @@ Todos los pedidos
             <th>Cliente</th>
             <th>Cedula</th>
             <th>Fecha de entrega</th>
+            <th>Comentario</th>
             <th>Estado</th>
         </thead>
         <tbody id="body-pedidos">
@@ -22,6 +23,7 @@ Todos los pedidos
             <td>{{ pedido.cliente.nombres}} {{ pedido.cliente.apellidos}}</td>
             <td>{{pedido.cliente.cedula}}</td>
             <td>{{ pedido.fecha_entrega }}</td>
+            <td>{{ pedido.comentario | truncatechars:15 }}</td>
             <td>{{ pedido.estado }}</td>
         </tr>
         {% endfor %}
