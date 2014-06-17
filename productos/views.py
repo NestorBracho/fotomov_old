@@ -13,6 +13,7 @@ from productos.models import *
 from productos.forms import *
 from reportlab.pdfgen import canvas
 from django.contrib import messages
+from django.core.mail import send_mail
 import datetime
 
 @login_required(login_url='/')
@@ -374,3 +375,14 @@ def listar_envios(request):
     pedidos = Pedido.objects.filter(envio__in=temp)
     envios = EnvioPedido.objects.filter(pedido__in=pedidos.values_list('id', flat=True))
     return render_to_response('productos/listar_envios.html', {'envios': envios, 'pedidos': pedidos}, context_instance = RequestContext(request))
+
+def enviar_mail_de_estado(request):
+    pedidos = Pedido.objects.filter(lote = Lote.objects.get(id = request.GET['lote']))
+    correos = []
+    for pedido in pedidos:
+        correos.append(pedido.cliente.email)
+    mensaje = request.GET['mensaje']
+    send_mail('[FotoMov] Estado de su pedido.', mensaje, '', correos, fail_silently=False)
+
+    data = json.dumps({'estado': 'hola'})
+    return HttpResponse(data, mimetype='application/json')
