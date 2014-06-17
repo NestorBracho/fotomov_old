@@ -174,7 +174,13 @@ def ver_corte(request):
     return render_to_response('administracion/ver_corte.html', {'gastos': gasto_final}, context_instance = RequestContext(request))
 
 def marcar_pagado_en_corte_mensual_ajax(request):
-    pago = GastoEvento.objects.get(id = request.GET['iden'])
+    hoy = datetime.datetime.today()
+    final = date(hoy.year, hoy.month, 1)
+    if hoy.month-1 == 0:
+        inicio = date((hoy.year-1), 12, 1)
+    else:
+        inicio = date(hoy.year, (hoy.month-1), 1)
+    pago = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False)
     pago.fue_pagado = True
     pago.save()
     data = json.dumps({'status': "hola"})
