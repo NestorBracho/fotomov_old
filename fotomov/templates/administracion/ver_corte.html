@@ -15,9 +15,9 @@ Corte de mes {{ prueba.monto }}
         <tr>
             <td>{{gasto.usuario.nombre}} {{gasto.usuario.apellido}}</td>
             <td>{{gasto.monto}}</td>
-            <td id="{{ gasto.id }}">
+            <td id="{{ gasto.usuario.id }}">
                 {% if gasto.fue_pagado == False %}
-                <a onclick="marcarPago('{{ gasto.id }}')" class="btn btn-xs btn-success">Marcar como pagado</a>
+                <a onclick="marcarPago('{{ gasto.usuario.id }}')" class="btn btn-xs btn-success">Marcar como pagado</a>
                 {% endif %}
             </td>
         </tr>

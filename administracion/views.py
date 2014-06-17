@@ -180,8 +180,9 @@ def marcar_pagado_en_corte_mensual_ajax(request):
         inicio = date((hoy.year-1), 12, 1)
     else:
         inicio = date(hoy.year, (hoy.month-1), 1)
-    pago = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False)
-    pago.fue_pagado = True
-    pago.save()
+    pagos = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False, usuario = Usuario.objects.get(id = request.GET['iden']))
+    for pago in pagos:
+        pago.fue_pagado = True
+        pago.save()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
