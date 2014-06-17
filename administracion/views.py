@@ -153,7 +153,7 @@ def eliminar_tipo_envio(request, id_envio):
 
 def ver_corte(request):
     hoy = datetime.datetime.today()
-    final = date(hoy.year, hoy.month, 1)
+    final = date(hoy.year, hoy.month, hoy.day)
     if hoy.month-1 == 0:
         inicio = date((hoy.year-1), 12, 1)
     else:
@@ -171,17 +171,32 @@ def ver_corte(request):
         if flag == False:
             gasto_final.append(GastoEvento(id = gast.id, nombre = gast.usuario.nombre, monto = gast.monto, fecha = gast.fecha, productos = gast.productos, usuario = gast.usuario, funcion = gast.funcion, evento = gast.evento))
 
-    return render_to_response('administracion/ver_corte.html', {'gastos': gasto_final}, context_instance = RequestContext(request))
+    aux = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False).exclude(monto = 0)
+    gastos_sin_usuario = []
+    for au in aux:
+        gastos_sin_usuario.append(au)
+
+    for gastos_sin in gastos_sin_usuario:
+        if gastos_sin.usuario != None:
+            gastos_sin_usuario.remove(gastos_sin)
+
+    return render_to_response('administracion/ver_corte.html', {'gastos': gasto_final, 'gastos_sin_usuario': gastos_sin_usuario}, context_instance = RequestContext(request))
 
 def marcar_pagado_en_corte_mensual_ajax(request):
-    hoy = datetime.datetime.today()
-    final = date(hoy.year, hoy.month, 1)
-    if hoy.month-1 == 0:
-        inicio = date((hoy.year-1), 12, 1)
+    if request.GET['accion']=='1':
+        hoy = datetime.datetime.today()
+        final = date(hoy.year, hoy.month, 1)
+        if hoy.month-1 == 0:
+            inicio = date((hoy.year-1), 12, 1)
+        else:
+            inicio = date(hoy.year, (hoy.month-1), 1)
+        pagos = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False, usuario = Usuario.objects.get(id = request.GET['iden']))
+        for pago in pagos:
+            pago.fue_pagado = True
+            pago.save()
     else:
-        inicio = date(hoy.year, (hoy.month-1), 1)
-    pago = GastoEvento.objects.filter(fecha__range=(inicio, final), fue_pagado = False)
-    pago.fue_pagado = True
-    pago.save()
+        pago = GastoEvento.objects.get(id = request.GET['iden'])
+        pago.fue_pagado = True
+        pago.save()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
