@@ -386,3 +386,12 @@ def enviar_mail_de_estado(request):
 
     data = json.dumps({'estado': 'hola'})
     return HttpResponse(data, mimetype='application/json')
+
+def enviar_mail_de_tracking_de_envio(request):
+    pedidos = Pedido.objects.get(id = request.GET['pedido'])
+    correos = pedidos.cliente.email
+    mensaje = request.GET['mensaje']
+    send_mail('[FotoMov] Tracking de su pedido.', mensaje, '', correos, fail_silently=False)
+
+    data = json.dumps({'estado': 'hola'})
+    return HttpResponse(data, mimetype='application/json')

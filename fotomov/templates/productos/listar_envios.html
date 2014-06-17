@@ -12,6 +12,7 @@ Lista envios
         <th>Tracking</th>
         <th>Proveedor</th>
         <th>Fecha envío</th>
+        <th>Acciones</th>
     </thead>
     {% for pedido in pedidos %}
         <tr class="pedido">
@@ -27,6 +28,7 @@ Lista envios
                 <td></td>
                 <td><button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs agregar" >Agregar envio</button></td>
             {% endif %}
+            <td><a onclick="moverEstado('{{ pedido.pedido_enviado.tracking }}','{{ pedido.id }}')" data-toggle="modal" data-target="#mail"  class="btn btn-default btn-xs">Enviar correo a clientes</a></td>
         </tr>
     {% endfor %}
 </table>
@@ -58,11 +60,61 @@ Lista envios
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="mail" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">
+                <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Correo</h4>
+            </div>
+            <div class="modal-body text-center" id="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea class="form-control" placeholder="Cuerpo del correo..." name="mail" id="id_mail" cols="10" rows="7"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center" id="modal-footer">
+                <span class="pull-left"><i class="pull-right" style="color: #aaaaaa">NOTA: Este mail será enviado al cliente asociado</br>a este envio</i></span>
+                <a onclick="enviarMailenvios()" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Enviar</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
 $('.agregar').click(function(){
     $('#num_pedido').val($(this).parents('.pedido').children('.num_pedido').html());
 })
+
+function moverEstado(track, pedido){
+
+    $("#id_mail").val("A FotoMov le complace anunciar que su pedido esta en este momento en camino y el numero para rastrearlo es "+track+".");
+    $("#modal-body").attr('name', pedido);
+
+}
+
+function enviarMailenvios(){
+
+    var mail = $("#id_mail").val();
+    var iden = $("#modal-body").attr('name');
+
+    $.ajax({
+
+        url: '/enviar_mail_de_tracking_de_envio/',
+        type: 'GET',
+        data: {'pedido': iden, 'mensaje': mail}
+
+    }).done(function(data){
+
+        $("#id_mail").val('');
+        $("#modal-body").attr('name', '');
+
+    });
+
+
+}
 </script>
 {% endblock %}
