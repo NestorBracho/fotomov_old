@@ -989,12 +989,13 @@ def generar_pedido(request, pedido, cedula, id_evento):
             pedido_nuevo = Pedido.objects.filter(id=pedido)
             print request.POST.get('direccion_entrega')
             print request.POST.get('total_input')
+            envio = TipoEnvio.objects.get(id=formulario.cleaned_data['envio'])
             pedido_nuevo.update(cliente = cliente, fecha = date.today(), fecha_entrega = Evento.objects.get(id=id_evento).fecha_entrega,
                                 id_fiscal = formulario.cleaned_data['id_fiscal'], direccion_fiscal = formulario.cleaned_data['direccion_fiscal'],
                                 tlf_fiscal = formulario.cleaned_data['tlf_fiscal'], razon_social = formulario.cleaned_data['razon_social'],
                                 total = request.POST.get('total_input'), descuento = request.POST.get('descuento_input'),
                                 direccion_entrega = request.POST.get('direccion_entrega'), comentario=formulario.cleaned_data['comentario'],
-                                fue_pagado = pagado, envio= formulario.cleaned_data['envio'])
+                                fue_pagado = pagado, envio=envio)
             print "update de pedido"
             pedido_nuevo = pedido_nuevo[0]
             if pedido_nuevo.fue_pagado == True:

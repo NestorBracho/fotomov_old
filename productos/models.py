@@ -68,6 +68,13 @@ class ProductoEventoPedido(models.Model):
     producto = models.ForeignKey(ProductoEvento)
 
 
+class TipoEnvio(models.Model):
+    tipo = models.CharField(max_length=30)
+    precio = models.DecimalField(decimal_places=2, max_digits=10)
+    req_dir = models.BooleanField()
+    direccion = models.TextField(max_length=300)
+
+
 class Pedido(models.Model):
 
     CREADO = 'Creado'
@@ -77,11 +84,6 @@ class Pedido(models.Model):
     IMPRESO = 'Impreso'
     LISTO = 'Listo'
 
-    SINENVIO = 'Sin envio'
-    REGIONAL = 'Regional'
-    NACIONAL = 'Nacional'
-    INTERNACIONAL = 'Internacional'
-
     ESTADOS = (
         (CREADO, CREADO),
         (PAGADO, PAGADO),
@@ -89,14 +91,6 @@ class Pedido(models.Model):
         (ENIMPRESION, ENIMPRESION),
         (IMPRESO, IMPRESO),
         (LISTO, LISTO),
-
-    )
-
-    ENVIOS = (
-        (0, SINENVIO),
-        (1, REGIONAL),
-        (2, NACIONAL),
-        (3, INTERNACIONAL),
     )
 
     evento = models.ForeignKey(Evento)
@@ -111,7 +105,7 @@ class Pedido(models.Model):
     total = models.FloatField(null=True, blank=True)
     codigo = models.CharField(max_length=100, null=True, blank=True)
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
-    envio = models.IntegerField(default=0, choices=ENVIOS)
+    envio = models.ForeignKey(TipoEnvio, null=True, blank=True)
     fue_pagado = models.BooleanField(default=False)
     estado = models.CharField(max_length=100)
     lote = models.ForeignKey(Lote, null=True, blank=True)
@@ -141,13 +135,6 @@ class ProductoeventoCombo(models.Model):#tabla de rompimiento entre ProductoEven
     producto = models.ForeignKey(ProductoEvento, related_name='producto_r')
     combo = models.ForeignKey(ProductoEvento, related_name='combo')
     cantidad = models.IntegerField()
-
-
-class TipoEnvio(models.Model):
-    tipo = models.CharField(max_length=30)
-    precio = models.DecimalField(decimal_places=2, max_digits=10)
-    req_dir = models.BooleanField()
-    direccion = models.TextField(max_length=300)
 
 
 class EnvioPedido(models.Model):
