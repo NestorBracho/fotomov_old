@@ -18,14 +18,13 @@ Agregar Staff
                             <div class="col-sm-2">
                                 {{ staff.tipo.nombre }} <input type="text" class="form-control spinner {{ funcion.0.id }}" name="{{ funcion.0.id }}-{{ staff.tipo.id }}" onkeypress="return numero(event)" value="{{ staff.cantidad }}"></br>
                                 <select name="bloque-{{ funcion.0.id }}-{{ staff.tipo.id }}" class="form-control">
-                                    <option value="">----------</option>
+                                    <option value="None">----------</option>
                                     {% for bloque in bloques %}
                                         {% if bloque == staff.bloque %}
                                             <option value="{{ bloque.id }}" selected>{{ bloque.nombre }}</option>
                                         {% else %}
                                             <option value="{{ bloque.id }}">{{ bloque.nombre }}</option>
                                         {% endif %}
-
                                     {% endfor %}
                                 </select>
                             </div>
