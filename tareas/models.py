@@ -13,6 +13,7 @@ class Tarea(models.Model):
     lista = models.CharField(max_length=100)
     evento = models.ForeignKey(Evento, null=True, blank=True)
     fecha = models.DateField()
+    fecha_realizada = models.DateField()
     fecha_activacion =  models.DateField(null=True, blank=True)
     activa = models.BooleanField(default=False)
     es_periodica = models.BooleanField(default=False)
