@@ -17,7 +17,7 @@ import datetime
 
 @login_required(login_url='/')
 def crear_tarea(request):
-    eventos = Evento.objects.all()
+    eventos = Evento.objects.all().exclude(id=1)
     error_fecha = 0
     if request.method == 'POST':
         formulario = TareaForm(request.POST)
