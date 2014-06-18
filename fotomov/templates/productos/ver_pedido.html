@@ -23,32 +23,29 @@ Pedido
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
-                <span>Fecha: {{ pedido.fecha }}</span>
+                <span><strong>Fecha:</strong> {{ pedido.fecha }}</span>
             </div>
             <div class="col-md-4">
-                <span>Fecha de entrega: {{ pedido.fecha_entrega }}</span>
+                <span><strong>Fecha de entrega:</strong> {{ pedido.fecha_entrega }}</span>
             </div>
             <div class="col-md-4">
-                <span>Ubicación: {{ pedido.estado }}</span>
+                <span><strong>Ubicación:</strong> {{ pedido.estado }}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
-                <span>Codigo: {{ pedido.num_pedido }}</span>
+                <span><strong>Codigo:</strong> {{ pedido.num_pedido }}</span>
             </div>
             <div class="col-md-4">
-                <span>Estado: <b id="EstadoPedido">{% if pedido.fue_pagado %}Pagado{% else %}No pagado{% endif %}</b></span>
+                <span><strong>Estado:</strong> <b id="EstadoPedido">{% if pedido.fue_pagado %}Pagado{% else %}No pagado{% endif %}</b></span>
             </div>
             <div class="col-md-4">
                 <span>{% if pedido.fue_pagado %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a No Pagado</a>{% else %}<a id="btn-estado-pedigo" onclick="estadoPedido('{{ pedido.id }}')" class="btn btn-xs btn-default"> Cambiar estado a Pagado</a>{% endif %}</span>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-8">
-
+            <div class="col-md-12">
+                <strong>Comentario:</strong> {{ pedido.comentario }}
             </div>
         </div>
         <hr/>
