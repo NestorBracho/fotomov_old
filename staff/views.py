@@ -107,6 +107,8 @@ def ver_usuario(request, id_usuario):
 
 @login_required(login_url='/')
 def escritorio(request):
+    if Usuario.objects.get(usuario=request.user).privilegio.valor == 6:
+        return HttpResponseRedirect('/calendario_de_eventos')
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
     mis_tareas = Tarea.objects.filter(asignado=usuario.privilegio,lista='False',activa=True)

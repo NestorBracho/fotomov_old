@@ -197,6 +197,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.tz",
   "django.contrib.messages.context_processors.messages",
   "fotomov.context_processors.obtener_tareas",
+  "fotomov.context_processors.obtener_privilegio",
 )
 
 EMAIL_HOST = 'smtp.gmail.com'

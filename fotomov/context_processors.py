@@ -33,3 +33,7 @@ def obtener_tareas(request):
     except:
         pass
     return { 'tareas_menu': tareas, 'stats':muchos_stats }
+
+def obtener_privilegio(request):
+    usuario = Usuario.objects.get(usuario= request.user)
+    return {'privilegio_log' : usuario.privilegio.valor}

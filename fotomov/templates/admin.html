@@ -54,6 +54,7 @@
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
+                    {% if privilegio_log != 6 %}
                 <li class="dropdown">
                      <a  href="/crear_notificacion/0"">
                         <i class="fa fa-microphone fa-fw"></i>Nueva Conversacion <i class="fa fa-plus fa-fw"></i>
@@ -147,50 +148,8 @@
                     <!-- /.dropdown-tasks -->
                 </li>
                 <!-- /.dropdown -->
-{% comment %}
-	                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Mensaje enviado
-                                    <span class="pull-right text-muted small">10:30am</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/crear_tarea">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i>Nueva Tarea
-                                    <span class="pull-right text-muted small">9:54am</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Notificacion
-                                    <span class="pull-right text-muted small">Ayer</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Todas las alertas</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-{% endcomment %}
                 <!-- /.dropdown -->
+            {% endif %}
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -198,8 +157,10 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="/editar_perfil/0"><i class="fa fa-user fa-fw"></i> Mi perfil</a>
                         </li>
+                        {% if privilegio_log != 6 %}
                         <li><a href="/configuracion/0"><i class="fa fa-gear fa-fw"></i> Configuración</a>
                         </li>
+                        {% endif %}
                         <li class="divider"></li>
                         <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesion</a>
                         </li>
@@ -216,40 +177,35 @@
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
-{% comment %}
-	                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
-                    </li>
-
-{% endcomment %}
+                    {% if privilegio_log != 6 %}
                     <li id="menu-escritorio" >
                         <a href="/escritorio"><i class="fa fa-desktop fa-fw"></i> Escritorio</a>
                     </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 4 or privilegio_log == 2 or  privilegio_log == 5 %}
                     <li id="menu-staff" >
                         <a href="#"><i class="fa fa-user fa-fw"></i> Staff<span class="fa arrow"></span></a>
-                          <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/nuevo_usuario"><i class="fa fa-plus fa-fw"></i> Nuevo staff</a>
-                            </li>
-                            <li>
-                                <a href="/listar_usuario/0"><i class="fa fa-list-ul fa-fw"></i> Lista de staff</a>
-                            </li>
-                            <li>
-                                <a href="/configurar_staff/0"><i class="fa fa-cog fa-fw"></i> Configuracion privilegios</a>
-                            </li>
-                            <li>
-                                <a href="/listar_bloques/0/"> <i class="fa fa-list-ul fa-fw"></i>Bloques de hora de staff</a>
-                            </li>
+                            <ul class="nav nav-second-level">
+                            {% if privilegio_log == 1 or privilegio_log == 4 or privilegio_log == 2  %}
+                                <li>
+                                    <a href="/nuevo_usuario"><i class="fa fa-plus fa-fw"></i> Nuevo staff</a>
+                                </li>
+                                <li>
+                                    <a href="/listar_usuario/0"><i class="fa fa-list-ul fa-fw"></i> Lista de staff</a>
+                                </li>
+                                <li>
+                                    <a href="/configurar_staff/0"><i class="fa fa-cog fa-fw"></i> Configuracion privilegios</a>
+                                </li>
+                            {% endif %}
+                            {% if privilegio_log == 1 or privilegio_log == 5 %}
+                                <li>
+                                    <a href="/listar_bloques/0/"> <i class="fa fa-list-ul fa-fw"></i>Bloques de hora de staff</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 %}
                     <li id="menu-marcas" >
                         <a href="#"><i class="fa fa-tags"></i> Marcas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -262,6 +218,8 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 %}
                     <li id="menu-macroclientes" >
                         <a href="#"><i class="fa fa-users fa-fw"></i> Macroclientes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -280,6 +238,8 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 %}
                     <li id="menu-clientes" >
                         <a href="#"><i class="fa fa-male fa-fw"></i> Clientes<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -299,18 +259,23 @@
                         <!-- /.nav-second-level -->
 
                     </li>
+                    {% endif %}
                     <li id="menu-eventos" >
                         <a href="#"><i class="fa fa-camera fa-fw"></i> Eventos<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/nuevo_tipo_de_evento/0/"><i class="fa fa-plus fa-fw"></i> Crear tipo de eventos</a>
-                            </li>
-                            <li>
-                                <a href="/nuevo_evento"><i class="fa fa-plus fa-fw"></i> Crear evento</a>
-                            </li>
-                            <li>
-                                <a href="/listar_evento/0"><i class="fa fa-list-ul fa-fw"></i> Lista de eventos</a>
-                            </li>
+                            {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 %}
+                                <li>
+                                    <a href="/nuevo_tipo_de_evento/0/"><i class="fa fa-plus fa-fw"></i> Crear tipo de eventos</a>
+                                </li>
+                                <li>
+                                    <a href="/nuevo_evento"><i class="fa fa-plus fa-fw"></i> Crear evento</a>
+                                </li>
+                            {% endif %}
+                            {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 or privilegio_log == 5 %}
+                                <li>
+                                    <a href="/listar_evento/0"><i class="fa fa-list-ul fa-fw"></i> Lista de eventos</a>
+                                </li>
+                            {% endif %}
                             <li>
                                 <a href="/calendario_de_eventos"><i class="fa fa-calendar fa-fw"></i> Calendario de eventos</a>
                             </li>
@@ -318,104 +283,118 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li id="menu-administracion" >
-                        <a href="#"><i class="fa fa-usd fa-fw"></i> Administraci&oacute;n<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/ver_corte/"><i class="fa fa-money"></i> Ver corte de mes</a>
-                            </li>
-                            <li>
-                            <a href="#"><i class="fa fa-briefcase fa-fw"></i> Lotes <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="/administrar_lotes/"> Ver lotes Admin</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-plus"></i> Agregar <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="/nuevo_gasto/">Nuevo Gasto</a>
-                                    </li>
-                                    <li>
-                                        <a href="/nueva_forma_de_pago/">Nueva Forma de Pago</a>
-                                    </li>
-                                    <li>
-                                        <a href="/nuevo_tipo_de_gasto/">Nuevo Tipo de Gasto</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-third-level -->
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li id="menu-tareas" >
-                        <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/crear_tarea/"><i class="fa fa-plus fa-fw"></i> Asignar tarea</a>
-                            </li>
-                            <li>
-                                <a href="/listar_todas_tareas"><i class="fa fa-list-ul fa-fw"></i> Lista de tareas</a>
-                            </li> 
-                            <li>
-                                <a href="/listar_tareas/"><i class="fa fa-pencil-square-o fa-fw"></i> Mis tareas</a>
-                            </li>
-                            <li>
-                                <a href="/listar_todas_tareas/"><i class="fa fa-road fa-fw"></i> Supervisi&oacute;n tareas</a>
-                            </li>
-                            <li>
-                                <a href="/crear_notificacion/1/"><i class="fa fa-plus fa-fw"></i> Asignar notificaci&oacute;n</a>
-                            </li> 
-                            <li>
-                                <a href="/listar_notificaciones/"><i class="fa fa-list-ul fa-fw"></i> Lista de notificaciones</a>
-                            </li> 
-                            <li>
-                                <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Mis notificaciones</a>
-                            </li>
-
-
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li id="menu-pedidos" >
-                        <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Pedidos<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/listar_pedidos"><i class="fa fa-search fa-fw"></i>Buscar pedidos</a>
-                            </li>
-                            <li>
-                                <a href="/listar_pedidos_pendientes">Pedidos pendientes</a>
-                            </li>
-                            <li>
-                                <a href="/listar_pedidos_sin_pagar">Pagos Pendientes</a>
-                            </li>
-                            <li>
-                                <a href="/listar_facturas_pendientes/"><i class="fa fa-list-ul fa-fw"></i>Listar facturas</a>
-                            </li>
-                            <li>
-                                <a href="/crear_pedidos_indoor/1/1/NoneNext/urlseparador/NoneValue/"><i class="fa fa-plus fa-fw"></i>Crear pedido</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-envelope"></i> Envios <span class="fa arrow"></span></a>
+                        {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 5 %}
+                            <a href="#"><i class="fa fa-usd fa-fw"></i> Administraci&oacute;n<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                            {% if privilegio_log == 5 or privilegio_log == 1 %}
+                                <li>
+                                    <a href="/ver_corte/"><i class="fa fa-money"></i> Ver corte de mes</a>
+                                </li>
+                            {% endif %}
+                            {% if privilegio_log == 1 or privilegio_log == 2 %}
+                                <li>
+                                <a href="#"><i class="fa fa-briefcase fa-fw"></i> Lotes <span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="/tipo_envio/"><i class="fa fa-cog fa-fw"></i>Configuracion de Envios</a>
+                                            <a href="/administrar_lotes/"> Ver lotes Admin</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if privilegio_log == 1 or privilegio_log == 5 %}
+                                <li>
+                                    <a href="#"><i class="fa fa-plus"></i> Agregar <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="/nuevo_gasto/">Nuevo Gasto</a>
                                         </li>
                                         <li>
-                                            <a href="/listar_envios/"><i class="fa fa-list-ul fa-fw"></i>Listar Envios </a>
+                                            <a href="/nueva_forma_de_pago/">Nueva Forma de Pago</a>
                                         </li>
-
+                                        <li>
+                                            <a href="/nuevo_tipo_de_gasto/">Nuevo Tipo de Gasto</a>
+                                        </li>
                                     </ul>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
+                                    <!-- /.nav-third-level -->
+                                </li>
+                            {% endif %}
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 or privilegio_log == 3 or privilegio_log == 5 %}
+                        <li id="menu-tareas" >
+                            <a href="#"><i class="fa fa-pencil-square-o fa-fw"></i> Gestionar tareas<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 %}
+                                    <li>
+                                        <a href="/crear_tarea/"><i class="fa fa-plus fa-fw"></i> Asignar tarea</a>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <a href="/listar_tareas/"><i class="fa fa-pencil-square-o fa-fw"></i> Mis tareas</a>
+                                </li>
+                                {% if privilegio_log == 1 %}
+                                    <li>
+                                        <a href="/listar_todas_tareas/"><i class="fa fa-road fa-fw"></i> Supervisi&oacute;n tareas</a>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <a href="/crear_notificacion/1/"><i class="fa fa-plus fa-fw"></i> Asignar notificaci&oacute;n</a>
+                                </li>
+                                <li>
+                                    <a href="/listar_notificaciones/"><i class="fa fa-list-ul fa-fw"></i> Lista de notificaciones</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 %}
+                        <li id="menu-pedidos" >
+                            <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Pedidos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/listar_pedidos"><i class="fa fa-search fa-fw"></i>Buscar pedidos</a>
+                                </li>
+                                <li>
+                                    <a href="/listar_pedidos_pendientes">Pedidos pendientes</a>
+                                </li>
+                                <li>
+                                    <a href="/listar_pedidos_sin_pagar">Pagos Pendientes</a>
+                                </li>
+                                <li>
+                                    <a href="/listar_facturas_pendientes/"><i class="fa fa-list-ul fa-fw"></i>Listar facturas</a>
+                                </li>
+                                <li>
+                                    <a href="/crear_pedidos_indoor/1/1/NoneNext/urlseparador/NoneValue/"><i class="fa fa-plus fa-fw"></i>Crear pedido</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-envelope"></i> Envios <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="/tipo_envio/"><i class="fa fa-cog fa-fw"></i>Configuracion de Envios</a>
+                                            </li>
+                                            <li>
+                                                <a href="/listar_envios/"><i class="fa fa-list-ul fa-fw"></i>Listar Envios </a>
+                                            </li>
+
+                                        </ul>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 3 %}
                     <li id="menu-edicion" >
                         <a href="/edicion_lotes/"><i class="fa fa-briefcase fa-fw"></i> Edicion lotes (Editor)</a>
                     </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 4 %}
                     <li id="menu-generarlotes" >
                         <a href="/generar_lote"><i class="fa fa-picture-o"></i> Generar Lotes</a>
+                    </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 or privilegio_log == 2 or privilegio_log == 3 %}
                     <li id="menu-productos" >
                         <a href="#"><i class="fa fa-tags"></i> Productos<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -436,9 +415,8 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li id="menu-especiales" >
-                        <a href="#"><i class="fa fa-star-o fa-fw"></i> Servicios especiales</a>
-                    </li>
+                    {% endif %}
+                    {% if privilegio_log == 1 %}
                     <li id="menu-estadisticas" >
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Estad&iacute;sticas<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -459,6 +437,7 @@
                             </li>
                         </ul>
                     </li>
+                    {% endif %}
                     </li>
 {% comment %}
 	                    <li id="menu-otro" >
