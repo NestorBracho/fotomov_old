@@ -23,9 +23,7 @@ def revisar_privilegio(usuario, valor):
 
 @login_required(login_url='/')
 def nuevo_producto(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+
     if request.method == 'POST':
         formulario = ProductoForm(request.POST)
         if formulario.is_valid():
@@ -41,17 +39,11 @@ def nuevo_producto(request):
 
 @login_required(login_url='/')
 def listar_producto(request, creado):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     productos = Producto.objects.filter(es_combo=False)
     return render_to_response('productos/listar_producto.html', {'productos': productos, "creado": creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def editar_producto(request, id_producto):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     producto = Producto.objects.get(id=id_producto)
     if request.method == 'POST':
         formulario = ProductoForm(request.POST)
@@ -67,17 +59,13 @@ def editar_producto(request, id_producto):
 
 @login_required(login_url='/')
 def eliminar_producto(request, id_producto):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+
     producto = Producto.objects.get(id=id_producto).delete()
     return HttpResponseRedirect('/listar_producto/3')
 
 @login_required(login_url='/')
 def edicion_lotes(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+
 
     lotes_edicion = Lote.objects.filter(estado = 'Edicion')
     lotes_listos = Lote.objects.filter(estado = 'Editado')
@@ -105,9 +93,7 @@ def edicion_lotes(request):
 
 @login_required(login_url='/')
 def edicion_productos(request, pedido):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+
     pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Edicion')
     pedidos_editados = ProductoEventoPedido.objects.filter(Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Editado') | Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Vale por foto'))
     return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id=pedido)}, context_instance=RequestContext(request))
@@ -161,9 +147,7 @@ def cambiar_estado_producto_edicion(request):
 
 @login_required(login_url='/')
 def edicion_pedido(request, lote):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+
     pedidos_edicion = Pedido.objects.filter(lote = Lote.objects.get(id = lote), estado = 'Edicion')
     pedidos_listos = Pedido.objects.filter(lote = Lote.objects.get(id = lote), estado = 'Editado')
     pedidos = []
@@ -189,9 +173,7 @@ def edicion_pedido(request, lote):
 
 @login_required(login_url='/')
 def administrar_lotes(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+
     lotes = Lote.objects.all()
     return render_to_response('productos/administrar_lotes.html', {'lotes':lotes}, context_instance=RequestContext(request))
 

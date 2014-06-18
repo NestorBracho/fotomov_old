@@ -28,15 +28,13 @@ def notificacion(request):
 @login_required(login_url='/')
 def lista_usuario(request, creado):
 
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+
     usuario = Usuario.objects.all()
     return render_to_response('staff/lista_usuario.html',{'lista':usuario, 'creado':creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def nuevo_usuario(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+
     if request.method == 'POST':
         formulario = UserCreationForm(request.POST)
         formulario2 = RegisUsuarioForm(request.POST)
@@ -83,9 +81,6 @@ def ingresar(request):
 
 @login_required(login_url='/')
 def eliminar_usuario(request, id_usuario):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     #if Usuario.objects.get(id=id_usuario)!=None:
     u = User.objects.get(username__exact=Usuario.objects.get(id=id_usuario).usuario.username)
     Usuario.objects.get(id=id_usuario).delete()
@@ -94,9 +89,6 @@ def eliminar_usuario(request, id_usuario):
 
 @login_required(login_url='/')
 def modificar_usuario(request, id_usuario):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     varUsu = Usuario.objects.get(id=id_usuario)
     varUser = User.objects.get(username__exact=varUsu.usuario.username)
     if request.method=='POST':
@@ -141,9 +133,6 @@ def escritorio(request):
 
 @login_required(login_url='/')
 def configurar_staff(request, creado):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     staff = Privilegios.objects.filter(valor=6)
     if request.method == 'POST':
         formulario = PrivilegioFrom(request.POST)
@@ -158,9 +147,6 @@ def configurar_staff(request, creado):
 
 @login_required(login_url='/')
 def eliminar_staff(request,id_borrar):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     eliminar = Privilegios.objects.get(id=id_borrar)
     if(eliminar.valor==6):
         eliminar.delete()
@@ -168,9 +154,6 @@ def eliminar_staff(request,id_borrar):
 
 @login_required(login_url='/')
 def modificar_staff(request,id_modificar):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if(request.method=='POST'):
         modiStaff = PrivilegioFrom(request.POST)
         if(modiStaff.is_valid()):
@@ -251,9 +234,6 @@ def editar_perfil(request, creado):
 
 @login_required(login_url='/')
 def ver_perfil(request, id_staff):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     usuario = Usuario.objects.get(id=id_staff)
     return render_to_response('staff/ver_perfil.html', {'usuario': usuario}, context_instance=RequestContext(request))
 
@@ -262,18 +242,12 @@ def cerrar_sesion(request):
     return HttpResponseRedirect('/')
 
 def eliminar_archivo_cliente(request, id_archivo):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     archivo = ArchivoAdjunto.objects.get(id=id_archivo)
     cliente = archivo.cliente
     archivo.delete()
     return HttpResponseRedirect('/ver_cliente/' + str(cliente.id))
 
 def archivos_staff(request,id_staff):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     staff = Privilegios.objects.get(id=id_staff)
     archivos = ArchivoAdjunto.objects.filter(tipo_staff = staff)
     if request.method == 'POST':
@@ -288,9 +262,6 @@ def archivos_staff(request,id_staff):
     return render_to_response('staff/archivos_staff.html', {'formulario': formulario, 'archivos': archivos, 'staff': staff}, context_instance=RequestContext(request))
 
 def eliminar_archivos_staff(request, id_archivo):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     archivo = ArchivoAdjunto.objects.get(id=id_archivo)
     staff = archivo.tipo_staff
     archivo.delete()

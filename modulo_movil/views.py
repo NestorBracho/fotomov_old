@@ -253,12 +253,7 @@ def importar_csv_evento(request):
 
 @login_required(login_url='/')
 def exportar_csv_central(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     #direccion = Direccion.objects.create(nombre="superprueba3333", direccion="cualquiera", lon=2.2, lat=2.2, descripcion="cualquier")
     #direccion.save()
     #print direccion.id
@@ -272,24 +267,14 @@ def exportar_csv_central(request):
 
 @login_required(login_url='/')
 def importar_csv_central(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     call_command('flush', interactive= False)
     call_command('loaddata', settings.MEDIA_ROOT+"/base_datos/db-movil.json")
     return HttpResponseRedirect('/iniciar_sesion')
 
 @login_required(login_url='/')
 def exportar_csv_central2(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     clientes = Cliente.objects.all()
     date = datetime.datetime.now()
     fecha = str(date).split(" ")
@@ -380,12 +365,7 @@ def imprimir_ticket(pedido, id_evento):
 
 @login_required(login_url='/')
 def exportar_csv_evento(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     response = HttpResponse(content_type='text/csv')
     fecha = datetime.datetime.now()
     clientes = Cliente.objects.all()
@@ -431,9 +411,7 @@ def exportar_csv_evento(request):
 
 @login_required(login_url='/')
 def configuracion(request, creado):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
 #    print settings.MEDIA_ROOT
@@ -474,12 +452,7 @@ def selecccionar_direccion(request):
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     direcciones = Direccion.objects.all()
     eventos = []
     if directorio_actual.objects.filter(usuario = request.user):
@@ -495,12 +468,7 @@ def seleccionar_evento(request):
 
 @login_required(login_url='/')
 def seleccionar_evento_caja(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     direcciones = Direccion.objects.all()
     eventos = []
     if directorio_actual.objects.filter(usuario = request.user):
@@ -514,12 +482,7 @@ def seleccionar_evento_caja(request):
 
 @login_required(login_url='/')
 def crear_pedidos(request, id_evento, id_funcion, next, actual):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     try:
         evento = Evento.objects.get(id=id_evento)
         funcion_aux = Funcion.objects.get(id=id_funcion)
@@ -683,12 +646,7 @@ def crear_pedidos(request, id_evento, id_funcion, next, actual):
 
 @login_required(login_url='/')
 def crear_pedidos_indoor(request, id_evento, id_funcion, next, actual):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     try:
         evento = Evento.objects.get(id=id_evento)
         funcion_aux = Funcion.objects.get(id=id_funcion)
@@ -887,12 +845,7 @@ def agregar_item(request):
 
 @login_required(login_url='/')
 def eliminar_ProductoEventoPedido(request, id, id_funcion):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     proevped = ProductoEventoPedido.objects.get(id=id)
     evento = proevped.producto.evento
     funcion = Funcion.objects.get(id=id_funcion)
@@ -902,9 +855,7 @@ def eliminar_ProductoEventoPedido(request, id, id_funcion):
 
 @login_required(login_url='/')
 def generar_lote(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
     print pedidos
     for pedido in pedidos:
@@ -952,12 +903,7 @@ def generar_lote(request):
 
 @login_required(login_url='/')
 def generar_pedido(request, pedido, cedula, id_evento):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
+
     pagosForms = formset_factory(PedidoPagoForm)
     pedido_actual = Pedido.objects.get(id=pedido)
     tipos_pago = FormaDePago.objects.all()
@@ -1099,12 +1045,6 @@ def generar_pedido(request, pedido, cedula, id_evento):
 
 @login_required(login_url='/')
 def ingresar_ticket(request, id_evento):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
     if request.method == 'POST':
         formulario = IngresarTicketForm(request.POST)
         if formulario.is_valid():
@@ -1122,12 +1062,6 @@ def eliminar_productoeventopedido_en_generarpedido(request):
 
 @login_required(login_url='/')
 def generar_ticket(request, id_evento, id_funcion):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
     evento = Evento.objects.get(id=id_evento)
     info = directorio_actual.objects.get(usuario= request.user)
     funcion_aux = Funcion.objects.get(id=id_funcion)
@@ -1154,12 +1088,6 @@ def generar_ticket(request, id_evento, id_funcion):
 
 @login_required(login_url='/')
 def asignar_combos(request, id_evento, id_funcion, id_pedio):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
     info = directorio_actual.objects.get(usuario= request.user)
     evento = Evento.objects.get(id = id_evento)
     pedido = info.pedido
@@ -1213,12 +1141,6 @@ def asignar_combos(request, id_evento, id_funcion, id_pedio):
 
 @login_required(login_url='/')
 def editar_pedido(request, pedido_id):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
     pedido = Pedido.objects.get(id=pedido_id)
     productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
     if request.method == 'POST':
@@ -1233,12 +1155,6 @@ def editar_pedido(request, pedido_id):
 
 @login_required(login_url='/')
 def eliminar_pedido(request, pedido):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
     pedido = Pedido.objects.get(id = pedido)
     pedido.delete()
     return HttpResponseRedirect('/listar_pedidos/')
