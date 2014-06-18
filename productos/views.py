@@ -16,10 +16,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 import datetime
 
-def revisar_privilegio(usuario, valor):
-    if usuario.privilegio.valor == valor:
-        return True
-    return HttpResponseRedirect('/escritorio')
+
 
 @login_required(login_url='/')
 def nuevo_producto(request):

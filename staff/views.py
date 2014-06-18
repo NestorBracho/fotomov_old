@@ -12,10 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 
 
-def revisar_privilegio(usuario, valor):
-    if usuario.privilegio.valor == valor:
-        return True
-    return HttpResponseRedirect('/escritorio')
+
 
 def contacto(request):
     formulario = RegisUsuario()

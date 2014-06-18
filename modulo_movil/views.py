@@ -34,10 +34,7 @@ from django.utils import simplejson
 from unicodedata import normalize
 from modulo_movil.forms import *
 
-def revisar_privilegio(usuario, valor):
-    if usuario.privilegio.valor == valor:
-        return True
-    return HttpResponseRedirect('/escritorio')
+
 
 def ingresar(request):
     if request.method=='POST':
