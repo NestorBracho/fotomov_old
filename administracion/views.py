@@ -20,6 +20,11 @@ from direcciones.models import *
 from direcciones.views import *
 import datetime
 
+def revisar_privilegio(privilegio, usuario):
+    if privilegio == usuario.privilegio.valor:
+        return True
+    return HttpResponseRedirect('/escritprio')
+
 @login_required(login_url='/')
 def nueva_forma_de_pago(request):
     revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
