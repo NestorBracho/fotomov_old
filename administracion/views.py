@@ -22,6 +22,10 @@ import datetime
 
 @login_required(login_url='/')
 def nueva_forma_de_pago(request):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
     pagos = FormaDePago.objects.all()
     if request.method == 'POST':
         formulario = FormaDePagoForm(request.POST)
@@ -35,6 +39,10 @@ def nueva_forma_de_pago(request):
 
 @login_required(login_url='/')
 def nuevo_tipo_de_gasto(request):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
     if request.method == 'POST':
         formulario = TipoDeGastoForm(request.POST)
         if formulario.is_valid():
@@ -46,6 +54,10 @@ def nuevo_tipo_de_gasto(request):
 
 @login_required(login_url='/')
 def nuevo_gasto(request):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
     #today = datetime.datetime.today()
     #print (today.strftime('%A'))
     #print today
@@ -132,6 +144,10 @@ def pagar(request):
     return render_to_response('administracion/pagar.html', {'formulario': formulario}, context_instance = RequestContext(request))
 
 def tipo_envio(request):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
     form = modelform_factory(TipoEnvio)
     envios = TipoEnvio.objects.all()
     if request.method == 'POST':
@@ -147,11 +163,17 @@ def tipo_envio(request):
     return render_to_response('administracion/tipo_envio.html', {'envios': envios, 'form': form}, context_instance = RequestContext(request))
 
 def eliminar_tipo_envio(request, id_envio):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
     envio = TipoEnvio.objects.get(id=id_envio)
     envio.delete()
     return HttpResponseRedirect(reverse('tipo_envio'))
 
 def ver_corte(request):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
     hoy = datetime.datetime.today()
     final = date(hoy.year, hoy.month, hoy.day)
     if hoy.month-1 == 0:
