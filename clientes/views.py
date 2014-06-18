@@ -246,7 +246,7 @@ def ver_cliente(request, id_cliente):
 def editar_cliente(request, id_cliente):
     cliente = Cliente.objects.get(id=id_cliente)
     if request.method == 'POST':
-        formulario = ClienteForm(request.POST)
+        formulario = ClienteForm(request.POST, instance=cliente)
         if formulario.is_valid():
             newcliente = formulario.save(commit=False)
             cliente.nombres = newcliente.nombres
@@ -257,7 +257,7 @@ def editar_cliente(request, id_cliente):
             cliente.rif = newcliente.rif
             cliente.cedula = newcliente.cedula
             cliente.save()
-            return HttpResponseRedirect('/listar_clientes')
+            return HttpResponseRedirect('/listar_clientes/2')
     else:
         formulario = ClienteForm(initial={'nombres': cliente.nombres, 'apellidos': cliente.apellidos, 'telefono': cliente.telefono, 'email': cliente.email,
                                  'direccion_fiscal': cliente.direccion_fiscal, 'rif': cliente.rif, 'cedula': cliente.cedula})

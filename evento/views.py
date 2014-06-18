@@ -210,7 +210,7 @@ def agregar_productos(request,id_evento):
             producto_existente = ProductoEvento.objects.get(evento=evento, producto=producto)
             tupla=(producto, 1, producto_existente.precio, producto_existente.precio_produccion, producto_existente.proveedor)
         else:
-            tupla = (producto, 0, 0)
+            tupla = (producto, 0, 0, 0)
         lista.append(tupla)
 
     if request.method == 'POST':

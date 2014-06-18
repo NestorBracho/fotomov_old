@@ -17,8 +17,10 @@
     <form method="POST" action="" enctype="multipart/form-data">{% csrf_token %}
         {{ formulario.nombre | bootstrap }}
         {{ formulario.descripcion | bootstrap }}
-        <input type="submit" class="btn btn-primary" name="agregar" value="Agregar">
-        <input type="submit" class="btn btn-default" name="agregarotro" value="Agregar otro">
+        <div class="col-md-12">
+            <input type="submit" class="btn btn-success pull-right" name="agregar" value="Agregar">
+            <input type="submit" class="btn btn-default pull-right" name="agregarotro" value="Agregar otro">
+        </div>
     </form>
 {% endblock %}
 {% block js%}
