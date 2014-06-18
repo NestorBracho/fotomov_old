@@ -8,13 +8,16 @@ from django.contrib.auth.decorators import login_required
 from marca.forms import *
 from marca.models import *
 
-def verificar_privilegio(privilegio, usuario):
+def revisar_privilegio(privilegio, usuario):
     if privilegio == usuario.privilegio.valor:
         return True
     return HttpResponseRedirect('/escritprio')
 
 @login_required(login_url='/')
 def nueva_marca(request):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if request.method == 'POST':
         formulario = MarcaForm(request.POST)
         if formulario.is_valid():
@@ -27,6 +30,9 @@ def nueva_marca(request):
 
 @login_required(login_url='/')
 def editar_marca(request, id_marca):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if Marca.objects.filter(id=id_marca):
         marca = Marca.objects.get(id=id_marca)
     else:
@@ -44,11 +50,17 @@ def editar_marca(request, id_marca):
 
 @login_required(login_url='/')
 def listar_marcas(request, creado):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     marcas = Marca.objects.all().exclude(id=1)
     return render_to_response('marca/listar_marcas.html', {'marcas': marcas, 'creado': creado}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def ver_marca(request, id_marca, creado):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if Marca.objects.filter(id=id_marca):
         marca = Marca.objects.get(id=id_marca)
         submarcas = SubMarca.objects.filter(marca=marca)
@@ -58,6 +70,9 @@ def ver_marca(request, id_marca, creado):
 
 @login_required(login_url='/')
 def nueva_submarca(request, id_marca):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if Marca.objects.filter(id=id_marca):
         marca = Marca.objects.get(id=id_marca)
     else:
@@ -75,6 +90,9 @@ def nueva_submarca(request, id_marca):
 
 @login_required(login_url='/')
 def editar_submarca(request, id_submarca):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if SubMarca.objects.filter(id=id_submarca):
         submarca = SubMarca.objects.get(id=id_submarca)
         old = submarca.marca.id
@@ -95,6 +113,9 @@ def editar_submarca(request, id_submarca):
 
 @login_required(login_url='/')
 def eliminar_marca(request,id_marca):
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
+    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
     if Marca.objects.filter(id=id_marca):
         #Marca.objects.get(id=id_marca).delete()
         pass
