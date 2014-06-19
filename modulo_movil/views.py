@@ -155,7 +155,10 @@ def actualizar_datos():
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             pass
         else:
-            envio = TipoEnvio.objects.get(id=pedido.envio)
+            try:
+                envio = TipoEnvio.objects.get(id=pedido.envio)
+            except:
+                envio = None
             Pedido.objects.create(evento=pedido.evento, cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
@@ -385,7 +388,10 @@ def exportar_csv_evento(request):
         except:
             client = "None"
             print "tiene cedula"
-
+        try:
+            envio = pedido.envio.id
+        except:
+            envio = 0
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
                         pedido.total, pedido.direccion_entrega, pedido.envio.id,
