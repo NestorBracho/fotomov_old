@@ -19,8 +19,7 @@
          ¡Pauta eliminada satifactoriamente!
     </div>
 {% endif %}
-<div class="table-responsive">
-    <table id="content" id="content" class="table table-striped  table-hover dataTable no-footer" aria-describedby="content_info">
+    <table id="content" id="content" class="table table-striped table-responsive table-hover dataTable no-footer" aria-describedby="content_info">
         <thead>
             <th>
                 Pauta
@@ -43,9 +42,8 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
-<div>
-    <a href="/nueva_pauta/{{ evento.id }}" class="btn btn-default col-sm-12">Crear Pauta</a>
+<div class="col-md-12">
+    <a href="/nueva_pauta/{{ evento.id }}" class="btn btn-primary pull-right">Crear Pauta</a>
 </div>
 {%  endblock %}
 {% block js %}

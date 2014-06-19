@@ -17,6 +17,7 @@ Tipos de envio
             <td class="tipo">{{ envio.tipo }}</td>
             <td class="precio">{{ envio.precio }}</td>
             <td class="req_dir">{% if envio.req_dir %} Si {% else %} No {% endif %}</td>
+            <td class="direccion"> {{ envio.direccion }}</td>
             <td><a href="/eliminar_tipo_envio/{{ envio.id }}" class="btn btn-default btn-xs" >Eliminar</a>
             <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs editar" >Editar</button>
             </td>
@@ -48,6 +49,7 @@ Tipos de envio
         var padre = $(this).parents('.envio');
         $('#id_tipo').val(padre.children('.tipo').html());
         $('#id_precio').val(padre.children('.precio').html());
+        $('#id_direccion').val(padre.children('.direccion').html());
 
 
 

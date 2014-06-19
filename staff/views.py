@@ -11,9 +11,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
 
-
-
-
 def contacto(request):
     formulario = RegisUsuario()
     return render_to_response('staff/Regisform.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -56,24 +53,23 @@ def nuevo_usuario(request):
         formulario2 = RegisUsuarioForm()
     return render_to_response('staff/nuevo_usuario.html',{'formulario':formulario, 'formulario_regis':formulario2}, context_instance=RequestContext(request))
 
-@login_required(login_url='/')
 def ingresar(request):
     if request.method=='POST':
-	formulario = AuthenticationForm(request.POST)
-	if formulario.is_valid:
-	  usuario = request.POST['username']
-	  clave = request.POST['password']
-	  acceso = authenticate(username = usuario, password = clave)
-	  if acceso is not None:
-	    if acceso.is_active:
-		login(request, acceso)
-		return HttpResponseRedirect('/escritorio')
-	    else:
-		return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
-	  else:
-	    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+        formulario = AuthenticationForm(request.POST)
+        if formulario.is_valid:
+            usuario = request.POST['username']
+            clave = request.POST['password']
+            acceso = authenticate(username = usuario, password = clave)
+            if acceso is not None:
+                if acceso.is_active:
+                    login(request, acceso)
+                    return HttpResponseRedirect('/escritorio')
+                else:
+                    return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+            else:
+                return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
     else:
-	formulario = AuthenticationForm()
+        formulario = AuthenticationForm()
     return render_to_response('staff/ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -119,10 +115,10 @@ def ver_usuario(request, id_usuario):
 @login_required(login_url='/')
 def escritorio(request):
 
-    if Usuario.objects.get(usuario=request.user).privilegio.valor == 6:
-        return HttpResponseRedirect('/calendario_de_eventos')
     user = request.user
     usuario = Usuario.objects.get(usuario=user)
+    if usuario.privilegio.valor == 6:
+        return HttpResponseRedirect('/calendario_de_eventos')
     mis_tareas = Tarea.objects.filter(asignado=usuario.privilegio,lista='False',activa=True)
     #tareas = Tarea.objects.filter(activa=True)[15:]
     tareas = Tarea.objects.filter(activa=True)

@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-# from escpos import *
+from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 from django.utils import simplejson
@@ -437,15 +437,7 @@ def selecccionar_direccion(request):
         call_command('syncdb', interactive = False)
     except:
         pass
-    if request.method == 'POST':
-        directorio = request.POST.get('directorio')
-        settings.MEDIA_ROOT = directorio
-        settings.MEDIA_URL = '/media/'
-        print settings.MEDIA_ROOT
-        return HttpResponseRedirect('/modulo_movil_configurar_db')
-    else:
-        directorio = settings.MEDIA_ROOT
-    return render_to_response('modulo_movil/seleccionar_directorio_modulo_movil.html', {'directorio': directorio}, context_instance=RequestContext(request))
+    return HttpResponseRedirect('/modulo_movil_configurar_db')
 
 @login_required(login_url='/')
 def seleccionar_evento(request):
@@ -912,6 +904,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
     # Construir json de tipos de pagodef generar_pedido
     tipos_envio = {}
     for tipo_envio in TipoEnvio.objects.all() :
+        print tipo_envio.direccion
         tipos_envio[ tipo_envio.id ] = {
             'precio'  : str(tipo_envio.precio),
             'tipo'    : tipo_envio.tipo,

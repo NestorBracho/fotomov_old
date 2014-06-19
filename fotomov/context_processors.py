@@ -35,5 +35,9 @@ def obtener_tareas(request):
     return { 'tareas_menu': tareas, 'stats':muchos_stats }
 
 def obtener_privilegio(request):
-    usuario = Usuario.objects.get(usuario= request.user)
-    return {'privilegio_log' : usuario.privilegio.valor}
+    try:
+        usuario = Usuario.objects.get(usuario= request.user)
+        privilegio = usuario.privilegio.valor
+    except:
+        privilegio = 0
+    return {'privilegio_log' : privilegio}
