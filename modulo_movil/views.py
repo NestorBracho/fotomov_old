@@ -349,7 +349,10 @@ def imprimir_ticket(pedido, id_evento):
     impresora.text("\nTotal: " + str(pedido.total) + " Bs.\n\n")
     if pedido.envio != 0:
         impresora.text("direccion de entrega:\n")
-        impresora.text(pedido.direccion_entrega+"\n\n")
+        if pedido.envio.req_dir:
+            impresora.text(str(pedido.direccion_entrega)+"\n\n")
+        else:
+            impresora.text(str(pedido.envio.direccion)+"\n\n")
     impresora.text("Contacto Fotomov:\n")
     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="tlf").valor +"\n")
     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="celular").valor + "\n")
