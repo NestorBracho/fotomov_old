@@ -155,10 +155,11 @@ def actualizar_datos():
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             pass
         else:
+            envio = TipoEnvio.objects.get(id=pedido.envio)
             Pedido.objects.create(evento=pedido.evento, cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
-                              envio=pedido.envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado, comentario=pedido.comentario)
+                              envio=envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado, comentario=pedido.comentario)
     for producto in productos:
         prodev= ProductoEvento.objects.get(id=producto.producto)
         ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
@@ -172,12 +173,6 @@ def actualizar_datos():
 
 @login_required(login_url='/')
 def importar_csv_evento(request):
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),1)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),2)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),4)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),3)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),5)
-    revisar_privilegio(Usuario.objects.get(usuario=request.user),6)
     if request.method == 'POST':
         cliente_aux.objects.all().delete()
         pedido_aux.objects.all().delete()
@@ -393,7 +388,7 @@ def exportar_csv_evento(request):
 
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
-                        pedido.total, pedido.direccion_entrega, pedido.envio,
+                        pedido.total, pedido.direccion_entrega, pedido.envio.id,
                         pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id, pedido.comentario])
 
     writer.writerow(['!-endpedido-!'])
