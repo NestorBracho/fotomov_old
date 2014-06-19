@@ -394,7 +394,7 @@ def exportar_csv_evento(request):
             envio = 0
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
                         pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
-                        pedido.total, pedido.direccion_entrega, pedido.envio.id,
+                        pedido.total, pedido.direccion_entrega, envio,
                         pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id, pedido.comentario])
 
     writer.writerow(['!-endpedido-!'])
