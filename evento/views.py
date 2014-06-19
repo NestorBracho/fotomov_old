@@ -54,9 +54,10 @@ def nuevo_evento(request):
                                                fecha_entrega=entrega_final, submarca=formulario.cleaned_data['macrocliente'].submarca)
             else:
                 cliente = str(request.POST.get('cliente')).split('-')
-                print cliente
-                print cliente[1]
-                cliente_evento = Cliente.objects.get(cedula=cliente[1])
+                try:
+                    cliente_evento = Cliente.objects.get(cedula=cliente[1])
+                except:
+                    return render_to_response('evento/nuevo_evento.html', {'formulario': formulario, 'gastos': gastos_predeterminados, 'direcciones': direcciones}, context_instance = RequestContext(request))
                 evento = Evento.objects.create(cliente= cliente_evento, nombre=formulario.cleaned_data['nombre'], descripcion=formulario.cleaned_data['descripcion'],
                                                porcentaje_institucion=formulario.cleaned_data['porcentaje_institucion'],
                                                tipo=formulario.cleaned_data['tipo'], fecha_entrega=entrega_final, submarca=SubMarca.objects.get(id=request.POST.get('submarca')))
