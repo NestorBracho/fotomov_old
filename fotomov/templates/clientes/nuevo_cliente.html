@@ -1,7 +1,7 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
 {% block css %}
-
+    <link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
 {% endblock %}
 {% block titulo %}
         Registrar Cliente
@@ -37,15 +37,46 @@
 
 {% endblock %}
 {% block js %}
-    <script language="JavaScript">
-  /*  $(document).ready(function(){
-        $('.juridico').hide();
-        $("#hide").click(function(){
-            $(".natural").toggle();
-            $(".juridico").toggle();
-        });
+<script  type="text/javascript">
+window.onload = function(){
+    $("#id_email").on('keyup',aucomemail);
+}
+
+function aucomemail(){
+
+  var dominios, dom;
+
+  $(function(){
+
+    dominios = [
+        document.getElementById("id_email").value+"@gmail.com",
+        document.getElementById("id_email").value+"@hotmail.com",
+        document.getElementById("id_email").value+"@yahoo.com",
+        document.getElementById("id_email").value+"@cantv.net",
+        document.getElementById("id_email").value+"@turpialdev.com",
+
+    ];
+
+    $("#id_email").autocomplete({
+        source: dominios
     });
-    */
-    </script>
+
+    if(document.getElementById("id_email").value.indexOf("@") != -1){
+        if(document.getElementById("id_email").value.indexOf("@")+1==document.getElementById("id_email").value.length){
+            dom = [
+                      document.getElementById("id_email").value+"gmail.com",
+                      document.getElementById("id_email").value+"hotmail.com",
+                      document.getElementById("id_email").value+"yahoo.com",
+                      document.getElementById("id_email").value+"@cantv.net",
+                      document.getElementById("id_email").value+"turpialdev.com"
+            ];
+        }
+        $('#id_email').autocomplete({
+           source: dom
+        });
+      }
+  });
+}
+</script>
 
 {% endblock %}

@@ -1,5 +1,8 @@
 {% extends 'admin.html' %}
 {% load bootstrap %}
+{% block css %}
+    <link href="{{ STATIC_URL }}css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+{% endblock %}
 {% block seccion-contenido %}
 <form method="POST" action="" enctype="multipart/form-data">{% csrf_token %}
     <div class="panel panel-default">
@@ -25,7 +28,55 @@
             <div class="col-sm-12">
                 {{ formulario.descripcion_contacto | bootstrap }}
             </div>
-            <input type="submit" class="btn btn-primary" value="guardar">
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-success pull-right" value="guardar">
+            </div>
+
         </div>
     </div>
+{% endblock %}
+
+
+{% block js %}
+<script  type="text/javascript">
+window.onload = function(){
+    $("#id_email").on('keyup',aucomemail);
+}
+
+function aucomemail(){
+
+  var dominios, dom;
+
+  $(function(){
+
+    dominios = [
+        document.getElementById("id_email").value+"@gmail.com",
+        document.getElementById("id_email").value+"@hotmail.com",
+        document.getElementById("id_email").value+"@yahoo.com",
+        document.getElementById("id_email").value+"@cantv.net",
+        document.getElementById("id_email").value+"@turpialdev.com",
+
+    ];
+
+    $("#id_email").autocomplete({
+        source: dominios
+    });
+
+    if(document.getElementById("id_email").value.indexOf("@") != -1){
+        if(document.getElementById("id_email").value.indexOf("@")+1==document.getElementById("id_email").value.length){
+            dom = [
+                      document.getElementById("id_email").value+"gmail.com",
+                      document.getElementById("id_email").value+"hotmail.com",
+                      document.getElementById("id_email").value+"yahoo.com",
+                      document.getElementById("id_email").value+"@cantv.net",
+                      document.getElementById("id_email").value+"turpialdev.com"
+            ];
+        }
+        $('#id_email').autocomplete({
+           source: dom
+        });
+      }
+  });
+}
+</script>
 {% endblock %}
