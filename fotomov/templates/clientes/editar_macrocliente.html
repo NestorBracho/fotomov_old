@@ -56,14 +56,14 @@ Editar Macrocliente
                         Locación
                     </label>
                 </div>
-                {% for dir in dirs %}
+                {% for direccion in dirs %}
                     <div id='b-{{ direccion.id }}' class="col-sm-12">
                         <div id='sedeNom-{{ direccion.id }}' class='col-sm-4'>
-                            {{ dir.nombre }}
+                            {{ direccion.nombre }}
                             <input type="hidden" name="{{ direccion.direccion.nombre }}" value="{{ direccion.nombre }}">
                         </div>
                         <div class='col-sm-4'>
-                            {{ dir.direccion.nombre }}
+                            {{ direccion.direccion.nombre }}
                             <input type="hidden" name="sedes" value="{{ direccion.direccion.nombre }}">
                         </div>
                         <div class='col-sm-4'>

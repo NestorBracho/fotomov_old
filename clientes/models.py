@@ -6,7 +6,7 @@ class MacroCliente(models.Model):
     submarca = models.ForeignKey(SubMarca)
     nombre = models.CharField(max_length=100, verbose_name="Nombre Institucion")
     telefono = models.CharField(max_length=100)
-    rif = models.CharField(max_length=10, unique=True)
+    rif = models.CharField(max_length=100, blank=True, null=True)
     direccion_fiscal = models.TextField(max_length=500)
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     def __unicode__(self):

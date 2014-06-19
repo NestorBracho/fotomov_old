@@ -92,7 +92,7 @@ def editar_macrocliente(request, id_macrocliente):
             for dir in dirs:
                 dir.delete()
             direcciones = request.POST.getlist('sedes')
-            direcciones = request.POST.getlist('sedes')
+            print direcciones
             for direccion in direcciones:
                 dir = Direccion.objects.get(nombre=direccion)
                 nombre = request.POST.get(direccion)
