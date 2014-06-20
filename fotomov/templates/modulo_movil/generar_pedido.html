@@ -453,6 +453,9 @@ $(".prod").change(function() {
 $(document).on("change", ".monto_pago", function(){
     var suma = 0;
     $('.monto_pago').each(function(){
+        if($(this).val() == ""){
+            $(this).val(0.0);
+        }
         suma += parseFloat($(this).val());
     });
     var elem = $(this).parents('.row').find('.monto_vuelto');
@@ -690,6 +693,11 @@ function generarPedido(){
             id = id.split('-');
             id = id[1];
             monto += parseFloat($('#id_form-'+id+'-monto').val());
+        } else {
+    //        var total = parseInt($('#id_form-TOTAL_FORMS').val(), 10);
+    //        $('#id_form-TOTAL_FORMS').val(total-1);
+            $(this).fadeOut(100);
+            $(this).remove();
         }
     });
     var total = parseFloat($('#total').html());
@@ -737,7 +745,7 @@ function aucomemail(){
         document.getElementById("id_mail_cliente").value+"@gmail.com",
         document.getElementById("id_mail_cliente").value+"@hotmail.com",
         document.getElementById("id_mail_cliente").value+"@yahoo.com",
-        document.getElementById("id_email").value+"@cantv.net",
+        document.getElementById("id_mail_cliente").value+"@cantv.net",
         document.getElementById("id_mail_cliente").value+"@turpialdev.com"
     ];
 
@@ -751,7 +759,7 @@ function aucomemail(){
                       document.getElementById("id_mail_cliente").value+"gmail.com",
                       document.getElementById("id_mail_cliente").value+"hotmail.com",
                       document.getElementById("id_mail_cliente").value+"yahoo.com",
-                      document.getElementById("id_email").value+"@cantv.net",
+                      document.getElementById("id_mail_cliente").value+"@cantv.net",
                       document.getElementById("id_mail_cliente").value+"turpialdev.com"
             ];
         }

@@ -27,7 +27,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-from escpos import *
+#from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 from django.utils import simplejson
@@ -1020,7 +1020,7 @@ def generar_pedido(request, pedido, cedula, id_evento):
                     pep.estado = 'Pagado'
                     pep.save()
             #try:
-            imprimir_ticket(pedido_nuevo, id_evento)
+#            imprimir_ticket(pedido_nuevo, id_evento)
             #except:
             #    print "impresora desconectada"
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
