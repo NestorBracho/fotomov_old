@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from staff.models import *
 from tareas.models import *
 from staff.forms import *
