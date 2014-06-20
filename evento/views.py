@@ -108,19 +108,6 @@ def nuevo_evento(request):
                 prela = Tarea.objects.get(evento=evento, original=prelacion.prela.id)
                 prelacion_evento = Prela.objects.create(es_prelada=es_prelada, prela=prela)
                 prelacion_evento.save()
-
-            usuarios = Usuario.objects.all()
-
-            correos = []
-            for usuario in usuarios:
-                correos.append(usuario.email)
-
-            #Seccion de envio de correo
-            mensaje = 'Se ha publicado un nuevo evento!\nNombre del evento: '+formulario.cleaned_data['nombre']+'\nDescripcion: '+formulario.cleaned_data['descripcion']
-            try:
-                send_mail('[FotoMov] Nuevo evento disponible.', mensaje, '', correos, fail_silently=False)
-            except:
-                pass
             return HttpResponseRedirect("/listar_evento/1")
     else:
         formulario = EventoForm()
