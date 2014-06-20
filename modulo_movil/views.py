@@ -354,6 +354,7 @@ def imprimir_ticket(pedido, id_evento):
     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="celular").valor + "\n")
 
     impresora.text("Instagram/Facebook = fotomov\n")
+    impresora.text("email: " + ConfiguracionEmpresa.objects.get(nombre="email").valor + "\n")
     impresora.text(ConfiguracionEmpresa.objects.get(nombre="pagina").valor +"\n")
     #impresora.text("5 x Foto10x10\n")
     #impresora.text("2 x Taza\n")
@@ -418,15 +419,22 @@ def configuracion(request, creado):
     celular = ConfiguracionEmpresa.objects.get(nombre='celular')
     iva = Configuracion.objects.get(nombre='iva')
     pagina = ConfiguracionEmpresa.objects.get(nombre='pagina')
+    email = ConfiguracionEmpresa.objects.get(nombre='email')
     if request.method == 'POST':
         tlf.valor = request.POST.get('tlf')
         celular.valor = request.POST.get('celular')
         iva.valor = request.POST.get('iva')
         pagina.valor = request.POST.get('pagina')
+        email.valor = request.POST.get('email')
+        tlf.save()
+        celular.save()
+        iva.save()
+        pagina.save()
+        email.save()
         return HttpResponseRedirect('/escritorio')
     else:
         directorio = settings.MEDIA_ROOT
-    return render_to_response('modulo_movil/seleccionar_directorio.html', {'directorio': directorio,
+    return render_to_response('modulo_movil/seleccionar_directorio.html', {'email': email, 'directorio': directorio,
                                                                            'creado': creado, 'iva': iva, 'pagina': pagina,
                                                                            'tlf': tlf, 'celular': celular}, context_instance=RequestContext(request))
 
