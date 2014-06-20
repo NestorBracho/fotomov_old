@@ -51,7 +51,7 @@ class ProductoEvento(models.Model):
     #Claves foraneas
     evento = models.ForeignKey(Evento)
     producto = models.ForeignKey(Producto)
-    proveedor = models.ForeignKey(Proveedor)
+    proveedor = models.ForeignKey(Proveedor, null=True, blank=True)
     def __unicode__(self):
         return self.producto.nombre
 

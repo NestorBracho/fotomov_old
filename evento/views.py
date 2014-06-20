@@ -316,16 +316,28 @@ def casilla_administrativa(request, id_evento):
     lista = []
     for usuario in usuarios:
         aux = []
+        fechas = []
         for staff in staffs:
             if staff.usuario == usuario:
                 bloque = StaffPorFuncion.objects.get(funcion = staff.funcion, tipo = staff.usuario.privilegio)
                 gasto = GastoEvento.objects.filter(usuario=usuario, funcion=staff.funcion)
-                if len(gasto)>0:
+                if len(gasto) > 0:
                     gasto = gasto[0]
                     baux = Bloque(nombre=bloque.bloque.nombre, honorarios=gasto.monto, unico=bloque.bloque.unico)
                     aux.append([staff, baux])
                 else:
-                    aux.append([staff, bloque.bloque])
+                    if bloque.bloque.unico == True:
+                        flag = False
+                        for fecha in fechas:
+                            if staff.funcion.dia == fecha:
+                                flag = True
+                        if flag == False:
+                            fechas.append(staff.funcion.dia)
+
+                            aux.append([staff, bloque.bloque])
+
+                    else:
+                        aux.append([staff, bloque.bloque])
         lista.append([usuario, aux])
     #-------------------------------------------------------Ganancias
     gananciasTotales = []
