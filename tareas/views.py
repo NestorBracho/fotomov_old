@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm

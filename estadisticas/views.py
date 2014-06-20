@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.shortcuts import render
 from estadisticas.models import *
 from estadisticas.forms import *
