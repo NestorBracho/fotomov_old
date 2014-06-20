@@ -869,8 +869,6 @@ def generar_lote(request):
                         shutil.copy(normalize('NFKD', producto.ruta).encode('ascii', 'ignore') + ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
                     except:
                         pass
-            pep.estado = "Edicion"
-            pep.save()
         pedido.estado = "Edicion"
         pedido.save()
     return HttpResponseRedirect('/escritorio/')
