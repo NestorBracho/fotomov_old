@@ -206,3 +206,7 @@ def marcar_pagado_en_corte_mensual_ajax(request):
         pago.save()
     data = json.dumps({'status': "hola"})
     return HttpResponse(data, mimetype='application/json')
+
+def eliminar_forma_de_pago(request,id_forma):
+    forma = FormaDePago.objects.get(id=id_forma).delete()
+    return HttpResponseRedirect('/nueva_forma_de_pago')

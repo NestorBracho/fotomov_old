@@ -18,11 +18,13 @@ Lista de funciones
             <table class="table table-striped table-hover" id="content">
                 <thead>
                     <th>funciones</th>
+                    <th>Lugar</th>
                     <th>Acciones</th>
                 </thead>
                 {% for funcion in funciones %}
                     <tr>
                         <td>{{ funcion.0.funcion.dia }}</td>
+                        <td>{{ funcion.0.funcion.direccion.direccion }}</td>
                         {% if funcion.1 == True %}
                         <td><a class='btn btn-success' id='{{ funcion.0.funcion.id }}' name='1' onclick=asistir(this.id,this.name) ><span class="fa fa-check-square-o"></span> Asistir</a></td>
                         {% else %}

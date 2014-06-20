@@ -25,7 +25,7 @@ Nueva forma de pago
             <table class="table table-striped table-responsive">
                 <thead><th colspan="2">Tipos de pagos</th></thead>
                 {% for pago in pagos %}
-                <tr id="te-{{ pago.id }}"><td>{{ pago.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="eliminarTipoEvento('te-{{ pago.id }}')">Eliminar</a>  <input type="button" class="btn btn-xs btn-success" onclick="eliminarTipoEvento('te-{{ pago.id }}')" value='Editar'></td></tr>
+                <tr id="te-{{ pago.id }}"><td>{{ pago.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="deleteAlert('{{ pago.id }}')">Eliminar</a>  <input type="button" class="btn btn-xs btn-success" onclick="eliminarTipoEvento('te-{{ pago.id }}')" value='Editar'></td></tr>
                 {% endfor %}
             </table>
         </div>
@@ -39,6 +39,25 @@ Nueva forma de pago
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
+        	function deleteAlert(id)
+        	{
+        		var r=confirm("Eliminar una forma de pago puede incurrir en perdida de pagos de clientes lo cual afectara la administracion y el control de pedido ¿Esta seguro que desea eliminar?");
 
-</script>
+        		if (r==true)
+        	  {
+                  var r=confirm("Me temo que debo insistir ¿Esta seguro que desea eliminar?");
+                  if (r==true)
+                  {
+                    var string1 = "/eliminar_forma_de_pago/";
+        		    window.location.assign(string1 + id)
+                  }
+
+          	}
+        		else
+          	{
+
+          	}
+        		document.getElementById("demo").innerHTML=x;
+        }
+    </script>
 {% endblock %}
