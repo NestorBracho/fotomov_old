@@ -135,16 +135,20 @@ def agregar_staff(request, id_evento):
     lista = []
     for funcion in funciones:
         staff = StaffPorFuncion.objects.filter(funcion=funcion)
-        if staff:
+        if len(staff) == len(tipos_staff):
             tupla = (funcion,staff)
             lista.append(tupla)
         else:
+            van = []
             for tipo in tipos_staff:
-                creado = StaffPorFuncion.objects.create(tipo=tipo, funcion=funcion, cantidad=0)
-            staff = StaffPorFuncion.objects.filter(funcion=funcion)
-            if staff:
-                tupla = (funcion,staff)
-                lista.append(tupla)
+
+                if StaffPorFuncion.objects.filter(funcion=funcion, tipo=tipo):
+                     creado = StaffPorFuncion.objects.get(funcion=funcion, tipo=tipo)
+                else:
+                    creado = StaffPorFuncion.objects.create(tipo=tipo, funcion=funcion, cantidad=0)
+                    van.append(creado)
+            tupla = (funcion,staff)
+            lista.append(tupla)
     if request.method == 'POST':
         for funcion in funciones:
             for staff in tipos_staff:
@@ -152,7 +156,9 @@ def agregar_staff(request, id_evento):
                 print request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 cantidad = request.POST.get(str(funcion.id) + "-" + str(staff.id))
                 agregar = StaffPorFuncion.objects.get(tipo=staff, funcion=funcion)
-                agregar.cantidad = cantidad
+                if cantidad != None:
+                    print "aja"
+                    agregar.cantidad = cantidad
                 if request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id)) != "None":
                     agregar.bloque = Bloque.objects.get(id = request.POST.get("bloque-" + str(funcion.id) + "-" + str(staff.id)))
                 agregar.save()
