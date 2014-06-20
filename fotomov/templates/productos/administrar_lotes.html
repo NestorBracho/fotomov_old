@@ -15,7 +15,7 @@ Lotes
         <tbody>
         {% for lote in lotes %}
             <tr>
-                <td><a href="/administrar_pedidos/{{ lote.id }}/">{{ lote.codigo }}</a></td>
+                <td><a href="/administrar_pedidos/{{ lote.id }}/">{{ lote.id }}</a></td>
                 <td>{{ lote.fecha }}</td>
                 <td>{{ lote.estado }}</td>
                 <td><a data-toggle="modal" data-target="#mail" onclick="moverEstado('{{ lote.estado }}', '{{ lote.id }}')" class="btn btn-xs btn-default">Enviar informe de estado a los clientes</a></td>
