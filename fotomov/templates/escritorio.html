@@ -4,7 +4,7 @@
 
 {% block seccion-contenido %}
             <div class="row">
-                <div class="col-md-6">
+                <div class="{% if privilegio_log == 1%}col-md-6{% else %}col-md-12{% endif %}">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-tasks fa-fw"></i> Mis Tareas
@@ -50,6 +50,7 @@
                     <!-- /.panel -->
                 </div> 
                 <!-- /.col-lg-6 -->
+                {% if privilegio_log == 1%}
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -97,6 +98,7 @@
                     </div>
                     <!-- /.panel -->
                 </div>
+            {% endif %}
             </div>
             <!-- /.row -->
 {% endblock %}

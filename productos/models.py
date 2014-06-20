@@ -71,7 +71,7 @@ class ProductoEventoPedido(models.Model):
 class TipoEnvio(models.Model):
     tipo = models.CharField(max_length=30)
     precio = models.DecimalField(decimal_places=2, max_digits=10)
-    req_dir = models.BooleanField()
+    req_dir = models.BooleanField(verbose_name="Requiere Direccion")
     direccion = models.TextField(max_length=300)
 
 
