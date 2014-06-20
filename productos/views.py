@@ -14,6 +14,7 @@ from productos.forms import *
 from reportlab.pdfgen import canvas
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.contrib import messages
 import datetime
 
 
@@ -56,14 +57,11 @@ def editar_producto(request, id_producto):
 
 @login_required(login_url='/')
 def eliminar_producto(request, id_producto):
-
     producto = Producto.objects.get(id=id_producto).delete()
     return HttpResponseRedirect('/listar_producto/3')
 
 @login_required(login_url='/')
 def edicion_lotes(request):
-
-
     lotes_edicion = Lote.objects.filter(estado = 'Edicion')
     lotes_listos = Lote.objects.filter(estado = 'Editado')
 
@@ -398,8 +396,7 @@ def enviar_mail_de_estado(request):
 
 def enviar_mail_de_tracking_de_envio(request):
     pedidos = Pedido.objects.get(id = request.GET['pedido'])
-    #correos = []
-    correos = [pedidos.cliente.email]
+    correos = pedidos.cliente.email
     mensaje = request.GET['mensaje']
     send_mail('[FotoMov] Tracking de su pedido.', mensaje, '', correos, fail_silently=False)
 

@@ -41,21 +41,23 @@
 
         </nav>
         <!-- /.navbar-static-top -->
-
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                        {{ short_current }}
+        <div class="panel panel-default col-md-12">
+            <div class="panel-body col-md-12">
+                <nav class="navbar-default navbar-static-side" role="navigation">
+                    <div class="sidebar-collapse">
+                        <ul class="nav" id="side-menu">
+                            {{ short_current }}
+                                 <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/back/urlseparador/back"><i class="fa fa-chevron-left"></i> Atras</a></li>
+                            {% for directorio in directorios %}
+                                <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/{{ directorio }}/urlseparador/ir"><i class="fa fa-folder-open"></i> {{ directorio }}</a></li>
+                            {% endfor %}
                         </ul>
-                             <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/back/urlseparador/back">atras</a></li>
-                        {% for directorio in directorios %}
-                            <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/{{ directorio }}/urlseparador/ir">{{ directorio }}</a></li>
-                        {% endfor %}
-                        </ul>
-                <!-- /#side-menu -->
+                        <!-- /#side-menu -->
+                    </div>
+                    <!-- /.sidebar-collapse -->
+                </nav>
             </div>
-            <!-- /.sidebar-collapse -->
-        </nav>
+        </div>
         <!-- /.navbar-static-side -->
 
         <div id="main" class="page-wrapper">
@@ -69,8 +71,10 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            {% block seccion-contenido%}
-            {% endblock %}
+            <div class="col-md-12">
+                {% block seccion-contenido%}
+                {% endblock %}
+            </div>
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
