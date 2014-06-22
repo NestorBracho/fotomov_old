@@ -100,11 +100,11 @@ Administración de envento
                 </div>
                 <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                     {% for envio in envios %}
-                        {% if  envio.0 == 0 %}
-                            <div class="col-md-3">Sin envio</div><div class="col-sm-3">x<span class="#envios">{{ envio.1 }}</span></div><div class="col-md-6">N/A</div>
-                        {% else %}
-                            <div class="col-md-3">{% if  envio.0 == 1 %}Regional{% elif envio.0 == 2 %}Nacional{% elif envio.0 == 3 %}Internacional{% endif %}</div><div class="col-sm-3">x<span id="{{ envio.0 }}-vv">{{ envio.1 }}</span></div><div class="col-md-6"><input name="{% if  envio.0 == 1 %}e-{{ envio.1 }}-Regional{% elif envio.0 == 2 %}e-{{ envio.1 }}-Nacional{% elif envio.0 == 3 %}e-{{ envio.1 }}-Internacional{% endif %}" id="{{ envio.0 }}-v" class="envios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ envio.2 }}"></div>
-                        {% endif %}
+                    <div class="col-md-3">{{ envio.tipo }}</div>
+                    <div class="col-sm-3">x<span id="{{ envio.0.id }}-vv">{{ envio.1 }}</span></div>
+                    <div class="col-md-6">
+                        <input name="envio-{{ envio.id }}" id="{{ envio.0 }}-v" class="envios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ envio.2 }}">
+                    </div>
                     {% endfor %}
                 </div>
                 <div class="col-sm-12" style="border-bottom: 1px solid #dedede;text-align: right"></div>

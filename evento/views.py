@@ -281,10 +281,10 @@ def casilla_administrativa(request, id_evento):
                     a.save()
                 else:
                     GastoEvento.objects.create(evento=evento, monto=post[1], productos = produc, nombre = produc.producto.nombre)
-            elif aux[0]=="e":#----------envios
-                envio =aux[2]
-                if len(GastoEvento.objects.filter(evento=evento, tipo="2", nombre = envio))>0:
-                    a = GastoEvento.objects.get(evento=evento, tipo="2", nombre = envio)
+            elif aux[0]=="envio":#----------envios
+                envio = TipoEnvio.objects.get(id = aux[1])
+                if len(GastoEvento.objects.filter(evento=evento, tipo="2", nombre = envio.tipo)) > 0:
+                    a = GastoEvento.objects.get(evento=evento, tipo="2", nombre = envio.tipo)
                     a.monto = float(post[1])*float(aux[1])
                     a.save()
                 else:
@@ -452,7 +452,7 @@ def casilla_administrativa(request, id_evento):
             if ordenCompra.num_pedido == numPed:
                 flag = True
         if flag == False:
-            numPedidos.append(ordenCompra.num_pedido)
+            numPedidos.append(ordenCompra.num_pedido)                   #TipoEnvio
         ordenCompra.num_pedido
     for numPed in numPedidos:
         pedidos.append(Pedido.objects.get(num_pedido=numPed).envio)
@@ -463,19 +463,12 @@ def casilla_administrativa(request, id_evento):
                 flag = True
                 envio[1] = envio[1]+1
         if flag == False:
-            nomb=''
-            if pedido == 1:
-                nomb = 'Regional'
-            elif pedido == 2:
-                nomb = 'Nacional'
-            elif pedido == 3:
-                nomb = 'Internacional'
-            gasto = GastoEvento.objects.filter(evento=evento, tipo=2, nombre=nomb)
+            gasto = GastoEvento.objects.filter(evento=evento, tipo=2, nombre=pedido.envio.tipo)
             if len(gasto)>0:
                 gasto = gasto[0]
-                envios.append([pedido, 1, gasto.monto])
+                envios.append([pedido.envio, 1, gasto.monto])
             else:
-                envios.append([pedido, 1, 0.0])
+                envios.append([pedido.envio, 1, 0.0])
     for envio in envios:
         envio[2]=envio[2]/envio[1]
     #-------------------------------------------------------adicionales
