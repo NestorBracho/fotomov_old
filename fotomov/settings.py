@@ -201,7 +201,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'fotomov.desarrollo@gmail.com'
-EMAIL_HOST_PASSWORD = 'fotomovqazxsw'
+EMAIL_HOST_USER = 'logistica@fotomov.com'
+EMAIL_HOST_PASSWORD = 'passFOTO12'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

@@ -10,7 +10,6 @@ Lista envios
         <th>Num Pedido</th>
         <th>Dirección</th>
         <th>Tracking</th>
-        <th>Proveedor</th>
         <th>Fecha envío</th>
         <th>Acciones</th>
     </thead>
@@ -20,11 +19,9 @@ Lista envios
             <td class="num_pedido">{{ pedido.num_pedido }}</td>
             <td>{{ pedido.direccion_entrega }}</td>
             {% if pedido.pedido_enviado %}
-                <td>{{ pedido.pedido_enviado.tracking }}</td>
-                <td>{{ pedido.pedido_enviado.proveedor }}</td>
+                <td>{{ pedido.pedido_enviado.proveedor }} - {{ pedido.pedido_enviado.tracking }}</td>
                 <td>{{ pedido.pedido_enviado.fecha_envio }}</td>
             {% else %}
-                <td></td>
                 <td></td>
                 <td><button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs agregar" >Agregar envio</button></td>
             {% endif %}
