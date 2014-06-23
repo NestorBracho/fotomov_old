@@ -533,7 +533,7 @@ def correo_staff(request):
             evento = Evento.objects.get(id=evento_id)
             
             #Funcion
-            funcion = Funcion.objects.get(id=funcion)
+            funciones = Funcion.objects.filter(evento=evento)
             
             #Staff
             staffs = staff.split('.')
@@ -547,7 +547,16 @@ def correo_staff(request):
                 correos.append(usuario.email)
 
             #mensaje = 'Evento: '+str(evento.nombre)+'\nDescripcion: '+str(evento.descripcion+'\nFuncion: '+funcion.nombre+'\nTipo Staff: '+tipo_staff.nombre+'\nCantidad necesitada: '+staffs[1])
-            mensaje = 'El evento '+str(evento.nombre)+' ha sido publicado con las siguientes funcion: \n'+funcion.nombre+' y el dia: '+str(funcion.dia)+'\nIngrese al siguiente enlace para postularse!'
+            mensaje = 'Hola!\n El presente correo es para informarte sobre el proximo evento de FOTOMOV donde nos encantaria que participaras\n\n'+str(evento.nombre)
+            aux_dia = None
+            for funcion in funciones:
+                if aux_dia == funcion.dia:
+                    pass
+                else:
+                    mensaje = mensaje + '\nEl ' + str(funcion.dia) + ' en ' + funcion.direccion.direccion + ':\n'
+                mensaje = mensaje + '   ' + funcion.nombre + '\n'
+                aux_did = funcion.dia
+            mensaje = mensaje +'\n Por favor confirma tu disponibilidad ingresando con tu usuario y clave en el siguiente enlace: '
             send_mail('[FotoMov] Solicitud de staff para evento.', mensaje, '', correos, fail_silently=False)
 
     ctx = {}
