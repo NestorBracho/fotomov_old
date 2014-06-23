@@ -1,0 +1,51 @@
+{% extends 'tabla.html' %}
+{% load bootstrap %}
+{% block css %}
+<!--http://w3widgets.com/responsive-calendar/-->
+<link href="{{ STATIC_URL }}css/fullcalendar.css" rel="stylesheet">
+{% endblock %}
+{% block titulo %}
+Calendario de entragas
+{% endblock %}
+{% block seccion-contenido%}
+<div class="col-md-12" style="padding-top: 10px">
+    <div id="calendar">
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL }}/js/moment.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}/js/fullcalendar.min.js"></script>
+<script type="text/javascript">
+
+$("#calendar").fullCalendar({
+    events: function(start, end, timezone, callback){
+
+        var events = [];
+
+        {% for evento in eventos %}
+            if('{% now "Y-m-d" %}' == '{{ evento.fecha_entrega|date:"c" }}'){
+                events.push({
+                    id : '{{ evento.id }}',
+                    title  : 'Entrega de {{ evento.nombre }}',
+                    start : '{{ evento.fecha_entrega|date:"c" }}',
+                    color: "red"
+                });
+            }else{
+
+                events.push({
+                    id : '{{ evento.id }}',
+                    title  : 'Entrega de {{ evento.nombre }}',
+                    start : '{{ evento.fecha_entrega|date:"c" }}'
+                });
+
+            }
+        {% endfor %}
+
+        callback(events);
+
+    }
+  });
+
+</script>
+{% endblock %}

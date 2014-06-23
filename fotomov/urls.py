@@ -182,6 +182,7 @@ urlpatterns = patterns('',
     url(r'^marcar_pagado_en_corte_mensual_ajax/$', 'administracion.views.marcar_pagado_en_corte_mensual_ajax'),
     url(r'^enviar_mail_de_estado/$', 'productos.views.enviar_mail_de_estado'),
     url(r'^enviar_mail_de_tracking_de_envio/$', 'productos.views.enviar_mail_de_tracking_de_envio'),
+    url(r'^calendario_entregas/$', 'evento.views.calendario_entregas'),
     #URLs de envios
     url(r'^tipo_envio/$', 'administracion.views.tipo_envio', name='tipo_envio'),
     url(r'^eliminar_tipo_envio/(?P<id_envio>\d+)/$', 'administracion.views.eliminar_tipo_envio'),

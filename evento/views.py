@@ -1076,3 +1076,12 @@ def eliminar_prestamo(request, id_prestamo):
 def prestar_item(request, id_evento):
     items = Items.objects.all()
     return render_to_response('evento/prestar_item.html', {'items': items, 'evento': id_evento}, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def calendario_entregas(request):
+    if datetime.datetime.today().month == 1:
+        hoy = date(datetime.datetime.today().year, 12, datetime.datetime.today().day)
+    else:
+        hoy = date(datetime.datetime.today().year, datetime.datetime.today().month-1, datetime.datetime.today().day)
+    eventos = Evento.objects.filter(fecha_entrega__gte = hoy)
+    return render_to_response('evento/calendario_entregas.html', {'eventos': eventos}, context_instance=RequestContext(request))
