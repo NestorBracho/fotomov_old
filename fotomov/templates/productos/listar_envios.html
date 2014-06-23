@@ -25,7 +25,7 @@ Lista envios
                 <td></td>
                 <td><button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-xs agregar" >Agregar envio</button></td>
             {% endif %}
-            <td><a onclick="moverEstado('{{ pedido.pedido_enviado.tracking }}','{{ pedido.id }}')" data-toggle="modal" data-target="#mail"  class="btn btn-default btn-xs">Enviar correo a clientes</a></td>
+            <td><a onclick="moverEstado('{{ pedido.pedido_enviado.tracking }}', '{{ pedido.pedido_enviado.proveedor }}', '{{ pedido.id }}')" data-toggle="modal" data-target="#mail"  class="btn btn-default btn-xs">Enviar correo a clientes</a></td>
         </tr>
     {% endfor %}
 </table>
@@ -86,9 +86,9 @@ $('.agregar').click(function(){
     $('#num_pedido').val($(this).parents('.pedido').children('.num_pedido').html());
 })
 
-function moverEstado(track, pedido){
+function moverEstado(track, empresa ,pedido){
 
-    $("#id_mail").val("A FotoMov le complace anunciar que su pedido esta en este momento en camino y el numero para rastrearlo es "+track+".");
+    $("#id_mail").val("Buenas Tardes\nEl presente correo es para notificarte que su pedido ya ha sido enviado a travez de la empresa " + empresa + " y su numero de guia es: " +track+".\nFavor tener en cuenta que a partir de este momento la responsabilidad de su paquete cae en manos de esta empresa. \nAnte cualquier duda, favor comunicarse con logistica@fotomov.com.\n\n Gracias por preferirnos");
     $("#modal-body").attr('name', pedido);
 
 }
