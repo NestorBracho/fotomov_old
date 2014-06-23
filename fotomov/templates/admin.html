@@ -7,11 +7,12 @@
     <title>Intranet Fotomov - {{seccion}}</title>
 
     <!-- COMPILED LESS -->
-<!--     <link href="{{ STATIC_URL }}/css/main.css"  type="text/css" rel="stylesheet">      -->
     <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}/css/main.css"  type="text/css" rel="stylesheet">     
 
     <!-- uncompiled LESS -->
-    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}less/main.less" />
+{% comment %}
+	    <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}less/main.less" />
 	<script>
 	  less = {
 	    env: "development",
@@ -26,6 +27,8 @@
 	</script>
 	<script src="{{ STATIC_URL }}js/less-1.7.0.min.js"></script>
 
+
+{% endcomment %}
     <!-- OVERRIDE CSS -->
 <!--     <link href="{{ STATIC_URL }}/css/override.css"  type="text/css" rel="stylesheet"> -->
 
