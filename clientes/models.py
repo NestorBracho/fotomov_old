@@ -27,8 +27,8 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=100)
     email = models.EmailField(verbose_name='correo electronico')
     direccion_fiscal = models.TextField(verbose_name='direccion fiscal', max_length=400)
-    rif = models.CharField(max_length=10, null=True, blank=True)
-    cedula = models.CharField(max_length=8, unique=True)
+    rif = models.CharField(max_length=100, null=True, blank=True)
+    cedula = models.CharField(max_length=100, unique=True)
     def __unicode__(self):
         return '%s %s %s' % ( self.nombres, self.apellidos, self.cedula)
 

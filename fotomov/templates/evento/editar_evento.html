@@ -396,31 +396,40 @@ function guardarFuncion(iden,accion){
     horas = $('#horas-editar').val();
     dia = $("#dias-editar-h").val();
 
-    $.ajax({
+    if(nombre != '' && horas != '' && dia != ''){
 
-        url:'/editar_funcion',
-        data:{'accion':accion, 'iden':iden, 'nomb':nombre, 'dia':dia, 'horas':horas, 'evento': event},
-        type:'GET'
+        $.ajax({
 
-    }).done(function(data){
+            url:'/editar_funcion',
+            data:{'accion':accion, 'iden':iden, 'nomb':nombre, 'dia':dia, 'horas':horas, 'evento': event},
+            type:'GET'
 
-        if(data.accion == '1'){
+        }).done(function(data){
 
-            $("#fun-"+data.id).html(data.nombre);
-            $("#dia-"+data.id).html(formatoFecha(data.dia));
-            $("#horas-"+data.id).html(data.horas);
+            if(data.accion == '1'){
 
-        }else if(data.accion =='2'){
+                $("#fun-"+data.id).html(data.nombre);
+                $("#dia-"+data.id).html(formatoFecha(data.dia));
+                $("#horas-"+data.id).html(data.horas);
 
-            $("#tbody").html($("#tbody").html()+'<tr id="tr-'+data.id+'"><td id="fun-'+data.id+'">'+data.nombre+'</td><td><a class="editable btn btn-xs btn-default form-group" data-toggle="modal" data-target="#addressModal" id="loc-'+data.id+'" onclick="editarDireccion(\'loc-'+data.id+'\')" >'+data.direccion+'</a></td><td id="horas-'+data.id+'">'+data.horas+'</td><td id="dia-'+data.id+'">'+formatoFecha(data.dia)+'</td><td><a class="btn btn-xs btn-success" onclick="editarFuncion(\''+data.id+'\',\''+data.nombre+'\',\'\',\''+data.horas+'\',\''+formatoFecha(data.dia)+'\')" data-toggle="modal" data-target="#eFuncion" ><span class="fa fa-pencil fa-fw"></span></a>  <a class="btn btn-xs btn-danger" onclick="eliFuncion('+data.id+',3)" ><span class="fa fa-minus fa-fw"></span></a></td></tr>');
+            }else if(data.accion =='2'){
 
-        }else if(data.accion == '3'){
+                $("#tbody").html($("#tbody").html()+'<tr id="tr-'+data.id+'"><td id="fun-'+data.id+'">'+data.nombre+'</td><td><a class="editable btn btn-xs btn-default form-group" data-toggle="modal" data-target="#addressModal" id="loc-'+data.id+'" onclick="editarDireccion(\'loc-'+data.id+'\')" >'+data.direccion+'</a></td><td id="horas-'+data.id+'">'+data.horas+'</td><td id="dia-'+data.id+'">'+formatoFecha(data.dia)+'</td><td><a class="btn btn-xs btn-success" onclick="editarFuncion(\''+data.id+'\',\''+data.nombre+'\',\'\',\''+data.horas+'\',\''+formatoFecha(data.dia)+'\')" data-toggle="modal" data-target="#eFuncion" ><span class="fa fa-pencil fa-fw"></span></a>  <a class="btn btn-xs btn-danger" onclick="eliFuncion('+data.id+',3)" ><span class="fa fa-minus fa-fw"></span></a></td></tr>');
 
-            document.getElementById("tr-"+iden).parentNode.removeChild(document.getElementById("tr-"+iden));
+            }else if(data.accion == '3'){
 
-        }
+                document.getElementById("tr-"+iden).parentNode.removeChild(document.getElementById("tr-"+iden));
 
-    });
+            }
+
+        });
+
+    }else{
+
+
+        alert("Todos los campos deben estar llenos.");
+
+    }
 
 }
 

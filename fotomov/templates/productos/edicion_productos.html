@@ -66,10 +66,12 @@ window.onload = function(){
 function verComentario(iden){
 
     {% for producto in edicion %}
-
         if('{{ producto.id }}' == iden){
-
-            $('#modal-body').html('{{ producto.comentario }}');
+            url_aux = "{{ producto.ruta }}";
+            url_aux = url_aux.split('/fotomov_imagenes/');
+            url_aux = url_aux[1];
+            $('#modal-body').html('<img class="img-responsive" src="{{MEDIA_URL}}'+url_aux+'" ></img>');
+            $('#modal-body').append('{{ producto.comentario }}');
 
         }
 
@@ -78,8 +80,11 @@ function verComentario(iden){
     {% for editado in editados %}
 
         if('{{ editado.id }}' == iden){
-
-            $('#modal-body').html('{{ editado.comentario }}');
+            url_aux = "{{ editado.ruta }}";
+            url_aux = url_aux.split('/fotomov_imagenes/');
+            url_aux = url_aux[1];
+            $('#modal-body').html('<img class="img-responsive" src="{{MEDIA_URL}}'+url_aux+'" ></img>');
+            $('#modal-body').append('{{ producto.comentario }}');
 
         }
 

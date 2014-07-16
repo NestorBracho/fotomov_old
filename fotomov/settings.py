@@ -25,7 +25,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME':_ruta_db,                      # Or path to database file if using sqlite3.
+        'NAME': _ruta_db,                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -64,6 +64,7 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = os.path.join(RUTA_PROYECTO,'fotomov_imagenes')
+#'/Users/imac/Pictures/fotomov_imagenes/'
 #'/media/Lexar/fotomov_imagenes'
 
 
@@ -87,6 +88,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    # os.path.join(RUTA_PROYECTO,'static'),
     os.path.join(RUTA_PROYECTO,'static'),
 )
 
@@ -201,7 +203,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'logistica@fotomov.com'
-EMAIL_HOST_PASSWORD = 'passFOTO12'
+EMAIL_HOST_USER = 'fotomov.desarrollo@gmail.com'
+EMAIL_HOST_PASSWORD = 'fotomovqazxsw'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

@@ -1,4 +1,4 @@
-{% extends 'tabla.html' %}
+{% extends 'modulo_movil.html' %}
 {% load bootstrap %}
 {% load widget_tweaks %}
 {% block css %}
@@ -164,7 +164,7 @@ Generar pedido
                 <td><input class="form-control" type="text" name="total_input" id="total_input"></td>
                 <td><input class="form-control" type="text" name="descuento_input" id="descuento_input" value="0.0"></td>
                 <td id="iva">{{ iva.valor }}</td>
-                <td id="total"><input type="hidden"</td>
+                <td id="total"><input type="hidden"></td>
                 <td id="faltan"></td>
             </tr>
         </table>
@@ -268,6 +268,17 @@ var prod_combos = {};
 var costo_combos = 0;
 window.onload = function(){
     var subtotal, total = 0, url_aux;
+        var $tiposenvio = {{ tipos_envio|safe }};
+        var i = $( '#id_envio' ).val();
+        if ($tiposenvio[i].req_dir == true){
+            $('#dir_envio').show(200);
+        } else {
+            $('#dir_envio').hide(200);
+            $('#id_direccion_entrega').val('');
+        }
+        $('.costo_envio').html(parseFloat($tiposenvio[i].precio));
+        actualizar_total();
+
 
     {% if cliente == None %}
         $('#id_cedula_cliente').val("{{ ced }}");
@@ -299,6 +310,18 @@ window.onload = function(){
 
     $('#id_form-TOTAL_FORMS').val(1);
 
+    var suma = 0;
+    $('.monto_pago').each(function(){
+        if($(this).val() == ""){
+            $(this).val(0.0);
+        }
+        suma += parseFloat($(this).val());
+    });
+    var elem = $(this).parents('.row').find('.monto_vuelto');
+    elem.val((suma - parseFloat($('#total').html())).toFixed(2));
+
+    var total = parseFloat($('#total').html());
+    $('#faltan').html((total-suma).toFixed(2));
 
 }
 
@@ -446,6 +469,15 @@ $(".prod").change(function() {
         }
     });
     $(this).data("previous-value", $(this).val());
+    //---Toto aqui---
+    var precio, Produc;
+    precio = $(this).val();
+    Produc = $(this).attr('name').split('-');
+    Produc = Produc[1];
+    precio = precio.split("-");
+    precio = precio[1]
+    $("#total-"+Produc).html(precio);
+    //---hasta aqui---
     actualizar_total();
 });
 

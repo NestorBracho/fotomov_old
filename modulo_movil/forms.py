@@ -17,4 +17,4 @@ class PedidoForm(forms.ModelForm):
 
 class PedidoReducidoForm(PedidoForm):
     class Meta(PedidoForm.Meta):
-        exclude = ('evento', 'cliente', 'num_pedido', 'total', 'codigo', 'lote')
+        exclude = ('evento', 'cliente', 'num_pedido', 'total', 'codigo', 'lote', 'descuento')

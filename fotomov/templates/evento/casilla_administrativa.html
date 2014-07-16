@@ -100,10 +100,10 @@ Administración de envento
                 </div>
                 <div class="col-sm-6" style="border-left: 1px solid #dedede;">
                     {% for envio in envios %}
-                    <div class="col-md-3">{{ envio.tipo }}</div>
+                    <div class="col-md-3">{{ envio.0.tipo }}</div>
                     <div class="col-sm-3">x<span id="{{ envio.0.id }}-vv">{{ envio.1 }}</span></div>
                     <div class="col-md-6">
-                        <input name="envio-{{ envio.id }}" id="{{ envio.0 }}-v" class="envios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ envio.2 }}">
+                        <input name="envio-{{ envio.0.id }}" id="{{ envio.0.id }}-v" class="envios form-control" onkeypress="return numero(event)" onkeyup="sumaTotal()" type="text" value="{{ envio.2 }}">
                     </div>
                     {% endfor %}
                 </div>

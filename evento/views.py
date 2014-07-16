@@ -196,7 +196,7 @@ def listar_pedidos_sede(request, id_sede):
 
 @login_required(login_url='/')
 def agregar_productos(request,id_evento):
-    productos = Producto.objects.all()
+    productos = Producto.objects.all().exclude(es_combo=True)
     evento = Evento.objects.get(id=id_evento)
     proveedores = Proveedor.objects.all()
     lista = []
@@ -222,7 +222,7 @@ def agregar_productos(request,id_evento):
             try:
                 producto_evento = ProductoEvento.objects.get(producto=producto, evento=evento)
                 producto_evento.precio= float(precio.replace(',','.'))
-                producto_evento.costo = float(costo.replace(',','.'))
+                producto_evento.precio_produccion = float(costo.replace(',','.'))
                 producto_evento.proveedor = proveedor
                 producto_evento.save()
             except:
@@ -463,12 +463,12 @@ def casilla_administrativa(request, id_evento):
                 flag = True
                 envio[1] = envio[1]+1
         if flag == False:
-            gasto = GastoEvento.objects.filter(evento=evento, tipo=2, nombre=pedido.envio.tipo)
+            gasto = GastoEvento.objects.filter(evento=evento, tipo=2, nombre=pedido.tipo)
             if len(gasto)>0:
                 gasto = gasto[0]
-                envios.append([pedido.envio, 1, gasto.monto])
+                envios.append([pedido, 1, gasto.monto])
             else:
-                envios.append([pedido.envio, 1, 0.0])
+                envios.append([pedido, 1, 0.0])
     for envio in envios:
         envio[2]=envio[2]/envio[1]
     #-------------------------------------------------------adicionales

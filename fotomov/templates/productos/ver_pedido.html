@@ -49,11 +49,25 @@ Pedido
             </div>
         </div>
         <hr/>
-        <div class="col-md-8">
-            <span>Total: {{ pedido.total }} Bs.</span>
+        <div class="row">
+            <div class="col-md-6">
+            <strong>Pagos:</strong>
+            <ul>
+                {% for pago in pagos %}
+                <li>{{ pago.tipo_pago }} {{ pago.monto }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+
         </div>
         <div class="col-md-4">
-
+            <span>Subtotal: {{ pedido.total }} Bs.</span>
+        </div>
+        <div class="col-md-4">
+            <span>Iva: {{ iva }}</span>
+        </div>
+        <div class="col-sm-4">
+            <span>Total: {{ total }}</span>
         </div>
     </div>
 </div>

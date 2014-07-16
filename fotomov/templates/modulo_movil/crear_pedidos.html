@@ -48,24 +48,34 @@ ul {
             {% endfor %}
         </div>
     </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <input id="buscarPedido" type="text" placeholder="Numero de pedido" class="form-control"/>
+                <div style="margin-top: 5px" class="pull-right">
+                    <a onclick="irapedido()" class="btn btn-default">Ir a pedido</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <aside id="lista_compra">
     <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Carrito <span class="pull-right"><i class="fa fa-shopping-cart"></i></span>
+                Pedido <b>{{num_pedido}}</b><span class="pull-right"><i class="fa fa-shopping-cart"></i></span>
             </div>
             <div class="panel-body">
                 <div class="col-md-12 row">
                     <table class="table table-striped table-responsive">
                         <tbody id="agregados">
                         {% for agregado in productos_pedidos %}
-                            <tr>
-                                <td><a data-toggle="modal" data-target="#Foto" onclick="abrirFotoProducto('{{ agregado.1 }}','{{ agregado.0.cantidad }}','{{ agregado.0.producto.producto.id }}','{{ agregado.0.comentario }}')"><img src="{{MEDIA_URL}}{{ short_current }}/{{ agregado.1 }}"
-                                 style="max-height: 30px; max-width: 40px"
-                                ></a></td>
+                            <tr id="pep-{{ agregado.0.id }}">
+                                <td><a data-toggle="modal" data-target="#editar" onclick="abrirFotoProducto('{{ agregado.1 }}','{{ agregado.0.cantidad }}','{{ agregado.0.producto.id }}','{{ agregado.0.comentario }}', '{{ agregado.0.id }}')">
+                                    <img src="{{MEDIA_URL}}{{ agregado.1 }}" style="max-height: 30px; max-width: 40px"></a>
+                                </td>
                                 <td>{{ agregado.0.cantidad }} {{ agregado.0.producto.producto.nombre }}</td>
-                                <td><a class="btn btn-danger btn-xs" onclick="deleteAlert('{{ agregado.0.id }}')">eliminar</a></td>
+                                <td><a class="btn btn-danger btn-xs" onclick="deleteAlert('{{ agregado.0.id }}')">Eliminar</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -77,10 +87,13 @@ ul {
     </div>
 </aside>
 <div class="modal fade" id="Foto" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-img">
+    <div class="modal-dialog modal-img modal-lg">
         <div class="modal-content">
-            <div class="modal-header" style="display: none" id="modal-header">
-                <div class='alert alert-success'>Producto agregado exitosamente!</div>
+            <div class="modal-header" id="modal-header">
+                <div class="row">
+                    <div style="display: none" class='alert alert-success'>Producto agregado exitosamente!</div>
+                    <div class="titulo-foto col-md-10"></div><div class="col-md-2"><span id="index" class="pull-right"></span></div>
+                </div>
             </div>
             <div class="modal-body text-center" id="modal-body">
             </div>
@@ -103,9 +116,39 @@ ul {
         </div>
     </div>
 </div>
+<div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledbby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-img modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header-editar">
+                <div style="display: none" class='alert alert-success'>Producto actualizado exitosamente!</div>
+                <div class="titulo-foto-edicion"></div>
+            </div>
+            <div class="modal-body text-center" id="modal-body-editar">
+            </div>
+            <div class="modal-footer" id="modal-footer-editar">
+                <div class="row">
+                    <div class="col-md-6">
+                        <select class="form-control" id="modal-producto-editar">
+                            <option value="0">-----------</option>
+                        {% for producto in productos %}
+                            <option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1 text-center">X</div>
+                    <div class="col-md-5"><input onkeypress="return numero(event)" id="modal-spinner-editar" class="form-control" type="text" value="0"></div>
+                    <div class="col-md-12" style="margin-top: 5px"><input id="modal-comentarios-editar" class="form-control" type="text" placeholder="Comentarios"></div>
+                    <div class="col-md-12"><a id="editarFotoModal" onclick="editarModal()" class="btn btn-primary btn-block" style="margin-top: 5px">Actualizar</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<input type="hidden" value="" id="urls"/>
-<input type="hidden" value="{{MEDIA_URL}}{{ short_current }}/" id="estaticos"/>
+<div class="hidden">
+    <textarea id="urls"></textarea>
+    <input type="hidden" value="{{MEDIA_URL}}{{ short_current }}/" id="estaticos"/>
+</div>
 
 
 {% endblock %}
@@ -114,10 +157,15 @@ ul {
 
     //document.getElementById("b"+main).parentNode.removeChild(document.getElementById("b"+main));
 
+    $("#urls").val("");
 
 {% for imagen in imagenes %}
 
-        $("#urls").val($("#urls").val()+',{{ imagen }}');
+    if('{{ imagen }}'.indexOf('.thumbnail.') > -1){
+
+        $("#urls").val($("#urls").val()+' || {{ imagen }}');
+
+    }
 
 {% endfor %}
 
@@ -125,11 +173,11 @@ window.onload = function(){
 
     var fotos, longitud;
 
-    fotos = $("#urls").val().split(',');
+    fotos = $("#urls").val().split(' || ');
 
-    if(fotos.length > 6){
+    if(fotos.length > 17){
 
-        longitud = 6;
+        longitud = 17;
 
     }else{
 
@@ -141,7 +189,7 @@ window.onload = function(){
 
         $("#panel-body").append(
             '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[i] +'" >' +
-                '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ fotos[i] +'\')" >' +
+                '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ $("#estaticos").val() + fotos[i] +'\', \''+ fotos[i] +'\')" >' +
                     '<img src="'+ $("#estaticos").val() + fotos[i] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[i] +'" style="max-height: 120px">' +
                 '</a>' +
                 '<div class="hidden">' +
@@ -157,9 +205,16 @@ window.onload = function(){
             '</div>'
         );
 
+        if(i == 4 || i==8 || i==12){
+
+            $("#panel-body").append('<div class="col-md-12"><hr /></div>');
+
+        }
+
     }
 
     $("#modal-spinner").spinner({min:0});
+    $("#modal-spinner-editar").spinner({min:0});
 
 
 
@@ -172,7 +227,18 @@ $("#Foto").on('hide.bs.modal', function(event){
     });
 
 
-function abrirFoto(imagen){
+function irapedido(){
+
+    var pedido = $("#buscarPedido").val();
+    var funcion = "{{ id_funcion }}";
+    var evento = "{{ evento.id }}";
+
+
+    location.href = '/buscar_pedido_en_modulo_movil/'+ evento +'/'+ funcion +'/'+ pedido +'/';
+
+}
+
+function abrirFoto(imagen, imagen2){
 
     var interno = '<div class="row">' +
                     '<div class="col-md-1">' +
@@ -181,7 +247,7 @@ function abrirFoto(imagen){
                         '</a>' +
                     '</div>' +
                     '<div class="col-md-10" >' +
-                        '<img id="img" name="' + imagen + '" src="{{MEDIA_URL}}{{ short_current }}/' + imagen + '" class=\'img-responsive center-block\' style=\'max-height: 400px;\'></img>' +
+                        '<img id="img" name="' + imagen + '" src="' + imagen + '" class=\'img-responsive img-thumbnail center-block\' style=\'max-height: 400px;\'></img>' +
                     '</div>' +
                     '<div class="col-md-1">' +
                         '<a class="btn btn-default" onclick="siguiente()">' +
@@ -191,17 +257,47 @@ function abrirFoto(imagen){
                 '</div>';
 
     document.getElementById('modal-body').innerHTML = interno;
-    $("#agregarFotoModal").attr("onclick","agregarModal('"+imagen+"')");
+    $("#agregarFotoModal").attr("onclick","agregarModal('"+imagen2+"')");
+
+
+    $(".titulo-foto").each(function(){
+        var n = imagen.split("/");
+        var fotos = $("#urls").val().split(' || ');
+        n = n[n.length-1];
+        $(this).html('<b>'+n+'</b>');
+        for(var k = 1; k< fotos.length; k++){
+
+            if(n == fotos[k]){
+
+                $("#index").html('('+k+')');
+
+            }
+
+        }
+    });
 
 }
 
-function abrirFotoProducto(nomb, cant, iden, comment){
+function abrirFotoProducto(nomb, cant, iden, comment, pep){
 
-    //$("#modal-spinner").val(cant);
-    //$("#modal-comentarios").val(comment);
-    //$("#modal-producto").val(iden);
+    $("#modal-spinner-editar").val(cant);
+    $("#modal-comentarios-editar").val(comment);
+    $("#modal-producto-editar").val(iden);
+    $("#editarFotoModal").attr('onclick', 'editarModal(\''+pep+'\')');
 
-    abrirFoto(nomb);
+    var interno = '<div class="row">' +
+                    '<div class="col-md-12" >' +
+                        '<img id="img" name="' + nomb + '" src="{{MEDIA_URL}}' + nomb + '" class=\'img-responsive img-thumbnail center-block\' style=\'max-height: 400px;\'></img>' +
+                    '</div>' +
+                '</div>';
+
+    document.getElementById('modal-body-editar').innerHTML = interno;
+
+    $(".titulo-foto-edicion").each(function(){
+        var n = nomb.split("/");
+        n = n[n.length-1];
+        $(this).html('<b>'+n+'</b>');
+    });
 
 }
 
@@ -212,8 +308,10 @@ function ajax_guardar(imagen, id_pedido){
     var comentario = document.getElementById('comentario'+imagen).value;
     var producto = document.getElementById('producto'+imagen);
     var producto_valor = producto.options[producto.selectedIndex].innerHTML;
+    var img = imagen.split('thumbnail.');
+    img = img[0]+img[1];
     $.ajax({
-        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': imagen, 'id_pedido': id_pedido, 'comentario': comentario},
+        data:{'cantidad': cantidad, 'producto': producto.value, 'imagen': img, 'id_pedido': id_pedido, 'comentario': comentario},
         url:'/agregar_item/',
         type: 'get',
         error:function(a,b,c){
@@ -226,7 +324,12 @@ function ajax_guardar(imagen, id_pedido){
 
     }).done(function(data){
         for(var i=0; i<data.length; i++){
-            $('#agregados').append('<tr><td><a data-toggle="modal" data-target="#Foto" onclick="abrirFotoProducto(\''+imagen+'\',\''+data[i].fields.cantidad+'\',\''+producto.value+'\',\''+data[i].fields.comentario+'\')"><img src="{{MEDIA_URL}}{{ short_current }}/'+imagen+'"style="max-height: 30px; max-width: 40px"></a></td><td>' + data[i].fields.cantidad + ' ' + producto_valor + '</td><td><a class=\"btn btn-danger btn-xs\" onclick=deleteAlert(\''+ data[i].pk +'\')>eliminar</a></td></tr>');
+            $('#agregados').append('<tr id="pep-'+ data[i].pk +'">' +
+                    '<td>' +
+                        '<a data-toggle="modal" data-target="#editar" onclick="abrirFotoProducto(\'{{ short_current }}/'+imagen+'\',\''+data[i].fields.cantidad+'\',\''+producto.value+'\',\''+data[i].fields.comentario+'\',\''+ data[i].pk +'\')">' +
+                            '<img src="{{MEDIA_URL}}{{ short_current }}/'+imagen+'"style="max-height: 30px; max-width: 40px">' +
+                        '</a>' +
+                    '</td><td>' + data[i].fields.cantidad + ' ' + producto_valor + '</td><td><a class=\"btn btn-danger btn-xs\" onclick=deleteAlert(\''+ data[i].pk +'\')>eliminar</a></td></tr>');
             //$('#agregados').append("ion('"+ data[i].fields.nombre +"')>"+ data[i].fields.direccion +"</td><td><button type=\"button\" class=\"btn btn-default btn-danger btn-xs\" onclick=\"deleteAlert(" + data[i].pk + ")\">Eliminaaaaaaaaaaaaaar</button></td></tr>");
         }
 
@@ -235,6 +338,63 @@ function ajax_guardar(imagen, id_pedido){
             document.getElementById("close").click();
         }*/
     });
+}
+
+function editarModal(id_ProEvenPed){
+
+    var cantidad = $("#modal-spinner-editar").val();
+    var comentario = $("#modal-comentarios-editar").val();
+    var producto = $("#modal-producto-editar").val();
+
+
+    if($("#modal-producto-editar").val()=='0'){
+
+        alert("Debe seleccionar algún producto");
+
+    }else if($("#modal-spinner-editar").val()==0){
+
+        alert("La cantidad del producto no puede ser 0");
+
+    }else{
+
+        var src = $("#img").attr('src');
+
+        $.ajax({
+            data:{'id_ProEvenPed': id_ProEvenPed, 'cantidad': cantidad, 'producto': producto, 'comentario': comentario},
+            url:'/actualizar_item/',
+            type: 'get',
+            error:function(a,b,c){
+
+                $('#alertas-ajax').addClass('alert');
+                $('#alertas-ajax').addClass('alert-danger');
+                document.getElementById('alertas-ajax').innerHTML = "<button type='button' class='close' data-dismiss='alert' aria-hidden='True'>&times;</button>Hubo un error de comunicación "+c+"</div>"
+                console.log(c);
+            }
+
+        }).done(function(data){
+
+                var img = data.imagen;
+                img = img.split('.');
+                img = img[0]+'.thumbnail.'+img[1];
+
+                $("#pep-"+id_ProEvenPed).html('<td>' +
+                            '<a data-toggle="modal" data-target="#editar" onclick="abrirFotoProducto(\'{{ short_current }}/'+ img +'\',\''+ data.cantidad +'\',\''+ data.producto +'\',\''+ data.comentario +'\',\''+ data.id +'\')">' +
+                                '<img src="'+ src +'" style="max-height: 30px; max-width: 40px">' +
+                            '</a>' +
+                        '</td><td>' + data.cantidad + ' ' + data.producto_nombre + '</td><td><a class=\"btn btn-danger btn-xs\" onclick=deleteAlert(\''+ data.id +'\')>Eliminar</a></td>');
+
+                $(".alert").fadeIn();
+
+                setTimeout(function(){
+
+                    $(".alert").fadeOut();
+
+                },1500);
+
+        });
+
+    }
+
 }
 
 function deleteAlert(id){
@@ -252,44 +412,57 @@ function deleteAlert(id){
 function siguiente(){
 
     var actual = $("#img").attr("name");
-    var flag = false;
-    var auxflag = false;
+    actual = actual.split('/');
+    actual = actual[actual.length-1];
 
-    $(".imagen").each(function(){
+    var fotos = $("#urls").val().split(' || ');
 
-        if(flag==true){
+    for(var i=1;i<fotos.length;i++){
 
-            $("#modal-comentarios").val("");
-            $("#modal-spinner").val(0);
-            
-            $("#img").attr("src",$(this).attr("src"));
-            $("#img").attr("name",$(this).attr("name"));
-            $("#agregarFotoModal").attr("onclick","agregarModal('"+$(this).attr("name")+"')");
-            auxflag = true;
-            return false;
+        if(fotos[i]==actual){
+
+            if(i+1 == fotos.length){
+
+                $(".titulo-foto").each(function(){
+                    $(this).html('<b>'+fotos[1]+'</b>');
+                });
+
+                $("#modal-comentarios").val("");
+                $("#modal-spinner").val(0);
+
+                $("#img").attr("src",$("#estaticos").val()+fotos[1]);
+                $("#img").attr("name", fotos[1]);
+                $("#agregarFotoModal").attr("onclick","agregarModal('"+fotos[1]+"')");
+
+            }else{
+
+                $(".titulo-foto").each(function(){
+                    $(this).html('<b>'+fotos[(i+1)]+'</b>');
+                });
+
+                $("#modal-comentarios").val("");
+                $("#modal-spinner").val(0);
+
+                $("#img").attr("src",$("#estaticos").val()+fotos[(i+1)]);
+                $("#img").attr("name", fotos[(i+1)]);
+                $("#agregarFotoModal").attr("onclick","agregarModal('"+fotos[(i+1)]+"')");
+
+            }
+
+
+            var fotos = $("#urls").val().split(' || ');
+
+            if(i==fotos.length-1){
+
+                $("#index").html('('+1+')');
+
+            }else{
+
+                $("#index").html('('+(i+1)+')');
+
+            }
 
         }
-
-        if(actual == $(this).attr("name")){
-            flag = true;
-        }
-
-    });
-
-    if(auxflag == false){
-
-        $(".imagen").each(function(){
-
-            $("#modal-comentarios").val("");
-            $("#modal-spinner").val(0);
-
-            $("#img").attr("src",$(this).attr("src"));
-            $("#img").attr("name",$(this).attr("name"));
-            $("#agregarFotoModal").attr("onclick","agregarModal('"+$(this).attr("name")+"')");
-            auxflag = true;
-            return false;
-
-        });
 
     }
 
@@ -300,33 +473,62 @@ function siguiente(){
 function anterior(){
 
     var actual = $("#img").attr("name");
+    actual = actual.split('/');
+    actual = actual[actual.length-1];
     var sourc, nam;
 
-    $(".imagen").each(function(){
+    var fotos = $("#urls").val().split(' || ');
 
-        sourc=$(this).attr("src");
-        nam=$(this).attr("name");
-        $("#agregarFotoModal").attr("onclick","agregarModal('"+nam+"')");
+    for(var k = 1; k<fotos.length; k++){
 
-    });
+        if(actual == fotos[k]){
 
-    $(".imagen").each(function(){
+            var j=(k-1)
 
-        if(actual == $(this).attr("name")){
+            if(j<1){
 
-            $("#modal-comentarios").val("");
-            $("#modal-spinner").val(0);
+                $(".titulo-foto").each(function(){
+                    $(this).html('<b>'+fotos[(fotos.length+j-1)]+'</b>');
+                });
 
-            $("#img").attr("src",sourc);
-            $("#img").attr("name",nam);
-            $("#agregarFotoModal").attr("onclick","agregarModal('"+nam+"')");
+                $("#modal-comentarios").val("");
+                $("#modal-spinner").val(0);
+
+                $("#img").attr("src",$("#estaticos").val()+fotos[(fotos.length+j-1)]);
+                $("#img").attr("name",fotos[(fotos.length+j-1)]);
+                $("#agregarFotoModal").attr("onclick","agregarModal('"+fotos[(fotos.length+j-1)]+"')");
+
+            }else{
+
+                $(".titulo-foto").each(function(){
+                    $(this).html('<b>'+fotos[k-1]+'</b>');
+                });
+
+                $("#modal-comentarios").val("");
+                $("#modal-spinner").val(0);
+
+                $("#img").attr("src",$("#estaticos").val()+fotos[k-1]);
+                $("#img").attr("name",fotos[k-1]);
+                $("#agregarFotoModal").attr("onclick","agregarModal('"+fotos[k-1]+"')");
+            }
+
+            var fotos = $("#urls").val().split(' || ');
+
+            if(k-1==0){
+
+                $("#index").html('('+(fotos.length-1)+')');
+
+            }else{
+
+                $("#index").html('('+(k-1)+')');
+
+            }
 
         }
 
         sourc=$(this).attr("src");
         nam=$(this).attr("name");
-
-    });
+    }
 
     moverFondo();
 
@@ -350,83 +552,99 @@ function numero(e) {
 function moverFondo(){
 
     var img = $("#img").attr('name');
-    var fotos = $("#urls").val().split(',');
+    var fotos = $("#urls").val().split(' || ');
 
-    if((img != fotos[1] && img != fotos[2]) || (img != fotos[fotos.length-2] && img != fotos[fotos.length-1])){
+    if(fotos.length > 16){
 
         $("#panel-body").html('');
 
         for( var i = 1; i < fotos.length; i++){
 
-            if(img === fotos[i]){
+        if(img == fotos[i]){
 
-                for(var k = i-2; k < i+3 ; k++){
+            var r = 1;
 
-                    if(k < 1){
+            for(var k = i-8; k < i+8 ; k++){
 
-                        $("#panel-body").append(
-                            '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[fotos.length - k - 1] +'">' +
-                                '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ fotos[fotos.length - k - 1] +'\')" >' +
-                                    '<img src="'+ $("#estaticos").val() + fotos[fotos.length - k - 1] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[fotos.length - k - 1] +'" style="max-height: 120px">' +
-                                '</a>' +
-                                '<div class="hidden">' +
-                                    '<select id="producto'+ fotos[fotos.length - k - 1] +'">'+
-                                        '<option value="0">-----------</option>'+
-                                        '{% for producto in productos %}'+
-                                            '<option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>'+
-                                        '{% endfor %}'+
-                                    '</select>'+
-                                    '<input type="text" id="cantidad'+ fotos[fotos.length - k - 1] +'">' +
-                                    '<input type="text" id="comentario'+ fotos[fotos.length - k - 1] +'">' +
-                                '</div>' +
-                            '</div>'
-                        );
+                if(k < 1){
 
-                    }else if(k >= fotos.length){
+                    var auxlength, auxK;
+                    auxlength = fotos.length;
+                    auxK = k;
 
-                        $("#panel-body").append(
-                            '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[k - fotos.length + 1] +'">' +
-                                '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ fotos[k - fotos.length + 1] +'\')" >' +
-                                    '<img src="'+ $("#estaticos").val() + fotos[k - fotos.length + 1] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[k - fotos.length + 1] +'" style="max-height: 120px">' +
-                                '</a>' +
-                                '<div class="hidden">' +
-                                    '<select id="producto'+ fotos[k - fotos.length + 1] +'">'+
-                                        '<option value="0">-----------</option>'+
-                                        '{% for producto in productos %}'+
-                                            '<option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>'+
-                                        '{% endfor %}'+
-                                    '</select>'+
-                                    '<input type="text" id="cantidad'+ fotos[k - fotos.length + 1] +'">' +
-                                    '<input type="text" id="comentario'+ fotos[k - fotos.length + 1] +'">' +
-                                '</div>' +
-                            '</div>'
-                        );
+                    $("#panel-body").append(
 
-                    }else{
+                        '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[auxlength + auxK - 1] +'">' +
+                            '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ $("#estaticos").val() + fotos[auxK+auxlength-1] +'\',\''+ fotos[auxK+auxlength-1] +'\')" >' +
+                                '<img src="'+ $("#estaticos").val() + fotos[auxK+auxlength-1] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[auxK+auxlength-1] +'" style="max-height: 120px">' +
+                            '</a>' +
+                            '<div class="hidden">' +
+                                '<select id="producto'+ fotos[auxK+auxlength-1] +'">'+
+                                    '<option value="0">-----------</option>'+
+                                    '{% for producto in productos %}'+
+                                        '<option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>'+
+                                    '{% endfor %}'+
+                                '</select>'+
+                                '<input type="text" id="cantidad'+ fotos[auxK+auxlength-1] +'">' +
+                                '<input type="text" id="comentario'+ fotos[auxK+auxlength-1] +'">' +
+                            '</div>' +
+                        '</div>'
+                    );
 
-                        $("#panel-body").append(
-                            '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[k] +'">' +
-                                '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ fotos[k] +'\')" >' +
-                                    '<img src="'+ $("#estaticos").val() + fotos[k] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[k] +'" style="max-height: 120px">' +
-                                '</a>' +
-                                '<div class="hidden">' +
-                                    '<select id="producto'+ fotos[k] +'">'+
-                                        '<option value="0">-----------</option>'+
-                                        '{% for producto in productos %}'+
-                                            '<option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>'+
-                                        '{% endfor %}'+
-                                    '</select>'+
-                                    '<input type="text" id="cantidad'+ fotos[k] +'">' +
-                                    '<input type="text" id="comentario'+ fotos[k] +'">' +
-                                '</div>' +
-                            '</div>'
-                        );
+                }else if(k >= fotos.length){
 
-                    }
+                    $("#panel-body").append(
+                        '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[k - fotos.length + 1] +'">' +
+                            '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ $("#estaticos").val() + fotos[k - fotos.length + 1] +'\',\''+ fotos[k - fotos.length + 1] +'\')" >' +
+                                '<img src="'+ $("#estaticos").val() + fotos[k - fotos.length + 1] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[k - fotos.length + 1] +'" style="max-height: 120px">' +
+                            '</a>' +
+                            '<div class="hidden">' +
+                                '<select id="producto'+ fotos[k - fotos.length + 1] +'">'+
+                                    '<option value="0">-----------</option>'+
+                                    '{% for producto in productos %}'+
+                                        '<option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>'+
+                                    '{% endfor %}'+
+                                '</select>'+
+                                '<input type="text" id="cantidad'+ fotos[k - fotos.length + 1] +'">' +
+                                '<input type="text" id="comentario'+ fotos[k - fotos.length + 1] +'">' +
+                            '</div>' +
+                        '</div>'
+                    );
+
+                }else{
+
+                    $("#panel-body").append(
+                        '<div class="col-md-3 text-center" style="margin-top: 5px" id="div-'+ fotos[k] +'">' +
+                            '<a data-toggle="modal" data-target="#Foto" onclick="abrirFoto(\''+ $("#estaticos").val() + fotos[k] +'\',\''+ fotos[k] +'\')" >' +
+                                '<img src="'+ $("#estaticos").val() + fotos[k] +'" class="imagen img-responsive img-thumbnail" name="'+ fotos[k] +'" style="max-height: 120px">' +
+                            '</a>' +
+                            '<div class="hidden">' +
+                                '<select id="producto'+ fotos[k] +'">'+
+                                    '<option value="0">-----------</option>'+
+                                    '{% for producto in productos %}'+
+                                        '<option value="{{ producto.id }}">{{ producto.producto.nombre }}</option>'+
+                                    '{% endfor %}'+
+                                '</select>'+
+                                '<input type="text" id="cantidad'+ fotos[k] +'">' +
+                                '<input type="text" id="comentario'+ fotos[k] +'">' +
+                            '</div>' +
+                        '</div>'
+                    );
+
                 }
 
+                if(r == 4 || r==8 || r==12){
+
+                    $("#panel-body").append('<div class="col-md-12"><hr /></div>');
+
+                }
+
+                r++;
+
             }
+
         }
+    }
 
     }
 }
@@ -452,11 +670,11 @@ function agregarModal(iden){
         $("#modal-spinner").val(0);
         $("#modal-comentarios").val("");
 
-        $("#modal-header").fadeIn();
+        $(".alert").fadeIn();
 
         setTimeout(function(){
 
-            $("#modal-header").fadeOut();
+            $(".alert").fadeOut();
 
         },1500);
     }

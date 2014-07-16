@@ -10,21 +10,23 @@ Pedidos Pendienes
             <th>Codigo</th>
             <th>Evento</th>
             <th>Cliente</th>
+            <th>Telefono</th>
             <th>Cedula</th>
             <th>Fecha de entrega</th>
-            <th>Comentario</th>
+            <th>Forma de pago</th>
             <th>Estado</th>
         </thead>
         <tbody id="body-pedidos">
         {% for pedido in pedidos %}
         <tr>
-            <td><a href="/ver_pedido/{{ pedido.id }}/">{{ pedido.num_pedido }}</a></td>
-            <td>{{ pedido.evento.nombre }}</td>
-            <td>{{ pedido.cliente.nombres}} {{ pedido.cliente.apellidos}}</td>
-            <td>{{pedido.cliente.cedula}}</td>
-            <td>{{ pedido.fecha_entrega }}</td>
-            <td>{{ pedido.comentario | truncatechars:15 }}</td>
-            <td>{{ pedido.estado }}</td>
+            <td><a href="/ver_pedido/{{ pedido.0.id }}/">{{ pedido.0.num_pedido }}</a></td>
+            <td>{{ pedido.0.evento.nombre }}</td>
+            <td>{{ pedido.0.cliente.nombres}} {{ pedido.0.cliente.apellidos}}</td>
+            <td>{{ pedido.0.cliente.telefono }}</td>
+            <td>{{pedido.0.cliente.cedula}}</td>
+            <td>{{ pedido.0.fecha_entrega }}</td>
+            <td>{{ pedido.1 }}</td>
+            <td>{{ pedido.0.estado }}</td>
         </tr>
         {% endfor %}
         </tbody>

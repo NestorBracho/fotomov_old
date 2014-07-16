@@ -18,6 +18,25 @@
     <link href="{{ STATIC_URL }}/css/sb-admin.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}/css/main.css" rel="stylesheet">
 
+    <style type="text/css">
+
+        .page-wrapper{
+
+            margin: 0;
+
+        }
+        nav.carpetas{
+            margin: 10px;
+        }
+
+        .breadcrumb{
+
+            margin-bottom: 10px;
+
+        }
+
+    </style>
+
     {% block css %}
     	{# solo para casos muy particulares #}
     {% endblock %}
@@ -36,40 +55,39 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand logo" href="/escritorio/"><img src="{{STATIC_URL}}//img/fotomov-logo.png" alt="Intranet Fotomov"></a>
+                <a class="navbar-brand logo" href="#"><img src="{{STATIC_URL}}//img/fotomov-logo.png" alt="Intranet Fotomov"></a>
             </div>
 
         </nav>
         <!-- /.navbar-static-top -->
-        <div class="panel panel-default col-md-12">
-            <div class="panel-body col-md-12">
-                <nav class="navbar-default navbar-static-side" role="navigation">
-                    <div class="sidebar-collapse">
-                        <ul class="nav" id="side-menu">
-                            {{ short_current }}
-                                 <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/back/urlseparador/back"><i class="fa fa-chevron-left"></i> Atras</a></li>
-                            {% for directorio in directorios %}
-                                <li><a href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/{{ directorio }}/urlseparador/ir"><i class="fa fa-folder-open"></i> {{ directorio }}</a></li>
-                            {% endfor %}
-                        </ul>
-                        <!-- /#side-menu -->
-                    </div>
-                    <!-- /.sidebar-collapse -->
-                </nav>
-            </div>
+            <nav class="carpetas col-sm-12">
+                 <ol class="breadcrumb">
+                    <li> {# separar cada directorio en un ñi para le bredcrum y ponerle links a acada uno #}
+                        <i class="fa fa-folder-open"></i> {{ short_current }}
+                    </li>
+                 </ol>
+                <div class="btn-group">
+                     <a class="btn btn-sm btn-default" href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/back/urlseparador/back"><i class="fa fa-chevron-left"></i> Atras</a>
+                {% for directorio in directorios %}
+                    <a class="btn btn-sm btn-default" href="/crear_pedidos/{{ evento.id }}/{{ id_funcion }}/{{ directorio }}/urlseparador/ir"><i class="fa fa-folder"></i> {{ directorio }}</a>
+                {% endfor %}
+                </div>
+            </nav>
         </div>
         <!-- /.navbar-static-side -->
 
         <div id="main" class="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">{% block titulo%}{% endblock %}</h1>
-                    <p class="heading">{% block subtitulo%}{% endblock %}</p>
+            {% if titulo %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">{% block titulo%}{% endblock %}</h1>
+                        <p class="heading">{% block subtitulo%}{% endblock %}</p>
+                    </div>
+                    {% block breadcrumbs %}
+                    {% endblock %}
+                    <!-- /.col-lg-12 -->
                 </div>
-                {% block breadcrumbs %}
-                {% endblock %}
-                <!-- /.col-lg-12 -->
-            </div>
+            {% endif %}
             <!-- /.row -->
             <div class="col-md-12">
                 {% block seccion-contenido%}

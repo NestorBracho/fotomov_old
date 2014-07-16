@@ -61,7 +61,7 @@ class ProductoImpresion(models.Model):
 class ProductoEventoPedido(models.Model):
     cantidad = models.IntegerField()
     ruta = models.CharField(max_length=10000)
-    num_pedido = models.IntegerField()
+    num_pedido = models.BigIntegerField()
     estado = models.CharField(max_length=50, default='Creado')
     comentario = models.TextField(max_length=1000)
     #Claves foraneas
@@ -73,6 +73,8 @@ class TipoEnvio(models.Model):
     precio = models.DecimalField(decimal_places=2, max_digits=10)
     req_dir = models.BooleanField(verbose_name="Requiere Direccion")
     direccion = models.TextField(max_length=300)
+    def __unicode__(self):
+        return self.tipo
 
 
 class Pedido(models.Model):
@@ -96,7 +98,7 @@ class Pedido(models.Model):
     evento = models.ForeignKey(Evento)
     cliente = models.ForeignKey(Cliente, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
-    num_pedido= models.IntegerField()
+    num_pedido= models.BigIntegerField()
     fecha_entrega = models.DateField(null=True, blank=True)
     id_fiscal = models.CharField(max_length=100, null=True, blank=True)
     direccion_fiscal = models.TextField(max_length=400, null=True, blank=True)
@@ -107,18 +109,14 @@ class Pedido(models.Model):
     direccion_entrega = models.TextField(max_length=400, null=True, blank=True)
     envio = models.ForeignKey(TipoEnvio, null=True, blank=True)
     fue_pagado = models.BooleanField(default=False)
-    estado = models.CharField(max_length=100)
     lote = models.ForeignKey(Lote, null=True, blank=True)
     estado = models.CharField(max_length=100, choices=ESTADOS, default=CREADO)
     factura = models.BooleanField(default=False)
     descuento = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     comentario = models.CharField(max_length=300, blank=True, null=True)
-    #Claves foraneas
-    cliente = models.ForeignKey(Cliente, null=True, blank=True)
-    lote = models.ForeignKey(Lote, null=True, blank=True)
 
 class PedidoPago(models.Model):
-    num_pedido = models.IntegerField()
+    num_pedido = models.BigIntegerField()
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)
 

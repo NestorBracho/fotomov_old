@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.forms.models import modelform_factory
 from productos.models import *
+from modulo_movil.models import *
 from productos.forms import *
 from reportlab.pdfgen import canvas
 from django.contrib import messages
@@ -87,12 +88,31 @@ def edicion_lotes(request):
         listos.append(listo)
     return render_to_response('productos/edicion_lotes.html', {'edicion': pedidos, 'listos': listos}, context_instance=RequestContext(request))
 
+def actualizar_pedidos(pedido):
+    pedidoGet = Pedido.objects.get(id=pedido)
+    if pedidoGet.estado != "Edicion":
+        return HttpResponseRedirect("/edicion_pedido/" + pedido)
+    pedidos = ProductoEventoPedido.objects.filter(num_pedido=pedidoGet.num_pedido)
+    for pedido in pedidos:
+        pedido.estado = "Edicion"
+        pedido.save()
+    return True
+
 @login_required(login_url='/')
 def edicion_productos(request, pedido):
-
-    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Edicion')
-    pedidos_editados = ProductoEventoPedido.objects.filter(Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Editado') | Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Vale por foto'))
-    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': Pedido.objects.get(id=pedido)}, context_instance=RequestContext(request))
+    actualizar_pedidos(pedido)
+    pedidoGet = Pedido.objects.get(id=pedido)
+    print pedidoGet.estado
+    pedidos_todos = ProductoEventoPedido.objects.filter(num_pedido=pedidoGet.num_pedido)
+    pedidos_edicion = ProductoEventoPedido.objects.filter(num_pedido=pedidoGet.num_pedido, estado="Edicion")
+    pedidos_editados = ProductoEventoPedido.objects.filter(Q(num_pedido=pedidoGet.num_pedido, estado='Editado') | Q(num_pedido=Pedido.objects.get(id=pedido).num_pedido, estado='Vale por foto'))
+    for ped in pedidos_todos:
+        print ped.estado
+    for ped in pedidos_editados:
+        print ped.estado
+    print len(pedidos_editados)
+    print len(pedidos_edicion)
+    return render_to_response('productos/edicion_productos.html', {'edicion': pedidos_edicion, 'editados': pedidos_editados, 'pedido': pedidoGet}, context_instance=RequestContext(request))
 
 
 def cambiar_estado_producto_edicion(request):
@@ -151,7 +171,7 @@ def edicion_pedido(request, lote):
         pedido = [pedido_edicion.num_pedido,0,0,pedido_edicion.id]
         productos_en_pedido = ProductoEventoPedido.objects.filter(num_pedido = pedido_edicion.num_pedido)
         for producto_en_pedido in productos_en_pedido:
-            if producto_en_pedido.estado == 'Editado':
+            if producto_en_pedido.estado == 'Editado' or producto_en_pedido.estado == 'Vale por foto':
                 pedido[1] = pedido[1] + 1
             pedido[2] = pedido[2] + 1
         pedidos.append(pedido)
@@ -217,14 +237,27 @@ def cambiar_estado_lotes_desde_administrar_pedidos(request):
 
 @login_required(login_url='/')
 def listar_pedidos(request):
-    pedidos = Pedido.objects.all()
-    return render_to_response('productos/listar_pedidos.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+    pedidos = Pedido.objects.all().exclude(cliente=None)
+    lista = []
+    for pedido in pedidos:
+        pagos = PedidoPago.objects.filter(num_pedido = pedido.num_pedido)
+        nombre = ""
+        for pago in pagos:
+            nombre = nombre + " " + pago.tipo_pago.nombre
+        tupla = (pedido,nombre)
+        lista.append(tupla)
+    return render_to_response('productos/listar_pedidos.html', {'pedidos':lista}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def ver_pedido(request, pedido):
     pedido = Pedido.objects.get(id = pedido)
+    pagos = PedidoPago.objects.filter(num_pedido=pedido.num_pedido)
     productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-    return render_to_response('productos/ver_pedido.html', {'pedido': pedido, 'productos': productos}, context_instance=RequestContext(request))
+    iva = Configuracion.objects.get(nombre='iva')
+    iva_total = float('0.' + str(iva.valor)) * pedido.total
+    total = pedido.total + iva_total
+    return render_to_response('productos/ver_pedido.html', {'pedido': pedido, 'productos': productos,
+                                                            'pagos': pagos, 'iva': iva_total, 'total': total}, context_instance=RequestContext(request))
 
 def verpedido_cambiar_estado_pedido_p_np(request):
     pedido = Pedido.objects.get(id = request.GET['iden'])
@@ -238,12 +271,20 @@ def verpedido_cambiar_estado_pedido_p_np(request):
 
 @login_required(login_url='/')
 def listar_pedidos_pendientes(request):
-    pedidos = Pedido.objects.filter(fue_pagado = False)
-    return render_to_response('productos/listar_pedidos_pendiente.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
+    pedidos = Pedido.objects.filter(fue_pagado = False).exclude(cliente=None)
+    lista = []
+    for pedido in pedidos:
+        pagos = PedidoPago.objects.filter(num_pedido = pedido.num_pedido)
+        nombre = ""
+        for pago in pagos:
+            nombre = nombre + " " + pago.tipo_pago.nombre
+        tupla = (pedido,nombre)
+        lista.append(tupla)
+    return render_to_response('productos/listar_pedidos_pendiente.html', {'pedidos':lista}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def listar_pedidos_sin_pagar(request):
-    pedidos = Pedido.objects.filter(fue_pagado=False)
+    pedidos = Pedido.objects.filter(cliente=None)
     return render_to_response('productos/listar_pedidos_sin_pagar.html', {'pedidos':pedidos}, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

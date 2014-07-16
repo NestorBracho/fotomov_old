@@ -36,6 +36,20 @@ def nueva_forma_de_pago(request):
     return render_to_response('administracion/nueva_forma_de_pago.html', {'formulario': formulario, 'pagos': pagos}, context_instance = RequestContext(request))
 
 @login_required(login_url='/')
+def editar_forma_de_pago(request, id_forma):
+    pago = FormaDePago.objects.get(id = id_forma)
+    pagos = FormaDePago.objects.all()
+    if request.method == 'POST':
+        formulario = FormaDePagoForm(request.POST, instance=pago)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/nueva_forma_de_pago')
+    else:
+        formulario = FormaDePagoForm(instance=pago)
+    return render_to_response('administracion/nueva_forma_de_pago.html', {'formulario': formulario, 'pagos': pagos}, context_instance = RequestContext(request))
+
+
+@login_required(login_url='/')
 def nuevo_tipo_de_gasto(request):
 
     if request.method == 'POST':

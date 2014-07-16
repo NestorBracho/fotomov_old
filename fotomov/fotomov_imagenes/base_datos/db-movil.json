@@ -1,0 +1,4604 @@
+[
+{
+   "pk": 1, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "permission", 
+      "name": "permission", 
+      "app_label": "auth"
+   }
+},
+{
+   "pk": 2, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "group", 
+      "name": "group", 
+      "app_label": "auth"
+   }
+},
+{
+   "pk": 3, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "user", 
+      "name": "user", 
+      "app_label": "auth"
+   }
+},
+{
+   "pk": 4, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "contenttype", 
+      "name": "content type", 
+      "app_label": "contenttypes"
+   }
+},
+{
+   "pk": 5, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "session", 
+      "name": "session", 
+      "app_label": "sessions"
+   }
+},
+{
+   "pk": 6, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "site", 
+      "name": "site", 
+      "app_label": "sites"
+   }
+},
+{
+   "pk": 7, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "logentry", 
+      "name": "log entry", 
+      "app_label": "admin"
+   }
+},
+{
+   "pk": 8, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "macrocliente", 
+      "name": "macro cliente", 
+      "app_label": "clientes"
+   }
+},
+{
+   "pk": 9, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "encargado", 
+      "name": "encargado", 
+      "app_label": "clientes"
+   }
+},
+{
+   "pk": 10, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "cliente", 
+      "name": "cliente", 
+      "app_label": "clientes"
+   }
+},
+{
+   "pk": 11, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "sede", 
+      "name": "sede", 
+      "app_label": "clientes"
+   }
+},
+{
+   "pk": 12, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "tipos_eventos", 
+      "name": "tipos_ eventos", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 13, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "evento", 
+      "name": "evento", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 14, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "funcion", 
+      "name": "funcion", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 15, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "gasto", 
+      "name": "gasto", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 16, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "gastos_funcion", 
+      "name": "gastos_ funcion", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 17, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "pautas", 
+      "name": "pautas", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 18, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "bloque", 
+      "name": "bloque", 
+      "app_label": "evento"
+   }
+},
+{
+   "pk": 19, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "marca", 
+      "name": "marca", 
+      "app_label": "marca"
+   }
+},
+{
+   "pk": 20, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "submarca", 
+      "name": "sub marca", 
+      "app_label": "marca"
+   }
+},
+{
+   "pk": 21, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "privilegios", 
+      "name": "privilegios", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 22, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "equipos", 
+      "name": "equipos", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 23, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "experiencia", 
+      "name": "experiencia", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 24, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "datodepago", 
+      "name": "dato de pago", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 25, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "usuario", 
+      "name": "usuario", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 26, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "tipostaff", 
+      "name": "tipo staff", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 27, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "staffporfuncion", 
+      "name": "staff por funcion", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 28, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "asistenciastafffuncion", 
+      "name": "asistencia staff funcion", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 29, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "archivoadjunto", 
+      "name": "archivo adjunto", 
+      "app_label": "staff"
+   }
+},
+{
+   "pk": 30, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "direccion", 
+      "name": "direccion", 
+      "app_label": "direcciones"
+   }
+},
+{
+   "pk": 31, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "proveedor", 
+      "name": "proveedor", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 32, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "items", 
+      "name": "items", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 33, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "itemsprestado", 
+      "name": "items prestado", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 34, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "formadepago", 
+      "name": "forma de pago", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 35, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "lote", 
+      "name": "lote", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 36, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "producto", 
+      "name": "producto", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 37, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "productoevento", 
+      "name": "producto evento", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 38, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "productoimpresion", 
+      "name": "producto impresion", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 39, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "productoeventopedido", 
+      "name": "producto evento pedido", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 40, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "tipoenvio", 
+      "name": "tipo envio", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 41, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "pedido", 
+      "name": "pedido", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 42, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "pedidopago", 
+      "name": "pedido pago", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 43, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "productoeventocombo", 
+      "name": "productoevento combo", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 44, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "enviopedido", 
+      "name": "envio pedido", 
+      "app_label": "productos"
+   }
+},
+{
+   "pk": 45, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "direccionfuncion", 
+      "name": "direccion funcion", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 46, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "direcciones_exportacion", 
+      "name": "direcciones_exportacion", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 47, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "directorio_actual", 
+      "name": "directorio_actual", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 48, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "cliente_aux", 
+      "name": "cliente_aux", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 49, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "pedido_aux", 
+      "name": "pedido_aux", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 50, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "productoeventopedido_aux", 
+      "name": "producto evento pedido_aux", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 51, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "pedidopago_aux", 
+      "name": "pedido pago_aux", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 52, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "configuracion", 
+      "name": "configuracion", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 53, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "configuracionempresa", 
+      "name": "configuracion empresa", 
+      "app_label": "modulo_movil"
+   }
+},
+{
+   "pk": 54, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "tarea", 
+      "name": "tarea", 
+      "app_label": "tareas"
+   }
+},
+{
+   "pk": 55, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "prela", 
+      "name": "prela", 
+      "app_label": "tareas"
+   }
+},
+{
+   "pk": 56, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "tareatipoevento", 
+      "name": "tarea tipo evento", 
+      "app_label": "tareas"
+   }
+},
+{
+   "pk": 57, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "prelatareatipoevento", 
+      "name": "prela tarea tipo evento", 
+      "app_label": "tareas"
+   }
+},
+{
+   "pk": 58, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "notificacion", 
+      "name": "notificacion", 
+      "app_label": "tareas"
+   }
+},
+{
+   "pk": 59, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "tipodegasto", 
+      "name": "tipo de gasto", 
+      "app_label": "administracion"
+   }
+},
+{
+   "pk": 60, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "gastoadministracion", 
+      "name": "gasto administracion", 
+      "app_label": "administracion"
+   }
+},
+{
+   "pk": 61, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "gastoevento", 
+      "name": "gasto evento", 
+      "app_label": "administracion"
+   }
+},
+{
+   "pk": 62, 
+   "model": "contenttypes.contenttype", 
+   "fields": {
+      "model": "pago", 
+      "name": "pago", 
+      "app_label": "administracion"
+   }
+},
+{
+   "pk": "t2mvp9aszsffxs3vpxr6inu0k6j3bgyp", 
+   "model": "sessions.session", 
+   "fields": {
+      "expire_date": "2014-07-03T15:54:18.657Z", 
+      "session_data": "YmJiNmQzOGY3MzVlODIxOWIyNmZkMDBhOGQ1M2IxZjA3NzkzYWYzMTqAAn1xAShYCgAAAHRlc3Rjb29raWVYBgAAAHdvcmtlZFUSX2F1dGhfdXNlcl9iYWNrZW5kVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHECVQ1fYXV0aF91c2VyX2lkSwF1Lg=="
+   }
+},
+{
+   "pk": 1, 
+   "model": "sites.site", 
+   "fields": {
+      "domain": "example.com", 
+      "name": "example.com"
+   }
+},
+{
+   "pk": 1, 
+   "model": "clientes.macrocliente", 
+   "fields": {
+      "descripcion": "", 
+      "rif": "000", 
+      "nombre": "Indoor", 
+      "submarca": 1, 
+      "direccion_fiscal": "None", 
+      "telefono": "000"
+   }
+},
+{
+   "pk": 2, 
+   "model": "clientes.macrocliente", 
+   "fields": {
+      "descripcion": "prueba", 
+      "rif": "j111111", 
+      "nombre": "Tatiana Reina", 
+      "submarca": 2, 
+      "direccion_fiscal": "prueba", 
+      "telefono": "0"
+   }
+},
+{
+   "pk": 1, 
+   "model": "clientes.encargado", 
+   "fields": {
+      "cargo": "", 
+      "macrocliente": 1, 
+      "descripcion": "", 
+      "nombre": "Indoor", 
+      "telefono": "0", 
+      "email": "indoor@indoor.indoow", 
+      "cedula": ""
+   }
+},
+{
+   "pk": 2, 
+   "model": "clientes.encargado", 
+   "fields": {
+      "cargo": "hasd", 
+      "macrocliente": 2, 
+      "descripcion": "asd", 
+      "nombre": "Tatiana", 
+      "telefono": "0", 
+      "email": "ta@turpialdev.com", 
+      "cedula": "18941663"
+   }
+},
+{
+   "pk": 1, 
+   "model": "clientes.cliente", 
+   "fields": {
+      "nombres": "Leonardo", 
+      "apellidos": "Gutierrez", 
+      "rif": "", 
+      "direccion_fiscal": "leo", 
+      "telefono": "012982398", 
+      "email": "leo@turpialdev.com", 
+      "cedula": "18941663"
+   }
+},
+{
+   "pk": 1, 
+   "model": "clientes.sede", 
+   "fields": {
+      "nombre": "Indoor", 
+      "macrocliente": 1, 
+      "direccion": 1
+   }
+},
+{
+   "pk": 2, 
+   "model": "clientes.sede", 
+   "fields": {
+      "nombre": "caracas", 
+      "macrocliente": 2, 
+      "direccion": 2
+   }
+},
+{
+   "pk": 1, 
+   "model": "evento.tipos_eventos", 
+   "fields": {
+      "nombre": "Indoor"
+   }
+},
+{
+   "pk": 2, 
+   "model": "evento.tipos_eventos", 
+   "fields": {
+      "nombre": "Con stand"
+   }
+},
+{
+   "pk": 1, 
+   "model": "evento.evento", 
+   "fields": {
+      "porcentaje_institucion": 0.0, 
+      "tipo": 1, 
+      "macrocliente": 1, 
+      "sede": 1, 
+      "fecha_entrega": "2014-06-17", 
+      "descripcion": "None", 
+      "nombre": "Indoor", 
+      "submarca": 1, 
+      "cliente": null, 
+      "encargado": 1
+   }
+},
+{
+   "pk": 2, 
+   "model": "evento.evento", 
+   "fields": {
+      "porcentaje_institucion": 12.0, 
+      "tipo": 2, 
+      "macrocliente": 2, 
+      "sede": 2, 
+      "fecha_entrega": "2014-06-17", 
+      "descripcion": "prueba", 
+      "nombre": "Prueba", 
+      "submarca": 2, 
+      "cliente": null, 
+      "encargado": 2
+   }
+},
+{
+   "pk": 3, 
+   "model": "evento.evento", 
+   "fields": {
+      "porcentaje_institucion": 12.0, 
+      "tipo": 2, 
+      "macrocliente": 2, 
+      "sede": 2, 
+      "fecha_entrega": "2014-06-17", 
+      "descripcion": "prueba", 
+      "nombre": "prueba 2", 
+      "submarca": 2, 
+      "cliente": null, 
+      "encargado": 2
+   }
+},
+{
+   "pk": 1, 
+   "model": "evento.funcion", 
+   "fields": {
+      "evento": 1, 
+      "dia": "2014-06-17", 
+      "direccion": 1, 
+      "entrega_fotos": "17/06/2014", 
+      "nombre": "Indoor", 
+      "horas": null
+   }
+},
+{
+   "pk": 2, 
+   "model": "evento.funcion", 
+   "fields": {
+      "evento": 2, 
+      "dia": "2014-06-18", 
+      "direccion": 2, 
+      "entrega_fotos": "02-07-2014", 
+      "nombre": "ma\u00f1ana", 
+      "horas": 0
+   }
+},
+{
+   "pk": 3, 
+   "model": "evento.funcion", 
+   "fields": {
+      "evento": 3, 
+      "dia": "2014-06-17", 
+      "direccion": 2, 
+      "entrega_fotos": "02-07-2014", 
+      "nombre": "ma\u00f1ana", 
+      "horas": 0
+   }
+},
+{
+   "pk": 4, 
+   "model": "evento.funcion", 
+   "fields": {
+      "evento": 2, 
+      "dia": "2014-06-18", 
+      "direccion": 2, 
+      "entrega_fotos": "", 
+      "nombre": "tarde", 
+      "horas": 3
+   }
+},
+{
+   "pk": 1, 
+   "model": "evento.bloque", 
+   "fields": {
+      "nombre": "bloque", 
+      "honorarios": 3500.0, 
+      "unico": false
+   }
+},
+{
+   "pk": 1, 
+   "model": "marca.marca", 
+   "fields": {
+      "nombre": "Indoor"
+   }
+},
+{
+   "pk": 2, 
+   "model": "marca.marca", 
+   "fields": {
+      "nombre": "Escuela de bailes"
+   }
+},
+{
+   "pk": 1, 
+   "model": "marca.submarca", 
+   "fields": {
+      "nombre": "Indoor", 
+      "marca": 1
+   }
+},
+{
+   "pk": 2, 
+   "model": "marca.submarca", 
+   "fields": {
+      "nombre": "Escuela de bailes", 
+      "marca": 2
+   }
+},
+{
+   "pk": 1, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Administrador", 
+      "valor": 5
+   }
+},
+{
+   "pk": 2, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Logistica", 
+      "valor": 4
+   }
+},
+{
+   "pk": 3, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Edicion", 
+      "valor": 3
+   }
+},
+{
+   "pk": 4, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Comunicacion", 
+      "valor": 2
+   }
+},
+{
+   "pk": 5, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Gerencia", 
+      "valor": 1
+   }
+},
+{
+   "pk": 6, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Chofer", 
+      "valor": 6
+   }
+},
+{
+   "pk": 7, 
+   "model": "staff.privilegios", 
+   "fields": {
+      "nombre": "Fotografo", 
+      "valor": 6
+   }
+},
+{
+   "pk": 1, 
+   "model": "staff.staffporfuncion", 
+   "fields": {
+      "bloque": 1, 
+      "cantidad": 2, 
+      "tipo": 6, 
+      "funcion": 2
+   }
+},
+{
+   "pk": 2, 
+   "model": "staff.staffporfuncion", 
+   "fields": {
+      "bloque": 1, 
+      "cantidad": 1, 
+      "tipo": 7, 
+      "funcion": 2
+   }
+},
+{
+   "pk": 1, 
+   "model": "direcciones.direccion", 
+   "fields": {
+      "lat": 0.0, 
+      "nombre": "Indoor", 
+      "descripcion": "None", 
+      "lon": 0.0, 
+      "direccion": "none"
+   }
+},
+{
+   "pk": 2, 
+   "model": "direcciones.direccion", 
+   "fields": {
+      "lat": 10.5, 
+      "nombre": "caracas", 
+      "descripcion": "", 
+      "lon": -66.91666670000001, 
+      "direccion": "Avenida Sur 2, Caracas, Venezuela"
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.proveedor", 
+   "fields": {
+      "descripcion": "prueba", 
+      "nombre": "Proveedor 1"
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.formadepago", 
+   "fields": {
+      "pagado": true, 
+      "nombre": "Credito", 
+      "descuento": true
+   }
+},
+{
+   "pk": 2, 
+   "model": "productos.formadepago", 
+   "fields": {
+      "pagado": true, 
+      "nombre": "Efectivo", 
+      "descuento": true
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.lote", 
+   "fields": {
+      "fecha": "2014-06-18", 
+      "codigo": "Prueba-18620141259", 
+      "estado": "Impresion", 
+      "ruta": "/home/leonardo/turpial/fotomov/repo/fotomov/fotomov/fotomov_imagenes/lotes/Prueba-18620141259/"
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.producto", 
+   "fields": {
+      "descripcion": "asd", 
+      "nombre": "producto", 
+      "es_combo": false
+   }
+},
+{
+   "pk": 2, 
+   "model": "productos.producto", 
+   "fields": {
+      "descripcion": "prueba", 
+      "nombre": "lindo", 
+      "es_combo": false
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.productoevento", 
+   "fields": {
+      "evento": 2, 
+      "proveedor": 1, 
+      "precio_produccion": 10.0, 
+      "es_combo": false, 
+      "producto": 1, 
+      "precio": 100.0
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.productoeventopedido", 
+   "fields": {
+      "cantidad": 3, 
+      "producto": 1, 
+      "num_pedido": 222014140311185731, 
+      "ruta": "/home/leonardo/turpial/fotomov/repo/fotomov/fotomov/fotomov_imagenes/eventos/2014/Escuela de bailes/Escuela de bailes/Tatiana Reina/Prueba/caracas/2014-06-18/caracas/ma\u00f1ana/1377475_10151721308796723_1717743179_n.jpg", 
+      "estado": "Pagado", 
+      "comentario": ""
+   }
+},
+{
+   "pk": 2, 
+   "model": "productos.productoeventopedido", 
+   "fields": {
+      "cantidad": 3, 
+      "producto": 1, 
+      "num_pedido": 22201414031419774, 
+      "ruta": "/media/Lexar/fotomov_imagenes//eventos/2014/Fotomov Deporte/Competencias de Gimnasia/Centro Italo Venezolano/Copa de Gimnasia Club Italo/Club Italo Venezolano/2014-05-31/Centro Italo Venezolano/Domingo Funci\u00f3n 8am/Grupo A/_MG_5792.JPG", 
+      "estado": "Creado", 
+      "comentario": ""
+   }
+},
+{
+   "pk": 3, 
+   "model": "productos.productoeventopedido", 
+   "fields": {
+      "cantidad": 3, 
+      "producto": 1, 
+      "num_pedido": 22201414031419774, 
+      "ruta": "/media/Lexar/fotomov_imagenes//eventos/2014/Fotomov Deporte/Competencias de Gimnasia/Centro Italo Venezolano/Copa de Gimnasia Club Italo/Club Italo Venezolano/2014-05-31/Centro Italo Venezolano/Domingo Funci\u00f3n 8am/Grupo A/_MG_5792.JPG", 
+      "estado": "Pagado", 
+      "comentario": ""
+   }
+},
+{
+   "pk": 4, 
+   "model": "productos.productoeventopedido", 
+   "fields": {
+      "cantidad": 3, 
+      "producto": 1, 
+      "num_pedido": 22201414031419774, 
+      "ruta": "/media/Lexar/fotomov_imagenes//eventos/2014/Fotomov Deporte/Competencias de Gimnasia/Centro Italo Venezolano/Copa de Gimnasia Club Italo/Club Italo Venezolano/2014-05-31/Centro Italo Venezolano/Domingo Funci\u00f3n 8am/Grupo A/_MG_5792.JPG", 
+      "estado": "Pagado", 
+      "comentario": ""
+   }
+},
+{
+   "pk": 2, 
+   "model": "productos.tipoenvio", 
+   "fields": {
+      "req_dir": true, 
+      "precio": "100", 
+      "tipo": "Nacional", 
+      "direccion": "N/A"
+   }
+},
+{
+   "pk": 3, 
+   "model": "productos.tipoenvio", 
+   "fields": {
+      "req_dir": false, 
+      "precio": "0", 
+      "tipo": "Fotomov", 
+      "direccion": "DIreccion de fotomov"
+   }
+},
+{
+   "pk": 4, 
+   "model": "productos.tipoenvio", 
+   "fields": {
+      "req_dir": false, 
+      "precio": "10", 
+      "tipo": "En macrocliente", 
+      "direccion": "Direccion de la academia"
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.pedido", 
+   "fields": {
+      "evento": 2, 
+      "total": 100.0, 
+      "direccion_entrega": "mi casa en caracas", 
+      "descuento": "0", 
+      "envio": 2, 
+      "fecha": "2014-06-18", 
+      "codigo": null, 
+      "factura": false, 
+      "comentario": "nada", 
+      "num_pedido": 222014140313635566, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "012982398", 
+      "fecha_entrega": "2014-06-18", 
+      "id_fiscal": "18941663", 
+      "cliente": 1, 
+      "direccion_fiscal": "leo", 
+      "estado": "Creado", 
+      "razon_social": "Leonardo Gutierrez", 
+      "lote": null
+   }
+},
+{
+   "pk": 2, 
+   "model": "productos.pedido", 
+   "fields": {
+      "evento": 2, 
+      "total": 0.0, 
+      "direccion_entrega": "None", 
+      "descuento": "0", 
+      "envio": null, 
+      "fecha": "2014-06-18", 
+      "codigo": null, 
+      "factura": false, 
+      "comentario": "na", 
+      "num_pedido": 222014140314172922, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "012982398", 
+      "fecha_entrega": "2014-06-18", 
+      "id_fiscal": "18941663", 
+      "cliente": 1, 
+      "direccion_fiscal": "leo", 
+      "estado": "Creado", 
+      "razon_social": "Leonardo Gutierrez", 
+      "lote": null
+   }
+},
+{
+   "pk": 3, 
+   "model": "productos.pedido", 
+   "fields": {
+      "evento": 2, 
+      "total": 2100.0, 
+      "direccion_entrega": "None", 
+      "descuento": "0", 
+      "envio": null, 
+      "fecha": "2014-06-18", 
+      "codigo": null, 
+      "factura": false, 
+      "comentario": "askldjaskldjalskdjasd", 
+      "num_pedido": 22201414031419774, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "012982398", 
+      "fecha_entrega": "2014-06-18", 
+      "id_fiscal": "18941663", 
+      "cliente": 1, 
+      "direccion_fiscal": "leo", 
+      "estado": "Creado", 
+      "razon_social": "Leonardo Gutierrez", 
+      "lote": null
+   }
+},
+{
+   "pk": 4, 
+   "model": "productos.pedido", 
+   "fields": {
+      "evento": 2, 
+      "total": null, 
+      "direccion_entrega": "", 
+      "descuento": "0", 
+      "envio": null, 
+      "fecha": "2014-06-18", 
+      "codigo": null, 
+      "factura": false, 
+      "comentario": "", 
+      "num_pedido": 222014140314211359, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "", 
+      "fecha_entrega": null, 
+      "id_fiscal": "", 
+      "cliente": null, 
+      "direccion_fiscal": "", 
+      "estado": "Creado", 
+      "razon_social": "", 
+      "lote": null
+   }
+},
+{
+   "pk": 1, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 336.0, 
+      "referencia": "234", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140311185731
+   }
+},
+{
+   "pk": 2, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 0.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140311198331
+   }
+},
+{
+   "pk": 3, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 200.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140313635566
+   }
+},
+{
+   "pk": 4, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 0.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140314172922
+   }
+},
+{
+   "pk": 5, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 200.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140313635566
+   }
+},
+{
+   "pk": 6, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 0.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140314172922
+   }
+},
+{
+   "pk": 7, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 2352.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 22201414031419774
+   }
+},
+{
+   "pk": 8, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 200.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140313635566
+   }
+},
+{
+   "pk": 9, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 0.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140314172922
+   }
+},
+{
+   "pk": 10, 
+   "model": "productos.pedidopago", 
+   "fields": {
+      "monto": 2352.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 22201414031419774
+   }
+},
+{
+   "pk": 2, 
+   "model": "modulo_movil.direccionfuncion", 
+   "fields": {
+      "dir": "Escuela de bailes/Escuela de bailes/Tatiana Reina/prueba 2/caracas/2014-06-17/caracas/ma\u00f1ana", 
+      "funcion": 3
+   }
+},
+{
+   "pk": 3, 
+   "model": "modulo_movil.direccionfuncion", 
+   "fields": {
+      "dir": "Escuela de bailes/Escuela de bailes/Tatiana Reina/Prueba/caracas/2014-06-18/caracas/ma\u00f1ana", 
+      "funcion": 2
+   }
+},
+{
+   "pk": 4, 
+   "model": "modulo_movil.direccionfuncion", 
+   "fields": {
+      "dir": "Escuela de bailes/Escuela de bailes/Tatiana Reina/Prueba/caracas/2014-06-18/Indoor/tarde", 
+      "funcion": 4
+   }
+},
+{
+   "pk": 1, 
+   "model": "modulo_movil.cliente_aux", 
+   "fields": {
+      "nombres": "Leonardo", 
+      "apellidos": "Gutierrez", 
+      "rif": "", 
+      "direccion_fiscal": "leo", 
+      "telefono": "012982398", 
+      "email": "leo@turpialdev.com", 
+      "cedula": "18941663"
+   }
+},
+{
+   "pk": 1, 
+   "model": "modulo_movil.pedido_aux", 
+   "fields": {
+      "evento": 2, 
+      "total": 100.0, 
+      "direccion_entrega": "mi casa en caracas", 
+      "codigo": null, 
+      "estado": "Creado", 
+      "fecha": "2014-06-18", 
+      "razon_social": "Leonardo Gutierrez", 
+      "num_pedido": 222014140313635566, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "012982398", 
+      "fecha_entrega": "2014-06-18", 
+      "envio": 2, 
+      "id_fiscal": "18941663", 
+      "direccion_fiscal": "leo", 
+      "comentario": "nada", 
+      "cliente": 1, 
+      "lote": null
+   }
+},
+{
+   "pk": 2, 
+   "model": "modulo_movil.pedido_aux", 
+   "fields": {
+      "evento": 2, 
+      "total": 0.0, 
+      "direccion_entrega": "None", 
+      "codigo": null, 
+      "estado": "Creado", 
+      "fecha": "2014-06-18", 
+      "razon_social": "Leonardo Gutierrez", 
+      "num_pedido": 222014140314172922, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "012982398", 
+      "fecha_entrega": "2014-06-18", 
+      "envio": 1, 
+      "id_fiscal": "18941663", 
+      "direccion_fiscal": "leo", 
+      "comentario": "na", 
+      "cliente": 1, 
+      "lote": null
+   }
+},
+{
+   "pk": 3, 
+   "model": "modulo_movil.pedido_aux", 
+   "fields": {
+      "evento": 2, 
+      "total": 2100.0, 
+      "direccion_entrega": "None", 
+      "codigo": null, 
+      "estado": "Creado", 
+      "fecha": "2014-06-18", 
+      "razon_social": "Leonardo Gutierrez", 
+      "num_pedido": 22201414031419774, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "012982398", 
+      "fecha_entrega": "2014-06-18", 
+      "envio": 1, 
+      "id_fiscal": "18941663", 
+      "direccion_fiscal": "leo", 
+      "comentario": "askldjaskldjalskdjasd", 
+      "cliente": 1, 
+      "lote": null
+   }
+},
+{
+   "pk": 4, 
+   "model": "modulo_movil.pedido_aux", 
+   "fields": {
+      "evento": 2, 
+      "total": null, 
+      "direccion_entrega": "", 
+      "codigo": null, 
+      "estado": "Creado", 
+      "fecha": "2014-06-18", 
+      "razon_social": "", 
+      "num_pedido": 222014140314211359, 
+      "fue_pagado": true, 
+      "tlf_fiscal": "", 
+      "fecha_entrega": null, 
+      "envio": 0, 
+      "id_fiscal": "", 
+      "direccion_fiscal": "", 
+      "comentario": "", 
+      "cliente": null, 
+      "lote": null
+   }
+},
+{
+   "pk": 1, 
+   "model": "modulo_movil.productoeventopedido_aux", 
+   "fields": {
+      "cantidad": 3, 
+      "producto": 1, 
+      "num_pedido": 22201414031419774, 
+      "ruta": "/media/Lexar/fotomov_imagenes//eventos/2014/Fotomov Deporte/Competencias de Gimnasia/Centro Italo Venezolano/Copa de Gimnasia Club Italo/Club Italo Venezolano/2014-05-31/Centro Italo Venezolano/Domingo Funci\u00f3n 8am/Grupo A/_MG_5792.JPG", 
+      "estado": "Pagado", 
+      "comentario": ""
+   }
+},
+{
+   "pk": 1, 
+   "model": "modulo_movil.pedidopago_aux", 
+   "fields": {
+      "monto": 200.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140313635566
+   }
+},
+{
+   "pk": 2, 
+   "model": "modulo_movil.pedidopago_aux", 
+   "fields": {
+      "monto": 0.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 222014140314172922
+   }
+},
+{
+   "pk": 3, 
+   "model": "modulo_movil.pedidopago_aux", 
+   "fields": {
+      "monto": 2352.0, 
+      "referencia": "123", 
+      "tipo_pago": 1, 
+      "num_pedido": 22201414031419774
+   }
+},
+{
+   "pk": 1, 
+   "model": "modulo_movil.configuracion", 
+   "fields": {
+      "nombre": "iva", 
+      "valor": "12"
+   }
+},
+{
+   "pk": 1, 
+   "model": "modulo_movil.configuracionempresa", 
+   "fields": {
+      "nombre": "pagina", 
+      "valor": "www.fotomov.com"
+   }
+},
+{
+   "pk": 2, 
+   "model": "modulo_movil.configuracionempresa", 
+   "fields": {
+      "nombre": "tlf", 
+      "valor": "02127518390"
+   }
+},
+{
+   "pk": 3, 
+   "model": "modulo_movil.configuracionempresa", 
+   "fields": {
+      "nombre": "celular", 
+      "valor": "04242863221"
+   }
+},
+{
+   "pk": 1, 
+   "model": "tareas.tarea", 
+   "fields": {
+      "evento": null, 
+      "fecha_activacion": "2014-06-17", 
+      "activa": true, 
+      "fecha": "2014-06-17", 
+      "asignado": 5, 
+      "es_periodica": false, 
+      "fue_hecha": false, 
+      "fecha_realizada": null, 
+      "nombre": "assd", 
+      "tarea": "asd", 
+      "lista": "None", 
+      "original": null
+   }
+},
+{
+   "pk": 1, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_permission", 
+      "name": "Can add permission", 
+      "content_type": [
+         "auth", 
+         "permission"
+      ]
+   }
+},
+{
+   "pk": 2, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_permission", 
+      "name": "Can change permission", 
+      "content_type": [
+         "auth", 
+         "permission"
+      ]
+   }
+},
+{
+   "pk": 3, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_permission", 
+      "name": "Can delete permission", 
+      "content_type": [
+         "auth", 
+         "permission"
+      ]
+   }
+},
+{
+   "pk": 4, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_group", 
+      "name": "Can add group", 
+      "content_type": [
+         "auth", 
+         "group"
+      ]
+   }
+},
+{
+   "pk": 5, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_group", 
+      "name": "Can change group", 
+      "content_type": [
+         "auth", 
+         "group"
+      ]
+   }
+},
+{
+   "pk": 6, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_group", 
+      "name": "Can delete group", 
+      "content_type": [
+         "auth", 
+         "group"
+      ]
+   }
+},
+{
+   "pk": 7, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_user", 
+      "name": "Can add user", 
+      "content_type": [
+         "auth", 
+         "user"
+      ]
+   }
+},
+{
+   "pk": 8, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_user", 
+      "name": "Can change user", 
+      "content_type": [
+         "auth", 
+         "user"
+      ]
+   }
+},
+{
+   "pk": 9, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_user", 
+      "name": "Can delete user", 
+      "content_type": [
+         "auth", 
+         "user"
+      ]
+   }
+},
+{
+   "pk": 10, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_contenttype", 
+      "name": "Can add content type", 
+      "content_type": [
+         "contenttypes", 
+         "contenttype"
+      ]
+   }
+},
+{
+   "pk": 11, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_contenttype", 
+      "name": "Can change content type", 
+      "content_type": [
+         "contenttypes", 
+         "contenttype"
+      ]
+   }
+},
+{
+   "pk": 12, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_contenttype", 
+      "name": "Can delete content type", 
+      "content_type": [
+         "contenttypes", 
+         "contenttype"
+      ]
+   }
+},
+{
+   "pk": 13, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_session", 
+      "name": "Can add session", 
+      "content_type": [
+         "sessions", 
+         "session"
+      ]
+   }
+},
+{
+   "pk": 14, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_session", 
+      "name": "Can change session", 
+      "content_type": [
+         "sessions", 
+         "session"
+      ]
+   }
+},
+{
+   "pk": 15, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_session", 
+      "name": "Can delete session", 
+      "content_type": [
+         "sessions", 
+         "session"
+      ]
+   }
+},
+{
+   "pk": 16, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_site", 
+      "name": "Can add site", 
+      "content_type": [
+         "sites", 
+         "site"
+      ]
+   }
+},
+{
+   "pk": 17, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_site", 
+      "name": "Can change site", 
+      "content_type": [
+         "sites", 
+         "site"
+      ]
+   }
+},
+{
+   "pk": 18, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_site", 
+      "name": "Can delete site", 
+      "content_type": [
+         "sites", 
+         "site"
+      ]
+   }
+},
+{
+   "pk": 19, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_logentry", 
+      "name": "Can add log entry", 
+      "content_type": [
+         "admin", 
+         "logentry"
+      ]
+   }
+},
+{
+   "pk": 20, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_logentry", 
+      "name": "Can change log entry", 
+      "content_type": [
+         "admin", 
+         "logentry"
+      ]
+   }
+},
+{
+   "pk": 21, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_logentry", 
+      "name": "Can delete log entry", 
+      "content_type": [
+         "admin", 
+         "logentry"
+      ]
+   }
+},
+{
+   "pk": 22, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_macrocliente", 
+      "name": "Can add macro cliente", 
+      "content_type": [
+         "clientes", 
+         "macrocliente"
+      ]
+   }
+},
+{
+   "pk": 23, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_macrocliente", 
+      "name": "Can change macro cliente", 
+      "content_type": [
+         "clientes", 
+         "macrocliente"
+      ]
+   }
+},
+{
+   "pk": 24, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_macrocliente", 
+      "name": "Can delete macro cliente", 
+      "content_type": [
+         "clientes", 
+         "macrocliente"
+      ]
+   }
+},
+{
+   "pk": 25, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_encargado", 
+      "name": "Can add encargado", 
+      "content_type": [
+         "clientes", 
+         "encargado"
+      ]
+   }
+},
+{
+   "pk": 26, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_encargado", 
+      "name": "Can change encargado", 
+      "content_type": [
+         "clientes", 
+         "encargado"
+      ]
+   }
+},
+{
+   "pk": 27, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_encargado", 
+      "name": "Can delete encargado", 
+      "content_type": [
+         "clientes", 
+         "encargado"
+      ]
+   }
+},
+{
+   "pk": 28, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_cliente", 
+      "name": "Can add cliente", 
+      "content_type": [
+         "clientes", 
+         "cliente"
+      ]
+   }
+},
+{
+   "pk": 29, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_cliente", 
+      "name": "Can change cliente", 
+      "content_type": [
+         "clientes", 
+         "cliente"
+      ]
+   }
+},
+{
+   "pk": 30, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_cliente", 
+      "name": "Can delete cliente", 
+      "content_type": [
+         "clientes", 
+         "cliente"
+      ]
+   }
+},
+{
+   "pk": 31, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_sede", 
+      "name": "Can add sede", 
+      "content_type": [
+         "clientes", 
+         "sede"
+      ]
+   }
+},
+{
+   "pk": 32, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_sede", 
+      "name": "Can change sede", 
+      "content_type": [
+         "clientes", 
+         "sede"
+      ]
+   }
+},
+{
+   "pk": 33, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_sede", 
+      "name": "Can delete sede", 
+      "content_type": [
+         "clientes", 
+         "sede"
+      ]
+   }
+},
+{
+   "pk": 34, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_tipos_eventos", 
+      "name": "Can add tipos_ eventos", 
+      "content_type": [
+         "evento", 
+         "tipos_eventos"
+      ]
+   }
+},
+{
+   "pk": 35, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_tipos_eventos", 
+      "name": "Can change tipos_ eventos", 
+      "content_type": [
+         "evento", 
+         "tipos_eventos"
+      ]
+   }
+},
+{
+   "pk": 36, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_tipos_eventos", 
+      "name": "Can delete tipos_ eventos", 
+      "content_type": [
+         "evento", 
+         "tipos_eventos"
+      ]
+   }
+},
+{
+   "pk": 37, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_evento", 
+      "name": "Can add evento", 
+      "content_type": [
+         "evento", 
+         "evento"
+      ]
+   }
+},
+{
+   "pk": 38, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_evento", 
+      "name": "Can change evento", 
+      "content_type": [
+         "evento", 
+         "evento"
+      ]
+   }
+},
+{
+   "pk": 39, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_evento", 
+      "name": "Can delete evento", 
+      "content_type": [
+         "evento", 
+         "evento"
+      ]
+   }
+},
+{
+   "pk": 40, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_funcion", 
+      "name": "Can add funcion", 
+      "content_type": [
+         "evento", 
+         "funcion"
+      ]
+   }
+},
+{
+   "pk": 41, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_funcion", 
+      "name": "Can change funcion", 
+      "content_type": [
+         "evento", 
+         "funcion"
+      ]
+   }
+},
+{
+   "pk": 42, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_funcion", 
+      "name": "Can delete funcion", 
+      "content_type": [
+         "evento", 
+         "funcion"
+      ]
+   }
+},
+{
+   "pk": 43, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_gasto", 
+      "name": "Can add gasto", 
+      "content_type": [
+         "evento", 
+         "gasto"
+      ]
+   }
+},
+{
+   "pk": 44, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_gasto", 
+      "name": "Can change gasto", 
+      "content_type": [
+         "evento", 
+         "gasto"
+      ]
+   }
+},
+{
+   "pk": 45, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_gasto", 
+      "name": "Can delete gasto", 
+      "content_type": [
+         "evento", 
+         "gasto"
+      ]
+   }
+},
+{
+   "pk": 46, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_gastos_funcion", 
+      "name": "Can add gastos_ funcion", 
+      "content_type": [
+         "evento", 
+         "gastos_funcion"
+      ]
+   }
+},
+{
+   "pk": 47, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_gastos_funcion", 
+      "name": "Can change gastos_ funcion", 
+      "content_type": [
+         "evento", 
+         "gastos_funcion"
+      ]
+   }
+},
+{
+   "pk": 48, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_gastos_funcion", 
+      "name": "Can delete gastos_ funcion", 
+      "content_type": [
+         "evento", 
+         "gastos_funcion"
+      ]
+   }
+},
+{
+   "pk": 49, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_pautas", 
+      "name": "Can add pautas", 
+      "content_type": [
+         "evento", 
+         "pautas"
+      ]
+   }
+},
+{
+   "pk": 50, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_pautas", 
+      "name": "Can change pautas", 
+      "content_type": [
+         "evento", 
+         "pautas"
+      ]
+   }
+},
+{
+   "pk": 51, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_pautas", 
+      "name": "Can delete pautas", 
+      "content_type": [
+         "evento", 
+         "pautas"
+      ]
+   }
+},
+{
+   "pk": 52, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_bloque", 
+      "name": "Can add bloque", 
+      "content_type": [
+         "evento", 
+         "bloque"
+      ]
+   }
+},
+{
+   "pk": 53, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_bloque", 
+      "name": "Can change bloque", 
+      "content_type": [
+         "evento", 
+         "bloque"
+      ]
+   }
+},
+{
+   "pk": 54, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_bloque", 
+      "name": "Can delete bloque", 
+      "content_type": [
+         "evento", 
+         "bloque"
+      ]
+   }
+},
+{
+   "pk": 55, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_marca", 
+      "name": "Can add marca", 
+      "content_type": [
+         "marca", 
+         "marca"
+      ]
+   }
+},
+{
+   "pk": 56, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_marca", 
+      "name": "Can change marca", 
+      "content_type": [
+         "marca", 
+         "marca"
+      ]
+   }
+},
+{
+   "pk": 57, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_marca", 
+      "name": "Can delete marca", 
+      "content_type": [
+         "marca", 
+         "marca"
+      ]
+   }
+},
+{
+   "pk": 58, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_submarca", 
+      "name": "Can add sub marca", 
+      "content_type": [
+         "marca", 
+         "submarca"
+      ]
+   }
+},
+{
+   "pk": 59, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_submarca", 
+      "name": "Can change sub marca", 
+      "content_type": [
+         "marca", 
+         "submarca"
+      ]
+   }
+},
+{
+   "pk": 60, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_submarca", 
+      "name": "Can delete sub marca", 
+      "content_type": [
+         "marca", 
+         "submarca"
+      ]
+   }
+},
+{
+   "pk": 61, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_privilegios", 
+      "name": "Can add privilegios", 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 62, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_privilegios", 
+      "name": "Can change privilegios", 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 63, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_privilegios", 
+      "name": "Can delete privilegios", 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 64, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_equipos", 
+      "name": "Can add equipos", 
+      "content_type": [
+         "staff", 
+         "equipos"
+      ]
+   }
+},
+{
+   "pk": 65, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_equipos", 
+      "name": "Can change equipos", 
+      "content_type": [
+         "staff", 
+         "equipos"
+      ]
+   }
+},
+{
+   "pk": 66, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_equipos", 
+      "name": "Can delete equipos", 
+      "content_type": [
+         "staff", 
+         "equipos"
+      ]
+   }
+},
+{
+   "pk": 67, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_experiencia", 
+      "name": "Can add experiencia", 
+      "content_type": [
+         "staff", 
+         "experiencia"
+      ]
+   }
+},
+{
+   "pk": 68, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_experiencia", 
+      "name": "Can change experiencia", 
+      "content_type": [
+         "staff", 
+         "experiencia"
+      ]
+   }
+},
+{
+   "pk": 69, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_experiencia", 
+      "name": "Can delete experiencia", 
+      "content_type": [
+         "staff", 
+         "experiencia"
+      ]
+   }
+},
+{
+   "pk": 70, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_datodepago", 
+      "name": "Can add dato de pago", 
+      "content_type": [
+         "staff", 
+         "datodepago"
+      ]
+   }
+},
+{
+   "pk": 71, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_datodepago", 
+      "name": "Can change dato de pago", 
+      "content_type": [
+         "staff", 
+         "datodepago"
+      ]
+   }
+},
+{
+   "pk": 72, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_datodepago", 
+      "name": "Can delete dato de pago", 
+      "content_type": [
+         "staff", 
+         "datodepago"
+      ]
+   }
+},
+{
+   "pk": 73, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_usuario", 
+      "name": "Can add usuario", 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 74, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_usuario", 
+      "name": "Can change usuario", 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 75, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_usuario", 
+      "name": "Can delete usuario", 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 76, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_tipostaff", 
+      "name": "Can add tipo staff", 
+      "content_type": [
+         "staff", 
+         "tipostaff"
+      ]
+   }
+},
+{
+   "pk": 77, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_tipostaff", 
+      "name": "Can change tipo staff", 
+      "content_type": [
+         "staff", 
+         "tipostaff"
+      ]
+   }
+},
+{
+   "pk": 78, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_tipostaff", 
+      "name": "Can delete tipo staff", 
+      "content_type": [
+         "staff", 
+         "tipostaff"
+      ]
+   }
+},
+{
+   "pk": 79, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_staffporfuncion", 
+      "name": "Can add staff por funcion", 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 80, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_staffporfuncion", 
+      "name": "Can change staff por funcion", 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 81, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_staffporfuncion", 
+      "name": "Can delete staff por funcion", 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 82, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_asistenciastafffuncion", 
+      "name": "Can add asistencia staff funcion", 
+      "content_type": [
+         "staff", 
+         "asistenciastafffuncion"
+      ]
+   }
+},
+{
+   "pk": 83, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_asistenciastafffuncion", 
+      "name": "Can change asistencia staff funcion", 
+      "content_type": [
+         "staff", 
+         "asistenciastafffuncion"
+      ]
+   }
+},
+{
+   "pk": 84, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_asistenciastafffuncion", 
+      "name": "Can delete asistencia staff funcion", 
+      "content_type": [
+         "staff", 
+         "asistenciastafffuncion"
+      ]
+   }
+},
+{
+   "pk": 85, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_archivoadjunto", 
+      "name": "Can add archivo adjunto", 
+      "content_type": [
+         "staff", 
+         "archivoadjunto"
+      ]
+   }
+},
+{
+   "pk": 86, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_archivoadjunto", 
+      "name": "Can change archivo adjunto", 
+      "content_type": [
+         "staff", 
+         "archivoadjunto"
+      ]
+   }
+},
+{
+   "pk": 87, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_archivoadjunto", 
+      "name": "Can delete archivo adjunto", 
+      "content_type": [
+         "staff", 
+         "archivoadjunto"
+      ]
+   }
+},
+{
+   "pk": 88, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_direccion", 
+      "name": "Can add direccion", 
+      "content_type": [
+         "direcciones", 
+         "direccion"
+      ]
+   }
+},
+{
+   "pk": 89, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_direccion", 
+      "name": "Can change direccion", 
+      "content_type": [
+         "direcciones", 
+         "direccion"
+      ]
+   }
+},
+{
+   "pk": 90, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_direccion", 
+      "name": "Can delete direccion", 
+      "content_type": [
+         "direcciones", 
+         "direccion"
+      ]
+   }
+},
+{
+   "pk": 91, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_proveedor", 
+      "name": "Can add proveedor", 
+      "content_type": [
+         "productos", 
+         "proveedor"
+      ]
+   }
+},
+{
+   "pk": 92, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_proveedor", 
+      "name": "Can change proveedor", 
+      "content_type": [
+         "productos", 
+         "proveedor"
+      ]
+   }
+},
+{
+   "pk": 93, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_proveedor", 
+      "name": "Can delete proveedor", 
+      "content_type": [
+         "productos", 
+         "proveedor"
+      ]
+   }
+},
+{
+   "pk": 94, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_items", 
+      "name": "Can add items", 
+      "content_type": [
+         "productos", 
+         "items"
+      ]
+   }
+},
+{
+   "pk": 95, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_items", 
+      "name": "Can change items", 
+      "content_type": [
+         "productos", 
+         "items"
+      ]
+   }
+},
+{
+   "pk": 96, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_items", 
+      "name": "Can delete items", 
+      "content_type": [
+         "productos", 
+         "items"
+      ]
+   }
+},
+{
+   "pk": 97, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_itemsprestado", 
+      "name": "Can add items prestado", 
+      "content_type": [
+         "productos", 
+         "itemsprestado"
+      ]
+   }
+},
+{
+   "pk": 98, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_itemsprestado", 
+      "name": "Can change items prestado", 
+      "content_type": [
+         "productos", 
+         "itemsprestado"
+      ]
+   }
+},
+{
+   "pk": 99, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_itemsprestado", 
+      "name": "Can delete items prestado", 
+      "content_type": [
+         "productos", 
+         "itemsprestado"
+      ]
+   }
+},
+{
+   "pk": 100, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_formadepago", 
+      "name": "Can add forma de pago", 
+      "content_type": [
+         "productos", 
+         "formadepago"
+      ]
+   }
+},
+{
+   "pk": 101, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_formadepago", 
+      "name": "Can change forma de pago", 
+      "content_type": [
+         "productos", 
+         "formadepago"
+      ]
+   }
+},
+{
+   "pk": 102, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_formadepago", 
+      "name": "Can delete forma de pago", 
+      "content_type": [
+         "productos", 
+         "formadepago"
+      ]
+   }
+},
+{
+   "pk": 103, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_lote", 
+      "name": "Can add lote", 
+      "content_type": [
+         "productos", 
+         "lote"
+      ]
+   }
+},
+{
+   "pk": 104, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_lote", 
+      "name": "Can change lote", 
+      "content_type": [
+         "productos", 
+         "lote"
+      ]
+   }
+},
+{
+   "pk": 105, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_lote", 
+      "name": "Can delete lote", 
+      "content_type": [
+         "productos", 
+         "lote"
+      ]
+   }
+},
+{
+   "pk": 106, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_producto", 
+      "name": "Can add producto", 
+      "content_type": [
+         "productos", 
+         "producto"
+      ]
+   }
+},
+{
+   "pk": 107, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_producto", 
+      "name": "Can change producto", 
+      "content_type": [
+         "productos", 
+         "producto"
+      ]
+   }
+},
+{
+   "pk": 108, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_producto", 
+      "name": "Can delete producto", 
+      "content_type": [
+         "productos", 
+         "producto"
+      ]
+   }
+},
+{
+   "pk": 109, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_productoevento", 
+      "name": "Can add producto evento", 
+      "content_type": [
+         "productos", 
+         "productoevento"
+      ]
+   }
+},
+{
+   "pk": 110, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_productoevento", 
+      "name": "Can change producto evento", 
+      "content_type": [
+         "productos", 
+         "productoevento"
+      ]
+   }
+},
+{
+   "pk": 111, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_productoevento", 
+      "name": "Can delete producto evento", 
+      "content_type": [
+         "productos", 
+         "productoevento"
+      ]
+   }
+},
+{
+   "pk": 112, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_productoimpresion", 
+      "name": "Can add producto impresion", 
+      "content_type": [
+         "productos", 
+         "productoimpresion"
+      ]
+   }
+},
+{
+   "pk": 113, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_productoimpresion", 
+      "name": "Can change producto impresion", 
+      "content_type": [
+         "productos", 
+         "productoimpresion"
+      ]
+   }
+},
+{
+   "pk": 114, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_productoimpresion", 
+      "name": "Can delete producto impresion", 
+      "content_type": [
+         "productos", 
+         "productoimpresion"
+      ]
+   }
+},
+{
+   "pk": 115, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_productoeventopedido", 
+      "name": "Can add producto evento pedido", 
+      "content_type": [
+         "productos", 
+         "productoeventopedido"
+      ]
+   }
+},
+{
+   "pk": 116, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_productoeventopedido", 
+      "name": "Can change producto evento pedido", 
+      "content_type": [
+         "productos", 
+         "productoeventopedido"
+      ]
+   }
+},
+{
+   "pk": 117, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_productoeventopedido", 
+      "name": "Can delete producto evento pedido", 
+      "content_type": [
+         "productos", 
+         "productoeventopedido"
+      ]
+   }
+},
+{
+   "pk": 118, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_tipoenvio", 
+      "name": "Can add tipo envio", 
+      "content_type": [
+         "productos", 
+         "tipoenvio"
+      ]
+   }
+},
+{
+   "pk": 119, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_tipoenvio", 
+      "name": "Can change tipo envio", 
+      "content_type": [
+         "productos", 
+         "tipoenvio"
+      ]
+   }
+},
+{
+   "pk": 120, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_tipoenvio", 
+      "name": "Can delete tipo envio", 
+      "content_type": [
+         "productos", 
+         "tipoenvio"
+      ]
+   }
+},
+{
+   "pk": 121, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_pedido", 
+      "name": "Can add pedido", 
+      "content_type": [
+         "productos", 
+         "pedido"
+      ]
+   }
+},
+{
+   "pk": 122, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_pedido", 
+      "name": "Can change pedido", 
+      "content_type": [
+         "productos", 
+         "pedido"
+      ]
+   }
+},
+{
+   "pk": 123, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_pedido", 
+      "name": "Can delete pedido", 
+      "content_type": [
+         "productos", 
+         "pedido"
+      ]
+   }
+},
+{
+   "pk": 124, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_pedidopago", 
+      "name": "Can add pedido pago", 
+      "content_type": [
+         "productos", 
+         "pedidopago"
+      ]
+   }
+},
+{
+   "pk": 125, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_pedidopago", 
+      "name": "Can change pedido pago", 
+      "content_type": [
+         "productos", 
+         "pedidopago"
+      ]
+   }
+},
+{
+   "pk": 126, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_pedidopago", 
+      "name": "Can delete pedido pago", 
+      "content_type": [
+         "productos", 
+         "pedidopago"
+      ]
+   }
+},
+{
+   "pk": 127, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_productoeventocombo", 
+      "name": "Can add productoevento combo", 
+      "content_type": [
+         "productos", 
+         "productoeventocombo"
+      ]
+   }
+},
+{
+   "pk": 128, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_productoeventocombo", 
+      "name": "Can change productoevento combo", 
+      "content_type": [
+         "productos", 
+         "productoeventocombo"
+      ]
+   }
+},
+{
+   "pk": 129, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_productoeventocombo", 
+      "name": "Can delete productoevento combo", 
+      "content_type": [
+         "productos", 
+         "productoeventocombo"
+      ]
+   }
+},
+{
+   "pk": 130, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_enviopedido", 
+      "name": "Can add envio pedido", 
+      "content_type": [
+         "productos", 
+         "enviopedido"
+      ]
+   }
+},
+{
+   "pk": 131, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_enviopedido", 
+      "name": "Can change envio pedido", 
+      "content_type": [
+         "productos", 
+         "enviopedido"
+      ]
+   }
+},
+{
+   "pk": 132, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_enviopedido", 
+      "name": "Can delete envio pedido", 
+      "content_type": [
+         "productos", 
+         "enviopedido"
+      ]
+   }
+},
+{
+   "pk": 133, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_direccionfuncion", 
+      "name": "Can add direccion funcion", 
+      "content_type": [
+         "modulo_movil", 
+         "direccionfuncion"
+      ]
+   }
+},
+{
+   "pk": 134, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_direccionfuncion", 
+      "name": "Can change direccion funcion", 
+      "content_type": [
+         "modulo_movil", 
+         "direccionfuncion"
+      ]
+   }
+},
+{
+   "pk": 135, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_direccionfuncion", 
+      "name": "Can delete direccion funcion", 
+      "content_type": [
+         "modulo_movil", 
+         "direccionfuncion"
+      ]
+   }
+},
+{
+   "pk": 136, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_direcciones_exportacion", 
+      "name": "Can add direcciones_exportacion", 
+      "content_type": [
+         "modulo_movil", 
+         "direcciones_exportacion"
+      ]
+   }
+},
+{
+   "pk": 137, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_direcciones_exportacion", 
+      "name": "Can change direcciones_exportacion", 
+      "content_type": [
+         "modulo_movil", 
+         "direcciones_exportacion"
+      ]
+   }
+},
+{
+   "pk": 138, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_direcciones_exportacion", 
+      "name": "Can delete direcciones_exportacion", 
+      "content_type": [
+         "modulo_movil", 
+         "direcciones_exportacion"
+      ]
+   }
+},
+{
+   "pk": 139, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_directorio_actual", 
+      "name": "Can add directorio_actual", 
+      "content_type": [
+         "modulo_movil", 
+         "directorio_actual"
+      ]
+   }
+},
+{
+   "pk": 140, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_directorio_actual", 
+      "name": "Can change directorio_actual", 
+      "content_type": [
+         "modulo_movil", 
+         "directorio_actual"
+      ]
+   }
+},
+{
+   "pk": 141, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_directorio_actual", 
+      "name": "Can delete directorio_actual", 
+      "content_type": [
+         "modulo_movil", 
+         "directorio_actual"
+      ]
+   }
+},
+{
+   "pk": 142, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_cliente_aux", 
+      "name": "Can add cliente_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "cliente_aux"
+      ]
+   }
+},
+{
+   "pk": 143, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_cliente_aux", 
+      "name": "Can change cliente_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "cliente_aux"
+      ]
+   }
+},
+{
+   "pk": 144, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_cliente_aux", 
+      "name": "Can delete cliente_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "cliente_aux"
+      ]
+   }
+},
+{
+   "pk": 145, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_pedido_aux", 
+      "name": "Can add pedido_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "pedido_aux"
+      ]
+   }
+},
+{
+   "pk": 146, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_pedido_aux", 
+      "name": "Can change pedido_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "pedido_aux"
+      ]
+   }
+},
+{
+   "pk": 147, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_pedido_aux", 
+      "name": "Can delete pedido_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "pedido_aux"
+      ]
+   }
+},
+{
+   "pk": 148, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_productoeventopedido_aux", 
+      "name": "Can add producto evento pedido_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "productoeventopedido_aux"
+      ]
+   }
+},
+{
+   "pk": 149, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_productoeventopedido_aux", 
+      "name": "Can change producto evento pedido_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "productoeventopedido_aux"
+      ]
+   }
+},
+{
+   "pk": 150, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_productoeventopedido_aux", 
+      "name": "Can delete producto evento pedido_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "productoeventopedido_aux"
+      ]
+   }
+},
+{
+   "pk": 151, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_pedidopago_aux", 
+      "name": "Can add pedido pago_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "pedidopago_aux"
+      ]
+   }
+},
+{
+   "pk": 152, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_pedidopago_aux", 
+      "name": "Can change pedido pago_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "pedidopago_aux"
+      ]
+   }
+},
+{
+   "pk": 153, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_pedidopago_aux", 
+      "name": "Can delete pedido pago_aux", 
+      "content_type": [
+         "modulo_movil", 
+         "pedidopago_aux"
+      ]
+   }
+},
+{
+   "pk": 154, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_configuracion", 
+      "name": "Can add configuracion", 
+      "content_type": [
+         "modulo_movil", 
+         "configuracion"
+      ]
+   }
+},
+{
+   "pk": 155, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_configuracion", 
+      "name": "Can change configuracion", 
+      "content_type": [
+         "modulo_movil", 
+         "configuracion"
+      ]
+   }
+},
+{
+   "pk": 156, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_configuracion", 
+      "name": "Can delete configuracion", 
+      "content_type": [
+         "modulo_movil", 
+         "configuracion"
+      ]
+   }
+},
+{
+   "pk": 157, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_configuracionempresa", 
+      "name": "Can add configuracion empresa", 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 158, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_configuracionempresa", 
+      "name": "Can change configuracion empresa", 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 159, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_configuracionempresa", 
+      "name": "Can delete configuracion empresa", 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 160, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_tarea", 
+      "name": "Can add tarea", 
+      "content_type": [
+         "tareas", 
+         "tarea"
+      ]
+   }
+},
+{
+   "pk": 161, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_tarea", 
+      "name": "Can change tarea", 
+      "content_type": [
+         "tareas", 
+         "tarea"
+      ]
+   }
+},
+{
+   "pk": 162, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_tarea", 
+      "name": "Can delete tarea", 
+      "content_type": [
+         "tareas", 
+         "tarea"
+      ]
+   }
+},
+{
+   "pk": 163, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_prela", 
+      "name": "Can add prela", 
+      "content_type": [
+         "tareas", 
+         "prela"
+      ]
+   }
+},
+{
+   "pk": 164, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_prela", 
+      "name": "Can change prela", 
+      "content_type": [
+         "tareas", 
+         "prela"
+      ]
+   }
+},
+{
+   "pk": 165, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_prela", 
+      "name": "Can delete prela", 
+      "content_type": [
+         "tareas", 
+         "prela"
+      ]
+   }
+},
+{
+   "pk": 166, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_tareatipoevento", 
+      "name": "Can add tarea tipo evento", 
+      "content_type": [
+         "tareas", 
+         "tareatipoevento"
+      ]
+   }
+},
+{
+   "pk": 167, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_tareatipoevento", 
+      "name": "Can change tarea tipo evento", 
+      "content_type": [
+         "tareas", 
+         "tareatipoevento"
+      ]
+   }
+},
+{
+   "pk": 168, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_tareatipoevento", 
+      "name": "Can delete tarea tipo evento", 
+      "content_type": [
+         "tareas", 
+         "tareatipoevento"
+      ]
+   }
+},
+{
+   "pk": 169, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_prelatareatipoevento", 
+      "name": "Can add prela tarea tipo evento", 
+      "content_type": [
+         "tareas", 
+         "prelatareatipoevento"
+      ]
+   }
+},
+{
+   "pk": 170, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_prelatareatipoevento", 
+      "name": "Can change prela tarea tipo evento", 
+      "content_type": [
+         "tareas", 
+         "prelatareatipoevento"
+      ]
+   }
+},
+{
+   "pk": 171, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_prelatareatipoevento", 
+      "name": "Can delete prela tarea tipo evento", 
+      "content_type": [
+         "tareas", 
+         "prelatareatipoevento"
+      ]
+   }
+},
+{
+   "pk": 172, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_notificacion", 
+      "name": "Can add notificacion", 
+      "content_type": [
+         "tareas", 
+         "notificacion"
+      ]
+   }
+},
+{
+   "pk": 173, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_notificacion", 
+      "name": "Can change notificacion", 
+      "content_type": [
+         "tareas", 
+         "notificacion"
+      ]
+   }
+},
+{
+   "pk": 174, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_notificacion", 
+      "name": "Can delete notificacion", 
+      "content_type": [
+         "tareas", 
+         "notificacion"
+      ]
+   }
+},
+{
+   "pk": 175, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_tipodegasto", 
+      "name": "Can add tipo de gasto", 
+      "content_type": [
+         "administracion", 
+         "tipodegasto"
+      ]
+   }
+},
+{
+   "pk": 176, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_tipodegasto", 
+      "name": "Can change tipo de gasto", 
+      "content_type": [
+         "administracion", 
+         "tipodegasto"
+      ]
+   }
+},
+{
+   "pk": 177, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_tipodegasto", 
+      "name": "Can delete tipo de gasto", 
+      "content_type": [
+         "administracion", 
+         "tipodegasto"
+      ]
+   }
+},
+{
+   "pk": 178, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_gastoadministracion", 
+      "name": "Can add gasto administracion", 
+      "content_type": [
+         "administracion", 
+         "gastoadministracion"
+      ]
+   }
+},
+{
+   "pk": 179, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_gastoadministracion", 
+      "name": "Can change gasto administracion", 
+      "content_type": [
+         "administracion", 
+         "gastoadministracion"
+      ]
+   }
+},
+{
+   "pk": 180, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_gastoadministracion", 
+      "name": "Can delete gasto administracion", 
+      "content_type": [
+         "administracion", 
+         "gastoadministracion"
+      ]
+   }
+},
+{
+   "pk": 181, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_gastoevento", 
+      "name": "Can add gasto evento", 
+      "content_type": [
+         "administracion", 
+         "gastoevento"
+      ]
+   }
+},
+{
+   "pk": 182, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_gastoevento", 
+      "name": "Can change gasto evento", 
+      "content_type": [
+         "administracion", 
+         "gastoevento"
+      ]
+   }
+},
+{
+   "pk": 183, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_gastoevento", 
+      "name": "Can delete gasto evento", 
+      "content_type": [
+         "administracion", 
+         "gastoevento"
+      ]
+   }
+},
+{
+   "pk": 184, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "add_pago", 
+      "name": "Can add pago", 
+      "content_type": [
+         "administracion", 
+         "pago"
+      ]
+   }
+},
+{
+   "pk": 185, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "change_pago", 
+      "name": "Can change pago", 
+      "content_type": [
+         "administracion", 
+         "pago"
+      ]
+   }
+},
+{
+   "pk": 186, 
+   "model": "auth.permission", 
+   "fields": {
+      "codename": "delete_pago", 
+      "name": "Can delete pago", 
+      "content_type": [
+         "administracion", 
+         "pago"
+      ]
+   }
+},
+{
+   "pk": 1, 
+   "model": "auth.user", 
+   "fields": {
+      "username": "fotomov", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2014-06-19T15:54:18.454Z", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "pbkdf2_sha256$10000$gjblzvtN6lwu$mkrEnf2pQf2d0bCObBAjNucB8xnhqOkXbFcrcAqquT4=", 
+      "email": "", 
+      "date_joined": "2014-06-17T21:19:41.936Z"
+   }
+},
+{
+   "pk": 1, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:21:56.676Z", 
+      "object_repr": "Administrador", 
+      "object_id": "1", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 2, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:22:02.297Z", 
+      "object_repr": "Logistica", 
+      "object_id": "2", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 3, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:22:09.776Z", 
+      "object_repr": "Edicion", 
+      "object_id": "3", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 4, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:22:15.125Z", 
+      "object_repr": "Comunicacion", 
+      "object_id": "4", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 5, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:22:20.133Z", 
+      "object_repr": "Gerencia", 
+      "object_id": "5", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "privilegios"
+      ]
+   }
+},
+{
+   "pk": 6, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:22:36.257Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 7, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:23:01.804Z", 
+      "object_repr": "ConfiguracionEmpresa object", 
+      "object_id": "1", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 8, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:23:23.314Z", 
+      "object_repr": "ConfiguracionEmpresa object", 
+      "object_id": "2", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 9, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:23:31.050Z", 
+      "object_repr": "ConfiguracionEmpresa object", 
+      "object_id": "3", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 10, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-17T21:23:37.912Z", 
+      "object_repr": "ConfiguracionEmpresa object", 
+      "object_id": "2", 
+      "change_message": "Modificado/a valor.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "modulo_movil", 
+         "configuracionempresa"
+      ]
+   }
+},
+{
+   "pk": 11, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 1, 
+      "action_time": "2014-06-17T21:23:48.196Z", 
+      "object_repr": "Configuracion object", 
+      "object_id": "1", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "modulo_movil", 
+         "configuracion"
+      ]
+   }
+},
+{
+   "pk": 12, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:39.932Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "12", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 13, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:40.151Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "11", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 14, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:40.318Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "10", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 15, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:40.486Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "9", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 16, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:40.654Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "8", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 17, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:40.821Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "7", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 18, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:40.990Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "6", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 19, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:41.156Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "5", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 20, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:41.336Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "4", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 21, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:41.504Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "3", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 22, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:41.648Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "2", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 23, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-17T23:03:41.794Z", 
+      "object_repr": "StaffPorFuncion object", 
+      "object_id": "1", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "staffporfuncion"
+      ]
+   }
+},
+{
+   "pk": 24, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T19:46:46.365Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 25, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T19:52:42.786Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 26, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T19:52:53.521Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 27, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T19:54:03.443Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 28, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T19:56:28.904Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 29, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T19:58:07.311Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 30, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:01:07.449Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 31, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:01:27.095Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 32, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:01:33.430Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "No ha cambiado ning\u00fan campo.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 33, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:05:44.469Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 34, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:05:58.852Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 35, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:15:58.642Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 36, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:16:21.992Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 37, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:24:48.376Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 38, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:28:21.208Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 39, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:37:33.086Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 40, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:38:40.636Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 41, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:40:01.514Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 42, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T20:42:10.188Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 43, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T23:22:26.375Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 44, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T23:23:26.124Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 45, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 2, 
+      "action_time": "2014-06-18T23:23:35.742Z", 
+      "object_repr": "Usuario object", 
+      "object_id": "1", 
+      "change_message": "Modificado/a privilegio.", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "staff", 
+         "usuario"
+      ]
+   }
+},
+{
+   "pk": 46, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-19T01:55:38.437Z", 
+      "object_repr": "Pedido object", 
+      "object_id": "4", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "productos", 
+         "pedido"
+      ]
+   }
+},
+{
+   "pk": 47, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-19T01:55:38.636Z", 
+      "object_repr": "Pedido object", 
+      "object_id": "3", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "productos", 
+         "pedido"
+      ]
+   }
+},
+{
+   "pk": 48, 
+   "model": "admin.logentry", 
+   "fields": {
+      "action_flag": 3, 
+      "action_time": "2014-06-19T01:55:38.826Z", 
+      "object_repr": "Pedido object", 
+      "object_id": "2", 
+      "change_message": "", 
+      "user": [
+         "fotomov"
+      ], 
+      "content_type": [
+         "productos", 
+         "pedido"
+      ]
+   }
+},
+{
+   "pk": 1, 
+   "model": "staff.usuario", 
+   "fields": {
+      "telefono_otro": "", 
+      "equipos": null, 
+      "apellido": "", 
+      "usuario": [
+         "fotomov"
+      ], 
+      "twitter": "", 
+      "experiencia": null, 
+      "telefono_fijo": "", 
+      "privilegio": 5, 
+      "datos_pago": null, 
+      "nombre": "", 
+      "email": "", 
+      "cedula": "", 
+      "telefono_celular": ""
+   }
+}
+]

@@ -6,7 +6,7 @@ from clientes.models import Cliente
 
 class Privilegios(models.Model):
     valor = models.IntegerField()
-    nombre = models.TextField(max_length=60,unique=True)
+    nombre = models.CharField(max_length=60,unique=True)
     def __unicode__(self):
         return self.nombre
 

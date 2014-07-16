@@ -25,7 +25,11 @@ Nueva forma de pago
             <table class="table table-striped table-responsive">
                 <thead><th colspan="2">Tipos de pagos</th></thead>
                 {% for pago in pagos %}
-                <tr id="te-{{ pago.id }}"><td>{{ pago.nombre }}</td><td> <a class="btn btn-xs btn-danger" onclick="deleteAlert('{{ pago.id }}')">Eliminar</a>  <input type="button" class="btn btn-xs btn-success" onclick="eliminarTipoEvento('te-{{ pago.id }}')" value='Editar'></td></tr>
+                <tr id="te-{{ pago.id }}"><td>{{ pago.nombre }}{% if pago.pagado %}/Pago{% endif %}{% if pago.descuento %}/Descuento{% endif %}</td>
+                    <td> <a class="btn btn-xs btn-danger" onclick="deleteAlert('{{ pago.id }}')">Eliminar</a>
+                    <a href="/editar_forma_de_pago/{{ pago.id }}" class="btn btn-xs btn-success">Editar</a>
+                    </td>
+                </tr>
                 {% endfor %}
             </table>
         </div>

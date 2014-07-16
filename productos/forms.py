@@ -19,10 +19,13 @@ class PedidoCajaForm(forms.ModelForm):
         model = Pedido
         exclude = ['cliente', 'fecha', 'num_pedido', 'fecha_entrega', 'total', 'codigo', 'envio', 'fue_pagado',
                    'lote', 'estado', 'factura', 'direccion_entrega', 'evento', 'descuento']
+
     def __init__(self, *args, **kwargs):
         super(PedidoCajaForm, self).__init__(*args, **kwargs)
         for key in self.fields:
-            self.fields[key].required = True
+          self.fields[key].required = True
+
+        self.fields['comentario'].required = False
 
 class PedidoPagoForm(forms.Form):
     tipos = FormaDePago.objects.all()
