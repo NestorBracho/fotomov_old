@@ -63,7 +63,8 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(RUTA_PROYECTO,'fotomov_imagenes')
+MEDIA_ROOT = '/home/leonardo/Imagenes/fotomov_imagenes'
+#os.path.join(RUTA_PROYECTO,'fotomov_imagenes')
 #'/Users/imac/Pictures/fotomov_imagenes/'
 #'/media/Lexar/fotomov_imagenes'
 

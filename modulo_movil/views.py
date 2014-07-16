@@ -886,54 +886,48 @@ def eliminar_ProductoEventoPedido(request, id, id_funcion):
 
 @login_required(login_url='/')
 def generar_lote(request):
-
     pedidos = Pedido.objects.filter(fue_pagado = True, lote = None)
-    print pedidos
-    for pedido in pedidos:
-        print pedido.num_pedido
     hora = str(datetime.datetime.today().day)+str(datetime.datetime.today().month)+str(datetime.datetime.today().year)+str(datetime.datetime.today().hour)+str(datetime.datetime.today().minute)
     rutalote = ''
     for pedido in pedidos:
         if pedido.cliente != None:
             peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido, producto__es_combo=False)
-            print peps
-            for pep in peps:
-                print pep.producto.es_combo
+            #for pep in peps:
+            if len(peps) > 1:
                 nom = pedido.cliente.nombres.split(' ')
                 nom = nom[0]
                 ape = pedido.cliente.apellidos.split(' ')
                 ape = ape[0]
                 client = ape + nom
                 #ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + client + '-' + str(pedido.num_pedido) + '/'
-                ruta = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/' + nom + '-' + pedido.cliente.apellidos + '-' + str(pedido.num_pedido) + '/'
-                rutalote = settings.MEDIA_ROOT + "/lotes/"  + pep.producto.evento.nombre + '-' + hora + '/'
+                ruta = settings.MEDIA_ROOT + "/lotes/"  + peps[0].producto.evento.nombre + '-' + hora + '/' + nom + '-' + pedido.cliente.apellidos + '-' + str(pedido.num_pedido) + '/'
+                print ruta
+                rutalote = settings.MEDIA_ROOT + "/lotes/"  + peps[0].producto.evento.nombre + '-' + hora + '/'
                 if not os.path.exists(rutalote):
                     os.makedirs(rutalote)
-                    lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = pep.producto.evento.nombre + '-' + hora)
+                    lote = Lote.objects.create(estado = 'Edicion', fecha = date.today(), ruta = rutalote, codigo = peps[0].producto.evento.nombre + '-' + hora)
                     lote.save()
                 if pedido.lote == None:
                     pedido.lote = lote
                     pedido.save()
-            productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido)
-            for producto in productos:
-                #if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                if not os.path.exists(ruta + producto.producto.producto.nombre + '/'):
-                    #os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                    os.makedirs(ruta + producto.producto.producto.nombre + '/')
-                for i in range(producto.cantidad):
-                    auxr = producto.ruta.split('/')
-                    auxr = auxr[(len(auxr)-1)]
-                    auxr = auxr.split('.')
-                    auxr = auxr[0]
-                    aux_ruta_producto = producto.ruta.split('fotomov_imagenes')
-                    ruta_orig = settings.MEDIA_ROOT + aux_ruta_producto[1]
-                    try:
-                        print producto.ruta
-                        print ruta
-                        #shutil.copy(normalize('NFKD', ruta_orig).encode('ascii', 'ignore'), normalize('NFKD', ruta).encode('ascii', 'ignore') + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
-                        shutil.copy(normalize('NFKD', ruta_orig).encode('ascii', 'ignore'), normalize('NFKD', ruta).encode('ascii', 'ignore') + producto.producto.producto.nombre + '/' + auxr + '.' + str(i+1) + '.jpg')
-                    except:
-                        pass
+            #productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido, producto__es_combo=False)
+                for producto in peps:
+                    #if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
+                    if not os.path.exists(ruta + producto.producto.producto.nombre + '/'):
+                        #os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
+                        os.makedirs(ruta + producto.producto.producto.nombre + '/')
+                    for i in range(producto.cantidad):
+                        auxr = producto.ruta.split('/')
+                        auxr = auxr[(len(auxr)-1)]
+                        auxr = auxr.split('.')
+                        auxr = auxr[0]
+                        aux_ruta_producto = producto.ruta.split('fotomov_imagenes')
+                        ruta_orig = settings.MEDIA_ROOT + aux_ruta_producto[1]
+                        try:
+                            #shutil.copy(normalize('NFKD', ruta_orig).encode('ascii', 'ignore'), normalize('NFKD', ruta).encode('ascii', 'ignore') + producto.producto.producto.nombre + '.' + str(producto.id) + '/' + auxr + '.' + str(i+1) + '.jpg')
+                            shutil.copy(normalize('NFKD', ruta_orig).encode('ascii', 'ignore'), normalize('NFKD', ruta).encode('ascii', 'ignore') + producto.producto.producto.nombre + '/' + auxr + '.' + str(i+1) + '.jpg')
+                        except:
+                            pass
         pedido.estado = "Edicion"
         pedido.save()
     return HttpResponseRedirect('/escritorio/')
