@@ -237,7 +237,7 @@ def cambiar_estado_lotes_desde_administrar_pedidos(request):
 
 @login_required(login_url='/')
 def listar_pedidos(request):
-    pedidos = Pedido.objects.all().exclude(cliente=None)
+    pedidos = Pedido.objects.filter(fue_pagado=True).exclude(cliente=None)
     lista = []
     for pedido in pedidos:
         pagos = PedidoPago.objects.filter(num_pedido = pedido.num_pedido)
