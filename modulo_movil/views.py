@@ -1050,7 +1050,19 @@ def generar_pedido(request, pedido, cedula, id_evento):
             try:
                 imprimir_ticket(pedido_nuevo, id_evento)
             except:
-               print "impresora desconectada"
+                titulo = "Tu Recibo electronico de Fotomov! "
+                contenido = "Hola!, tu numero de recibo para tu pedido de hoy es: "
+                busca="nada"
+                cliente= Cliente.objects.get(cedula=pedido_nuevo.cliente.cedula)
+                titulo = titulo + cliente.nombres
+                contenido = contenido + str(pedido.codigo) + "\n"
+                contenido = contenido + "\nGracias por preferirnos!!"
+                correo = EmailMessage(titulo, contenido, to=[cliente.email])
+                try:
+                    correo.send()
+                    mensaje = "The email was sent correctly"
+                except:
+                    mensaje= 'error sending the emal'
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)

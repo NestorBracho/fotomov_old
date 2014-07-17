@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b608c0c-187a-4bd0-ab6c-c9b84b525ae7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/productos/views.py" afterPath="$PROJECT_DIR$/productos/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modulo_movil/views.py" afterPath="$PROJECT_DIR$/modulo_movil/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fotomov.iws" />
@@ -72,19 +72,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="932" column="47" selection-start="43266" selection-end="43266" vertical-scroll-proportion="-19.222221" vertical-offset="15753" max-vertical-offset="21204">
-              <folding />
+            <state line="1055" column="80" selection-start="49108" selection-end="49108" vertical-scroll-proportion="0.54684836" vertical-offset="18669" max-vertical-offset="21924">
+              <folding>
+                <element signature="e#26#37#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/productos/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="242" column="73" selection-start="10200" selection-end="10200" vertical-scroll-proportion="0.36286202" vertical-offset="3819" max-vertical-offset="7794">
+            <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="-41.74074" vertical-offset="6019" max-vertical-offset="7794">
               <folding />
             </state>
           </provider>
@@ -128,8 +130,8 @@
       <list>
         <option value="$PROJECT_DIR$/staff/views.py" />
         <option value="$PROJECT_DIR$/fotomov/settings.py" />
-        <option value="$PROJECT_DIR$/modulo_movil/views.py" />
         <option value="$PROJECT_DIR$/productos/views.py" />
+        <option value="$PROJECT_DIR$/modulo_movil/views.py" />
       </list>
     </option>
   </component>
@@ -464,7 +466,11 @@
       <created>1405600608021</created>
       <updated>1405600608021</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Listar pedidos pagados bien">
+      <created>1405600792021</created>
+      <updated>1405600792021</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -506,7 +512,8 @@
     </option>
     <MESSAGE value="funcion de lostes mejorada" />
     <MESSAGE value="Generar lotes ya funciona con caracteres especiales normalizados" />
-    <option name="LAST_COMMIT_MESSAGE" value="Generar lotes ya funciona con caracteres especiales normalizados" />
+    <MESSAGE value="Listar pedidos pagados bien" />
+    <option name="LAST_COMMIT_MESSAGE" value="Listar pedidos pagados bien" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -522,7 +529,9 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="910" column="38" selection-start="41504" selection-end="41504" vertical-scroll-proportion="0.0" vertical-offset="16380" max-vertical-offset="21204">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -571,7 +580,9 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="40" selection-start="2288" selection-end="2288" vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="21312">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -613,7 +624,9 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="66" selection-start="2162" selection-end="2162" vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="6945">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -655,7 +668,9 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="35" selection-start="600" selection-end="600" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -715,13 +730,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="932" column="47" selection-start="43266" selection-end="43266" vertical-scroll-proportion="-19.222221" vertical-offset="15753" max-vertical-offset="21204">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="49" column="0" selection-start="1756" selection-end="1756" vertical-scroll-proportion="0.39009288" vertical-offset="630" max-vertical-offset="3888">
@@ -731,8 +739,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/productos/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="242" column="73" selection-start="10200" selection-end="10200" vertical-scroll-proportion="0.36286202" vertical-offset="3819" max-vertical-offset="7794">
+        <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="-41.74074" vertical-offset="6019" max-vertical-offset="7794">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1055" column="80" selection-start="49108" selection-end="49108" vertical-scroll-proportion="0.54684836" vertical-offset="18669" max-vertical-offset="21924">
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
