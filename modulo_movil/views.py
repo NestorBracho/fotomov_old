@@ -913,9 +913,9 @@ def generar_lote(request):
             #productos = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido, producto__es_combo=False)
                 for producto in peps:
                     #if not os.path.exists(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/'):
-                    if not os.path.exists(ruta + producto.producto.producto.nombre + '/'):
+                    if not os.path.exists(normalize('NFKD', ruta).encode('ascii', 'ignore') + producto.producto.producto.nombre + '/'):
                         #os.makedirs(ruta + producto.producto.producto.nombre + '.' + str(producto.id) + '/')
-                        os.makedirs(ruta + producto.producto.producto.nombre + '/')
+                        os.makedirs(normalize('NFKD', ruta).encode('ascii', 'ignore') + producto.producto.producto.nombre + '/')
                     for i in range(producto.cantidad):
                         auxr = producto.ruta.split('/')
                         auxr = auxr[(len(auxr)-1)]
