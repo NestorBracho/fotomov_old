@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b608c0c-187a-4bd0-ab6c-c9b84b525ae7" name="Default" comment="Codigo que envia correo si no hay impresora">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/templates/admin.html" afterPath="$PROJECT_DIR$/fotomov/templates/admin.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/templates/escritorio.html" afterPath="$PROJECT_DIR$/fotomov/templates/escritorio.html" />
+    <list default="true" id="5b608c0c-187a-4bd0-ab6c-c9b84b525ae7" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" afterPath="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fotomov.iws" />
@@ -26,66 +25,10 @@
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/marca/views.py">
+            <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/productos/views.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980">
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="50" column="11" selection-start="1768" selection-end="1768" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="3888">
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="admin.html" pinned="false" current="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/fotomov/templates/admin.html">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="399" column="121" selection-start="22229" selection-end="22229" vertical-scroll-proportion="0.36442143" vertical-offset="6971" max-vertical-offset="11016">
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="escritorio.html" pinned="false" current="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/fotomov/templates/escritorio.html">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="107" column="32" selection-start="5819" selection-end="5819" vertical-scroll-proportion="-19.777779" vertical-offset="1392" max-vertical-offset="2088">
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="13" column="38" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1350">
-                    <folding>
-                      <element signature="e#0#28#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="edicion_productos.html" pinned="false" current="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/edicion_productos.html">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="15" column="210" selection-start="813" selection-end="859" vertical-scroll-proportion="-4.0" vertical-offset="162" max-vertical-offset="2646">
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/productos/models.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state line="99" column="38" selection-start="3091" selection-end="3091" vertical-scroll-proportion="0.0" vertical-offset="1782" max-vertical-offset="2664">
+                  <state line="433" column="90" selection-start="19101" selection-end="19101" vertical-scroll-proportion="0.5068493" vertical-offset="7137" max-vertical-offset="7794">
                     <folding />
                   </state>
                 </provider>
@@ -111,10 +54,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.62096775" vertical-offset="18669" max-vertical-offset="21924">
+            <state line="34" column="33" selection-start="1260" selection-end="1260" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="21924">
               <folding>
                 <element signature="e#26#37#0" expanded="true" />
               </folding>
@@ -122,10 +65,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/productos/views.py">
+      <file leaf-file-name="ver_pedido.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="-41.74074" vertical-offset="6019" max-vertical-offset="7794">
+            <state line="81" column="239" selection-start="3342" selection-end="3342" vertical-scroll-proportion="0.73594546" vertical-offset="1026" max-vertical-offset="2862">
               <folding />
             </state>
           </provider>
@@ -174,14 +117,15 @@
         <option value="$PROJECT_DIR$/fotomov/templates/productos/edicion_productos.html" />
         <option value="$PROJECT_DIR$/fotomov/templates/escritorio.html" />
         <option value="$PROJECT_DIR$/fotomov/templates/admin.html" />
+        <option value="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="7" />
+    <option name="x" value="6" />
     <option name="y" value="24" />
-    <option name="width" value="1360" />
-    <option name="height" value="744" />
+    <option name="width" value="1362" />
+    <option name="height" value="745" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -209,6 +153,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -217,47 +162,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modulo_movil" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fotomov" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -516,29 +422,33 @@
       <created>1405601227053</created>
       <updated>1405601227053</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="modal de general lotes comentado">
+      <created>1405610802878</created>
+      <updated>1405610802878</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="7" y="24" width="1360" height="744" extended-state="6" />
+    <frame x="6" y="24" width="1362" height="745" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19705883" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19619326" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -560,12 +470,117 @@
     <MESSAGE value="Generar lotes ya funciona con caracteres especiales normalizados" />
     <MESSAGE value="Listar pedidos pagados bien" />
     <MESSAGE value="Codigo que envia correo si no hay impresora" />
-    <option name="LAST_COMMIT_MESSAGE" value="Codigo que envia correo si no hay impresora" />
+    <MESSAGE value="modal de general lotes comentado" />
+    <option name="LAST_COMMIT_MESSAGE" value="modal de general lotes comentado" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="21924">
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/productos/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="0.0" vertical-offset="7470" max-vertical-offset="8118">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/staff/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="9" selection-start="4770" selection-end="4770" vertical-scroll-proportion="0.0" vertical-offset="1908" max-vertical-offset="4806">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="28" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="216">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="21924">
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/productos/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="0.0" vertical-offset="7470" max-vertical-offset="8118">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/staff/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="9" selection-start="4770" selection-end="4770" vertical-scroll-proportion="0.0" vertical-offset="1908" max-vertical-offset="4806">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="28" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="216">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="21924">
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/productos/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="0.0" vertical-offset="7470" max-vertical-offset="8118">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/staff/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="9" selection-start="4770" selection-end="4770" vertical-scroll-proportion="0.0" vertical-offset="1908" max-vertical-offset="4806">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="28" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="216">
@@ -598,9 +613,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/marca/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980">
-          <folding />
-        </state>
+        <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
@@ -612,9 +625,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/productos/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/admin.py">
@@ -635,9 +646,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/marca/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980">
-          <folding />
-        </state>
+        <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
@@ -679,9 +688,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/marca/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="48" selection-start="721" selection-end="721" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1440">
-          <folding />
-        </state>
+        <state line="15" column="48" selection-start="721" selection-end="721" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1440" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
@@ -758,28 +765,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/marca/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980">
-          <folding />
-        </state>
+        <state line="15" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1980" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/productos/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="38" selection-start="3091" selection-end="3091" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="2664">
-          <folding />
-        </state>
+        <state line="99" column="38" selection-start="3091" selection-end="3091" vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="2664" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="2025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/productos/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="415" column="0" selection-start="18110" selection-end="18110" vertical-scroll-proportion="-41.74074" vertical-offset="6019" max-vertical-offset="7794">
           <folding />
         </state>
       </provider>
@@ -793,40 +789,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/edicion_productos.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="210" selection-start="813" selection-end="859" vertical-scroll-proportion="-4.0" vertical-offset="162" max-vertical-offset="2646">
-          <folding />
-        </state>
+        <state line="15" column="210" selection-start="813" selection-end="859" vertical-scroll-proportion="0.17821783" vertical-offset="162" max-vertical-offset="2646" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="38" selection-start="426" selection-end="426" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1350">
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="13" column="38" selection-start="426" selection-end="426" vertical-scroll-proportion="0.3622291" vertical-offset="0" max-vertical-offset="1350" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/templates/escritorio.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="107" column="32" selection-start="5819" selection-end="5819" vertical-scroll-proportion="-19.777779" vertical-offset="1392" max-vertical-offset="2088">
-          <folding />
-        </state>
+        <state line="107" column="32" selection-start="5819" selection-end="5819" vertical-scroll-proportion="0.8811881" vertical-offset="1392" max-vertical-offset="2088" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/templates/admin.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="399" column="121" selection-start="22229" selection-end="22229" vertical-scroll-proportion="0.36442143" vertical-offset="6971" max-vertical-offset="11016">
+        <state line="399" column="121" selection-start="22229" selection-end="22229" vertical-scroll-proportion="0.36442143" vertical-offset="6971" max-vertical-offset="11016" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/productos/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="433" column="90" selection-start="19101" selection-end="19101" vertical-scroll-proportion="0.5068493" vertical-offset="7137" max-vertical-offset="7794">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.62096775" vertical-offset="18669" max-vertical-offset="21924">
+        <state line="34" column="33" selection-start="1260" selection-end="1260" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="21924">
           <folding>
             <element signature="e#26#37#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="239" selection-start="3342" selection-end="3342" vertical-scroll-proportion="0.73594546" vertical-offset="1026" max-vertical-offset="2862">
+          <folding />
         </state>
       </provider>
     </entry>

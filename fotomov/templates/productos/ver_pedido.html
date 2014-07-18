@@ -79,7 +79,7 @@ Pedido
         <tbody id="body-pedidos">
         {% for producto in productos %}
         <tr>
-            <td>{{ producto.producto.producto.nombre }}</td><td>{% if producto.ruta == None%}N/A{% else %}<a data-toggle="modal" data-target="#FotoPedido" onclick="verFotoProducto('{{producto.ruta}}','{{MEDIA_URL}}')" class="btn btn-xs btn-default">Ver foto</a>{% endif %}</td><td>{{ producto.estado }}</td><td>{{ producto.cantidad }}</td><td>{{ producto.producto.precio }}</td><td id="montosiniva-{{producto.id}}"></td>
+            <td>{{ producto.producto.producto.nombre }}</td><td>{% if producto.ruta == None%}N/A{% else %}<a data-toggle="modal" data-target="#FotoPedido" onclick="verFotoProducto('{{producto.ruta}}','{{MEDIA_URL}}','{{ producto.comentario }}')" class="btn btn-xs btn-default">Ver foto</a>{% endif %}</td><td>{{ producto.estado }}</td><td>{{ producto.cantidad }}</td><td>{{ producto.producto.precio }}</td><td id="montosiniva-{{producto.id}}"></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -114,12 +114,13 @@ window.onload = function(){
 
 }
 
-function verFotoProducto(url, url2){
+function verFotoProducto(url, url2,comentario){
 
     url = url.split('/fotomov_imagenes/');
     url = url[1];
 
     $('#modal-body').html('<img src="'+url2+url+'" class="img-responsive center-block"></img>');
+    $('#modal-header').html('<strong>'+comentario+'</strong>')
 
 }
 
