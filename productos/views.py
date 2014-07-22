@@ -432,7 +432,6 @@ def enviar_mail_de_estado(request):
         correos.append(pedido.cliente.email)
     mensaje = request.GET['mensaje']
     send_mail('[FotoMov] Estado de su pedido.', mensaje, '', correos, fail_silently=False)
-
     data = json.dumps({'estado': 'hola'})
     return HttpResponse(data, mimetype='application/json')
 

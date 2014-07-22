@@ -130,6 +130,7 @@ def actualizar_datos():
             print aux.cedula
 
     for pedido in pedidos:
+        print pedido.num_pedido
         print "pedido"
         titulo = "Hola! "
         contenido = "Tu numero de recibo para tu pedido de hoy es: "
@@ -139,6 +140,7 @@ def actualizar_datos():
             busca = pedido.cliente.cedula
         except:
             busca="nada"
+        print "antes de buscar si el cliente existe"
         if Cliente.objects.filter(cedula=busca):
             cliente= Cliente.objects.get(cedula=pedido.cliente.cedula)
             titulo = titulo + cliente.nombres
@@ -152,16 +154,19 @@ def actualizar_datos():
         else:
             cliente=None
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
-            pass
+            print "numero existe"
+            print len(Pedido.objects.filter(num_pedido=pedido.num_pedido))
         else:
             try:
                 envio = TipoEnvio.objects.get(id=pedido.envio)
             except:
                 envio = None
+            print "creando pedido"
             Pedido.objects.create(evento=pedido.evento, cliente=cliente, fecha=pedido.fecha, num_pedido=pedido.num_pedido, fecha_entrega=pedido.fecha_entrega,
                               id_fiscal=pedido.id_fiscal, direccion_fiscal=pedido.direccion_fiscal, tlf_fiscal=pedido.tlf_fiscal,
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
                               envio=envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado, comentario=pedido.comentario)
+            print "pedido creado"
     for producto in productos:
         prodev= ProductoEvento.objects.get(id=producto.producto)
         ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
@@ -216,7 +221,7 @@ def importar_csv_evento(request):
                                                                envio=row[10], fue_pagado=row[11], estado=row[13], evento=Evento.objects.get(id=row[14]),
                                                                comentario = row[15])
                             except:
-                                pass
+                                print "Pedido no creado!"
                             if row[0] == '!-endpedido-!':
                                 tipo = 2
 
@@ -229,7 +234,7 @@ def importar_csv_evento(request):
                                 producto = ProductoEventoPedido_aux.objects.create(cantidad=row[0], ruta=row[1], num_pedido=row[2],
                                                                                    producto=row[3], estado=row[4], comentario=row[5])
                             except:
-                                pass
+                                print "producto evento no creado!"
                             if row[0] == '!-endproducto-!':
                                 tipo = 3
                     if tipo == 3:
@@ -237,7 +242,7 @@ def importar_csv_evento(request):
                             try:
                                 pago = PedidoPago_aux.objects.create(num_pedido=row[0], tipo_pago=row[1], monto=row[2], referencia=row[3])
                             except:
-                                pass
+                                print "pedido pago no creado!"
             else:
                 print False
         actualizar_datos()
@@ -390,8 +395,8 @@ def exportar_csv_evento(request):
 
     writer = csv.writer(response)
     for cliente in clientes:
-        writer.writerow([cliente.nombres, cliente.apellidos, cliente.telefono, cliente.email,
-                         cliente.direccion_fiscal, cliente.rif, cliente.cedula])
+        writer.writerow([ normalize('NFKD', cliente.nombres).encode('ascii', 'ignore'), normalize('NFKD', cliente.apellidos).encode('ascii', 'ignore'), cliente.telefono, cliente.email,
+                         normalize('NFKD', cliente.direccion_fiscal).encode('ascii', 'ignore'), cliente.rif, cliente.cedula])
 
     writer.writerow(['!-endcliente-!'])
 
@@ -406,21 +411,37 @@ def exportar_csv_evento(request):
             envio = pedido.envio.id
         except:
             envio = 0
+        if pedido.direccion_fiscal != None:
+            direccion_fiscal = normalize('NFKD', pedido.direccion_fiscal).encode('ascii', 'ignore')
+        else:
+            direccion_fiscal = None
+        if pedido.razon_social != None:
+            razon_social = normalize('NFKD', pedido.razon_social).encode('ascii', 'ignore')
+        else:
+            razon_social = None
+        if pedido.direccion_entrega != None:
+            direccion_entrega = normalize('NFKD', pedido.direccion_entrega).encode('ascii', 'ignore')
+        else:
+            direccion_entrega = None
+        if pedido.comentario != None:
+            comentario = normalize('NFKD', pedido.comentario).encode('ascii', 'ignore')
+        else:
+            comentario = None
         writer.writerow([client, pedido.fecha, pedido.num_pedido, pedido.fecha_entrega,
-                        pedido.id_fiscal, pedido.direccion_fiscal, pedido.tlf_fiscal, pedido.razon_social,
-                        pedido.total, pedido.direccion_entrega, envio,
-                        pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id, pedido.comentario])
+                        pedido.id_fiscal, direccion_fiscal, pedido.tlf_fiscal, razon_social,
+                        pedido.total, direccion_entrega, envio,
+                        pedido.fue_pagado, pedido.lote, pedido.estado, pedido.evento.id, comentario])
 
     writer.writerow(['!-endpedido-!'])
 
     for producto in pep:
         writer.writerow([producto.cantidad, producto.ruta.encode("utf-8"), producto.num_pedido,
-                         producto.producto.id, producto.estado , producto.comentario])
+                         producto.producto.id, producto.estado , normalize('NFKD', producto.comentario).encode('ascii', 'ignore')])
 
     writer.writerow(['!-endproducto-!'])
 
     for forma in forma_pago:
-         writer.writerow([forma.num_pedido, forma.tipo_pago.id, forma.monto, forma.referencia])
+         writer.writerow([forma.num_pedido, forma.tipo_pago.id, forma.monto, normalize('NFKD', forma.referencia).encode('ascii', 'ignore')])
 
     return response
 
@@ -1051,18 +1072,18 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 imprimir_ticket(pedido_nuevo, id_evento)
             except:
                 titulo = "Tu Recibo electronico de Fotomov! "
-                contenido = "Hola!, tu numero de recibo para tu pedido de hoy es: "
-                busca="nada"
-                cliente= Cliente.objects.get(cedula=pedido_nuevo.cliente.cedula)
-                titulo = titulo + cliente.nombres
-                contenido = contenido + str(pedido.codigo) + "\n"
-                contenido = contenido + "\nGracias por preferirnos!!"
-                correo = EmailMessage(titulo, contenido, to=[cliente.email])
-                try:
-                    correo.send()
-                    mensaje = "The email was sent correctly"
-                except:
-                    mensaje= 'error sending the emal'
+                # contenido = "Hola!, tu numero de recibo para tu pedido de hoy es: "
+                # busca="nada"
+                # cliente= Cliente.objects.get(cedula=pedido_nuevo.cliente.cedula)
+                # titulo = titulo + cliente.nombres
+                # contenido = contenido + str(pedido.codigo) + "\n"
+                # contenido = contenido + "\nGracias por preferirnos!!"
+                # correo = EmailMessage(titulo, contenido, to=[cliente.email])
+                # try:
+                #     correo.send()
+                #     mensaje = "The email was sent correctly"
+                # except:
+                #     mensaje= 'error sending the emal'
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)
