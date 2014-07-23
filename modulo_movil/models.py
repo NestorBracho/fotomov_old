@@ -31,7 +31,7 @@ class pedido_aux(models.Model):
     evento =  models.ForeignKey(Evento)
     cliente = models.ForeignKey(cliente_aux, null=True, blank=True)
     fecha = models.DateField(auto_now=True)
-    num_pedido= models.IntegerField()
+    num_pedido= models.BigIntegerField()
     fecha_entrega = models.DateField(null=True, blank=True)
     id_fiscal = models.CharField(max_length=100, null=True, blank=True)
     direccion_fiscal = models.TextField(max_length=400, null=True, blank=True)
@@ -49,13 +49,13 @@ class pedido_aux(models.Model):
 class ProductoEventoPedido_aux(models.Model):
     cantidad = models.IntegerField()
     ruta = models.CharField(max_length=10000)
-    num_pedido = models.IntegerField()
+    num_pedido = models.BigIntegerField()
     producto = models.IntegerField()
     estado = models.CharField(max_length=50)
     comentario = models.TextField(max_length=1000)
 
 class PedidoPago_aux(models.Model):
-    num_pedido = models.IntegerField()
+    num_pedido = models.BigIntegerField()
     tipo_pago = models.IntegerField()
     monto = models.FloatField()
     referencia = models.CharField(max_length=100)

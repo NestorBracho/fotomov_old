@@ -215,10 +215,14 @@ def importar_csv_evento(request):
                                     row[3]= None
                                 if row[8] == "":
                                     row[8]= None
+                                print "####################################################################################"
+                                print row[2]
+                                fue_pagado = "True" == row[11]
+                                print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
                                 pedido = pedido_aux.objects.create(cliente=cl, fecha=row[1], num_pedido=row[2], fecha_entrega=row[3],
                                                                id_fiscal=row[4], direccion_fiscal=row[5], tlf_fiscal=row[6],
                                                                razon_social=row[7], total=row[8], direccion_entrega=row[9],
-                                                               envio=row[10], fue_pagado=row[11], estado=row[13], evento=Evento.objects.get(id=row[14]),
+                                                               envio=row[10], fue_pagado=fue_pagado, estado=row[13], evento=Evento.objects.get(id=row[14]),
                                                                comentario = row[15])
                             except:
                                 print "Pedido no creado!"
