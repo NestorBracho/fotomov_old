@@ -109,8 +109,8 @@ def date_to_int(dia):
 def actualizar_datos():
     clientes = cliente_aux.objects.all()
     pedidos = pedido_aux.objects.all()
-    productos = ProductoEventoPedido_aux.objects.all()
-    pagos = PedidoPago_aux.objects.all()
+    #productos = ProductoEventoPedido_aux.objects.all()
+    #pagos = PedidoPago_aux.objects.all()
     for cliente in clientes:
         print cliente
         if Cliente.objects.filter(cedula=cliente.cedula):
@@ -135,7 +135,7 @@ def actualizar_datos():
         titulo = "Hola! "
         contenido = "Tu numero de recibo para tu pedido de hoy es: "
         try:
-            print pedido.cliente.cedula
+        #    print pedido.cliente.cedula
             paver = Cliente.objects.filter(cedula='18941663')
             busca = pedido.cliente.cedula
         except:
@@ -146,16 +146,16 @@ def actualizar_datos():
             titulo = titulo + cliente.nombres
             contenido = contenido + str(pedido.codigo)
             correo = EmailMessage(titulo, contenido, to=[cliente.email])
-            try:
-                #correo.send()
-                mensaje = "The email was sent correctly"
-            except:
-                mensaje= 'error sending the emal'
+            #try:
+            #    #correo.send()
+            #    mensaje = "The email was sent correctly"
+            #except:
+            #    mensaje= 'error sending the emal'
         else:
             cliente=None
         if Pedido.objects.filter(num_pedido=pedido.num_pedido):
             print "numero existe"
-            print len(Pedido.objects.filter(num_pedido=pedido.num_pedido))
+            #print len(Pedido.objects.filter(num_pedido=pedido.num_pedido))
         else:
             try:
                 envio = TipoEnvio.objects.get(id=pedido.envio)
@@ -167,14 +167,16 @@ def actualizar_datos():
                               razon_social=pedido.razon_social, total=pedido.total, codigo=pedido.codigo, direccion_entrega=pedido.direccion_entrega,
                               envio=envio, fue_pagado=pedido.fue_pagado, lote=pedido.lote, estado=pedido.estado, comentario=pedido.comentario)
             print "pedido creado"
-    for producto in productos:
-        prodev= ProductoEvento.objects.get(id=producto.producto)
-        ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
+            productos = ProductoEventoPedido_aux.objects.filter(num_pedido=pedido.num_pedido)
+            for producto in productos:
+                prodev= ProductoEvento.objects.get(id=producto.producto)
+                ProductoEventoPedido.objects.create(cantidad=producto.cantidad, ruta=producto.ruta, num_pedido=producto.num_pedido,
                                             producto=prodev, estado=producto.estado, comentario=producto.comentario)
 
-    for pago in pagos:
-        tipo = FormaDePago.objects.get(id=pago.tipo_pago)
-        PedidoPago.objects.create(num_pedido=pago.num_pedido, tipo_pago=tipo, monto=pago.monto, referencia=pago.referencia)
+            pagos = PedidoPago_aux.objects.filter(num_pedido=pedido.num_pedido)
+            for pago in pagos:
+                tipo = FormaDePago.objects.get(id=pago.tipo_pago)
+                PedidoPago.objects.create(num_pedido=pago.num_pedido, tipo_pago=tipo, monto=pago.monto, referencia=pago.referencia)
 
     return HttpResponseRedirect('/escritorio')
 

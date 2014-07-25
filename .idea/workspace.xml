@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b608c0c-187a-4bd0-ab6c-c9b84b525ae7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modulo_movil/models.py" afterPath="$PROJECT_DIR$/modulo_movil/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modulo_movil/views.py" afterPath="$PROJECT_DIR$/modulo_movil/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -38,7 +37,7 @@
             <file leaf-file-name="ver_pedido.html" pinned="false" current="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="117" column="0" selection-start="4510" selection-end="4510" vertical-scroll-proportion="-6.0" vertical-offset="1944" max-vertical-offset="2862">
+                  <state line="117" column="0" selection-start="4510" selection-end="4510" vertical-scroll-proportion="0.0" vertical-offset="2106" max-vertical-offset="2862">
                     <folding />
                   </state>
                 </provider>
@@ -47,7 +46,7 @@
             <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.5233645" vertical-offset="564" max-vertical-offset="1278">
+                  <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.41395348" vertical-offset="633" max-vertical-offset="1278">
                     <folding />
                   </state>
                 </provider>
@@ -76,7 +75,7 @@
       <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="218" column="44" selection-start="9567" selection-end="9567" vertical-scroll-proportion="0.63202727" vertical-offset="3049" max-vertical-offset="21870">
+            <state line="137" column="9" selection-start="5358" selection-end="5358" vertical-scroll-proportion="0.1465798" vertical-offset="1872" max-vertical-offset="21906">
               <folding />
             </state>
           </provider>
@@ -112,7 +111,7 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/productos/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="49" selection-start="1309" selection-end="1309" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="2592">
+            <state line="99" column="43" selection-start="3096" selection-end="3096" vertical-scroll-proportion="0.0" vertical-offset="1890" max-vertical-offset="2592">
               <folding />
             </state>
           </provider>
@@ -121,7 +120,7 @@
       <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="163" column="66" selection-start="12873" selection-end="12873" vertical-scroll-proportion="0.0" vertical-offset="2826" max-vertical-offset="3924">
+            <state line="163" column="66" selection-start="12873" selection-end="12873" vertical-scroll-proportion="0.0" vertical-offset="2934" max-vertical-offset="3942">
               <folding />
             </state>
           </provider>
@@ -167,9 +166,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1023" />
-    <option name="y" value="24" />
-    <option name="width" value="1362" />
+    <option name="x" value="273" />
+    <option name="y" value="128" />
+    <option name="width" value="1368" />
     <option name="height" value="745" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -318,27 +317,7 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="fotomov" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -364,7 +343,27 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="fotomov" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -492,11 +491,15 @@
       <created>1406064642897</created>
       <updated>1406064642897</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="algoritmo de importacion da bien la cantidad de pedidos fatla chequear rutas y pedidos y mejorar eficiencia">
+      <created>1406159106911</created>
+      <updated>1406159106911</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1023" y="24" width="1362" height="745" extended-state="6" />
+    <frame x="273" y="128" width="1368" height="745" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -512,12 +515,12 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -539,7 +542,8 @@
     <MESSAGE value="modal de general lotes comentado" />
     <MESSAGE value="ver pedido con comentario funcionando" />
     <MESSAGE value="normalizados los caracteres en la exportacion" />
-    <option name="LAST_COMMIT_MESSAGE" value="normalizados los caracteres en la exportacion" />
+    <MESSAGE value="algoritmo de importacion da bien la cantidad de pedidos fatla chequear rutas y pedidos y mejorar eficiencia" />
+    <option name="LAST_COMMIT_MESSAGE" value="algoritmo de importacion da bien la cantidad de pedidos fatla chequear rutas y pedidos y mejorar eficiencia" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -858,30 +862,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/productos/models.py">
+    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="49" selection-start="1309" selection-end="1309" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="2592">
+        <state line="117" column="0" selection-start="4510" selection-end="4510" vertical-scroll-proportion="0.0" vertical-offset="2106" max-vertical-offset="2862">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
+    <entry file="file://$PROJECT_DIR$/productos/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="0" selection-start="4510" selection-end="4510" vertical-scroll-proportion="-6.0" vertical-offset="1944" max-vertical-offset="2862">
+        <state line="99" column="43" selection-start="3096" selection-end="3096" vertical-scroll-proportion="0.0" vertical-offset="1890" max-vertical-offset="2592">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.5233645" vertical-offset="564" max-vertical-offset="1278">
+        <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.41395348" vertical-offset="633" max-vertical-offset="1278">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="218" column="44" selection-start="9567" selection-end="9567" vertical-scroll-proportion="0.63202727" vertical-offset="3049" max-vertical-offset="21870">
+        <state line="137" column="9" selection-start="5358" selection-end="5358" vertical-scroll-proportion="0.1465798" vertical-offset="1872" max-vertical-offset="21906">
           <folding />
         </state>
       </provider>
