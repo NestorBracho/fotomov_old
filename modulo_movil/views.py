@@ -28,7 +28,7 @@ from os.path import isfile, join, isdir
 from datetime import *
 import datetime
 import shutil
-#from escpos import *
+from escpos import *
 from django.core.management import call_command
 from django.forms.formsets import formset_factory
 from django.utils import simplejson
@@ -332,41 +332,105 @@ def exportar_csv_central2(request):
     #eventos = Evento.objects.filter
     return True
 
+# def imprimir_ticket(pedido, id_evento):
+#
+#     productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
+#     pagos = PedidoPago.objects.filter(num_pedido=pedido.num_pedido)
+#     evento = Evento.objects.get(id=id_evento)
+#     iva = Configuracion.objects.get(nombre="iva")
+#
+#     #evento = productos[0].producto.evento.nombre
+#
+#     impresora = printer.Usb(0x1cb0,0x0003)
+#     impresora.text("\nRECIBO FOTOMOV\n")
+#     impresora.text("#: " + str(pedido.num_pedido) + "\n")
+#     impresora.text(evento.nombre+"\n")
+#     impresora.text("Fecha: " + str(date.today()) + "\n\n")
+#     impresora.text("Productos:\n")
+#
+#     for producto in productos:
+#         texto = str(producto.cantidad) + " x " + normalize('NFKD', producto.producto.producto.nombre).encode('ascii', 'ignore') + " - " + str(producto.producto.precio) + "\n"
+#         impresora.text(texto)
+#
+#     if pedido.envio.precio > 0:
+#         impresora.text("Envio = " + str(pedido.envio.precio))
+#
+#     impresora.text("\n")
+#     impresora.text("Subtotal: " + str('%.2f'%(float(pedido.total))) + "\n")
+#     impresora.text("Impuesto: " + str(pedido.total*float("0." + str(iva.valor))) + "\n")
+#     impresora.text("Total: " +str(pedido.total + pedido.total*float("0." + str(iva.valor)))+"\n\n")
+#     impresora.text("Pagado con:\n")
+#
+#     for pago in pagos:
+#         texto = normalize('NFKD', pago.tipo_pago.nombre).encode('ascii', 'ignore') + " " + str(pago.monto) + "\n"
+#         impresora.text(texto)
+#
+#     impresora.text("\n")
+#
+#     if pedido.envio != 0:
+#         impresora.text("direccion de entrega:\n")
+#         if pedido.envio.req_dir:
+#             texto = normalize('NFKD', pedido.direccion_entrega).encode('ascii', 'ignore')
+#             impresora.text(texto+"\n\n")
+#         else:
+#             texto = normalize('NFKD', pedido.envio.direccion).encode('ascii', 'ignore')
+#             impresora.text(texto+"\n\n")
+#
+#     impresora.text("Contacto Fotomov:\n")
+#     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="tlf").valor +"\n")
+#     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="celular").valor + "\n")
+#
+#     impresora.text("Instagram/Facebook = fotomov\n")
+#     impresora.text("email: " + ConfiguracionEmpresa.objects.get(nombre="email").valor + "\n")
+#     impresora.text(ConfiguracionEmpresa.objects.get(nombre="pagina").valor +"\n")
+#     #impresora.text("5 x Foto10x10\n")
+#     #impresora.text("2 x Taza\n")
+#     impresora.cut()
+
 def imprimir_ticket(pedido, id_evento):
 
     productos = ProductoEventoPedido.objects.filter(num_pedido=pedido.num_pedido)
     pagos = PedidoPago.objects.filter(num_pedido=pedido.num_pedido)
     evento = Evento.objects.get(id=id_evento)
     iva = Configuracion.objects.get(nombre="iva")
-    
+
     #evento = productos[0].producto.evento.nombre
 
     impresora = printer.Usb(0x1cb0,0x0003)
+    impresora.cut()
     impresora.text("\nRECIBO FOTOMOV\n")
     impresora.text("#: " + str(pedido.num_pedido) + "\n")
     impresora.text(evento.nombre+"\n")
+    impresora.text("Cliente: " + str(pedido.cliente.cedula)+"\n")
     impresora.text("Fecha: " + str(date.today()) + "\n\n")
     impresora.text("Productos:\n")
-
+    #print 'aqui van los productos pedidos'
+    #print "Cliente: " + str(pedido.cliente.cedula)+'\n'
     for producto in productos:
-        texto = str(producto.cantidad) + " x " + normalize('NFKD', producto.producto.producto.nombre).encode('ascii', 'ignore') + " - " + str(producto.producto.precio) + "\n"
+        ruta = producto.ruta
+        #print ruta
+        array_ruta = ruta.split('/')
+        #print array_ruta
+        codigo_img = array_ruta[len(array_ruta)-1]
+        texto = str(producto.cantidad) + "x" + normalize('NFKD', producto.producto.producto.nombre).encode('ascii', 'ignore') + "-" +str(codigo_img) + "\n"
+        #print texto
         impresora.text(texto)
-    
+
     if pedido.envio.precio > 0:
         impresora.text("Envio = " + str(pedido.envio.precio))
-    
+
     impresora.text("\n")
     impresora.text("Subtotal: " + str('%.2f'%(float(pedido.total))) + "\n")
     impresora.text("Impuesto: " + str(pedido.total*float("0." + str(iva.valor))) + "\n")
     impresora.text("Total: " +str(pedido.total + pedido.total*float("0." + str(iva.valor)))+"\n\n")
     impresora.text("Pagado con:\n")
-    
+
     for pago in pagos:
         texto = normalize('NFKD', pago.tipo_pago.nombre).encode('ascii', 'ignore') + " " + str(pago.monto) + "\n"
         impresora.text(texto)
-    
+
     impresora.text("\n")
-    
+
     if pedido.envio != 0:
         impresora.text("direccion de entrega:\n")
         if pedido.envio.req_dir:
@@ -375,7 +439,7 @@ def imprimir_ticket(pedido, id_evento):
         else:
             texto = normalize('NFKD', pedido.envio.direccion).encode('ascii', 'ignore')
             impresora.text(texto+"\n\n")
-    
+
     impresora.text("Contacto Fotomov:\n")
     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="tlf").valor +"\n")
     impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="celular").valor + "\n")
@@ -383,9 +447,60 @@ def imprimir_ticket(pedido, id_evento):
     impresora.text("Instagram/Facebook = fotomov\n")
     impresora.text("email: " + ConfiguracionEmpresa.objects.get(nombre="email").valor + "\n")
     impresora.text(ConfiguracionEmpresa.objects.get(nombre="pagina").valor +"\n")
-    #impresora.text("5 x Foto10x10\n")
-    #impresora.text("2 x Taza\n")
     impresora.cut()
+    impresora.cut()
+    impresora.text("\nRECIBO FOTOMOV\n")
+    impresora.text("#: " + str(pedido.num_pedido) + "\n")
+    impresora.text(evento.nombre+"\n")
+    impresora.text("Cliente: " + str(pedido.cliente.cedula)+"\n")
+    impresora.text("Fecha: " + str(date.today()) + "\n\n")
+    impresora.text("Productos:\n")
+    #print 'aqui van los productos pedidos'
+    #print "Cliente: " + str(pedido.cliente.cedula)+'\n'
+    for producto in productos:
+        ruta = producto.ruta
+        #print ruta
+        array_ruta = ruta.split('/')
+        #print array_ruta
+        codigo_img = array_ruta[len(array_ruta)-1]
+        texto = str(producto.cantidad) + "x" + normalize('NFKD', producto.producto.producto.nombre).encode('ascii', 'ignore') + "-" +str(codigo_img) + "\n"
+        #print texto
+        impresora.text(texto)
+
+    if pedido.envio.precio > 0:
+        impresora.text("Envio = " + str(pedido.envio.precio))
+
+    impresora.text("\n")
+    impresora.text("Subtotal: " + str('%.2f'%(float(pedido.total))) + "\n")
+    impresora.text("Impuesto: " + str(pedido.total*float("0." + str(iva.valor))) + "\n")
+    impresora.text("Total: " +str(pedido.total + pedido.total*float("0." + str(iva.valor)))+"\n\n")
+    impresora.text("Pagado con:\n")
+
+    for pago in pagos:
+        texto = normalize('NFKD', pago.tipo_pago.nombre).encode('ascii', 'ignore') + " " + str(pago.monto) + "\n"
+        impresora.text(texto)
+
+    impresora.text("\n")
+
+    if pedido.envio != 0:
+        impresora.text("direccion de entrega:\n")
+        if pedido.envio.req_dir:
+            texto = normalize('NFKD', pedido.direccion_entrega).encode('ascii', 'ignore')
+            impresora.text(texto+"\n\n")
+        else:
+            texto = normalize('NFKD', pedido.envio.direccion).encode('ascii', 'ignore')
+            impresora.text(texto+"\n\n")
+
+    impresora.text("Contacto Fotomov:\n")
+    impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="tlf").valor +"\n")
+    impresora.text("tlf: " + ConfiguracionEmpresa.objects.get(nombre="celular").valor + "\n")
+
+    impresora.text("Instagram/Facebook = fotomov\n")
+    impresora.text("email: " + ConfiguracionEmpresa.objects.get(nombre="email").valor + "\n")
+    impresora.text(ConfiguracionEmpresa.objects.get(nombre="pagina").valor +"\n")
+    impresora.cut()
+
+    return True
 
 @login_required(login_url='/')
 def exportar_csv_evento(request):
@@ -1075,22 +1190,27 @@ def generar_pedido(request, pedido, cedula, id_evento):
                 for pep in peps:
                     pep.estado = 'Pagado'
                     pep.save()
-            try:
-                imprimir_ticket(pedido_nuevo, id_evento)
-            except:
-                titulo = "Tu Recibo electronico de Fotomov! "
-                # contenido = "Hola!, tu numero de recibo para tu pedido de hoy es: "
-                # busca="nada"
-                # cliente= Cliente.objects.get(cedula=pedido_nuevo.cliente.cedula)
-                # titulo = titulo + cliente.nombres
-                # contenido = contenido + str(pedido.codigo) + "\n"
-                # contenido = contenido + "\nGracias por preferirnos!!"
-                # correo = EmailMessage(titulo, contenido, to=[cliente.email])
-                # try:
-                #     correo.send()
-                #     mensaje = "The email was sent correctly"
-                # except:
-                #     mensaje= 'error sending the emal'
+            #try:
+            imprimir_ticket(pedido_nuevo, id_evento)
+            #except:
+            #    pass
+            #    titulo = "Tu Recibo electronico de Fotomov! "
+            #    # contenido = "Hola!, tu numero de recibo para tu pedido de hoy es: "
+            #    # busca="nada"
+            #    # cliente= Cliente.objects.get(cedula=pedido_nuevo.cliente.cedula)
+            #    # titulo = titulo + cliente.nombres
+            #    # contenido = contenido + str(pedido.codigo) + "\n"
+            #    # contenido = contenido + "\nGracias por preferirnos!!"
+            #    # correo = EmailMessage(titulo, contenido, to=[cliente.email])
+            #    # try:
+            #    #     correo.send()
+            #    #     mensaje = "The email was sent correctly"
+            #    # except:
+            #    #     mensaje= 'error sending the emal'
+            #try:
+            #imprimir_ticket(pedido_nuevo, id_evento)
+            #except:
+            #    pass
             return HttpResponseRedirect('/ingresar_ticket/' + id_evento)
     else:
         formulario = PedidoCajaForm(instance=pedido_actual)

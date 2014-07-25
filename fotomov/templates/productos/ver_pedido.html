@@ -93,6 +93,7 @@ Pedido
                 <button id="close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body text-center" id="modal-body">
+                mocoloco
             </div>
         </div>
     </div>
@@ -118,9 +119,12 @@ function verFotoProducto(url, url2,comentario){
 
     url = url.split('/fotomov_imagenes/');
     url = url[1];
-
+    document.getElementById('modal-body').innerHTML = "probando";
+    //alert(comentario);
+    //alert('<img src="'+url2+url+'" class="img-responsive center-block"></img>');
     $('#modal-body').html('<img src="'+url2+url+'" class="img-responsive center-block"></img>');
-    $('#modal-header').append('<strong>'+comentario+'</strong>')
+    $('#modal-header').append('<strong>'+comentario+'</strong>');
+    //$('#modal-header').append('<strong>pruebaloca</strong>');
 
 }
 
