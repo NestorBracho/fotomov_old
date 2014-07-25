@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b608c0c-187a-4bd0-ab6c-c9b84b525ae7" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/settings.py" afterPath="$PROJECT_DIR$/fotomov/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" afterPath="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modulo_movil/views.py" afterPath="$PROJECT_DIR$/modulo_movil/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -34,19 +36,19 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="ver_pedido.html" pinned="false" current="false" current-in-tab="false">
+            <file leaf-file-name="ver_pedido.html" pinned="false" current="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="117" column="0" selection-start="4510" selection-end="4510" vertical-scroll-proportion="0.0" vertical-offset="2106" max-vertical-offset="2862">
+                  <state line="123" column="0" selection-start="4735" selection-end="4735" vertical-scroll-proportion="0.553719" vertical-offset="1879" max-vertical-offset="2862">
                     <folding />
                   </state>
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="true">
+            <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.41395348" vertical-offset="633" max-vertical-offset="1278">
+                  <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.0" vertical-offset="633" max-vertical-offset="1278">
                     <folding />
                   </state>
                 </provider>
@@ -72,19 +74,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="460" column="52" selection-start="20621" selection-end="20621" vertical-scroll-proportion="5.4444447" vertical-offset="7923" max-vertical-offset="21924">
-              <folding />
+            <state line="273" column="1" selection-start="12800" selection-end="12800" vertical-scroll-proportion="0.077876106" vertical-offset="3080" max-vertical-offset="9416">
+              <folding>
+                <element signature="e#26#37#0" expanded="true" />
+                <element signature="e#1322#2114#0" expanded="false" />
+                <element signature="e#2152#2944#0" expanded="false" />
+                <element signature="e#2978#3775#0" expanded="false" />
+                <element signature="e#3809#3915#0" expanded="false" />
+                <element signature="e#3946#4018#0" expanded="false" />
+                <element signature="e#4046#4125#0" expanded="false" />
+                <element signature="e#4155#7881#0" expanded="false" />
+                <element signature="e#13115#15211#0" expanded="false" />
+                <element signature="e#15258#17640#0" expanded="false" />
+                <element signature="e#17712#20386#0" expanded="false" />
+                <element signature="e#23523#24015#0" expanded="false" />
+                <element signature="e#24119#32000#0" expanded="false" />
+                <element signature="e#32110#40018#0" expanded="false" />
+                <element signature="e#40054#40504#0" expanded="false" />
+                <element signature="e#40568#41389#0" expanded="false" />
+                <element signature="e#41487#41800#0" expanded="false" />
+                <element signature="e#41864#45178#0" expanded="false" />
+                <element signature="e#52389#52850#0" expanded="false" />
+                <element signature="e#52918#53100#0" expanded="false" />
+                <element signature="e#53189#54647#0" expanded="false" />
+                <element signature="e#54746#56770#0" expanded="false" />
+                <element signature="e#57532#57644#0" expanded="false" />
+                <element signature="e#57711#58467#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="seleccionar_directorio.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="seleccionar_directorio.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/templates/modulo_movil/seleccionar_directorio.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="291" selection-end="291" vertical-scroll-proportion="0.24913494" vertical-offset="0" max-vertical-offset="1692">
+            <state line="8" column="0" selection-start="291" selection-end="291" vertical-scroll-proportion="-5.3333335" vertical-offset="0" max-vertical-offset="1692">
               <folding />
             </state>
           </provider>
@@ -94,7 +121,10 @@
         <entry file="file://$PROJECT_DIR$/fotomov/templates/modulo_movil/configurar_db.html">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="342">
-              <folding />
+              <folding>
+                <marker date="1401033814000" expanded="true" signature="166:411" placeholder="..." />
+                <marker date="1401033814000" expanded="true" signature="219:403" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -120,7 +150,7 @@
       <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="0" selection-start="588" selection-end="588" vertical-scroll-proportion="0.0" vertical-offset="414" max-vertical-offset="3888">
+            <state line="27" column="24" selection-start="753" selection-end="753" vertical-scroll-proportion="0.0" vertical-offset="144" max-vertical-offset="3888">
               <folding />
             </state>
           </provider>
@@ -138,7 +168,7 @@
       <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="24" selection-start="5301" selection-end="5314" vertical-scroll-proportion="-7.2222223" vertical-offset="1155" max-vertical-offset="3942">
+            <state line="74" column="77" selection-start="5266" selection-end="5286" vertical-scroll-proportion="-6.962963" vertical-offset="1144" max-vertical-offset="3942">
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
               </folding>
@@ -177,11 +207,11 @@
         <option value="$PROJECT_DIR$/fotomov/templates/productos/edicion_productos.html" />
         <option value="$PROJECT_DIR$/fotomov/templates/escritorio.html" />
         <option value="$PROJECT_DIR$/fotomov/templates/admin.html" />
-        <option value="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
-        <option value="$PROJECT_DIR$/fotomov/settings.py" />
         <option value="$PROJECT_DIR$/productos/views.py" />
         <option value="$PROJECT_DIR$/modulo_movil/models.py" />
+        <option value="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
         <option value="$PROJECT_DIR$/modulo_movil/views.py" />
+        <option value="$PROJECT_DIR$/fotomov/settings.py" />
       </list>
     </option>
   </component>
@@ -519,7 +549,11 @@
       <created>1406259865230</created>
       <updated>1406259865230</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="importacion redirecciona de nuevo a configuracion con mensaje de exito">
+      <created>1406260686245</created>
+      <updated>1406260686245</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -568,7 +602,8 @@
     <MESSAGE value="normalizados los caracteres en la exportacion" />
     <MESSAGE value="algoritmo de importacion da bien la cantidad de pedidos fatla chequear rutas y pedidos y mejorar eficiencia" />
     <MESSAGE value="importacion de datos no duplica productos ni tipos de pago" />
-    <option name="LAST_COMMIT_MESSAGE" value="importacion de datos no duplica productos ni tipos de pago" />
+    <MESSAGE value="importacion redirecciona de nuevo a configuracion con mensaje de exito" />
+    <option name="LAST_COMMIT_MESSAGE" value="importacion redirecciona de nuevo a configuracion con mensaje de exito" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -584,7 +619,32 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="21924">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -621,7 +681,32 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1050" column="36" selection-start="48812" selection-end="48812" vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="21924">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -658,7 +743,32 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="910" column="38" selection-start="41504" selection-end="41504" vertical-scroll-proportion="0.0" vertical-offset="16380" max-vertical-offset="21204">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -705,7 +815,32 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="40" selection-start="2288" selection-end="2288" vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="21312">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -747,7 +882,32 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="66" selection-start="2162" selection-end="2162" vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="6945">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -789,7 +949,32 @@
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="35" selection-start="600" selection-end="600" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -855,13 +1040,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="0" selection-start="588" selection-end="588" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3888">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="28" selection-start="174" selection-end="174" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="180">
@@ -876,13 +1054,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="0" selection-start="4510" selection-end="4510" vertical-scroll-proportion="0.0" vertical-offset="2106" max-vertical-offset="2862">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/productos/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="43" selection-start="3096" selection-end="3096" vertical-scroll-proportion="0.0" vertical-offset="1890" max-vertical-offset="2592">
@@ -892,7 +1063,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.41395348" vertical-offset="633" max-vertical-offset="1278">
+        <state line="54" column="47" selection-start="2443" selection-end="2443" vertical-scroll-proportion="0.0" vertical-offset="633" max-vertical-offset="1278">
           <folding />
         </state>
       </provider>
@@ -900,30 +1071,72 @@
     <entry file="file://$PROJECT_DIR$/fotomov/templates/modulo_movil/configurar_db.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="627">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="24" selection-start="5301" selection-end="5314" vertical-scroll-proportion="-7.2222223" vertical-offset="1155" max-vertical-offset="3942">
           <folding>
-            <element signature="e#0#51#0" expanded="true" />
+            <marker date="1401033814000" expanded="true" signature="166:411" placeholder="..." />
+            <marker date="1401033814000" expanded="true" signature="219:403" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
+    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="460" column="52" selection-start="20621" selection-end="20621" vertical-scroll-proportion="5.4444447" vertical-offset="7923" max-vertical-offset="21924">
+        <state line="123" column="0" selection-start="4735" selection-end="4735" vertical-scroll-proportion="0.553719" vertical-offset="1879" max-vertical-offset="2862">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/templates/modulo_movil/seleccionar_directorio.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="291" selection-end="291" vertical-scroll-proportion="0.24913494" vertical-offset="0" max-vertical-offset="1692">
+        <state line="8" column="0" selection-start="291" selection-end="291" vertical-scroll-proportion="-5.3333335" vertical-offset="0" max-vertical-offset="1692">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="77" selection-start="5266" selection-end="5286" vertical-scroll-proportion="-6.962963" vertical-offset="1144" max-vertical-offset="3942">
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="24" selection-start="753" selection-end="753" vertical-scroll-proportion="0.0" vertical-offset="144" max-vertical-offset="3888">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="273" column="1" selection-start="12800" selection-end="12800" vertical-scroll-proportion="0.077876106" vertical-offset="3080" max-vertical-offset="9416">
+          <folding>
+            <element signature="e#26#37#0" expanded="true" />
+            <element signature="e#1322#2114#0" expanded="false" />
+            <element signature="e#2152#2944#0" expanded="false" />
+            <element signature="e#2978#3775#0" expanded="false" />
+            <element signature="e#3809#3915#0" expanded="false" />
+            <element signature="e#3946#4018#0" expanded="false" />
+            <element signature="e#4046#4125#0" expanded="false" />
+            <element signature="e#4155#7881#0" expanded="false" />
+            <element signature="e#13115#15211#0" expanded="false" />
+            <element signature="e#15258#17640#0" expanded="false" />
+            <element signature="e#17712#20386#0" expanded="false" />
+            <element signature="e#23523#24015#0" expanded="false" />
+            <element signature="e#24119#32000#0" expanded="false" />
+            <element signature="e#32110#40018#0" expanded="false" />
+            <element signature="e#40054#40504#0" expanded="false" />
+            <element signature="e#40568#41389#0" expanded="false" />
+            <element signature="e#41487#41800#0" expanded="false" />
+            <element signature="e#41864#45178#0" expanded="false" />
+            <element signature="e#52389#52850#0" expanded="false" />
+            <element signature="e#52918#53100#0" expanded="false" />
+            <element signature="e#53189#54647#0" expanded="false" />
+            <element signature="e#54746#56770#0" expanded="false" />
+            <element signature="e#57532#57644#0" expanded="false" />
+            <element signature="e#57711#58467#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

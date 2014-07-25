@@ -271,7 +271,7 @@ def exportar_csv_central(request):
     output.close()
     return HttpResponseRedirect('/configuracion/1')
 
-@login_required(login_url='/')
+#@login_required(login_url='/')
 def importar_csv_central(request):
 
     call_command('flush', interactive= False)
@@ -481,7 +481,7 @@ def configuracion(request, creado):
                                                                            'creado': creado, 'iva': iva, 'pagina': pagina,
                                                                            'tlf': tlf, 'celular': celular}, context_instance=RequestContext(request))
 
-@login_required(login_url='/')
+#@login_required(login_url='/')
 def selecccionar_direccion(request):
 #    print settings.MEDIA_ROOT
 #    settings.MEDIA_ROOT = '/home/leonardo/turpial'
