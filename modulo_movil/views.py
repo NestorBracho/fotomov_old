@@ -252,6 +252,7 @@ def importar_csv_evento(request):
             else:
                 print False
         actualizar_datos()
+        return HttpResponseRedirect('/configuracion/2')
     else:
         formulario = ArchivoForm()
     return render_to_response('modulo_movil/importar_csv_evento.html', {'formulario': formulario}, context_instance=RequestContext(request))
