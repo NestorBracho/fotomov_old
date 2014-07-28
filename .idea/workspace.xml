@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b608c0c-187a-4bd0-ab6c-c9b84b525ae7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/templates/admin.html" afterPath="$PROJECT_DIR$/fotomov/templates/admin.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" afterPath="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modulo_movil/views.py" afterPath="$PROJECT_DIR$/modulo_movil/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -36,19 +34,19 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="ver_pedido.html" pinned="false" current="false" current-in-tab="true">
+            <file leaf-file-name="ver_pedido.html" pinned="false" current="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="126" column="63" selection-start="4997" selection-end="4997" vertical-scroll-proportion="0.36442143" vertical-offset="2057" max-vertical-offset="2934">
+                  <state line="126" column="63" selection-start="4997" selection-end="4997" vertical-scroll-proportion="0.0" vertical-offset="2268" max-vertical-offset="2934">
                     <folding />
                   </state>
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
+            <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="20" column="4" selection-start="641" selection-end="641" vertical-scroll-proportion="0.0" vertical-offset="73" max-vertical-offset="1278">
+                  <state line="44" column="8" selection-start="1969" selection-end="1973" vertical-scroll-proportion="0.13622291" vertical-offset="632" max-vertical-offset="1278">
                     <folding />
                   </state>
                 </provider>
@@ -57,7 +55,7 @@
             <file leaf-file-name="editar_evento.html" pinned="false" current="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/fotomov/templates/evento/editar_evento.html">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="3" column="50" selection-start="108" selection-end="114" vertical-scroll-proportion="-1.0" vertical-offset="0" max-vertical-offset="11106">
+                  <state line="3" column="50" selection-start="108" selection-end="114" vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="11106">
                     <folding />
                   </state>
                 </provider>
@@ -83,10 +81,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="501" column="0" selection-start="22684" selection-end="22684" vertical-scroll-proportion="0.0" vertical-offset="3056" max-vertical-offset="7398">
+            <state line="654" column="0" selection-start="29077" selection-end="29077" vertical-scroll-proportion="0.14610389" vertical-offset="6264" max-vertical-offset="8028">
               <folding>
                 <element signature="e#1321#2113#0" expanded="false" />
                 <element signature="e#2151#2943#0" expanded="false" />
@@ -94,12 +92,10 @@
                 <element signature="e#3808#3914#0" expanded="false" />
                 <element signature="e#3945#4017#0" expanded="false" />
                 <element signature="e#4045#4124#0" expanded="false" />
-                <element signature="e#4154#7880#0" expanded="false" />
                 <element signature="e#7951#12165#0" expanded="false" />
                 <element signature="e#12238#12796#0" expanded="false" />
                 <element signature="e#12870#13040#0" expanded="false" />
                 <element signature="e#13114#15210#0" expanded="false" />
-                <element signature="e#22772#25446#0" expanded="false" />
                 <element signature="e#25516#26792#0" expanded="false" />
                 <element signature="e#26863#27125#0" expanded="false" />
                 <element signature="e#27196#27830#0" expanded="false" />
@@ -110,14 +106,14 @@
                 <element signature="e#45114#45564#0" expanded="false" />
                 <element signature="e#45628#46449#0" expanded="false" />
                 <element signature="e#46547#46860#0" expanded="false" />
-                <element signature="e#46924#50238#0" expanded="false" />
-                <element signature="e#57597#58058#0" expanded="false" />
-                <element signature="e#58126#58308#0" expanded="false" />
-                <element signature="e#58397#59855#0" expanded="false" />
-                <element signature="e#59954#61978#0" expanded="false" />
-                <element signature="e#62054#62665#0" expanded="false" />
-                <element signature="e#62740#62852#0" expanded="false" />
-                <element signature="e#62919#63675#0" expanded="false" />
+                <element signature="e#50333#57519#0" expanded="false" />
+                <element signature="e#57598#58059#0" expanded="false" />
+                <element signature="e#58127#58309#0" expanded="false" />
+                <element signature="e#58398#59856#0" expanded="false" />
+                <element signature="e#59955#61979#0" expanded="false" />
+                <element signature="e#62055#62666#0" expanded="false" />
+                <element signature="e#62741#62853#0" expanded="false" />
+                <element signature="e#62920#63676#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -147,7 +143,7 @@
       <file leaf-file-name="crear_pedidos.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/templates/modulo_movil/crear_pedidos.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="293" column="66" selection-start="11824" selection-end="11824" vertical-scroll-proportion="-15.148149" vertical-offset="4865" max-vertical-offset="12420">
+            <state line="293" column="66" selection-start="11824" selection-end="11824" vertical-scroll-proportion="0.0" vertical-offset="4865" max-vertical-offset="12420">
               <folding />
             </state>
           </provider>
@@ -165,7 +161,7 @@
       <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="39" selection-start="359" selection-end="359" vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="3888">
+            <state line="12" column="39" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="3888">
               <folding />
             </state>
           </provider>
@@ -189,10 +185,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="admin.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fotomov/templates/admin.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="486" column="44" selection-start="26573" selection-end="26573" vertical-scroll-proportion="0.46085408" vertical-offset="8489" max-vertical-offset="10782">
+            <state line="486" column="44" selection-start="26573" selection-end="26573" vertical-scroll-proportion="0.0" vertical-offset="8489" max-vertical-offset="10782">
               <folding />
             </state>
           </provider>
@@ -222,17 +218,17 @@
         <option value="$PROJECT_DIR$/productos/views.py" />
         <option value="$PROJECT_DIR$/modulo_movil/models.py" />
         <option value="$PROJECT_DIR$/fotomov/settings.py" />
-        <option value="$PROJECT_DIR$/modulo_movil/views.py" />
         <option value="$PROJECT_DIR$/fotomov/templates/admin.html" />
         <option value="$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html" />
+        <option value="$PROJECT_DIR$/modulo_movil/views.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="216" />
+    <option name="x" value="217" />
     <option name="y" value="128" />
-    <option name="width" value="1026" />
-    <option name="height" value="769" />
+    <option name="width" value="1024" />
+    <option name="height" value="768" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -570,11 +566,15 @@
       <created>1406262414621</created>
       <updated>1406262414621</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="arreglado peo de ver las fotos con los comentarios">
+      <created>1406331957649</created>
+      <updated>1406331957649</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="216" y="128" width="1026" height="769" extended-state="6" />
+    <frame x="217" y="128" width="1024" height="768" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -585,7 +585,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19619326" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32874617" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -621,7 +621,8 @@
     <MESSAGE value="importacion de datos no duplica productos ni tipos de pago" />
     <MESSAGE value="importacion redirecciona de nuevo a configuracion con mensaje de exito" />
     <MESSAGE value="arreglado error de necesitar estar logueado para iniciar modulo movil" />
-    <option name="LAST_COMMIT_MESSAGE" value="arreglado error de necesitar estar logueado para iniciar modulo movil" />
+    <MESSAGE value="arreglado peo de ver las fotos con los comentarios" />
+    <option name="LAST_COMMIT_MESSAGE" value="arreglado peo de ver las fotos con los comentarios" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -637,12 +638,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -653,14 +652,14 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -674,9 +673,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
-          <folding />
-        </state>
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/staff/views.py">
@@ -703,12 +700,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -719,14 +714,14 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -740,9 +735,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
-          <folding />
-        </state>
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/staff/views.py">
@@ -769,12 +762,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -785,23 +776,21 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
-          <folding />
-        </state>
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/staff/views.py">
@@ -845,12 +834,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -861,14 +848,14 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -880,9 +867,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942">
-          <folding />
-        </state>
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="3942" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/staff/views.py">
@@ -916,12 +901,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -932,14 +915,14 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -951,9 +934,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="2025">
-          <folding />
-        </state>
+        <state line="18" column="21" selection-start="732" selection-end="742" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="2025" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/staff/views.py">
@@ -987,12 +968,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -1003,14 +982,14 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1072,13 +1051,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/productos/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="433" column="90" selection-start="19101" selection-end="19101" vertical-scroll-proportion="0.0" vertical-offset="7120" max-vertical-offset="7776">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/productos/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="43" selection-start="3096" selection-end="3096" vertical-scroll-proportion="0.0" vertical-offset="1890" max-vertical-offset="2592">
@@ -1105,42 +1077,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="77" selection-start="5266" selection-end="5286" vertical-scroll-proportion="0.0" vertical-offset="1144" max-vertical-offset="3942">
-          <folding />
-        </state>
+        <state line="74" column="77" selection-start="5266" selection-end="5286" vertical-scroll-proportion="0.0" vertical-offset="1144" max-vertical-offset="3942" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/templates/modulo_movil/crear_pedidos.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="293" column="66" selection-start="11824" selection-end="11824" vertical-scroll-proportion="-15.148149" vertical-offset="4865" max-vertical-offset="12420">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="4" selection-start="641" selection-end="641" vertical-scroll-proportion="0.0" vertical-offset="73" max-vertical-offset="1278">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/templates/evento/editar_evento.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="50" selection-start="108" selection-end="114" vertical-scroll-proportion="-1.0" vertical-offset="0" max-vertical-offset="11106">
+        <state line="293" column="66" selection-start="11824" selection-end="11824" vertical-scroll-proportion="0.0" vertical-offset="4865" max-vertical-offset="12420">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fotomov/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="39" selection-start="359" selection-end="359" vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="3888">
+        <state line="12" column="39" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="3888">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/templates/admin.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="486" column="44" selection-start="26573" selection-end="26573" vertical-scroll-proportion="0.0" vertical-offset="8489" max-vertical-offset="10782">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/productos/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="433" column="90" selection-start="19101" selection-end="19101" vertical-scroll-proportion="0.0" vertical-offset="7120" max-vertical-offset="7776">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="126" column="63" selection-start="4997" selection-end="4997" vertical-scroll-proportion="0.0" vertical-offset="2268" max-vertical-offset="2934">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fotomov/templates/evento/editar_evento.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="50" selection-start="108" selection-end="114" vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="11106">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modulo_movil/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="8" selection-start="1969" selection-end="1973" vertical-scroll-proportion="0.13622291" vertical-offset="704" max-vertical-offset="1350">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modulo_movil/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="501" column="0" selection-start="22684" selection-end="22684" vertical-scroll-proportion="0.0" vertical-offset="3056" max-vertical-offset="7398">
+        <state line="654" column="0" selection-start="29077" selection-end="29077" vertical-scroll-proportion="0.14610389" vertical-offset="6264" max-vertical-offset="8028">
           <folding>
             <element signature="e#1321#2113#0" expanded="false" />
             <element signature="e#2151#2943#0" expanded="false" />
@@ -1148,12 +1139,10 @@
             <element signature="e#3808#3914#0" expanded="false" />
             <element signature="e#3945#4017#0" expanded="false" />
             <element signature="e#4045#4124#0" expanded="false" />
-            <element signature="e#4154#7880#0" expanded="false" />
             <element signature="e#7951#12165#0" expanded="false" />
             <element signature="e#12238#12796#0" expanded="false" />
             <element signature="e#12870#13040#0" expanded="false" />
             <element signature="e#13114#15210#0" expanded="false" />
-            <element signature="e#22772#25446#0" expanded="false" />
             <element signature="e#25516#26792#0" expanded="false" />
             <element signature="e#26863#27125#0" expanded="false" />
             <element signature="e#27196#27830#0" expanded="false" />
@@ -1164,29 +1153,15 @@
             <element signature="e#45114#45564#0" expanded="false" />
             <element signature="e#45628#46449#0" expanded="false" />
             <element signature="e#46547#46860#0" expanded="false" />
-            <element signature="e#46924#50238#0" expanded="false" />
-            <element signature="e#57597#58058#0" expanded="false" />
-            <element signature="e#58126#58308#0" expanded="false" />
-            <element signature="e#58397#59855#0" expanded="false" />
-            <element signature="e#59954#61978#0" expanded="false" />
-            <element signature="e#62054#62665#0" expanded="false" />
-            <element signature="e#62740#62852#0" expanded="false" />
-            <element signature="e#62919#63675#0" expanded="false" />
+            <element signature="e#50333#57519#0" expanded="false" />
+            <element signature="e#57598#58059#0" expanded="false" />
+            <element signature="e#58127#58309#0" expanded="false" />
+            <element signature="e#58398#59856#0" expanded="false" />
+            <element signature="e#59955#61979#0" expanded="false" />
+            <element signature="e#62055#62666#0" expanded="false" />
+            <element signature="e#62741#62853#0" expanded="false" />
+            <element signature="e#62920#63676#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/templates/productos/ver_pedido.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="63" selection-start="4997" selection-end="4997" vertical-scroll-proportion="0.36442143" vertical-offset="2057" max-vertical-offset="2934">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fotomov/templates/admin.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="486" column="44" selection-start="26573" selection-end="26573" vertical-scroll-proportion="0.46085408" vertical-offset="8489" max-vertical-offset="10782">
-          <folding />
         </state>
       </provider>
     </entry>

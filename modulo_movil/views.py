@@ -1036,7 +1036,7 @@ def generar_lote(request):
         if pedido.cliente != None:
             peps = ProductoEventoPedido.objects.filter(num_pedido = pedido.num_pedido, producto__es_combo=False)
             #for pep in peps:
-            if len(peps) > 1:
+            if len(peps) >= 1:
                 nom = pedido.cliente.nombres.split(' ')
                 nom = nom[0]
                 ape = pedido.cliente.apellidos.split(' ')
